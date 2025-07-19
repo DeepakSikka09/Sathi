@@ -38,7 +38,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+
 import javax.inject.Inject;
+
 import dagger.hilt.android.AndroidEntryPoint;
 import fr.arnaudguyon.xmltojsonlib.XmlToJson;
 import in.ecomexpress.sathi.BR;
@@ -53,10 +55,18 @@ import in.ecomexpress.sathi.ui.dummy.eds.eds_activity_detail.EDSDetailActivity;
 import in.ecomexpress.sathi.ui.dummy.eds.uid.DeviceInfo;
 import in.ecomexpress.sathi.ui.dummy.eds.uid.Param;
 import in.ecomexpress.sathi.ui.dummy.eds.undeilvered_eds.EDSUndeliveredActivity;
+import in.ecomexpress.sathi.ui.dummy.eds.eds_activity_detail.EDSDetailActivity;
+import in.ecomexpress.sathi.ui.dummy.eds.uid.DeviceInfo;
+import in.ecomexpress.sathi.ui.dummy.eds.uid.Param;
+import in.ecomexpress.sathi.ui.dummy.eds.undeilvered_eds.EDSUndeliveredActivity;
 import in.ecomexpress.sathi.utils.Constants;
+
 import static in.ecomexpress.sathi.utils.Constants.INTENT_KEY_EDS_MASTER_LIST;
 import static in.ecomexpress.sathi.utils.Constants.INTENT_KEY_EDS_WITH_ACTIVITY;
-import com.google.gson.Gson;
+
+/**
+ * Created by dhananjayk on 27-10-2018.
+ */
 
 @AndroidEntryPoint
 public class EdsTaskListActivity extends BaseActivity<ActivityEdsTaskListBinding, EdsTaskListActivityModel> implements IEdsTaskListNavigator {
@@ -92,8 +102,8 @@ public class EdsTaskListActivity extends BaseActivity<ActivityEdsTaskListBinding
     JSONObject pidDataJson;
     private ArrayList<String> positions;
     private Serializer serializer = null;
+    boolean resecheduleEnable;
     boolean call_allowed;
-    Gson gson = new Gson();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState){
@@ -197,7 +207,7 @@ public class EdsTaskListActivity extends BaseActivity<ActivityEdsTaskListBinding
                     startActivityForResult(intent, 1);
                 } else{
                     Intent intent = new Intent(EdsTaskListActivity.this, EDSDetailActivity.class);
-                    intent.putExtra(INTENT_KEY_EDS_WITH_ACTIVITY, gson.toJson(edsWithActivityList));
+                    intent.putExtra(INTENT_KEY_EDS_WITH_ACTIVITY, edsWithActivityList);
                     intent.putExtra(Constants.INTENT_KEY, awbNo);
                     intent.putExtra(Constants.DRS_ID, drs_no);
                     intent.putExtra(Constants.DRS_PSTN_KEY, getDrsPstnKey);
@@ -316,7 +326,7 @@ public class EdsTaskListActivity extends BaseActivity<ActivityEdsTaskListBinding
                     EdsWithActivityList edsWithActivityList = edsTaskListActivityModel.edsWithActivityList();
                     ArrayList<MasterActivityData> masterActivityData = edsTaskListActivityModel.getEdsMasterData();
                     Intent intent = new Intent(EdsTaskListActivity.this, EDSDetailActivity.class);
-                    intent.putExtra(INTENT_KEY_EDS_WITH_ACTIVITY, gson.toJson(edsWithActivityList));
+                    intent.putExtra(INTENT_KEY_EDS_WITH_ACTIVITY, edsWithActivityList);
                     intent.putExtra(Constants.INTENT_KEY, awbNo);
                     intent.putExtra(Constants.DRS_ID, drs_no);
                     intent.putExtra(Constants.DRS_PSTN_KEY, getDrsPstnKey);

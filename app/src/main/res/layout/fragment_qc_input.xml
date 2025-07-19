@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.ecomexpress.sathi.ui.drs.rvp.rvp_qc_details.RvpQcDataDetailsActivity">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.drs.rvp.rvp_qc_details.qc_input.QcInputViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="@dimen/_5DP">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textViewHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/v2_0_0"
+                android:paddingStart="@dimen/_5DP"
+                android:fontFamily="@font/roboto_regular"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@={viewModel.qcName}"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_13SP" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/qrCodeScanPhonePeLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4DP"
+                app:layout_constraintTop_toBottomOf="@id/textViewHeader"
+                android:background="@drawable/border_2dp_grey"
+                android:focusableInTouchMode="true"
+                android:onClick="@{() -> viewModel.onScanClick()}"
+                android:visibility="gone">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/phonePe_AppCompatTextView"
+                    android:layout_width="@dimen/_0DP"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparant"
+                    android:duplicateParentState="true"
+                    android:focusable="false"
+                    android:hint="@string/scan_shipment_soundbox_barcode"
+                    android:inputType=""
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/phonepe_scanner"
+                    android:longClickable="false"
+                    android:onClick="@{() -> viewModel.onScanClick()}"
+                    android:padding="@dimen/_4DP"
+                    android:text="@={ viewModel.inputData}"
+                    android:textSize="@dimen/_13SP" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/phonepe_scanner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_40DP"
+                    android:paddingStart="@dimen/_10DP"
+                    android:paddingEnd="@dimen/_10DP"
+                    android:scaleType="fitXY"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/phonePe_AppCompatTextView"
+                    app:srcCompat="@drawable/scan" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/qrCodeScanLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/qrCodeScanPhonePeLinearLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_value"
+                    android:layout_width="@dimen/_0DP"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5DP"
+                    android:background="@drawable/border_2dp_grey"
+                    android:hint="@string/enter_quantity"
+                    android:inputType="text"
+                    android:padding="@dimen/_10DP"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/imgScanBfPkg"
+                    android:text="@={ viewModel.inputData}"
+                    android:textSize="@dimen/_13SP" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imgScanBfPkg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_60DP"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/et_value"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:onClick="@{() -> viewModel.onScanClick()}"
+                    app:srcCompat="@drawable/scan" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/remarks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5DP"
+                android:background="@drawable/border_2dp_grey"
+                android:hint="@string/remarks"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey"
+                android:inputType="text"
+                android:padding="@dimen/_10DP"
+                app:layout_constraintTop_toBottomOf="@id/qrCodeScanLinearLayout"
+                android:text="@={ viewModel.inputDataRemark}"
+                android:textSize="@dimen/_13SP" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/image_cl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10DP"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/remarks">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/description_tv"
+                    android:layout_width="@dimen/_0DP"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_10DP"
+                    android:text="@string/preview_image_to_be_match_with_the_item"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/imageView8"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13SP" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imageView8"
+                    android:layout_width="@dimen/_40DP"
+                    android:layout_height="@dimen/_40DP"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/description_tv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:src="@drawable/mastercard" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/imagelayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5DP"
+                app:layout_constraintTop_toBottomOf="@id/image_cl">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/capture_image_text"
+                    android:layout_width="@dimen/_0DP"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/enter_last_4_digits"
+                    android:maxLength="4"
+                    android:padding="@dimen/_5DP"
+                    android:fontFamily="@font/roboto_regular"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/image_view_capture_image_qc_input"
+                    android:text="@={viewModel.imageCaptureSetting}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13SP" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/image_view_capture_image_qc_input"
+                    android:layout_width="@dimen/_30DP"
+                    android:layout_height="@dimen/_30DP"
+                    android:padding="@dimen/_2DP"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/capture_image_text"
+                    android:onClick="@{() -> viewModel.onCaptureImageClick()}"
+                    app:srcCompat="@drawable/cam" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10DP"
+                app:layout_constraintTop_toBottomOf="@id/imagelayout">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/qc_instruction_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_2DP"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="@string/qc_instruction"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textSize="@dimen/_13SP" />
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    app:layout_constraintTop_toBottomOf="@id/qc_instruction_tv"
+                    android:background="@color/blue" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/instruction_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_2DP"
+                    android:fontFamily="@font/roboto_regular"
+                    app:layout_constraintTop_toBottomOf="@id/view"
+                    android:text="@={viewModel.instruction}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13SP" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_2DP"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/roboto_regular"
+                    app:layout_constraintTop_toBottomOf="@id/instruction_tv"
+                    android:textSize="@dimen/_13SP" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

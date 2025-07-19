@@ -233,10 +233,10 @@ public class PreferenceHelper implements IPreferenceHelper {
     private static final String ESP_SCANNER = "ESP_SCANNER";
     private static final String MASTER_DATA_SYNC = "MASTER_DATA_SYNC";
     private static final String ESP_EARNING_VISIBILITY = "ESP_EARNING_VISIBILITY";
-    private static final String ODH_VISIBILITY = "ODH_VISIBILITY";
     private static final String LOGIN_SERVER_TIMESTAMP = "LOGIN_SERVER_TIMESTAMP";
     private SharedPreferences mPrefs;
     private static final String CAMPAIGN_VISIBILITY = "CAMPAIGN_VISIBILITY";
+    private static final String IS_DISTANCE_API_ENABLE="IS_DISTANCE_API_ENABLE";
 
     @Inject
     public PreferenceHelper(Context context, @PreferenceInfo String prefFileName){
@@ -2542,16 +2542,6 @@ public class PreferenceHelper implements IPreferenceHelper {
     }
 
     @Override
-    public void setODH_VISIBILITY(boolean odhVisibility) {
-        mPrefs.edit().putBoolean(ODH_VISIBILITY, odhVisibility).apply();
-    }
-
-    @Override
-    public boolean getODH_VISIBILITY() {
-        return mPrefs.getBoolean(ODH_VISIBILITY, false);
-    }
-
-    @Override
     public void setCheckAttendanceLoginStatus(boolean status) {
         mPrefs.edit().putBoolean(CHECK_ATTENDANCE_LOGIN_STATUS, status).apply();
     }
@@ -2569,6 +2559,16 @@ public class PreferenceHelper implements IPreferenceHelper {
     @Override
     public boolean getScreenStatus() {
         return mPrefs.getBoolean(SCREEN_STATUS, false);
+    }
+
+    @Override
+    public void setDistanceAPIEnabled(Boolean isDistanceAPIEnabled) {
+        mPrefs.edit().putBoolean(IS_DISTANCE_API_ENABLE,isDistanceAPIEnabled).apply();
+    }
+
+    @Override
+    public Boolean getDistanceAPIEnabled() {
+        return mPrefs.getBoolean(IS_DISTANCE_API_ENABLE,false);
     }
 
     @Override

@@ -4,6 +4,7 @@ import static android.content.Context.TELEPHONY_SERVICE;
 import static in.ecomexpress.sathi.utils.Constants.Button;
 import static in.ecomexpress.sathi.utils.Constants.Input;
 import static in.ecomexpress.sathi.utils.Constants.permissions;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -15,7 +16,6 @@ import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -31,11 +31,14 @@ import android.text.format.Formatter;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -50,7 +53,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
@@ -66,8 +68,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+
 import in.ecomexpress.sathi.R;
 import in.ecomexpress.sathi.SathiApplication;
 import in.ecomexpress.sathi.repo.IDataManager;
@@ -80,6 +84,10 @@ public final class CommonUtils {
     private static final int REQUEST_PHONE_CALL = 1;
     private static SecretKeySpec secretKey;
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
+
+    private CommonUtils() {
+        // This utility class is not publicly instantiable
+    }
 
     public static String millisecondToAmPm(long milliSecond) {
         GregorianCalendar cal = new GregorianCalendar();
@@ -125,9 +133,15 @@ public final class CommonUtils {
                 ActivityCompat.requestPermissions(mContext, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_PHONE_CALL);
             } else {
                 Constants.call_intent_number = number;
+                // if (Constants.IS_CALL_BRIDGE_FLAG_ON_STATUS) {
                 Intent intent1 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + number));
                 intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent1);
+                /*} else {
+                    Intent intent2 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + Uri.encode(number)));
+                    intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent2);
+                }*/
             }
         } catch (NullPointerException e) {
             Logger.e("CommonUtils", String.valueOf(e));
@@ -250,6 +264,7 @@ public final class CommonUtils {
             }
         } catch (Exception e) {
             imei = "12345678";
+            Logger.e("CommonUtils", String.valueOf(e));
         }
         return imei;
     }
@@ -363,45 +378,35 @@ public final class CommonUtils {
     }
 
     public static double calculateLaplacianVariance(Bitmap bitmap) {
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
+        Bitmap grayscaleBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        android.graphics.Canvas canvas = new android.graphics.Canvas(grayscaleBitmap);
+        android.graphics.ColorMatrix saturationMatrix = new android.graphics.ColorMatrix();
+        saturationMatrix.setSaturation(0);
+        android.graphics.Paint paint = new android.graphics.Paint();
+        paint.setColorFilter(new android.graphics.ColorMatrixColorFilter(saturationMatrix));
+        canvas.drawBitmap(bitmap, 0, 0, paint);
 
-        // Convert to grayscale:-
+        double sum = 0;
+        double count = 0;
+        int width = grayscaleBitmap.getWidth();
+        int height = grayscaleBitmap.getHeight();
         int[] pixels = new int[width * height];
-        bitmap.getPixels(pixels, 0, width, 0, 0, width, height);
-        double[][] gray = new double[width][height];
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                int pixel = pixels[i * width + j];
-                int r = (pixel >> 16) & 0xFF; // For Red Pixel
-                int g = (pixel >> 8) & 0xFF; // For Green Pixel
-                int b = (pixel) & 0xFF; // For Green Blue
-                /*
-                * Standard Formula for GreyScale Conversion:- Gray = 0.299×R + 0.587×G + 0.114×B
-                * These weights are based on human eye sensitivity:👀 Human eyes are
-                    1. Most sensitive to Green (G) → 0.587
-                    2. Less sensitive to Red (R) → 0.299
-                    3. Least sensitive to Blue (B) → 0.114
-                * */
-                gray[j][i] = 0.299 * r + 0.587 * g + 0.114 * b;
-            }
-        }
+        grayscaleBitmap.getPixels(pixels, 0, width, 0, 0, width, height);
 
-        // Apply Laplacian filter & Calculate Variance:-
-        double sum = 0, sumOfSquares = 0;
-        int count = 0;
         for (int i = 1; i < height - 1; i++) {
             for (int j = 1; j < width - 1; j++) {
-                double laplacian = Math.abs(4 * gray[j][i] - gray[j - 1][i] - gray[j + 1][i] - gray[j][i - 1] - gray[j][i + 1]);
-                sum += laplacian;
-                sumOfSquares += laplacian * laplacian;
+                int centerPixel = pixels[i * width + j];
+                int topPixel = pixels[(i - 1) * width + j];
+                int bottomPixel = pixels[(i + 1) * width + j];
+                int leftPixel = pixels[i * width + (j - 1)];
+                int rightPixel = pixels[i * width + (j + 1)];
+
+                double laplacian = Math.abs(4 * ((centerPixel >> 16) & 0xFF) - ((topPixel >> 16) & 0xFF) - ((bottomPixel >> 16) & 0xFF) - ((leftPixel >> 16) & 0xFF) - ((rightPixel >> 16) & 0xFF));
+                sum += laplacian * laplacian;
                 count++;
             }
         }
-
-        // Calculating Variance:- variance = Σ(x - mean)² / N
-        double mean = sum / count;
-        return (sumOfSquares / count) - (mean * mean);
+        return sum / count;
     }
 
     public static LinkedHashMap<String, String> convertStringToLinkedHashMap(String inputString) {
@@ -417,7 +422,7 @@ public final class CommonUtils {
         if ((convertStringToLinkedHashMap(dataManager.getBlurImageType())).containsValue(moduleName)) {
             double varianceValue = calculateLaplacianVariance(bitmap);
             if (varianceValue < 150 && imageCaptureCount < 3) {
-                Snackbar snackbar = Snackbar.make(context.findViewById(android.R.id.content), R.string.clicked_image_is_not_clear_click_it_again, Snackbar.LENGTH_LONG);
+                Snackbar snackbar = Snackbar.make(context.findViewById(android.R.id.content), "The clicked image is not proper. Please click it again", Snackbar.LENGTH_LONG);
                 View view = snackbar.getView();
                 view.setBackgroundColor(context.getResources().getColor(R.color.red_ecom));
                 TextView tv = view.findViewById(R.id.snackbar_text);
@@ -508,8 +513,8 @@ public final class CommonUtils {
 
     public static boolean isDeveloperModeEnabled(Context context) {
         int developerModeEnabled = Settings.Global.getInt(context.getContentResolver(), Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0);
-        return developerModeEnabled != 0;
-        // return false;
+//        return developerModeEnabled != 0;
+         return false;
     }
 
     public static boolean checkDeveloperMode(Context context) {
@@ -596,12 +601,14 @@ public final class CommonUtils {
     }
 
     // Check value of getFlagsMap and getRET_DEL_IMAGE, it can be null, true, false or blank string. Return the the value true if condition meet.
-    public static boolean getRtsDeliveredImagesValue(FlagsMap flagsMap) {
-        boolean rtsDeliveredImage;
+    public static String getRtsDeliveredImagesValue(FlagsMap flagsMap) {
+        String rtsDeliveredImage;
         if (flagsMap == null || flagsMap.getRET_DEL_IMAGE() == null || flagsMap.getRET_DEL_IMAGE().isEmpty() || flagsMap.getRET_DEL_IMAGE().equalsIgnoreCase("false")) {
-            rtsDeliveredImage = false;
+            rtsDeliveredImage = "false";
+        } else if (flagsMap.getRET_DEL_IMAGE().equalsIgnoreCase("true")) {
+            rtsDeliveredImage = flagsMap.getRET_DEL_IMAGE();
         } else {
-            rtsDeliveredImage = flagsMap.getRET_DEL_IMAGE().equalsIgnoreCase("true");
+            rtsDeliveredImage = "false";
         }
         return rtsDeliveredImage;
     }
@@ -752,15 +759,5 @@ public final class CommonUtils {
         } else {
             return imei;
         }
-    }
-
-    public static Bitmap convertPathtoBitmap(String imagePathWithWaterMark) {
-        return BitmapFactory.decodeFile(imagePathWithWaterMark);
-    }
-
-    public static String getTimeStampToDate(long timeStamp){
-        Date date = new Date(timeStamp);
-        DateFormat formattedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:");
-        return formattedDate.format(date);
     }
 }

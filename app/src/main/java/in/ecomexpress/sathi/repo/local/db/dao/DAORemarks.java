@@ -1,11 +1,18 @@
 package in.ecomexpress.sathi.repo.local.db.dao;
 
+
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+
 import java.util.List;
+
 import in.ecomexpress.sathi.repo.local.db.model.Remark;
+
+/**
+ * Created by parikshittomar on 10-12-2018.
+ */
 
 @Dao
 public interface DAORemarks {
@@ -24,6 +31,8 @@ public interface DAORemarks {
 
     @Query("SELECT * FROM Remark where awbNo=:awb")
     Remark getRemarks(long awb);
+   /* @Query("SELECT * FROM Remark where awbNo=:awb")
+    Remark getRemarks(long awb);*/
 
     @Query("SELECT * FROM Remark where empCode=:code and date=:currentDate")
     List<Remark> getAllRemarks(String code, long currentDate);
@@ -43,3 +52,4 @@ public interface DAORemarks {
     @Query("SELECT COUNT(*) FROM Remark   WHERE  + remark =:remark")
     long getNoRemarksCount(String remark);
 }
+

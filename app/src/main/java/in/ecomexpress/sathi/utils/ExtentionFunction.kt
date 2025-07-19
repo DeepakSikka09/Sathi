@@ -5,7 +5,6 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 
 fun TabLayout.setupWithViewPager2(viewPager2: ViewPager2) {
-
     fun updateTabs() {
         removeAllTabs()
         viewPager2.adapter?.let { adapter ->

@@ -496,12 +496,12 @@ public class RTSSignatureViewModel extends BaseViewModel<IRTSSignatureNavigator>
             getCompositeDisposable().add(getDataManager().isAttributeAvailable(getDataManager().getUndeliverReasonCode()).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui()).subscribe(master_rchd_enabled -> {
                 fromUDOtp = false;
                 if (count > 1) {
-                    getNavigator().showOTPLayout(false, false);
+                    getNavigator().showOTPLayout(false);
                 } else if (master_rchd_enabled.getMasterDataAttributeResponse().RCHD_OTP && rchd_enabled) {
-                    getNavigator().showOTPLayout(true, false);
+                    getNavigator().showOTPLayout(true);
                 } else if (master_rchd_enabled.getMasterDataAttributeResponse().UD_OTP) {
                     fromUDOtp = true;
-                    getNavigator().showOTPLayout(true, false);
+                    getNavigator().showOTPLayout(true);
                 }
             }));
         } catch (Exception e) {
@@ -519,7 +519,7 @@ public class RTSSignatureViewModel extends BaseViewModel<IRTSSignatureNavigator>
                 for (int i = 0; i < shipmentsDetails.size(); i++) {
                     if (shipmentsDetails.get(i).getStatus().endsWith("Delivered") || shipmentsDetails.get(i).getStatus().endsWith("Disputed")) {
                         if (details.isIs_otp_required()) {
-                            getNavigator().showOTPLayout(true, !details.isRts_skip_otp() && shipmentsDetails.get(i).getStatus().endsWith("Delivered"));
+                            getNavigator().showOTPLayout(true);
                         }
                         isAllPacketUndelivered = false;
                         forDisputedDelivery = true;
@@ -530,7 +530,7 @@ public class RTSSignatureViewModel extends BaseViewModel<IRTSSignatureNavigator>
                     }
                 }
                 if (!forDisputedDelivery) {
-                    getNavigator().showOTPLayout(true, false);
+                    getNavigator().showOTPLayout(true);
                 }
                 if (isAllPacketUndelivered) {
                     findDuplicateReasonCode(rchd_enabled, details.getId());

@@ -1,6 +1,7 @@
 package in.ecomexpress.sathi.repo.remote;
 
 import com.google.firebase.encoders.annotations.Encodable;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import in.ecomexpress.sathi.repo.local.data.rts.RTSCommitResponse;
 import in.ecomexpress.sathi.repo.local.data.rvp.RVPCommitResponse;
 import in.ecomexpress.sathi.repo.local.data.rvp.RvpCommit;
 import in.ecomexpress.sathi.repo.local.db.model.LiveTrackingLogTable;
+import in.ecomexpress.sathi.repo.remote.model.ContatDecryption;
 import in.ecomexpress.sathi.repo.remote.model.DCLocationUpdate.DCLocationUpdate;
 import in.ecomexpress.sathi.repo.remote.model.DCLocationUpdate.DCLocationUpdateResponse;
 import in.ecomexpress.sathi.repo.remote.model.EarningApiRequest;
@@ -50,6 +52,7 @@ import in.ecomexpress.sathi.repo.remote.model.covid.CovidApiResponse;
 import in.ecomexpress.sathi.repo.remote.model.covid.CovidRequest;
 import in.ecomexpress.sathi.repo.remote.model.device_upload.Biometric_requestdata;
 import in.ecomexpress.sathi.repo.remote.model.device_upload.Biometric_response;
+import in.ecomexpress.sathi.repo.remote.model.distancecalculations.DistanceApiResponse;
 import in.ecomexpress.sathi.repo.remote.model.dp_daily_earned.DPDailyEarnedAmount;
 import in.ecomexpress.sathi.repo.remote.model.dp_daily_earned.DPReferenceCodeRequest;
 import in.ecomexpress.sathi.repo.remote.model.dp_daily_earned.DPReferenceCodeResponse;
@@ -149,6 +152,7 @@ import in.ecomexpress.sathi.repo.remote.model.verifyOtp.LoginVerifyOtpRequest;
 import in.ecomexpress.sathi.repo.remote.model.verifyOtp.LoginVerifyOtpResponse;
 import in.ecomexpress.sathi.repo.remote.model.voice_otp.VoiceOTP;
 import in.ecomexpress.sathi.repo.remote.model.voice_otp.VoiceOTPResponse;
+
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
@@ -167,7 +171,9 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.PartMap;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 
 public interface RetrofitService {
@@ -233,6 +239,7 @@ public interface RetrofitService {
     @POST
     Single<FwdReattemptResponse> doUdFwdReattemptApiCall(@Url String fwd_reattempt_url,@Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, @Body FwdReattemptRequest attendanceRequest);
 
+
     @Headers({"Content-Type: application/json",
             "api_key:" + in.ecomexpress.sathi.BuildConfig.API_KEY,
             "app_ver:" + in.ecomexpress.sathi.BuildConfig.VERSION_NAME,
@@ -269,6 +276,7 @@ public interface RetrofitService {
     @POST
     Single<VoiceOTPResponse> doVoiceOtpApiCall(@Url String drs_list_otp_url, @Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, @Body VoiceOTP verifyOtpRequest);
 
+
     //Resend Otp
     @Headers({"Content-Type: application/json",
             "api_key:" + in.ecomexpress.sathi.BuildConfig.API_KEY,
@@ -285,6 +293,8 @@ public interface RetrofitService {
     @POST
     Single<ResendOtpResponse> doGenerateUDOtpApiCall(@Url String drs_list_otp_url,@Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, @Body GenerateUDOtpRequest generateUDOtpRequest);
 
+
+
     @Headers({"Content-Type: application/json",
             "api_key:" + in.ecomexpress.sathi.BuildConfig.API_KEY,
             "app_ver:" + in.ecomexpress.sathi.BuildConfig.VERSION_NAME,
@@ -298,7 +308,6 @@ public interface RetrofitService {
             "api_ver: " + in.ecomexpress.sathi.BuildConfig.API_VER})
     @POST
     Single<AwbResponse> regAwb(@Url String register_awb_url,@Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, @Body AwbRequest awbRequest);
-
     @Headers({"Content-Type: application/json",
             "api_key:" + in.ecomexpress.sathi.BuildConfig.API_KEY,
             "app_ver:" + in.ecomexpress.sathi.BuildConfig.VERSION_NAME,
@@ -326,6 +335,18 @@ public interface RetrofitService {
             "api_ver: " + in.ecomexpress.sathi.BuildConfig.API_VER})
     @POST
     Single<AwbResponse> checkStatus(@Url String payment_status_url,@Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, @Body AwbRequest awbRequest);
+/*
+    @POST
+    @Headers("Content-Type: application/json")
+    @Multipart
+    Single<AwbResponse> regAwb(@Url String s, @PartMap Map<String, Object> params);*/
+
+
+  /*  @POST
+    @Multipart
+    @Headers("Content-Type:text/plain")
+    Single<CheckStatusResponse> checkStatus(@Url String s, @PartMap Map<String, Object> params);
+*/
 
     @Multipart
     @Headers({
@@ -335,10 +356,7 @@ public interface RetrofitService {
     @POST
     Single<ImageUploadResponse> doImageUploadApiCall(@Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, @Url String baseurl, @HeaderMap Map<String, String> headers, @Part MultipartBody.Part image, @Part("awb_no") RequestBody awb_no, @Part("drs_no") RequestBody drs_no, @Part("image_name") RequestBody image_name, @Part("image_code") RequestBody image_code, @Part("image_type") RequestBody image_type , @Part("card_type") RequestBody card_type ,@Part("is_classification_required") RequestBody is_classification_required);
 
-    @Multipart
-    @Headers({"api_key:" + in.ecomexpress.sathi.BuildConfig.API_KEY, "app_ver:" + in.ecomexpress.sathi.BuildConfig.VERSION_NAME, "api_ver: " + in.ecomexpress.sathi.BuildConfig.API_VER,})
-    @POST
-    Single<ImageUploadResponse> doImageUploadRVPMpsApiCall(@Header("auth_token") String token, @Header("ecom_dlv_region") String ecom_dlv_region, @Url String baseurl, @HeaderMap Map<String, String> headers, @Part MultipartBody.Part image, @Part("awb") RequestBody awb_no, @Part("drs_no") RequestBody drs_no, @Part("rvp_qc_image_key") RequestBody image_name, @Part("rvp_qc_code") RequestBody image_code, @Part("image_type") RequestBody image_type, @Part("no_of_item") RequestBody no_of_item, @Part("item_id") RequestBody item_id, @Part("is_classification_required") RequestBody is_classification_required);
+
 
     @Multipart
     @Headers({
@@ -348,12 +366,23 @@ public interface RetrofitService {
     @POST
     Single<AadharMaskingResponse> doAadharImageUploadApiCall(@Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, @Url String baseurl, @HeaderMap Map<String, String> headers, @Part("front_image_type") RequestBody front_image_type, @Part("back_image_type") RequestBody back_image_type, @Part("new_aadhar") RequestBody new_aadhar , @Part MultipartBody.Part front_image, @Part MultipartBody.Part rear_image);
 
+
     @Headers({
             "api_key:" + in.ecomexpress.sathi.BuildConfig.API_KEY,
             "app_ver:" + in.ecomexpress.sathi.BuildConfig.VERSION_NAME,
             "api_ver: " + in.ecomexpress.sathi.BuildConfig.API_VER,})
     @POST
     Single<ImageUploadResponse> doImageByteUploadApiCall(@Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, @Url String baseurl, @HeaderMap Map<String, String> headers, @Body ByteImageRequest byteImageRequest);
+
+
+    @Multipart
+    @Headers({
+            "api_key:" + in.ecomexpress.sathi.BuildConfig.API_KEY,
+            "app_ver:" + in.ecomexpress.sathi.BuildConfig.VERSION_NAME,
+            "api_ver: " + in.ecomexpress.sathi.BuildConfig.API_VER,})
+    @POST
+    Single<ImageUploadResponse> doImageUploadApiCallInSingleThread(@Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, @Url String baseurl, @HeaderMap Map<String, String> headers, @Part MultipartBody.Part image, @Part("awb_no") RequestBody awb_no, @Part("drs_no") RequestBody drs_no, @Part("image_name") RequestBody image_name, @Part("image_code") RequestBody image_code, @Part("image_type") RequestBody image_type);
+
 
     @Multipart
     @Headers({
@@ -370,6 +399,8 @@ public interface RetrofitService {
             "api_ver: " + in.ecomexpress.sathi.BuildConfig.API_VER,})
     @POST
     Single<ImageUploadResponse> doImageUploadApiCallTest(@Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, @Url String baseurl, @PartMap Map<String, RequestBody> image);
+//    Single<ImageUploadResponse> doImageUploadApiCallTest(@Url String baseurl,  @Part("image\";filename=\"image.*\" ") RequestBody image);
+
 
     //Start Trip
     @Headers({"Content-Type: application/json",
@@ -386,6 +417,7 @@ public interface RetrofitService {
             "api_ver: " + in.ecomexpress.sathi.BuildConfig.API_VER})
     @POST
     Single<StopTripResponse> doStopTripApiCall(@Url String stop_trip,@Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, @Body StopTripRequest stopTripRequest);
+
 
     //Fuel Reimbursement
     @Headers({"Content-Type: application/json",
@@ -414,8 +446,10 @@ public interface RetrofitService {
             "api_ver: " + in.ecomexpress.sathi.BuildConfig.API_VER,
             "via:" + "MOBILE",
             "requesttype:" + "drs_commit"})
+
     @POST
     Single<ForwardCommitResponse> doFWDCommitApiCall(@Url String forward_drs_commit_mps,@Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, @HeaderMap Map<String, String> headers, @Body List<ForwardCommit> forwardCommit);
+
 
     //Forward commit Api call
     @Headers({"Content-Type: application/json",
@@ -437,6 +471,7 @@ public interface RetrofitService {
     @POST
     Single<RVPCommitResponse> doRVPUndeliveredCommitApiCall(@Url String reverse_drs_commit,@Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, @HeaderMap Map<String, String> headers, @Body RvpCommit rvpCommit);
 
+
     /*RTS*/
     @Headers({"Content-Type: application/json",
             "api_key:" + in.ecomexpress.sathi.BuildConfig.API_KEY,
@@ -445,6 +480,7 @@ public interface RetrofitService {
     })
     @POST
     Single<RTSCommitResponse> doRTSCommitApiCall(@Url String rts_drs_commit,@Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, @HeaderMap Map<String, String> headers, @Body RTSCommit rtsCommit);
+
 
     @Headers({"Content-Type: application/json",
             "api_key:" + in.ecomexpress.sathi.BuildConfig.API_KEY,
@@ -457,6 +493,7 @@ public interface RetrofitService {
 
     @GET
     Observable<Response<ResponseBody>> downloadFileFromUrl(@Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, String url);
+
 
     /*EDS*/
     @Headers({"Content-Type: application/json",
@@ -500,6 +537,7 @@ public interface RetrofitService {
     @POST
     Single<AadharStatusResponse> doGetStatusAadharMasking(@Url String login_verify, @Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, @Body Get_Status_Masking get_status_masking);
 
+
     //Resend Otp
     @Headers({"Content-Type: application/json",
             "api_key:" + in.ecomexpress.sathi.BuildConfig.API_KEY,
@@ -514,6 +552,7 @@ public interface RetrofitService {
             "api_ver: " + in.ecomexpress.sathi.BuildConfig.API_VER})
     @POST
     Single<LiveTrackingResponse> doLiveTrackingApiCall(@Url String live_tracking_url, @Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, @Body LiveTrackingRequest liveTrackingRequest);
+
 
     @Headers({"Content-Type: application/json",
             "api_key:" + in.ecomexpress.sathi.BuildConfig.API_KEY,
@@ -562,6 +601,7 @@ public interface RetrofitService {
     @POST
     Single<DisputeImageApiResponse> doDisputeImageUploadApiCall(@Url String baseurl, @Header("ecom_dlv_region") String ecom_dlv_region, @PartMap Map<String, RequestBody> headers, @Part MultipartBody.Part image);
 
+
     @GET
     Single<ImageQualityResponse> doImageQuality(@Url String baseurl,@Header("ecom_dlv_region") String ecom_dlv_region, @Query("image_id") int image_id);
 
@@ -592,6 +632,8 @@ public interface RetrofitService {
     @POST
     Single<Biometric_response> dobiometricApiCall(@Url String deviceurl, @Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, @Body Biometric_requestdata biometric_requestdata);
 
+
+
     @Headers({"Content-Type: application/xml"})
     @POST
     Single<ekycXMLResponse> doEkycXMLApiCall(@Url String ekycUrl, @Header("ecom_dlv_region") String ecom_dlv_region, @Body String jobj, @HeaderMap HashMap<String,String> webheader);
@@ -617,12 +659,14 @@ public interface RetrofitService {
     @POST
     Single<Amazon_reschedule_list> doScheduleDates(@Url String url, @Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, @Body AmazonScheduleRequest amazonScheduleRequest);
 
+
     @Headers({"Content-Type: application/json",
             "api_key:" + in.ecomexpress.sathi.BuildConfig.API_KEY,
             "app_ver:" + in.ecomexpress.sathi.BuildConfig.VERSION_NAME,
             "api_ver: " + in.ecomexpress.sathi.BuildConfig.API_VER})
     @POST
     Single<CashReceipt_Response> doCashReceipt(@Url String url, @Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, @Body CashReceipt_Request cashReceipt_request);
+
 
     @Headers({"Content-Type: application/json",
             "api_key:" + in.ecomexpress.sathi.BuildConfig.API_KEY,
@@ -638,6 +682,8 @@ public interface RetrofitService {
     @POST
     Single<EdsRescheduleResponse> doEdsReschedule(@Url String u, @Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, @Body EdsRescheduleRequest edsReschedule);
 
+    @GET
+    Single<ContatDecryption> doContatDecryption(@Url String baseurl,@Header("ecom_dlv_region") String ecom_dlv_region, @Query("image_id") String awb);
     @Headers({"Content-Type: application/json",
             "api_key:" + in.ecomexpress.sathi.BuildConfig.API_KEY,
             "app_ver:" + in.ecomexpress.sathi.BuildConfig.VERSION_NAME,
@@ -700,13 +746,21 @@ public interface RetrofitService {
     @POST
     Single<VerifyOTPResponse> doVerifyUDOtpDRSApiCall(@Url String url, @Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, @Body VerifyUDOtpRequest verifyOtpRequest);
 
+
+
+    @Headers({"Content-Type: application/json",
+            "api_key:" + in.ecomexpress.sathi.BuildConfig.API_KEY,
+            "app_ver:" + in.ecomexpress.sathi.BuildConfig.VERSION_NAME,
+            "api_ver: " + in.ecomexpress.sathi.BuildConfig.API_VER})
+    @POST
+    Single<VerifyOTPResponse> doVerifyUdOTPApiCall(@Url String url, @Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, @Body VerifyOTPRequest verifyOtpRequest);
+
     @Headers({"Content-Type: application/json",
             "api_key:" + in.ecomexpress.sathi.BuildConfig.API_KEY,
             "app_ver:" + in.ecomexpress.sathi.BuildConfig.VERSION_NAME,
             "api_ver: " + in.ecomexpress.sathi.BuildConfig.API_VER})
     @POST
     Single<CovidApiResponse> DoCovidApiRequest(@Url String u, @Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, @Body CovidRequest covidRequest);
-
     @Headers({"Content-Type: application/json",
             "api_key:" + in.ecomexpress.sathi.BuildConfig.API_KEY,
             "app_ver:" + in.ecomexpress.sathi.BuildConfig.VERSION_NAME,
@@ -721,6 +775,7 @@ public interface RetrofitService {
             "api_ver: " + in.ecomexpress.sathi.BuildConfig.API_VER})
     @POST
     Single<PrintReceiptUploadResponse> doPrintReceiptUploadImage(@Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, @Url String baseurl, @PartMap Map<String, String> headers, @PartMap Map<String, RequestBody> data,@Part MultipartBody.Part image);
+
 
     @Headers({"Content-Type: application/json",
             "api_key:" + in.ecomexpress.sathi.BuildConfig.API_KEY,
@@ -740,6 +795,7 @@ public interface RetrofitService {
             "api_key:" + in.ecomexpress.sathi.BuildConfig.API_KEY,
             "app_ver:" + in.ecomexpress.sathi.BuildConfig.VERSION_NAME,
             "api_ver: " + in.ecomexpress.sathi.BuildConfig.API_VER})
+
     @GET("get_covid_hospitals?")
     Single<Hospital> covidHospitalList(@Header("auth_token") String token , @Header("ecom_dlv_region") String ecom_dlv_region,@Query("emp_code") String emp_code);
 
@@ -749,6 +805,7 @@ public interface RetrofitService {
             "api_ver: " + in.ecomexpress.sathi.BuildConfig.API_VER})
     @GET
     Single<GenerateToken> dogeneratetoken(@Url String baseurl, @Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region);
+
 
     @FormUrlEncoded
     @Encodable.Ignore
@@ -765,8 +822,10 @@ public interface RetrofitService {
             "api_key:" + in.ecomexpress.sathi.BuildConfig.API_KEY,
             "app_ver:" + in.ecomexpress.sathi.BuildConfig.VERSION_NAME,
             "api_ver: " + in.ecomexpress.sathi.BuildConfig.API_VER})
+
     @GET("adm_live_earning?")
     Single<DPDailyEarnedAmount> doDPDailyEarningApiCall(@Header("auth_token") String token ,@Header("ecom_dlv_region") String ecom_dlv_region, @Query("empCode") String emp_code);
+
 
     @Headers({"Content-Type: application/json",
             "api_key:" + in.ecomexpress.sathi.BuildConfig.API_KEY,
@@ -781,6 +840,7 @@ public interface RetrofitService {
             "api_ver: " + in.ecomexpress.sathi.BuildConfig.API_VER})
     @POST
     Single<DailyEarningResponse> doDailyEarnigCalender(@Url String url , @Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, @Body DailyEarningRequest dailyEarningRequest);
+
 
     @Headers({"Content-Type: application/json",
             "api_key:" + in.ecomexpress.sathi.BuildConfig.API_KEY,
@@ -802,9 +862,12 @@ public interface RetrofitService {
             "api_ver: " + in.ecomexpress.sathi.BuildConfig.API_VER})
     @POST
     Single<ReshceduleDetailsResponse> doReshceduleDetailsAPI(@Url String url , @Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, @Body ResheduleDetailsRequest resheduleDetailsRequest);
-
     @GET
     Single<GenerateTokenNiyo> dogenerateniyotoken(@Url String baseurl);
+
+    @Streaming
+    @GET
+    Call<ResponseBody> downloadFileByUrl(@Url String fileUrl,@Header("ecom_dlv_region") String ecom_dlv_region);
 
     @Headers({"Content-Type: application/json",
             "api_key:" + in.ecomexpress.sathi.BuildConfig.API_KEY,
@@ -824,8 +887,10 @@ public interface RetrofitService {
             "api_key:" + in.ecomexpress.sathi.BuildConfig.API_KEY,
             "app_ver:" + in.ecomexpress.sathi.BuildConfig.VERSION_NAME,
             "api_ver: " + in.ecomexpress.sathi.BuildConfig.API_VER})
+
     @GET("fetch_dp_avalibility_details?")
     Single<List<ADMDATA>> getAdmData(@Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, @Query("empCode") String emp_code);
+
 
     @Headers({"Content-Type: application/json",
             "api_key:" + in.ecomexpress.sathi.BuildConfig.API_KEY,
@@ -833,6 +898,7 @@ public interface RetrofitService {
             "api_ver: " + in.ecomexpress.sathi.BuildConfig.API_VER})
     @POST
     Single<ADMUpdateResponse> doUpdateADMData(@Url String url , @Header("auth_token") String token,@Header("ecom_dlv_region") String ecom_dlv_region, @Body List<ADMUpdateRequest> admUpdateRequests);
+
 
     @Multipart
     @Headers({
@@ -888,12 +954,14 @@ public interface RetrofitService {
     @POST
     Single<MarkAttendanceResponse> doMarkAttendanceApiCall(@Url String mark_attendance_api_url, @Header("auth_token") String token, @Body MarkAttendanceRequest markAttendanceRequest);
 
+
     @Headers({"Content-Type: application/json",
             "api_key:" + in.ecomexpress.sathi.BuildConfig.API_KEY,
             "app_ver:" + in.ecomexpress.sathi.BuildConfig.VERSION_NAME,
             "api_ver: " + in.ecomexpress.sathi.BuildConfig.API_VER})
     @GET
     Single<CheckAttendanceResponse> doCheckAttendanceApiCall(@Url String check_attendance_api_url, @Header("auth_token") String token, @Query("emp_code") String empCode);
+
 
     @Multipart
     @Headers({
@@ -902,4 +970,11 @@ public interface RetrofitService {
             "api_ver: " + in.ecomexpress.sathi.BuildConfig.API_VER,})
     @POST
     Single<SelfieImageResponse> doSelfieImageUploadApiCall(@Header("auth_token") String token, @Url String baseURL, @HeaderMap Map<String, String> headers, @Part MultipartBody.Part image, @Part("emp_code") RequestBody emp_code, @Part("source_code") RequestBody source_code, @Part("dc_code") RequestBody dc_code);
+
+    @GET
+    Call<DistanceApiResponse> distanceCalculationApi(@Url String locationUrl, @Query("annotations") String annotations);
+    @GET
+    Single<DistanceApiResponse> distanceCalculationApis(@Url String locationUrl, @Query("annotations") String annotations);
+
+
 }

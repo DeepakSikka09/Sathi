@@ -1,16 +1,22 @@
 package in.ecomexpress.sathi.repo.local.db.dao;
 
+
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.RoomWarnings;
 import androidx.room.Transaction;
+
 import java.util.List;
+
 import in.ecomexpress.sathi.repo.local.db.model.RvpWithQC;
 import in.ecomexpress.sathi.repo.remote.model.drs_list.rvp.DRSReverseQCTypeResponse;
 import in.ecomexpress.sathi.repo.remote.model.drs_list.rvp.RvpQualityCheck;
 
+/**
+ * Created by dhananjayk on 11-06-2018.
+ */
 @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
 @Dao
 public interface DRSRvpWithQCDAO {

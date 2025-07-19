@@ -6,7 +6,9 @@ import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.util.Log;
 import androidx.databinding.ObservableBoolean;
+
 import javax.inject.Inject;
+
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import in.ecomexpress.sathi.repo.IDataManager;
 import in.ecomexpress.sathi.repo.local.data.fwd.ForwardCommit;
@@ -18,6 +20,7 @@ import in.ecomexpress.sathi.repo.remote.model.otp.verifyotp.VerifyUDOtpRequest;
 import in.ecomexpress.sathi.repo.remote.model.voice_otp.VoiceOTP;
 import in.ecomexpress.sathi.ui.base.BaseViewModel;
 import in.ecomexpress.sathi.ui.drs.forward.obd.navigator.IObdOTPNavigator;
+import in.ecomexpress.sathi.ui.drs.rvp.rvp_secure_activity.RVPSecureDeliveryViewModel;
 import in.ecomexpress.sathi.utils.Constants;
 import in.ecomexpress.sathi.utils.Logger;
 import in.ecomexpress.sathi.utils.rx.ISchedulerProvider;
@@ -101,12 +104,14 @@ public class OBDStartOTPViewModel extends BaseViewModel<IObdOTPNavigator> {
                 } catch (Exception e) {
                     if (dialog.isShowing())
                         dialog.dismiss();
+                    Logger.e(RVPSecureDeliveryViewModel.class.getName(), e.getMessage());
                     getNavigator().showError(e.getMessage());
                 }
             }));
         } catch (Exception e) {
             if (dialog.isShowing())
                 dialog.dismiss();
+            Logger.e(RVPSecureDeliveryViewModel.class.getName(), e.getMessage());
             getNavigator().showError(e.getMessage());
         }
     }
@@ -146,10 +151,12 @@ public class OBDStartOTPViewModel extends BaseViewModel<IObdOTPNavigator> {
                     error = new RestApiErrorHandler(throwable).getErrorDetails().getEResponse().getDescription();
                     getNavigator().showError(error);
                 } catch (Exception e) {
+                    Logger.e(RVPSecureDeliveryViewModel.class.getName(), e.getMessage());
                     getNavigator().showError(e.getMessage());
                 }
             }));
         } catch (Exception e) {
+            Logger.e(RVPSecureDeliveryViewModel.class.getName(), e.getMessage());
             if (dialog.isShowing())
                 dialog.dismiss();
             getNavigator().showError(e.getMessage());
@@ -261,12 +268,12 @@ public class OBDStartOTPViewModel extends BaseViewModel<IObdOTPNavigator> {
                     getDataManager().clearPrefrence();
                     getDataManager().setUserAsLoggedOut();
                 } catch (Exception e) {
-                    Logger.e(OBDStartOTPViewModel.class.getName(), e.getMessage());
+                    Logger.e(RVPSecureDeliveryViewModel.class.getName(), e.getMessage());
                 }
                 getNavigator().clearStack();
             }));
         } catch (Exception e) {
-            Logger.e(OBDStartOTPViewModel.class.getName(), e.getMessage());
+            Logger.e(RVPSecureDeliveryViewModel.class.getName(), e.getMessage());
             getNavigator().showError(e.getMessage());
         }
     }

@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        tools:context=".ui.drs.rvp.activity.CancelSubReasonCodeListActivity">
+        tools:context=".ui.drs.rvp_new.activity.CancelSubReasonCodeListActivity">
 
         <include
             android:id="@+id/header"

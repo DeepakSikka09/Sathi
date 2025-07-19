@@ -2,19 +2,25 @@ package in.ecomexpress.sathi.ui.dashboard.fe_earned;
 
 import static in.ecomexpress.sathi.utils.CommonUtils.applyTransitionToBackFromActivity;
 import static in.ecomexpress.sathi.utils.CommonUtils.logScreenNameInGoogleAnalytics;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import androidx.lifecycle.ViewModelProvider;
 import android.webkit.CookieManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import javax.inject.Inject;
+
 import dagger.hilt.android.AndroidEntryPoint;
 import in.ecomexpress.sathi.BR;
 import in.ecomexpress.sathi.R;
 import in.ecomexpress.sathi.databinding.ActivityEarnedNewBinding;
 import in.ecomexpress.sathi.ui.base.BaseActivity;
 import in.ecomexpress.sathi.utils.WebViewClient;
+import in.ecomexpress.sathi.ui.dashboard.training.TrainingActivity;
 
 @AndroidEntryPoint
 public class Earned_Activity extends BaseActivity<ActivityEarnedNewBinding, EarnedViewModel> implements IEarnedNavigator {
@@ -42,7 +48,7 @@ public class Earned_Activity extends BaseActivity<ActivityEarnedNewBinding, Earn
             if (!apiResponseUrl.isEmpty()) {
                 startTrainingWebView(apiResponseUrl);
             } else {
-                showSnackbar(getString(R.string.unify_api_failed));
+                showSnackbar("Unify API Failed");
             }
         });
     }
@@ -55,6 +61,10 @@ public class Earned_Activity extends BaseActivity<ActivityEarnedNewBinding, Earn
     @Override
     public int getBindingVariable() {
         return BR.viewModel;
+    }
+
+    public static Intent getStartIntent(Context context){
+        return new Intent(context, TrainingActivity.class);
     }
 
     @Override

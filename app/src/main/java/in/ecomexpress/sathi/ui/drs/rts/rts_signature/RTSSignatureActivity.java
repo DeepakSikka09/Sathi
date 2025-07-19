@@ -314,6 +314,7 @@ public class RTSSignatureActivity extends BaseActivity<ActivityRtsSignatureBindi
         activityRtsSignatureBinding.signature.clear();
     }
 
+
     @Override
     public void onRTSItemFetched(Details details) {
         try {
@@ -341,13 +342,13 @@ public class RTSSignatureActivity extends BaseActivity<ActivityRtsSignatureBindi
     }
 
     @Override
-    public void showOTPLayout(boolean isLayoutVisible, boolean isOtpVerifiedMandatory) {
-        activityRtsSignatureBinding.llUdOtp.setVisibility(isLayoutVisible ? View.VISIBLE : View.GONE);
+    public void showOTPLayout(boolean isLayoutVisible) {
         if (isLayoutVisible) {
-            activityRtsSignatureBinding.chSkip.setVisibility(isOtpVerifiedMandatory ? View.GONE : View.VISIBLE);
+            activityRtsSignatureBinding.llUdOtp.setVisibility(View.VISIBLE);
+        } else {
+            activityRtsSignatureBinding.llUdOtp.setVisibility(View.GONE);
         }
     }
-
 
     @Override
     public String getOTP() {
@@ -596,6 +597,7 @@ public class RTSSignatureActivity extends BaseActivity<ActivityRtsSignatureBindi
                 alert.show();
             }
         } catch (Exception e) {
+            e.printStackTrace();
             showSnackbar(e.getMessage());
         }
     }

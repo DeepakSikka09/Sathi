@@ -34,10 +34,6 @@ public class RvpQualityCheck implements Parcelable {
     private String qcName;
     @JsonProperty("image_capture_settings")
     private String imageCaptureSettings = "O";
-    @JsonProperty("instructions")
-    private String instructions;
-    @JsonProperty("is_optional")
-    private String isOptional;
 
     public String getIsOptional() {
         return isOptional;
@@ -63,6 +59,10 @@ public class RvpQualityCheck implements Parcelable {
         this.qcName = qcName;
     }
 
+    @JsonProperty("instructions")
+    private String instructions;
+    @JsonProperty("is_optional")
+    private String isOptional;
 
     public RvpQualityCheck() {
     }

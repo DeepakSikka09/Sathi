@@ -30,6 +30,7 @@ import in.ecomexpress.sathi.repo.remote.model.otp.resendotp.GenerateUDOtpRequest
 import in.ecomexpress.sathi.repo.remote.model.otp.verifyotp.VerifyUDOtpRequest;
 import in.ecomexpress.sathi.repo.remote.model.voice_otp.VoiceOTP;
 import in.ecomexpress.sathi.repo.local.data.fwd.ForwardCommit;
+import in.ecomexpress.sathi.ui.drs.rvp.rvp_secure_activity.RVPSecureDeliveryViewModel;
 import in.ecomexpress.sathi.utils.Constants;
 import in.ecomexpress.sathi.utils.CryptoUtils;
 import in.ecomexpress.sathi.utils.GlobalConstant;
@@ -120,7 +121,7 @@ public class OBDStopOTPViewModel extends BaseViewModel<IObdOTPNavigator> {
                 } catch (Exception e) {
                     if (dialog.isShowing())
                         dialog.dismiss();
-                    Logger.e(OBDStopOTPViewModel.class.getName(), e.getMessage());
+                    Logger.e(RVPSecureDeliveryViewModel.class.getName(), e.getMessage());
                     getNavigator().showError(e.getMessage());
                 }
             }));
@@ -168,7 +169,7 @@ public class OBDStopOTPViewModel extends BaseViewModel<IObdOTPNavigator> {
                     error = new RestApiErrorHandler(throwable).getErrorDetails().getEResponse().getDescription();
                     getNavigator().showError(error);
                 } catch (Exception e) {
-                    Logger.e(OBDStopOTPViewModel.class.getName(), e.getMessage());
+                    Logger.e(RVPSecureDeliveryViewModel.class.getName(), e.getMessage());
                     getNavigator().showError(e.getMessage());
                 }
             }));

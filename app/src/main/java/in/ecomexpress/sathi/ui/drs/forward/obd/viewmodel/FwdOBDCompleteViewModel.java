@@ -69,6 +69,7 @@ public class FwdOBDCompleteViewModel extends BaseViewModel<IFwdOBDCompleteNaviga
     long request_time = 0L;
     long response_time = 0L;
     private ForwardCommit forwardCommit;
+    int meter=0;
 
     @Inject
     public FwdOBDCompleteViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
@@ -377,8 +378,8 @@ public class FwdOBDCompleteViewModel extends BaseViewModel<IFwdOBDCompleteNaviga
                             getNavigator().setConsigneeDistance(0);
                             return;
                         }
-                        int meter = (int) getDistanceBetweenLocations(new LatLng(consigneeLatitude, consigneeLongitude));
-                        getNavigator().setConsigneeDistance(meter);
+                         getDistanceBetweenLocations();
+
                     }
                 } catch (Exception e) {
                     Logger.e(FwdOBDCompleteViewModel.class.getName(), e.getMessage());
@@ -653,24 +654,34 @@ public class FwdOBDCompleteViewModel extends BaseViewModel<IFwdOBDCompleteNaviga
         return false;
     }
 
-    public double getDistanceBetweenLocations(LatLng destination) {
-        try {
-            double distance;
-            GeoApiContext context = new GeoApiContext().setApiKey(DISTANCE_API_KEY);
-            DirectionsResult result = DirectionsApi.newRequest(context).mode(TravelMode.DRIVING).units(Unit.METRIC).origin(new LatLng(getDataManager().getCurrentLatitude(), getDataManager().getCurrentLongitude())).optimizeWaypoints(true).destination(destination).awaitIgnoreError();
-            String dis = (result.routes[0].legs[0].distance.humanReadable);
-            if (dis.endsWith("km")) {
-                distance = Double.parseDouble(dis.replaceAll("[^\\.0123456789]", "")) * 1000;
-            } else {
-                distance = Double.parseDouble(dis.replaceAll("[^\\.0123456789]", ""));
-            }
-            return distance;
-        } catch (Exception e) {
-            Logger.e(FwdOBDCompleteViewModel.class.getName(), e.getMessage());
-        }
-        return 0.0;
-    }
 
+public  void getDistanceBetweenLocations() {
+    if (getDataManager().getDistanceAPIEnabled()) {
+        meter = getCounterDeliveryRange();
+        getNavigator().setConsigneeDistance(meter);
+    } else {
+        final long timeStamp = System.currentTimeMillis();
+        try {
+            final StringBuilder[] builder = {new StringBuilder()};
+            builder[0].append(getDataManager().getCurrentLongitude());
+            builder[0].append(",");
+            builder[0].append(getDataManager().getCurrentLatitude());
+            builder[0].append(";");
+            builder[0].append(getDataManager().getDCLongitude());
+            builder[0].append(",");
+            builder[0].append(getDataManager().getDCLatitude());
+            getCompositeDisposable().add(getDataManager().distanceCalculationApis(builder[0].toString(), "distance").doOnSuccess(response -> writeRestAPIResponse(timeStamp, response)
+            ).subscribeOn(getSchedulerProvider().ui()).observeOn(getSchedulerProvider().ui()).subscribe(response -> {
+
+                meter = (int) Math.round(response.getDistances().get(0).get(1));
+                getNavigator().setConsigneeDistance(meter);
+            }, throwable -> {
+            }));
+        } catch (Exception e) {
+            Logger.e("FwdObdCompleteViewModel", String.valueOf(e));
+        }
+    }
+}
     public void showCallAPIDelayDialog(boolean failFlag) {
         isCallRecursionDialogRunning = false;
         getNavigator().getActivityContext().runOnUiThread(() -> {

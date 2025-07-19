@@ -84,65 +84,49 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup">
         <activity
-            android:name=".ui.drs.mps.activity.MPSListActivity"
-            android:exported="false"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".ui.drs.rvp.activity.RQCScannerActivity"
+            android:name=".ui.drs.rvp_new.activity.RvpSuccessFailActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.drs.mps.activity.MpsSuccessFailActivity"
+            android:name=".ui.drs.rvp_new.activity.UndeliveredOtpActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.drs.mps.activity.MpsScanActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.drs.mps.activity.MpsCaptureScanActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.drs.mps.activity.MpsPickupOtpActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.drs.mps.activity.MpsPickupActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.drs.rvp.activity.RvpSuccessFailActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.drs.rvp.activity.UndeliveredOtpActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.drs.rvp.activity.RvpQCDetailActivity"
+            android:name=".ui.drs.rvp_new.activity.RvpQCDetailActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui.drs.rvp.activity.RvpQcScanActivity"
+            android:name=".ui.drs.rvp_new.activity.RvpQcSignatureActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.drs.rvp.activity.CaptureScanActivity"
+            android:name=".ui.drs.rvp_new.activity.RvpQcScanActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.drs.rvp.activity.RvpQcSuccessFailActivity"
+            android:name=".ui.drs.rvp_new.activity.CaptureScanActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.drs.rvp.activity.CancelPickupRemarksActivity"
+            android:name=".ui.drs.rvp_new.activity.RvpQcSuccessFailActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.drs.rvp.activity.CancelReasonCodeListActivity"
+            android:name=".ui.drs.rvp_new.activity.CancelPickupRemarksActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.drs.rvp.activity.CancelSubReasonCodeListActivity"
+            android:name=".ui.drs.rvp_new.activity.CancelReasonCodeListActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.drs.rvp.activity.PickupOtpActivity"
+            android:name=".ui.drs.rvp_new.activity.CancelSubReasonCodeListActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.drs.rvp.activity.PickupActivity"
+            android:name=".ui.drs.rvp_new.activity.PickupOtpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.drs.rvp_new.activity.PickupActivity"
             android:exported="false" />
         <activity
             android:name=".ui.side_drawer.drawer_main.SideDrawerActivity"
             android:exported="false"
             android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.drs.rvp.awbscan.SamplePhonePeActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.dashboard.unattempted_shipments.UnattemptedShipmentActivity"
             android:exported="false" />
@@ -156,6 +140,10 @@
             android:launchMode="singleTask" />
         <activity
             android:name=".ui.dashboard.stoptrip.StopTripActivity"
+            android:exported="false"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.drs.rvp.awbscan.RQCScannerActivity"
             android:exported="false"
             android:launchMode="singleTask" />
         <activity
@@ -255,10 +243,51 @@
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
+            android:name=".ui.drs.rvp.rvp_qc_list.RvpQcListActivity"
+            android:configChanges="keyboardHidden"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.drs.rvp.undelivered.RVPUndeliveredActivity"
+            android:configChanges="keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
             android:name=".ui.dashboard.fuel.FuelReimburseActivity"
             android:configChanges="keyboardHidden"
             android:exported="false"
             android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.drs.rvp.rvp_qc_details.RvpQcDataDetailsActivity"
+            android:configChanges="keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.drs.rvp.awbscan.ScannerActivity"
+            android:configChanges="keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.drs.rvp.awbscan.CaptureScanActivity"
+            android:configChanges="keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.drs.rvp.qc_failure_list.RvpQcFailedActivity"
+            android:configChanges="keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.drs.rvp.success.RVPSuccessActivity"
+            android:configChanges="keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.drs.rts.rts_main_list.RTSListActivity"
             android:configChanges="keyboardHidden"
@@ -306,17 +335,31 @@
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
+            android:name=".ui.drs.rvp.signature.RVPSignatureActivity"
+            android:configChanges="keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
             android:name=".ui.dummy.eds.eds_scan.CaptureScanActivity"
             android:configChanges="keyboardHidden"
             android:exported="false"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
+            android:name="preview.PreviewActivity"
+            android:exported="false"
+            android:label="@string/app_name" />
+        <activity
             android:name=".utils.cameraView.CameraActivity"
             android:exported="false"
             android:label="@string/app_name" />
         <activity
             android:name=".ui.side_drawer.pendingHistory.PendingHistoryActivity"
+            android:exported="false"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.intsig.imageprocessdemo.ImageScannerActivity"
             android:exported="false"
             android:label="@string/app_name" />
         <activity
@@ -350,6 +393,10 @@
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
+            android:name=".ui.drs.rvp.rvp_secure_activity.RVPSecureDeliveryActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
             android:name=".utils.cameraView.CameraSelfieActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan" />
@@ -382,10 +429,6 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.drs.forward.obd.activity.FwdOBDScannerActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".ui.drs.forward.details.ScannerActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity

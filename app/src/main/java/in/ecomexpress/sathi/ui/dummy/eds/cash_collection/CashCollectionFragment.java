@@ -143,6 +143,11 @@ public class CashCollectionFragment extends BaseFragment<FragmentCashCollectionB
                     fragmentCashCollectionBinding.returnAmountTv.setText(getString(R.string.resheduled_amount) + " " + Double.valueOf(String.valueOf(change)).longValue() /*(new BigDecimal(String.valueOf(change)).toBigInteger()).longValue()*/);
                     fragmentCashCollectionBinding.returnAmountTv.setText(getString(R.string.error_min_amount));
 
+
+                    int decimal_amt = (Constants.splitdecimal(collectableAmount_with_Decimal) < 49)
+                            ? (0 - Constants.splitdecimal(collectableAmount_with_Decimal))
+                            : (100 - Constants.splitdecimal(collectableAmount_with_Decimal));
+
                     if (collectedAmount < collectableAmount) {
                         change = collectableAmount - collectedAmount;
                         //Amount collected is Rs 1990000.0 less than total amount

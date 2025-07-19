@@ -2,9 +2,7 @@ package in.ecomexpress.sathi.repo;
 
 import android.content.Context;
 import android.net.Uri;
-
 import androidx.lifecycle.LiveData;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,16 +10,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
 import in.ecomexpress.sathi.repo.local.data.callbridge.CallApiRequest;
-import in.ecomexpress.sathi.repo.local.data.commit.PushApi;
 import in.ecomexpress.sathi.repo.local.data.eds.EDSCommitResponse;
 import in.ecomexpress.sathi.repo.local.data.eds.EdsCommit;
 import in.ecomexpress.sathi.repo.local.data.fwd.ForwardCommit;
 import in.ecomexpress.sathi.repo.local.data.fwd.ForwardCommitResponse;
+import in.ecomexpress.sathi.repo.local.data.commit.PushApi;
 import in.ecomexpress.sathi.repo.local.data.rts.RTSCommit;
 import in.ecomexpress.sathi.repo.local.data.rts.RTSCommitResponse;
 import in.ecomexpress.sathi.repo.local.data.rvp.RVPCommitResponse;
@@ -32,7 +28,6 @@ import in.ecomexpress.sathi.repo.local.db.model.EdsWithActivityList;
 import in.ecomexpress.sathi.repo.local.db.model.ImageModel;
 import in.ecomexpress.sathi.repo.local.db.model.LiveTrackingLogTable;
 import in.ecomexpress.sathi.repo.local.db.model.MsgLinkData;
-import in.ecomexpress.sathi.repo.local.db.model.RVPMPSWithQC;
 import in.ecomexpress.sathi.repo.local.db.model.RVPQCImageTable;
 import in.ecomexpress.sathi.repo.local.db.model.Remark;
 import in.ecomexpress.sathi.repo.local.db.model.RescheduleEdsD;
@@ -77,6 +72,7 @@ import in.ecomexpress.sathi.repo.remote.model.covid.CovidApiResponse;
 import in.ecomexpress.sathi.repo.remote.model.covid.CovidRequest;
 import in.ecomexpress.sathi.repo.remote.model.device_upload.Biometric_requestdata;
 import in.ecomexpress.sathi.repo.remote.model.device_upload.Biometric_response;
+import in.ecomexpress.sathi.repo.remote.model.distancecalculations.DistanceApiResponse;
 import in.ecomexpress.sathi.repo.remote.model.dp_daily_earned.DPDailyEarnedAmount;
 import in.ecomexpress.sathi.repo.remote.model.dp_daily_earned.DPReferenceCodeRequest;
 import in.ecomexpress.sathi.repo.remote.model.dp_daily_earned.DPReferenceCodeResponse;
@@ -104,16 +100,16 @@ import in.ecomexpress.sathi.repo.remote.model.drs_list.rts.new_rts.DRSReturnToSh
 import in.ecomexpress.sathi.repo.remote.model.drs_list.rts.new_rts.Details;
 import in.ecomexpress.sathi.repo.remote.model.drs_list.rts.new_rts.ShipmentsDetail;
 import in.ecomexpress.sathi.repo.remote.model.drs_list.rvp.DRSReverseQCTypeResponse;
+import in.ecomexpress.sathi.repo.remote.model.drs_list.rvp.RvpQualityCheck;
 import in.ecomexpress.sathi.repo.remote.model.drs_list.rvp.RvpFlyerDuplicateCheckRequest;
 import in.ecomexpress.sathi.repo.remote.model.drs_list.rvp.RvpFlyerDuplicateCheckResponse;
-import in.ecomexpress.sathi.repo.remote.model.drs_list.rvp.RvpQualityCheck;
 import in.ecomexpress.sathi.repo.remote.model.eds.AadharMaskingResponse;
 import in.ecomexpress.sathi.repo.remote.model.eds.AadharStatusResponse;
 import in.ecomexpress.sathi.repo.remote.model.eds.CashReceipt_Request;
 import in.ecomexpress.sathi.repo.remote.model.eds.CashReceipt_Response;
+import in.ecomexpress.sathi.repo.remote.model.eds.Get_Status_Masking;
 import in.ecomexpress.sathi.repo.remote.model.eds.EdsRescheduleRequest;
 import in.ecomexpress.sathi.repo.remote.model.eds.EdsRescheduleResponse;
-import in.ecomexpress.sathi.repo.remote.model.eds.Get_Status_Masking;
 import in.ecomexpress.sathi.repo.remote.model.eds.IDFCToken_Response;
 import in.ecomexpress.sathi.repo.remote.model.ekyc_xml_response.ekycXMLResponse;
 import in.ecomexpress.sathi.repo.remote.model.forward.dispute_dialog.DisputeApiResponse;
@@ -159,8 +155,6 @@ import in.ecomexpress.sathi.repo.remote.model.masterdata.RVPReasonCodeMaster;
 import in.ecomexpress.sathi.repo.remote.model.masterdata.Reverse;
 import in.ecomexpress.sathi.repo.remote.model.masterdata.SampleQuestion;
 import in.ecomexpress.sathi.repo.remote.model.masterdata.masterRequest;
-import in.ecomexpress.sathi.repo.remote.model.mps.DRSRvpQcMpsResponse;
-import in.ecomexpress.sathi.repo.remote.model.mps.QcItem;
 import in.ecomexpress.sathi.repo.remote.model.otp.otherNo.OtherNoRequest;
 import in.ecomexpress.sathi.repo.remote.model.otp.otherNo.OtherNoResponse;
 import in.ecomexpress.sathi.repo.remote.model.otp.resendotp.GenerateUDOtpRequest;
@@ -445,16 +439,6 @@ public class DataManager implements IDataManager {
     @Override
     public void setRtsInputResendFlag(String flag) {
         mPreferencesHelper.setRtsInputResendFlag(flag);
-    }
-
-    @Override
-    public Observable<Boolean> saveDRSRVPMPS(DRSRvpQcMpsResponse drsReverseQCTypeResponses) {
-        return mDbHelper.saveDRSRVPMPS(drsReverseQCTypeResponses);
-    }
-
-    @Override
-    public Observable<Boolean> saveDRSRVPMPSListQualityCheck(List<QcItem> rvpQualityChecksQcItems) {
-        return mDbHelper.saveDRSRVPMPSListQualityCheck(rvpQualityChecksQcItems);
     }
 
     @Override
@@ -835,7 +819,6 @@ public class DataManager implements IDataManager {
     public Single<ResendOtpResponse> doGenerateUDOtpApiCall(String authToken, String ecomregion, GenerateUDOtpRequest generateUDOtpRequest) {
         return mApiHelper.doGenerateUDOtpApiCall(authToken, ecomregion, generateUDOtpRequest);
     }
-
     @Override
     public Single<ResendOtpResponse> doResendUdOtpApiCall(String authToken, String ecomregion, ResendOtpRequest resendOtpRequest) {
         return mApiHelper.doResendUdOtpApiCall(authToken, ecomregion, resendOtpRequest);
@@ -1025,18 +1008,8 @@ public class DataManager implements IDataManager {
     }
 
     @Override
-    public Observable<List<QcItem>> getMPSQcValues() {
-        return mDbHelper.getMPSQcValues();
-    }
-
-    @Override
     public Observable<List<DRSForwardTypeResponse>> getUnSyncForwardList() {
         return mDbHelper.getUnSyncForwardList();
-    }
-
-    @Override
-    public Observable<List<QcItem>> getQCDetailsForPickupActivity(long awbNo, int drs) {
-        return mDbHelper.getQCDetailsForPickupActivity(awbNo, drs);
     }
 
     @Override
@@ -1047,11 +1020,6 @@ public class DataManager implements IDataManager {
     @Override
     public Observable<List<DRSReverseQCTypeResponse>> getUnSyncRVPList() {
         return mDbHelper.getUnSyncRVPList();
-    }
-
-    @Override
-    public Observable<List<DRSRvpQcMpsResponse>> getDRSListRVPMPS() {
-        return mDbHelper.getDRSListRVPMPS();
     }
 
     @Override
@@ -1136,11 +1104,6 @@ public class DataManager implements IDataManager {
     }
 
     @Override
-    public Observable<DRSRvpQcMpsResponse> loadMpsShipmentDetailsFromDB(String awbNo) {
-        return mDbHelper.loadMpsShipmentDetailsFromDB(awbNo);
-    }
-
-    @Override
     public Observable<Boolean> isRVPDRSExist(String awbNo) {
         return mDbHelper.isRVPDRSExist(awbNo);
     }
@@ -1166,15 +1129,9 @@ public class DataManager implements IDataManager {
     }
 
     @Override
-    public Observable<Long> getRVPMPSStatusCount(int status) {
-        return mDbHelper.getRVPMPSStatusCount(status);
-    }
-
-    @Override
     public Observable<String> getTypeOfShipment(String awb) {
         return mDbHelper.getTypeOfShipment(awb);
     }
-
     @Override
     public Observable<String> getPhonePeShipmentType(String awb) {
         return mDbHelper.getPhonePeShipmentType(awb);
@@ -1251,11 +1208,6 @@ public class DataManager implements IDataManager {
     }
 
     @Override
-    public Observable<Boolean> updateRvpMpsStatus(String awbNo, int status) {
-        return mDbHelper.updateRvpMpsStatus(awbNo, status);
-    }
-
-    @Override
     public Observable<Boolean> updateRtsStatus(Long id, int status) {
         return mDbHelper.updateRtsStatus(id, status);
     }
@@ -1288,11 +1240,6 @@ public class DataManager implements IDataManager {
     @Override
     public Observable<Boolean> updateForwardShipment(String awb_no, int syncStatus, int status, int drs_id, String composite_key_new) {
         return mDbHelper.updateForwardShipment(awb_no, syncStatus, status, drs_id, composite_key_new);
-    }
-
-    @Override
-    public Observable<Boolean> updateRVPMpsCallAttempted(Long awbNo, int isCallAttempted) {
-        return mDbHelper.updateRVPMpsCallAttempted(awbNo, isCallAttempted);
     }
 
     @Override
@@ -1346,11 +1293,6 @@ public class DataManager implements IDataManager {
     }
 
     @Override
-    public Observable<RVPMPSWithQC> getRvpMpsWithQc(String composite) {
-        return mDbHelper.getRvpMpsWithQc(composite);
-    }
-
-    @Override
     public Observable<CallbridgeConfiguration> loadallcallbridge() {
         return mDbHelper.loadallcallbridge();
     }
@@ -1383,11 +1325,6 @@ public class DataManager implements IDataManager {
     @Override
     public Observable<List<SampleQuestion>> getRvpMasterDescriptions(List<RvpQualityCheck> rvpQualityCheckList) {
         return mDbHelper.getRvpMasterDescriptions(rvpQualityCheckList);
-    }
-
-    @Override
-    public Observable<List<SampleQuestion>> getRvpMpsMasterDescriptions(List<QcItem> rvpQualityCheckList) {
-        return mDbHelper.getRvpMpsMasterDescriptions(rvpQualityCheckList);
     }
 
     @Override
@@ -1448,11 +1385,6 @@ public class DataManager implements IDataManager {
     @Override
     public Observable<Long> getisRVPCallattempted(long awb) {
         return mDbHelper.getisRVPCallattempted(awb);
-    }
-
-    @Override
-    public Observable<Long> getIsMpsCallAttempted(long awb) {
-        return mDbHelper.getIsMpsCallAttempted(awb);
     }
 
     @Override
@@ -1539,7 +1471,6 @@ public class DataManager implements IDataManager {
     public Observable<List<ImageModel>> getUnsynced(long awbNo) {
         return mDbHelper.getUnsynced(awbNo);
     }
-
     @Override
     public Observable<Boolean> deleteSyncedImage(String awbNo) {
         return mDbHelper.deleteSyncedImage(awbNo);
@@ -1653,11 +1584,6 @@ public class DataManager implements IDataManager {
     @Override
     public Observable<Boolean> updateSyncStatusRVP(String awb, int syncStatus) {
         return mDbHelper.updateSyncStatusRVP(awb, syncStatus);
-    }
-
-    @Override
-    public Observable<Boolean> updateSyncStatusMps(String awb, int syncStatus) {
-        return mDbHelper.updateSyncStatusMps(awb, syncStatus);
     }
 
     @Override
@@ -1882,12 +1808,10 @@ public class DataManager implements IDataManager {
     public void setConsigneeProfiling(boolean enable) {
         mPreferencesHelper.setConsigneeProfiling(enable);
     }
-
     @Override
     public Single<IciciResponse> doICICIApiCall(String token, String ecomregion, String url, RequestBody pid) {
         return mApiHelper.doICICIApiCall(token, ecomregion, url, pid);
     }
-
     @Override
     public Single<IciciResponse> doICICICheckcStatusCall(String token, String ecomregion, String url, RequestBody urn) {
         return mApiHelper.doICICICheckcStatusCall(token, ecomregion, url, urn);
@@ -2072,7 +1996,6 @@ public class DataManager implements IDataManager {
     public Observable<ProfileFound> getProfileLat(long awbno) {
         return mDbHelper.getProfileLat(awbno);
     }
-
     @Override
     public Observable<ShipmentsDetail> getShipmentData(long scannedAwbNo) {
         return mDbHelper.getShipmentData(scannedAwbNo);
@@ -3118,7 +3041,6 @@ public class DataManager implements IDataManager {
     public Single<PrintReceiptUploadResponse> doPrintReceiptUploadImage(String authToken, String ecomregion, Map<String, String> headers, Map<String, RequestBody> multipartBody, MultipartBody.Part file) {
         return mApiHelper.doPrintReceiptUploadImage(authToken, ecomregion, headers, multipartBody, file);
     }
-
     @Override
     public Single<EncryptContactResponse> doencryptcontact(String token, String ecomregion, long awb) {
         return mApiHelper.doencryptcontact(token, ecomregion, awb);
@@ -3158,7 +3080,6 @@ public class DataManager implements IDataManager {
     public Single<ReshceduleDetailsResponse> doReshceduleDetails(String authToken, String ecomregion, ResheduleDetailsRequest resheduleDetailsRequest) {
         return mApiHelper.doReshceduleDetails(authToken, ecomregion, resheduleDetailsRequest);
     }
-
     @Override
     public Single<GenerateTokenNiyo> dogenerateniyotoken() {
         return mApiHelper.dogenerateniyotoken();
@@ -3185,20 +3106,18 @@ public class DataManager implements IDataManager {
     }
 
     @Override
-    public Single<CholaResponse> doCholaURLAPI(String authToken, String ecomregion, CholaRequest cholaRequest, boolean isTraining) {
-        return mApiHelper.doCholaURLAPI(authToken, ecomregion, cholaRequest, isTraining);
+    public Single<CholaResponse> doCholaURLAPI(String authToken, String ecomregion, CholaRequest cholaRequest) {
+        return mApiHelper.doCholaURLAPI(authToken, ecomregion, cholaRequest);
     }
 
     @Override
     public Single<RTSResendOTPResponse> doResendOtpApiCall(String authToken, String ecomregion, RTSResendOTPRequest resendOtpRequest) {
         return mApiHelper.doResendOtpApiCall(authToken, ecomregion, resendOtpRequest);
     }
-
     @Override
     public Single<RTSResendOTPResponse> doResendOtpApiOtherMobileRTSCall(String authToken, String ecomregion, RTSResendOTPRequest resendOtpRequest) {
         return mApiHelper.doResendOtpApiOtherMobileRTSCall(authToken, ecomregion, resendOtpRequest);
     }
-
     @Override
     public Single<RTSVerifyOTPResponse> doVerifyOTPApiCall(String authToken, String ecomregion, RTSVerifyOTPRequest rtsVerifyOTPRequest) {
         return mApiHelper.doVerifyOTPApiCall(authToken, ecomregion, rtsVerifyOTPRequest);
@@ -3721,11 +3640,6 @@ public class DataManager implements IDataManager {
     }
 
     @Override
-    public Observable<Boolean> deleteMpsQcDataFromQcItemTable(int drs, long awbNo) {
-        return mDbHelper.deleteMpsQcDataFromQcItemTable(drs, awbNo);
-    }
-
-    @Override
     public Observable<Boolean> getCallStatus(long awb, int drs) {
         return mDbHelper.getCallStatus(awb, drs);
     }
@@ -3924,23 +3838,13 @@ public class DataManager implements IDataManager {
     }
 
     @Override
-    public boolean getESP_EARNING_VISIBILITY() {
-        return mPreferencesHelper.getESP_EARNING_VISIBILITY();
-    }
-
-    @Override
     public void setESP_EARNING_VISIBILITY(boolean espEarningVisibility) {
         mPreferencesHelper.setESP_EARNING_VISIBILITY(espEarningVisibility);
     }
 
     @Override
-    public boolean getODH_VISIBILITY() {
-        return mPreferencesHelper.getODH_VISIBILITY();
-    }
-
-    @Override
-    public void setODH_VISIBILITY(boolean odhVisibility) {
-        mPreferencesHelper.setODH_VISIBILITY(odhVisibility);
+    public boolean getESP_EARNING_VISIBILITY() {
+        return mPreferencesHelper.getESP_EARNING_VISIBILITY();
     }
 
     // Deleting RTS Shipment after successfully synced:-
@@ -4008,8 +3912,23 @@ public class DataManager implements IDataManager {
     }
 
     @Override
+    public LiveData<DistanceApiResponse> distanceCalculationApi(String locationRequest, String annotations) {
+        return mApiHelper.distanceCalculationApi(locationRequest, annotations);
+    }
+
+    @Override
     public boolean getCampaignStatus() {
         return mPreferencesHelper.getCampaignStatus();
+    }
+
+    @Override
+    public void setDistanceAPIEnabled(Boolean isDistanceAPIEnabled) {
+        mPreferencesHelper.setDistanceAPIEnabled(isDistanceAPIEnabled);
+    }
+
+    @Override
+    public Boolean getDistanceAPIEnabled() {
+        return mPreferencesHelper.getDistanceAPIEnabled();
     }
 
     @Override
@@ -4017,4 +3936,8 @@ public class DataManager implements IDataManager {
         mPreferencesHelper.setCampaignStatus(status);
     }
 
+    @Override
+    public Single<DistanceApiResponse> distanceCalculationApis(String location, String annotations) {
+        return mApiHelper.distanceCalculationApis(location,annotations);
+    }
 }

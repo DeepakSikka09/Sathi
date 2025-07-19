@@ -1,6 +1,7 @@
 package in.ecomexpress.sathi.ui.dummy.eds.eds_activity_detail;
 
 import static in.ecomexpress.sathi.utils.Constants.INTENT_KEY_EDS_MASTER_LIST;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -10,29 +11,40 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.gson.Gson;
+import com.intsig.imageprocessdemo.ImageScannerActivity;
 
 import org.json.JSONObject;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
+
 import java.io.StringWriter;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -40,7 +52,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+
 import javax.inject.Inject;
+
 import dagger.hilt.android.AndroidEntryPoint;
 import fr.arnaudguyon.xmltojsonlib.XmlToJson;
 import in.ecomexpress.sathi.BR;
@@ -53,7 +67,7 @@ import in.ecomexpress.sathi.repo.remote.model.drs_list.edsnew.EDSActivityWizard;
 import in.ecomexpress.sathi.repo.remote.model.masterdata.MasterActivityData;
 import in.ecomexpress.sathi.ui.base.BaseActivity;
 import in.ecomexpress.sathi.ui.base.BaseFragment;
-import in.ecomexpress.sathi.ui.drs.forward.details.ScannerActivity;
+import in.ecomexpress.sathi.ui.drs.rvp.awbscan.ScannerActivity;
 import in.ecomexpress.sathi.ui.dummy.eds.ac_document_list_collection.AcDocumentListCollectionFragment;
 import in.ecomexpress.sathi.ui.dummy.eds.capture_image.CaptureImageFragment;
 import in.ecomexpress.sathi.ui.dummy.eds.cash_collection.CashCollectionFragment;
@@ -84,24 +98,32 @@ import in.ecomexpress.sathi.ui.dummy.eds.undeilvered_eds.EDSUndeliveredActivity;
 import in.ecomexpress.sathi.ui.dummy.eds.vodafone.VodafoneFragment;
 import in.ecomexpress.sathi.utils.CommonUtils;
 import in.ecomexpress.sathi.utils.Constants;
+import in.ecomexpress.sathi.utils.CryptoUtils;
 import in.ecomexpress.sathi.utils.DigitalCropImageHandler;
 import in.ecomexpress.sathi.utils.GlobalConstant;
 import in.ecomexpress.sathi.utils.ImageHandler;
 
+/*
+ * Created by dhananjayk on 05-11-2018.
+ */
+
 @AndroidEntryPoint
 public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, EDSDetailViewModel> implements IEDSDetailNavigator, ViewPager.OnPageChangeListener {
-
     private static final String TAG = EDSDetailActivity.class.getSimpleName();
     public static EDSDetailActivity edsDetailActivity;
+    private static final int IMAGE_SCANNER_CODE = 1001;
     private static final int CAMERA_SCANNER_CODE = 1002;
+    private static final String APPKEY = Constants.CAMSCANNER_APPKEY;//02LQ7AaA09hPdt5Ned7FByhP
     private final int REQUEST_CODE_SCAN = 1101;
     public ImageHandler imageHandler;
     public DigitalCropImageHandler digitalCropImageHandler;
     public LinkedList<EDSActivityResponseWizard> edsActivityResponseWizards = new LinkedList<>();
     @Inject
     EDSDetailViewModel edsDetailViewModel;
+
     EDSDetailPagerAdapter edsDetailPagerAdapter;
     int activityNameCount = 0;
+
     // Blur Image Recognition Work:-
     public static int imageCaptureCount = 0;
     Fragment fragment;
@@ -112,12 +134,14 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
     Long awbNo;
     String order_id = "";
     int drs_no;
+    //LinkedHashMap<Integer, Integer> runningcount = new LinkedHashMap<>();
     LinkedHashSet<String> stageCountActivity = new LinkedHashSet<>();
     ArrayList<String> stagerunningCount = new ArrayList<>();
     List<String> runningCount = new ArrayList<>();
     int dccount = 0, dvcount = 0, acount = 0;
+    int activityRunCount = 0;
     int stageCount = 0;
-    String getDrsApiKey = null, getDrsPstnKey = null, getDrsPin = null, composite_key = null;
+    String getDrsApiKey = null, getDrsPstnKey = null, getCbConfigCallType = null, Masterpstnformat = null, getDrsPin = null, composite_key = null;
     Bitmap quality_bitmap;
     ImageView qualilty_image;
     boolean reschedule_enable;
@@ -125,6 +149,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
     ArrayList<Integer> arrayList_image_validation;
     private ActivityEdsDetailBinding activityEdsDetailBinding;
     private final LinkedHashMap<BaseFragment, Boolean> successFragment = new LinkedHashMap<>();
+    //  int dcActivityRunCount = 1, dvActivityRunCount = 1, activityRunCount = 1;
     private int count = 0;
     Bitmap mBitmap;
     ImageView pimgView;
@@ -132,7 +157,12 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
     String front_image_code, rear_image_code;
     String front_image_name, rear_image_name;
     DeviceInfo info;
+    EditText adhar_no_edt;
+    String bio;
     String idc;
+    String lat;
+    String lng;
+    String udc;
     String rdsId;
     String rdsVer;
     String dpId;
@@ -145,17 +175,24 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
     private Serializer serializer = null;
     String spinner_code_value;
     private String card_type = "NONE";
-    Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+        }
         try {
             edsDetailActivity = this;
             edsDetailViewModel.setNavigator(this);
             arrayList_image_validation = new ArrayList<>();
             activityEdsDetailBinding = getViewDataBinding();
             LocalBroadcastManager.getInstance(this).registerReceiver(listener, new IntentFilter("SET_SIZE"));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Window window = getWindow();
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.eds));
+            }
             activityEdsDetailBinding.qcViewPager.addOnPageChangeListener(this);
 
             setUp1();
@@ -163,7 +200,9 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
             positions = new ArrayList<>();
             serializer = new Persister();
             awbNo = getIntent().getLongExtra(Constants.INTENT_KEY, 0);
+            drs_no = getIntent().getIntExtra(Constants.DRS_ID, 0);
             drs_no = (int) Constants.TEMP_DRSID;
+            Log.d(TAG, "onCreate: " + awbNo);
             if (getIntent().getExtras().getString(Constants.ORDER_ID) != null) {
                 order_id = getIntent().getExtras().getString(Constants.ORDER_ID);
             }
@@ -172,7 +211,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
             reschedule_enable = getIntent().getBooleanExtra(Constants.RESCHEDULE_ENABLE, false);
             getDrsPin = getIntent().getExtras().getString(Constants.DRS_PIN);
             composite_key = getIntent().getExtras().getString(Constants.COMPOSITE_KEY);
-            edsWithActivityList = gson.fromJson(getIntent().getStringExtra(Constants.INTENT_KEY_EDS_WITH_ACTIVITY), EdsWithActivityList.class);
+            edsWithActivityList = getIntent().getParcelableExtra(Constants.INTENT_KEY_EDS_WITH_ACTIVITY);
             masterActivityData = getIntent().getParcelableArrayListExtra(INTENT_KEY_EDS_MASTER_LIST);
             edsDetailViewModel.setData(edsWithActivityList, masterActivityData);
             edsDetailPagerAdapter = new EDSDetailPagerAdapter(this.getSupportFragmentManager(),edsWithActivityList,masterActivityData,edsDetailViewModel);
@@ -197,10 +236,12 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                         } else {
                             pimgView = imgView;
                             mBitmap = bitmap;
+                            //                        imgView.setImageBitmap(bitmap);
                             fragment = edsDetailPagerAdapter.getItem(activityEdsDetailBinding.qcViewPager.getCurrentItem());
                             if (fragment instanceof DocumentVerificationFragment) {
                                 quality_bitmap = bitmap;
                                 qualilty_image = imgView;
+                                // imgView.setImageBitmap(bitmap);
                                 DocumentVerificationFragment documentVerificationFragment = (DocumentVerificationFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
                                 activityData = documentVerificationFragment;
                                 documentData = documentVerificationFragment;
@@ -219,9 +260,13 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                                     qualilty_image = imgView;
                                     upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, edsWithActivityList.getEdsActivityWizards().get(activityEdsDetailBinding.qcViewPager.getCurrentItem()).code, bitmap, false, card_type);
                                 }
+                                // documentVerificationFragment.setImageValidation();
+                                // edsDetailViewModel.saveImage(imageName, imageUri, imageCode);
+                                // upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, activityData.getActivityWizard().code, bitmap, false);
                             } else if (fragment instanceof DocumentCollectionFragment) {
                                 quality_bitmap = bitmap;
                                 qualilty_image = imgView;
+                                // imgView.setImageBitmap(bitmap);
                                 DocumentCollectionFragment documentCollectionFragment = (DocumentCollectionFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
                                 documentCollectionFragment.showMessage(DocumentCollectionFragment.class.getSimpleName());
                                 activityData = documentCollectionFragment;
@@ -241,6 +286,9 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                                     qualilty_image = imgView;
                                     upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, edsWithActivityList.getEdsActivityWizards().get(activityEdsDetailBinding.qcViewPager.getCurrentItem()).code, bitmap, false, card_type);
                                 }
+                                //documentCollectionFragment.setImageValidation();
+                                // edsDetailViewModel.saveImage(imageName, imageUri, imageCode);
+                                //  upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, activityData.getActivityWizard().code, bitmap, false);
                             } else if (fragment instanceof DocumentListCollectionFragment) {
                                 DocumentListCollectionFragment documentListCollectionFragment = (DocumentListCollectionFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
                                 documentListCollectionFragment.showMessage(DocumentListCollectionFragment.class.getSimpleName());
@@ -268,6 +316,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                                 OpvFragment opvFragment = (OpvFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
                                 opvFragment.showMessage(OpvFragment.class.getSimpleName());
                                 activityData = opvFragment;
+                                //edsDetailViewModel.saveImage(imageName, imageUri, imageCode);
                                 upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, edsWithActivityList.getEdsActivityWizards().get(activityEdsDetailBinding.qcViewPager.getCurrentItem()).code, bitmap, false, card_type);
                             } else if (fragment instanceof ResOpvFragment) {
                                 quality_bitmap = bitmap;
@@ -276,6 +325,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                                 ResOpvFragment resOpvFragment = (ResOpvFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
                                 resOpvFragment.showMessage(ResOpvFragment.class.getSimpleName());
                                 activityData = resOpvFragment;
+                                //edsDetailViewModel.saveImage(imageName, imageUri, imageCode);
                                 upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, edsWithActivityList.getEdsActivityWizards().get(activityEdsDetailBinding.qcViewPager.getCurrentItem()).code, bitmap, false, card_type);
                             } else if (fragment instanceof CaptureImageFragment) {
                                 quality_bitmap = bitmap;
@@ -284,7 +334,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                                 captureImageFragment.showMessage(CaptureImageFragment.class.getSimpleName());
                                 activityData = captureImageFragment;
                                 documentData = captureImageFragment;
-                                if (arrayList_image_validation.isEmpty()) {
+                                if (arrayList_image_validation.size() == 0) {
                                     for (int i = 0; i < ((CaptureImageFragment) activityData).getViewModel().masterActivityData.get().imageSettings.max; i++) {
                                         arrayList_image_validation.add(0);
                                     }
@@ -306,6 +356,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                                         upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, edsWithActivityList.getEdsActivityWizards().get(activityEdsDetailBinding.qcViewPager.getCurrentItem()).code, bitmap, true, card_type);
                                     else {
                                         if (edsDetailViewModel.getDataManager().getEDSRealTimeSync().equalsIgnoreCase("false")) {
+                                            // edsDetailViewModel.saveImage(imageName, imageUri, imageCode);
                                             int image_tag_pos = (Integer) imgView.getTag();
                                             setBitmapNew(image_tag_pos, imgView);
                                             edsDetailViewModel.saveImage(imageName, imageUri, imageCode, 0);
@@ -315,10 +366,13 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                                             upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, edsWithActivityList.getEdsActivityWizards().get(activityEdsDetailBinding.qcViewPager.getCurrentItem()).code, bitmap, false, card_type);
                                         }
                                     }
+                                    // upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, activityData.getActivityWizard().code, bitmap, false);
                                 }
+                                //captureImageFragment.setImageValidation();
                             } else if (fragment instanceof AcDocumentListCollectionFragment) {
                                 quality_bitmap = bitmap;
                                 qualilty_image = imgView;
+                                // imgView.setImageBitmap(bitmap);
                                 AcDocumentListCollectionFragment acDocumentListCollectionFragment = (AcDocumentListCollectionFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
                                 acDocumentListCollectionFragment.showMessage(AcDocumentListCollectionFragment.class.getSimpleName());
                                 activityData = acDocumentListCollectionFragment;
@@ -338,6 +392,9 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                                     qualilty_image = imgView;
                                     upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, edsWithActivityList.getEdsActivityWizards().get(activityEdsDetailBinding.qcViewPager.getCurrentItem()).code, bitmap, false, card_type);
                                 }
+                                //acDocumentListCollectionFragment.setImageValidation();
+                                // edsDetailViewModel.saveImage(imageName, imageUri, imageCode);
+                                //upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, activityData.getActivityWizard().code, bitmap, false);
                             }
                             activityData.validate(true);
                         }
@@ -356,154 +413,181 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
         digitalCropImageHandler = new DigitalCropImageHandler(this) {
             @Override
             public void onBitmapReceived(Bitmap bitmap, ImageView imgView, String imageName, String imageCode, String imageUri, boolean verifyImage) {
-                runOnUiThread(() -> {
-                    try {
-                        pimgView = imgView;
-                        mBitmap = bitmap;
-                        fragment = edsDetailPagerAdapter.getItem(activityEdsDetailBinding.qcViewPager.getCurrentItem());
-                        if (fragment instanceof DocumentVerificationFragment) {
-                            quality_bitmap = bitmap;
-                            qualilty_image = imgView;
-                            DocumentVerificationFragment documentVerificationFragment = (DocumentVerificationFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
-                            activityData = documentVerificationFragment;
-                            documentData = documentVerificationFragment;
-                            if (imageCode.equalsIgnoreCase("AADHAR_FRONT_IMAGE")) {
-                                imgView.setImageBitmap(bitmap);
-                                front_image_uri = imageUri;
-                                front_image_code = documentData.getFrontImageCode();
-                                front_image_name = imageName;
-                            } else if (imageCode.equalsIgnoreCase("AADHAR_REAR_IMAGE")) {
-                                imgView.setImageBitmap(bitmap);
-                                rear_image_uri = imageUri;
-                                rear_image_code = documentData.getRearImageCode();
-                                rear_image_name = imageName;
-                            } else {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            pimgView = imgView;
+                            mBitmap = bitmap;
+                            fragment = edsDetailPagerAdapter.getItem(activityEdsDetailBinding.qcViewPager.getCurrentItem());
+                            if (fragment instanceof DocumentVerificationFragment) {
                                 quality_bitmap = bitmap;
                                 qualilty_image = imgView;
-                                upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, edsWithActivityList.getEdsActivityWizards().get(activityEdsDetailBinding.qcViewPager.getCurrentItem()).code, bitmap, false, card_type);
-                            }
-                        } else if (fragment instanceof DocumentCollectionFragment) {
-                            quality_bitmap = bitmap;
-                            qualilty_image = imgView;
-                            DocumentCollectionFragment documentCollectionFragment = (DocumentCollectionFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
-                            documentCollectionFragment.showMessage(DocumentCollectionFragment.class.getSimpleName());
-                            activityData = documentCollectionFragment;
-                            documentData = documentCollectionFragment;
-                            if (imageCode.equalsIgnoreCase("AADHAR_FRONT_IMAGE")) {
-                                imgView.setImageBitmap(bitmap);
-                                front_image_uri = imageUri;
-                                front_image_code = documentData.getFrontImageCode();
-                                front_image_name = imageName;
-                            } else if (imageCode.equalsIgnoreCase("AADHAR_REAR_IMAGE")) {
-                                imgView.setImageBitmap(bitmap);
-                                rear_image_uri = imageUri;
-                                rear_image_code = documentData.getRearImageCode();
-                                rear_image_name = imageName;
-                            } else {
-                                quality_bitmap = bitmap;
-                                qualilty_image = imgView;
-                                upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, edsWithActivityList.getEdsActivityWizards().get(activityEdsDetailBinding.qcViewPager.getCurrentItem()).code, bitmap, false, card_type);
-                            }
-                        } else if (fragment instanceof DocumentListCollectionFragment) {
-                            DocumentListCollectionFragment documentListCollectionFragment = (DocumentListCollectionFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
-                            documentListCollectionFragment.showMessage(DocumentListCollectionFragment.class.getSimpleName());
-                            activityData = documentListCollectionFragment;
-                            documentData = documentListCollectionFragment;
-                            if (imageCode.equalsIgnoreCase("AADHAR_FRONT_IMAGE")) {
-                                imgView.setImageBitmap(bitmap);
-                                front_image_uri = imageUri;
-                                front_image_code = documentData.getFrontImageCode();
-                                front_image_name = imageName;
-                            } else if (imageCode.equalsIgnoreCase("AADHAR_REAR_IMAGE")) {
-                                imgView.setImageBitmap(bitmap);
-                                rear_image_uri = imageUri;
-                                rear_image_code = documentData.getRearImageCode();
-                                rear_image_name = imageName;
-                            } else {
-                                quality_bitmap = bitmap;
-                                qualilty_image = imgView;
-                                upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, edsWithActivityList.getEdsActivityWizards().get(activityEdsDetailBinding.qcViewPager.getCurrentItem()).code, bitmap, false, card_type);
-                            }
-                        } else if (fragment instanceof OpvFragment) {
-                            quality_bitmap = bitmap;
-                            qualilty_image = imgView;
-                            imgView.setImageBitmap(bitmap);
-                            OpvFragment opvFragment = (OpvFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
-                            opvFragment.showMessage(OpvFragment.class.getSimpleName());
-                            activityData = opvFragment;
-                            upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, edsWithActivityList.getEdsActivityWizards().get(activityEdsDetailBinding.qcViewPager.getCurrentItem()).code, bitmap, false, card_type);
-                        } else if (fragment instanceof ResOpvFragment) {
-                            quality_bitmap = bitmap;
-                            qualilty_image = imgView;
-                            imgView.setImageBitmap(bitmap);
-                            ResOpvFragment resOpvFragment = (ResOpvFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
-                            resOpvFragment.showMessage(ResOpvFragment.class.getSimpleName());
-                            activityData = resOpvFragment;
-                            upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, edsWithActivityList.getEdsActivityWizards().get(activityEdsDetailBinding.qcViewPager.getCurrentItem()).code, bitmap, false, card_type);
-                        } else if (fragment instanceof CaptureImageFragment) {
-                            quality_bitmap = bitmap;
-                            qualilty_image = imgView;
-                            CaptureImageFragment captureImageFragment = (CaptureImageFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
-                            captureImageFragment.showMessage(CaptureImageFragment.class.getSimpleName());
-                            activityData = captureImageFragment;
-                            documentData = captureImageFragment;
-                            if (arrayList_image_validation.isEmpty()) {
-                                for (int i = 0; i < ((CaptureImageFragment) activityData).getViewModel().masterActivityData.get().imageSettings.max; i++) {
-                                    arrayList_image_validation.add(0);
+                                // imgView.setImageBitmap(bitmap);
+                                DocumentVerificationFragment documentVerificationFragment = (DocumentVerificationFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
+                                activityData = documentVerificationFragment;
+                                documentData = documentVerificationFragment;
+                                if (imageCode.equalsIgnoreCase("AADHAR_FRONT_IMAGE")) {
+                                    imgView.setImageBitmap(bitmap);
+                                    front_image_uri = imageUri;
+                                    front_image_code = documentData.getFrontImageCode();
+                                    front_image_name = imageName;
+                                } else if (imageCode.equalsIgnoreCase("AADHAR_REAR_IMAGE")) {
+                                    imgView.setImageBitmap(bitmap);
+                                    rear_image_uri = imageUri;
+                                    rear_image_code = documentData.getRearImageCode();
+                                    rear_image_name = imageName;
+                                } else {
+                                    quality_bitmap = bitmap;
+                                    qualilty_image = imgView;
+                                    upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, edsWithActivityList.getEdsActivityWizards().get(activityEdsDetailBinding.qcViewPager.getCurrentItem()).code, bitmap, false, card_type);
                                 }
-                            }
-                            if (imageCode.equalsIgnoreCase("AADHAR_FRONT_IMAGE")) {
-                                imgView.setImageBitmap(bitmap);
-                                front_image_uri = imageUri;
-                                front_image_code = documentData.getFrontImageCode();
-                                front_image_name = imageName;
-                            } else if (imageCode.equalsIgnoreCase("AADHAR_REAR_IMAGE")) {
-                                imgView.setImageBitmap(bitmap);
-                                rear_image_uri = imageUri;
-                                rear_image_code = documentData.getRearImageCode();
-                                rear_image_name = imageName;
-                            } else {
+                                //edsDetailViewModel.saveImage(imageName, imageUri, imageCode);
+                                //documentVerificationFragment.setImageValidation();
+                                // upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, activityData.getActivityWizard().code, bitmap, false);
+                            } else if (fragment instanceof DocumentCollectionFragment) {
                                 quality_bitmap = bitmap;
                                 qualilty_image = imgView;
-                                if (verifyImage)
-                                    upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, edsWithActivityList.getEdsActivityWizards().get(activityEdsDetailBinding.qcViewPager.getCurrentItem()).code, bitmap, true, card_type);
-                                else {
-                                    if (edsDetailViewModel.getDataManager().getEDSRealTimeSync().equalsIgnoreCase("false")) {
-                                        int image_tag_pos = (Integer) imgView.getTag();
-                                        setBitmapNew(image_tag_pos, imgView);
-                                        edsDetailViewModel.saveImage(imageName, imageUri, imageCode, 0);
-                                    } else {
-                                        upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, edsWithActivityList.getEdsActivityWizards().get(activityEdsDetailBinding.qcViewPager.getCurrentItem()).code, bitmap, false, card_type);
+                                // imgView.setImageBitmap(bitmap);
+                                DocumentCollectionFragment documentCollectionFragment = (DocumentCollectionFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
+                                documentCollectionFragment.showMessage(DocumentCollectionFragment.class.getSimpleName());
+                                activityData = documentCollectionFragment;
+                                documentData = documentCollectionFragment;
+                                if (imageCode.equalsIgnoreCase("AADHAR_FRONT_IMAGE")) {
+                                    imgView.setImageBitmap(bitmap);
+                                    front_image_uri = imageUri;
+                                    front_image_code = documentData.getFrontImageCode();
+                                    front_image_name = imageName;
+                                } else if (imageCode.equalsIgnoreCase("AADHAR_REAR_IMAGE")) {
+                                    imgView.setImageBitmap(bitmap);
+                                    rear_image_uri = imageUri;
+                                    rear_image_code = documentData.getRearImageCode();
+                                    rear_image_name = imageName;
+                                } else {
+                                    quality_bitmap = bitmap;
+                                    qualilty_image = imgView;
+                                    upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, edsWithActivityList.getEdsActivityWizards().get(activityEdsDetailBinding.qcViewPager.getCurrentItem()).code, bitmap, false, card_type);
+                                }
+                                //documentCollectionFragment.setImageValidation();
+                                //edsDetailViewModel.saveImage(imageName, imageUri, imageCode);
+                                //  upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, activityData.getActivityWizard().code, bitmap, false);
+                            } else if (fragment instanceof DocumentListCollectionFragment) {
+                                DocumentListCollectionFragment documentListCollectionFragment = (DocumentListCollectionFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
+                                documentListCollectionFragment.showMessage(DocumentListCollectionFragment.class.getSimpleName());
+                                activityData = documentListCollectionFragment;
+                                documentData = documentListCollectionFragment;
+                                if (imageCode.equalsIgnoreCase("AADHAR_FRONT_IMAGE")) {
+                                    imgView.setImageBitmap(bitmap);
+                                    front_image_uri = imageUri;
+                                    front_image_code = documentData.getFrontImageCode();
+                                    front_image_name = imageName;
+                                } else if (imageCode.equalsIgnoreCase("AADHAR_REAR_IMAGE")) {
+                                    imgView.setImageBitmap(bitmap);
+                                    rear_image_uri = imageUri;
+                                    rear_image_code = documentData.getRearImageCode();
+                                    rear_image_name = imageName;
+                                } else {
+                                    quality_bitmap = bitmap;
+                                    qualilty_image = imgView;
+                                    upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, edsWithActivityList.getEdsActivityWizards().get(activityEdsDetailBinding.qcViewPager.getCurrentItem()).code, bitmap, false, card_type);
+                                }
+                                //                                quality_bitmap = bitmap;
+                                //                                qualilty_image = imgView;
+                                //                                DocumentListCollectionFragment documentListCollectionFragment = (DocumentListCollectionFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
+                                //                                documentListCollectionFragment.showMessage(DocumentListCollectionFragment.class.getSimpleName());
+                                //                                activityData = documentListCollectionFragment;
+                                //                                upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, activityData.getActivityWizard().code, bitmap, false);
+                            } else if (fragment instanceof OpvFragment) {
+                                quality_bitmap = bitmap;
+                                qualilty_image = imgView;
+                                imgView.setImageBitmap(bitmap);
+                                OpvFragment opvFragment = (OpvFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
+                                opvFragment.showMessage(OpvFragment.class.getSimpleName());
+                                activityData = opvFragment;
+                                //edsDetailViewModel.saveImage(imageName, imageUri, imageCode);
+                                upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, edsWithActivityList.getEdsActivityWizards().get(activityEdsDetailBinding.qcViewPager.getCurrentItem()).code, bitmap, false, card_type);
+                            } else if (fragment instanceof ResOpvFragment) {
+                                quality_bitmap = bitmap;
+                                qualilty_image = imgView;
+                                imgView.setImageBitmap(bitmap);
+                                ResOpvFragment resOpvFragment = (ResOpvFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
+                                resOpvFragment.showMessage(ResOpvFragment.class.getSimpleName());
+                                activityData = resOpvFragment;
+                                //edsDetailViewModel.saveImage(imageName, imageUri, imageCode);
+                                upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, edsWithActivityList.getEdsActivityWizards().get(activityEdsDetailBinding.qcViewPager.getCurrentItem()).code, bitmap, false, card_type);
+                            } else if (fragment instanceof CaptureImageFragment) {
+                                quality_bitmap = bitmap;
+                                qualilty_image = imgView;
+                                CaptureImageFragment captureImageFragment = (CaptureImageFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
+                                captureImageFragment.showMessage(CaptureImageFragment.class.getSimpleName());
+                                activityData = captureImageFragment;
+                                documentData = captureImageFragment;
+                                if (arrayList_image_validation.size() == 0) {
+                                    for (int i = 0; i < ((CaptureImageFragment) activityData).getViewModel().masterActivityData.get().imageSettings.max; i++) {
+                                        arrayList_image_validation.add(0);
                                     }
                                 }
-                            }
-                        } else if (fragment instanceof AcDocumentListCollectionFragment) {
-                            quality_bitmap = bitmap;
-                            qualilty_image = imgView;
-                            AcDocumentListCollectionFragment acDocumentListCollectionFragment = (AcDocumentListCollectionFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
-                            acDocumentListCollectionFragment.showMessage(AcDocumentListCollectionFragment.class.getSimpleName());
-                            activityData = acDocumentListCollectionFragment;
-                            documentData = acDocumentListCollectionFragment;
-                            if (imageCode.equalsIgnoreCase("AADHAR_FRONT_IMAGE")) {
-                                imgView.setImageBitmap(bitmap);
-                                front_image_uri = imageUri;
-                                front_image_code = documentData.getFrontImageCode();
-                                front_image_name = imageName;
-                            } else if (imageCode.equalsIgnoreCase("AADHAR_REAR_IMAGE")) {
-                                imgView.setImageBitmap(bitmap);
-                                rear_image_uri = imageUri;
-                                rear_image_code = documentData.getRearImageCode();
-                                rear_image_name = imageName;
-                            } else {
+                                //captureImageFragment.setImageValidation();
+                                if (imageCode.equalsIgnoreCase("AADHAR_FRONT_IMAGE")) {
+                                    imgView.setImageBitmap(bitmap);
+                                    front_image_uri = imageUri;
+                                    front_image_code = documentData.getFrontImageCode();
+                                    front_image_name = imageName;
+                                } else if (imageCode.equalsIgnoreCase("AADHAR_REAR_IMAGE")) {
+                                    imgView.setImageBitmap(bitmap);
+                                    rear_image_uri = imageUri;
+                                    rear_image_code = documentData.getRearImageCode();
+                                    rear_image_name = imageName;
+                                } else {
+                                    quality_bitmap = bitmap;
+                                    qualilty_image = imgView;
+                                    if (verifyImage)
+                                        upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, edsWithActivityList.getEdsActivityWizards().get(activityEdsDetailBinding.qcViewPager.getCurrentItem()).code, bitmap, true, card_type);
+                                    else {
+                                        // if EDS_REAL_TIME_SYNCtrue than call server api
+                                        if (edsDetailViewModel.getDataManager().getEDSRealTimeSync().equalsIgnoreCase("false")) {
+                                            // edsDetailViewModel.saveImage(imageName, imageUri, imageCode);
+                                            int image_tag_pos = (Integer) imgView.getTag();
+                                            setBitmapNew(image_tag_pos, imgView);
+                                            edsDetailViewModel.saveImage(imageName, imageUri, imageCode, 0);
+                                        } else {
+                                            upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, edsWithActivityList.getEdsActivityWizards().get(activityEdsDetailBinding.qcViewPager.getCurrentItem()).code, bitmap, false, card_type);
+                                        }
+                                    }
+                                    //  upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, activityData.getActivityWizard().code, bitmap, false);
+                                }
+                            } else if (fragment instanceof AcDocumentListCollectionFragment) {
                                 quality_bitmap = bitmap;
                                 qualilty_image = imgView;
-                                upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, edsWithActivityList.getEdsActivityWizards().get(activityEdsDetailBinding.qcViewPager.getCurrentItem()).code, bitmap, false, card_type);
+                                // imgView.setImageBitmap(bitmap);
+                                AcDocumentListCollectionFragment acDocumentListCollectionFragment = (AcDocumentListCollectionFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
+                                acDocumentListCollectionFragment.showMessage(AcDocumentListCollectionFragment.class.getSimpleName());
+                                activityData = acDocumentListCollectionFragment;
+                                documentData = acDocumentListCollectionFragment;
+                                if (imageCode.equalsIgnoreCase("AADHAR_FRONT_IMAGE")) {
+                                    imgView.setImageBitmap(bitmap);
+                                    front_image_uri = imageUri;
+                                    front_image_code = documentData.getFrontImageCode();
+                                    front_image_name = imageName;
+                                } else if (imageCode.equalsIgnoreCase("AADHAR_REAR_IMAGE")) {
+                                    imgView.setImageBitmap(bitmap);
+                                    rear_image_uri = imageUri;
+                                    rear_image_code = documentData.getRearImageCode();
+                                    rear_image_name = imageName;
+                                } else {
+                                    quality_bitmap = bitmap;
+                                    qualilty_image = imgView;
+                                    upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, edsWithActivityList.getEdsActivityWizards().get(activityEdsDetailBinding.qcViewPager.getCurrentItem()).code, bitmap, false, card_type);
+                                }
+                                //acDocumentListCollectionFragment.setImageValidation();
+                                // edsDetailViewModel.saveImage(imageName, imageUri, imageCode);
+                                //upLoadImage(imageName, imageUri, imageCode, awbNo, drs_no, activityData.getActivityWizard().code, bitmap, false);
                             }
+                            activityData.validate(true);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            showSnackbar(e.getMessage());
                         }
-                        activityData.validate(true);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        showSnackbar(e.getMessage());
                     }
                 });
             }
@@ -518,6 +602,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
         } else {
             edsDetailViewModel.UploadImage(imageName, imageUri, imageCode, awbNo, drs_no, activity_code, bitmap, card_type);
         }
+        // edsDetailViewModel.uploadCardDetectionImageToServer(imageName, imageUri, imageCode, awbNo, drs_no, activity_code, bitmap, uddan_flag);
     }
 
     private void uploadAadharImages(String front_image_uri, String rear_image_uri, String front_image_code, String rear_image_code, String front_image_name, String rear_image_name) {
@@ -566,6 +651,10 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
 
     private void getActivityWiseCount(EdsWithActivityList edsWithActivityList) {
         try {
+           /* Set<EDSActivityWizard> setOfBlogs = new LinkedHashSet<>(edsWithActivityList.getEdsActivityWizards());
+
+            edsWithActivityList.getEdsActivityWizards().clear();
+            edsWithActivityList.getEdsActivityWizards().addAll(setOfBlogs);*/
             edsWithActivityList.setEdsActivityWizards(removeDuplicates(edsWithActivityList.getEdsActivityWizards()));
             for (EDSActivityWizard edsActivityWizard : edsWithActivityList.getEdsActivityWizards()) {
                 if (edsActivityWizard.getCode().startsWith("DC")) {
@@ -580,7 +669,10 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                 }
             }
             stagerunningCount.clear();
-            stagerunningCount.addAll(stageCountActivity);
+            Iterator<String> itr = stageCountActivity.iterator();
+            while (itr.hasNext()) {
+                stagerunningCount.add(itr.next());
+            }
         } catch (Exception e) {
             e.printStackTrace();
             showSnackbar(e.getMessage());
@@ -588,14 +680,20 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
     }
 
     public List<EDSActivityWizard> removeDuplicates(List<EDSActivityWizard> list) {
-        Set set = new TreeSet((o1, o2) -> {
-            if (((EDSActivityWizard) o1).getActivityId().equalsIgnoreCase(((EDSActivityWizard) o2).getActivityId())) {
-                return 0;
+        // Set set1 = new LinkedHashSet(list);
+        Set set = new TreeSet(new Comparator() {
+            @Override
+            public int compare(Object o1, Object o2) {
+                if (((EDSActivityWizard) o1).getActivityId().equalsIgnoreCase(((EDSActivityWizard) o2).getActivityId()) /*&&
+                    ((Blog)o1).getName().equalsIgnoreCase(((Blog)o2).getName())*/) {
+                    return 0;
+                }
+                return 1;
             }
-            return 1;
         });
         set.addAll(list);
-        return (List) new ArrayList(set);
+        final List newList = new ArrayList(set);
+        return newList;
     }
 
     private void getActivityName(EdsWithActivityList edsWithActivityList, int count, String flag) {
@@ -644,6 +742,8 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
             if (baseFragment != null) {
                 successFragment.remove(baseFragment);
                 if (activityNameCount >= 0) {
+                    // runningcount.remove(activityNameCount);
+                    //  reversecount(edsWithActivityList, activityNameCount);
                     runningCount.remove(runningCount.size() - 1);
                     activityNameCount--;
                     getActivityName(edsWithActivityList, activityNameCount, "false");
@@ -1253,7 +1353,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                 if (activityData.validateCancelData()) {
                     intent = new Intent(this, EDSUndeliveredActivity.class);
                     intent.putParcelableArrayListExtra(getString(R.string.data), new ArrayList<>(edsActivityResponseWizards));
-                    intent.putExtra("edsResponse", gson.toJson(edsDetailViewModel.edsWithActivityList.get().edsResponse));
+                    intent.putExtra("edsResponse", edsDetailViewModel.edsWithActivityList.get().edsResponse);
                     intent.putExtra(Constants.RESCHEDULE_ENABLE, reschedule_enable);
                     intent.putExtra("awb", awbNo);
                     intent.putExtra(Constants.COMPOSITE_KEY, composite_key);
@@ -1270,7 +1370,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                 if (activityData.validateCancelData()) {
                     intent = new Intent(this, EDSUndeliveredActivity.class);
                     intent.putParcelableArrayListExtra(getString(R.string.data), new ArrayList<>(edsActivityResponseWizards));
-                    intent.putExtra("edsResponse", gson.toJson(edsDetailViewModel.edsWithActivityList.get().edsResponse));
+                    intent.putExtra("edsResponse", edsDetailViewModel.edsWithActivityList.get().edsResponse);
                     intent.putExtra(Constants.RESCHEDULE_ENABLE, reschedule_enable);
                     intent.putExtra("awb", awbNo);
                     intent.putExtra(Constants.COMPOSITE_KEY, composite_key);
@@ -1287,7 +1387,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                 if (activityData.validateCancelData()) {
                     intent = new Intent(this, EDSUndeliveredActivity.class);
                     intent.putParcelableArrayListExtra(getString(R.string.data), new ArrayList<>(edsActivityResponseWizards));
-                    intent.putExtra("edsResponse", gson.toJson(edsDetailViewModel.edsWithActivityList.get().edsResponse));
+                    intent.putExtra("edsResponse", edsDetailViewModel.edsWithActivityList.get().edsResponse);
                     intent.putExtra(Constants.RESCHEDULE_ENABLE, reschedule_enable);
                     intent.putExtra("awb", awbNo);
                     intent.putExtra(Constants.COMPOSITE_KEY, composite_key);
@@ -1304,7 +1404,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                 if (activityData.validateCancelData()) {
                     intent = new Intent(this, EDSUndeliveredActivity.class);
                     intent.putParcelableArrayListExtra(getString(R.string.data), new ArrayList<>(edsActivityResponseWizards));
-                    intent.putExtra("edsResponse", gson.toJson(edsDetailViewModel.edsWithActivityList.get().edsResponse));
+                    intent.putExtra("edsResponse", edsDetailViewModel.edsWithActivityList.get().edsResponse);
                     intent.putExtra(Constants.RESCHEDULE_ENABLE, reschedule_enable);
                     intent.putExtra(Constants.COMPOSITE_KEY, composite_key);
                     intent.putExtra("awb", awbNo);
@@ -1321,7 +1421,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                 if (activityData.validateCancelData()) {
                     intent = new Intent(this, EDSUndeliveredActivity.class);
                     intent.putParcelableArrayListExtra(getString(R.string.data), new ArrayList<>(edsActivityResponseWizards));
-                    intent.putExtra("edsResponse", gson.toJson(edsDetailViewModel.edsWithActivityList.get().edsResponse));
+                    intent.putExtra("edsResponse", edsDetailViewModel.edsWithActivityList.get().edsResponse);
                     intent.putExtra(Constants.RESCHEDULE_ENABLE, reschedule_enable);
                     intent.putExtra(Constants.COMPOSITE_KEY, composite_key);
                     intent.putExtra("awb", awbNo);
@@ -1337,7 +1437,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                 activityData = opvFragment;
                 intent = new Intent(this, EDSUndeliveredActivity.class);
                 intent.putParcelableArrayListExtra(getString(R.string.data), new ArrayList<>(edsActivityResponseWizards));
-                intent.putExtra("edsResponse", gson.toJson(edsDetailViewModel.edsWithActivityList.get().edsResponse));
+                intent.putExtra("edsResponse", edsDetailViewModel.edsWithActivityList.get().edsResponse);
                 intent.putExtra(Constants.RESCHEDULE_ENABLE, reschedule_enable);
                 intent.putExtra(Constants.COMPOSITE_KEY, composite_key);
                 intent.putExtra("awb", awbNo);
@@ -1349,7 +1449,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                 activityData = edsEkycAntWorkFragment;
                 intent = new Intent(this, EDSUndeliveredActivity.class);
                 intent.putParcelableArrayListExtra(getString(R.string.data), new ArrayList<>(edsActivityResponseWizards));
-                intent.putExtra("edsResponse", gson.toJson(edsDetailViewModel.edsWithActivityList.get().edsResponse));
+                intent.putExtra("edsResponse", edsDetailViewModel.edsWithActivityList.get().edsResponse);
                 intent.putExtra(Constants.RESCHEDULE_ENABLE, reschedule_enable);
                 intent.putExtra(Constants.COMPOSITE_KEY, composite_key);
                 intent.putExtra("awb", awbNo);
@@ -1361,7 +1461,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                 activityData = resOpvFragment;
                 intent = new Intent(this, EDSUndeliveredActivity.class);
                 intent.putParcelableArrayListExtra(getString(R.string.data), new ArrayList<>(edsActivityResponseWizards));
-                intent.putExtra("edsResponse", gson.toJson(edsDetailViewModel.edsWithActivityList.get().edsResponse));
+                intent.putExtra("edsResponse", edsDetailViewModel.edsWithActivityList.get().edsResponse);
                 intent.putExtra(Constants.RESCHEDULE_ENABLE, reschedule_enable);
                 intent.putExtra(Constants.COMPOSITE_KEY, composite_key);
                 intent.putExtra("awb", awbNo);
@@ -1373,7 +1473,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                 activityData = captureImageFragment;
                 intent = new Intent(this, EDSUndeliveredActivity.class);
                 intent.putParcelableArrayListExtra(getString(R.string.data), new ArrayList<>(edsActivityResponseWizards));
-                intent.putExtra("edsResponse", gson.toJson(edsDetailViewModel.edsWithActivityList.get().edsResponse));
+                intent.putExtra("edsResponse", edsDetailViewModel.edsWithActivityList.get().edsResponse);
                 intent.putExtra(Constants.RESCHEDULE_ENABLE, reschedule_enable);
                 intent.putExtra(Constants.COMPOSITE_KEY, composite_key);
                 intent.putExtra("awb", awbNo);
@@ -1386,7 +1486,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                 if (activityData.validateCancelData()) {
                     intent = new Intent(this, EDSUndeliveredActivity.class);
                     intent.putParcelableArrayListExtra(getString(R.string.data), new ArrayList<>(edsActivityResponseWizards));
-                    intent.putExtra("edsResponse", gson.toJson(edsDetailViewModel.edsWithActivityList.get().edsResponse));
+                    intent.putExtra("edsResponse", edsDetailViewModel.edsWithActivityList.get().edsResponse);
                     intent.putExtra(Constants.RESCHEDULE_ENABLE, reschedule_enable);
                     intent.putExtra(Constants.COMPOSITE_KEY, composite_key);
                     intent.putExtra("awb", awbNo);
@@ -1403,7 +1503,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                 if (activityData.validateCancelData()) {
                     intent = new Intent(this, EDSUndeliveredActivity.class);
                     intent.putParcelableArrayListExtra(getString(R.string.data), new ArrayList<>(edsActivityResponseWizards));
-                    intent.putExtra("edsResponse", gson.toJson(edsDetailViewModel.edsWithActivityList.get().edsResponse));
+                    intent.putExtra("edsResponse", edsDetailViewModel.edsWithActivityList.get().edsResponse);
                     intent.putExtra(Constants.RESCHEDULE_ENABLE, reschedule_enable);
                     intent.putExtra(Constants.COMPOSITE_KEY, composite_key);
                     intent.putExtra("awb", awbNo);
@@ -1419,7 +1519,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                 activityData = edsRblFragment;
                 intent = new Intent(this, EDSUndeliveredActivity.class);
                 intent.putParcelableArrayListExtra(getString(R.string.data), new ArrayList<>(edsActivityResponseWizards));
-                intent.putExtra("edsResponse", gson.toJson(edsDetailViewModel.edsWithActivityList.get().edsResponse));
+                intent.putExtra("edsResponse", edsDetailViewModel.edsWithActivityList.get().edsResponse);
                 intent.putExtra(Constants.RESCHEDULE_ENABLE, reschedule_enable);
                 intent.putExtra(Constants.COMPOSITE_KEY, composite_key);
                 intent.putExtra("awb", awbNo);
@@ -1433,7 +1533,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                 if (activityData.validateCancelData()) {
                     intent = new Intent(this, EDSUndeliveredActivity.class);
                     intent.putParcelableArrayListExtra(getString(R.string.data), new ArrayList<>(edsActivityResponseWizards));
-                    intent.putExtra("edsResponse", gson.toJson(edsDetailViewModel.edsWithActivityList.get().edsResponse));
+                    intent.putExtra("edsResponse", edsDetailViewModel.edsWithActivityList.get().edsResponse);
                     intent.putExtra(Constants.RESCHEDULE_ENABLE, reschedule_enable);
                     intent.putExtra("awb", awbNo);
                     intent.putExtra(Constants.COMPOSITE_KEY, composite_key);
@@ -1450,7 +1550,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                 if (activityData.validateCancelData()) {
                     intent = new Intent(this, EDSUndeliveredActivity.class);
                     intent.putParcelableArrayListExtra(getString(R.string.data), new ArrayList<>(edsActivityResponseWizards));
-                    intent.putExtra("edsResponse", gson.toJson(edsDetailViewModel.edsWithActivityList.get().edsResponse));
+                    intent.putExtra("edsResponse", edsDetailViewModel.edsWithActivityList.get().edsResponse);
                     intent.putExtra(Constants.RESCHEDULE_ENABLE, reschedule_enable);
                     intent.putExtra("awb", awbNo);
                     intent.putExtra(Constants.COMPOSITE_KEY, composite_key);
@@ -1467,7 +1567,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                 if (activityData.validateCancelData()) {
                     intent = new Intent(this, EDSUndeliveredActivity.class);
                     intent.putParcelableArrayListExtra(getString(R.string.data), new ArrayList<>(edsActivityResponseWizards));
-                    intent.putExtra("edsResponse", gson.toJson(edsDetailViewModel.edsWithActivityList.get().edsResponse));
+                    intent.putExtra("edsResponse", edsDetailViewModel.edsWithActivityList.get().edsResponse);
                     intent.putExtra(Constants.RESCHEDULE_ENABLE, reschedule_enable);
                     intent.putExtra("awb", awbNo);
                     intent.putExtra(Constants.COMPOSITE_KEY, composite_key);
@@ -1484,7 +1584,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                 if (activityData.validateCancelData()) {
                     intent = new Intent(this, EDSUndeliveredActivity.class);
                     intent.putParcelableArrayListExtra(getString(R.string.data), new ArrayList<>(edsActivityResponseWizards));
-                    intent.putExtra("edsResponse", gson.toJson(edsDetailViewModel.edsWithActivityList.get().edsResponse));
+                    intent.putExtra("edsResponse", edsDetailViewModel.edsWithActivityList.get().edsResponse);
                     intent.putExtra(Constants.RESCHEDULE_ENABLE, reschedule_enable);
                     intent.putExtra("awb", awbNo);
                     intent.putExtra(Constants.COMPOSITE_KEY, composite_key);
@@ -1501,7 +1601,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                 if (activityData.validateCancelData()) {
                     intent = new Intent(this, EDSUndeliveredActivity.class);
                     intent.putParcelableArrayListExtra(getString(R.string.data), new ArrayList<>(edsActivityResponseWizards));
-                    intent.putExtra("edsResponse", gson.toJson(edsDetailViewModel.edsWithActivityList.get().edsResponse));
+                    intent.putExtra("edsResponse", edsDetailViewModel.edsWithActivityList.get().edsResponse);
                     intent.putExtra(Constants.RESCHEDULE_ENABLE, reschedule_enable);
                     intent.putExtra("awb", awbNo);
                     intent.putExtra(Constants.COMPOSITE_KEY, composite_key);
@@ -1518,7 +1618,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                 if (activityData.validateCancelData()) {
                     intent = new Intent(this, EDSUndeliveredActivity.class);
                     intent.putParcelableArrayListExtra(getString(R.string.data), new ArrayList<>(edsActivityResponseWizards));
-                    intent.putExtra("edsResponse", gson.toJson(edsDetailViewModel.edsWithActivityList.get().edsResponse));
+                    intent.putExtra("edsResponse", edsDetailViewModel.edsWithActivityList.get().edsResponse);
                     intent.putExtra(Constants.RESCHEDULE_ENABLE, reschedule_enable);
                     intent.putExtra("awb", awbNo);
                     intent.putExtra(Constants.COMPOSITE_KEY, composite_key);
@@ -1527,7 +1627,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                 } else if (!activityData.validateCancelData()) {
                     intent = new Intent(this, EDSUndeliveredActivity.class);
                     intent.putParcelableArrayListExtra(getString(R.string.data), new ArrayList<>(edsActivityResponseWizards));
-                    intent.putExtra("edsResponse", gson.toJson(edsDetailViewModel.edsWithActivityList.get().edsResponse));
+                    intent.putExtra("edsResponse", edsDetailViewModel.edsWithActivityList.get().edsResponse);
                     intent.putExtra(Constants.RESCHEDULE_ENABLE, reschedule_enable);
                     intent.putExtra("awb", awbNo);
                     intent.putExtra("is_already_kyced", true);
@@ -1540,7 +1640,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                     activityData = edsEkycPaytmFragment;
                     intent = new Intent(this, EDSUndeliveredActivity.class);
                     intent.putParcelableArrayListExtra(getString(R.string.data), new ArrayList<>(edsActivityResponseWizards));
-                    intent.putExtra("edsResponse", gson.toJson(edsDetailViewModel.edsWithActivityList.get().edsResponse));
+                    intent.putExtra("edsResponse", edsDetailViewModel.edsWithActivityList.get().edsResponse);
                     intent.putExtra(Constants.RESCHEDULE_ENABLE, reschedule_enable);
                     intent.putExtra("awb", awbNo);
                     intent.putExtra(Constants.COMPOSITE_KEY, composite_key);
@@ -1577,7 +1677,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                 intent = new Intent(this, EDSSignatureActivity.class);
             }
             intent.putParcelableArrayListExtra(getString(R.string.data), new ArrayList<>(edsActivityResponseWizards));
-            intent.putExtra("edsResponse", gson.toJson(edsDetailViewModel.edsWithActivityList.get().edsResponse));
+            intent.putExtra("edsResponse", edsDetailViewModel.edsWithActivityList.get().edsResponse);
             intent.putExtra(Constants.COMPOSITE_KEY, composite_key);
             intent.putExtra("awb", awbNo);
             startActivity(intent);
@@ -1611,102 +1711,110 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
             if (requestCode == REQUEST_CODE_SCAN) {
                 handleScanResult(data);
             } else if (resultCode == RESULT_OK) {
-                if (requestCode == CAMERA_SCANNER_CODE) {
+                if (requestCode == IMAGE_SCANNER_CODE) {
+                    final String outputPath = data.getStringExtra(ImageScannerActivity.EXTRA_KEY_RESULT_DATA_PATH);
+                    CryptoUtils.encryptFile(outputPath, outputPath, Constants.ENC_DEC_KEY);
+                    if (!TextUtils.isEmpty(outputPath)) {
+                    }
+                } else if (requestCode == CAMERA_SCANNER_CODE) {
                     String path = data.getStringExtra("croped_path");
                     Bitmap bitmap = BitmapFactory.decodeFile(path);
                     digitalCropImageHandler.sendImage(bitmap, path);
                 } else if (requestCode == 1) {
-                    try {
-                        if (data != null) {
-                            value = new ArrayList<>();
-                            String result = data.getStringExtra("DEVICE_INFO");
-                            if (result != null) {
-                                info = serializer.read(DeviceInfo.class, result);
-                                rdsId = info.rdsId;
-                                rdsId = info.rdsId;
-                                dpId = info.dpId;
-                                dc = info.dc;
-                                mi = info.mi;
-                                mc = info.mc;
-                                rdsVer = info.mc;
-                                List<Param> data1 = info.add_info.params;
-                                for (int i = 0; i < data1.size(); i++) {
-                                    value.add(data1.get(i).value);
+                    if (resultCode == Activity.RESULT_OK) {
+                        try {
+                            if (data != null) {
+                                value = new ArrayList<>();
+                                String result = data.getStringExtra("DEVICE_INFO");
+                                if (result != null) {
+                                    info = serializer.read(DeviceInfo.class, result);
+                                    rdsId = info.rdsId;
+                                    rdsId = info.rdsId;
+                                    dpId = info.dpId;
+                                    dc = info.dc;
+                                    mi = info.mi;
+                                    mc = info.mc;
+                                    rdsVer = info.mc;
+                                    List<Param> data1 = info.add_info.params;
+                                    for (int i = 0; i < data1.size(); i++) {
+                                        value.add(data1.get(i).value);
+                                    }
+                                    idc = value.get(0);
                                 }
-                                idc = value.get(0);
-                            }
-                            if (mi.isEmpty()) {
-                                // new Helper().showAlert(Icici_Ekyc.this, "Device is not Attached Properly", "Alert");
-                                // Toast.makeText(getApplication(), "", Toast.LENGTH_LONG).show();
-                            } else {
-                                if (dpId.equalsIgnoreCase("MANTRA.MSIPL"))
-                                    getcapture();
-                                else {
-                                    //                                getPopupAlert();
+                                if (mi.isEmpty()) {
+                                    // new Helper().showAlert(Icici_Ekyc.this, "Device is not Attached Properly", "Alert");
+                                    // Toast.makeText(getApplication(), "", Toast.LENGTH_LONG).show();
+                                } else {
+                                    if (dpId.equalsIgnoreCase("MANTRA.MSIPL"))
+                                        getcapture();
+                                    else {
+                                        //                                getPopupAlert();
+                                    }
                                 }
                             }
+                        } catch (Exception e) {
+                            Log.e("Error", "Error while deserialze device info", e);
                         }
-                    } catch (Exception e) {
-                        Log.e("Error", "Error while deserialze device info", e);
                     }
                 } else if (requestCode == 2) {
-                    try {
-                        pidDataJson = new JSONObject();
-                        if (data != null) {
-                            String result_resp = data.getStringExtra("PID_DATA");
-                            XmlToJson xmlToJson = new XmlToJson.Builder(result_resp).build();
-                            //    Log.e("json", xmlToJson.toFormattedString());
-                            pidDataJson = new JSONObject(xmlToJson.toFormattedString());
-                            JSONObject jobj_piddata = pidDataJson.getJSONObject("PidData").getJSONObject("Resp");
-                            // JSONObject jobj_resp = jobj_piddata.getJSONObject("Resp");
-                            // JSONObject jobj_resp = jobj_piddata.getJSONObject("Resp");
-                            if (jobj_piddata.getString("errCode").equalsIgnoreCase("0")) {
-                                fragment = edsDetailPagerAdapter.getItem(activityEdsDetailBinding.qcViewPager.getCurrentItem());
-                                // EdsEkycXMLFragment edsEkycXMLFragment = (EdsEkycXMLFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
-                                if (fragment instanceof EdsEkycXMLFragment) {
-                                    EdsEkycXMLFragment edsEkycXMLFragment = (EdsEkycXMLFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
-                                    edsEkycXMLFragment.sendData(result_resp);
+                    if (resultCode == Activity.RESULT_OK) {
+                        try {
+                            pidDataJson = new JSONObject();
+                            if (data != null) {
+                                String result_resp = data.getStringExtra("PID_DATA");
+                                XmlToJson xmlToJson = new XmlToJson.Builder(result_resp).build();
+                                //    Log.e("json", xmlToJson.toFormattedString());
+                                pidDataJson = new JSONObject(xmlToJson.toFormattedString());
+                                JSONObject jobj_piddata = pidDataJson.getJSONObject("PidData").getJSONObject("Resp");
+                                // JSONObject jobj_resp = jobj_piddata.getJSONObject("Resp");
+                                // JSONObject jobj_resp = jobj_piddata.getJSONObject("Resp");
+                                if (jobj_piddata.getString("errCode").equalsIgnoreCase("0")) {
+                                    fragment = edsDetailPagerAdapter.getItem(activityEdsDetailBinding.qcViewPager.getCurrentItem());
+                                    // EdsEkycXMLFragment edsEkycXMLFragment = (EdsEkycXMLFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
+                                    if (fragment instanceof EdsEkycXMLFragment) {
+                                        EdsEkycXMLFragment edsEkycXMLFragment = (EdsEkycXMLFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
+                                        edsEkycXMLFragment.sendData(result_resp);
+                                    }
+                                    if (fragment instanceof IciciEkycFragment) {
+                                        IciciEkycFragment iciciEkycFragment = (IciciEkycFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
+                                        iciciEkycFragment.sendData(pidDataJson.toString());
+                                    }
+                                    if (fragment instanceof IciciEkycFragment_standard) {
+                                        IciciEkycFragment_standard iciciEkycFragment_standard = (IciciEkycFragment_standard) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
+                                        iciciEkycFragment_standard.sendData(pidDataJson.toString());
+                                    }
+                                    if (fragment instanceof EdsRblFragment) {
+                                        EdsRblFragment edsRblFragment = (EdsRblFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
+                                        edsRblFragment.sendData(pidDataJson.toString());
+                                    }
+                                    if (fragment instanceof EdsBkycIdfcFragment) {
+                                        EdsBkycIdfcFragment edsBkycIdfcFragment = (EdsBkycIdfcFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
+                                        edsBkycIdfcFragment.sendData(pidDataJson.toString());//
+                                        //  (pid//DataJson.toString());
+                                    }
+                                    if (fragment instanceof EdsEkycIdfcFragment) {
+                                        EdsEkycIdfcFragment edsEkycIdfcFragment = (EdsEkycIdfcFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
+                                        edsEkycIdfcFragment.sendData(String.valueOf(result_resp), String.valueOf(awbNo), order_id);
+                                    }
+                                    if (fragment instanceof EdsEkycNiyoFragment) {
+                                        EdsEkycNiyoFragment edsEkycNiyoFragment = (EdsEkycNiyoFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
+                                        edsEkycNiyoFragment.sendData(pidDataJson.toString());
+                                    }
+                                    if (fragment instanceof EdsEkycAntWorkFragment) {
+                                        EdsEkycAntWorkFragment edsEkycAntWorkFragment = (EdsEkycAntWorkFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
+                                        edsEkycAntWorkFragment.sendData(result_resp, String.valueOf(awbNo), order_id);
+                                    }
+                                    if (fragment instanceof EdsEkycFreyoFragment) {
+                                        EdsEkycFreyoFragment edsEkycFreyoFragment = (EdsEkycFreyoFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
+                                        edsEkycFreyoFragment.sendData(pidDataJson.toString(), String.valueOf(awbNo), order_id);
+                                    }
+                                } else {
+                                    showSnackbar(jobj_piddata.getString("errInfo"));
                                 }
-                                if (fragment instanceof IciciEkycFragment) {
-                                    IciciEkycFragment iciciEkycFragment = (IciciEkycFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
-                                    iciciEkycFragment.sendData(pidDataJson.toString());
-                                }
-                                if (fragment instanceof IciciEkycFragment_standard) {
-                                    IciciEkycFragment_standard iciciEkycFragment_standard = (IciciEkycFragment_standard) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
-                                    iciciEkycFragment_standard.sendData(pidDataJson.toString());
-                                }
-                                if (fragment instanceof EdsRblFragment) {
-                                    EdsRblFragment edsRblFragment = (EdsRblFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
-                                    edsRblFragment.sendData(pidDataJson.toString());
-                                }
-                                if (fragment instanceof EdsBkycIdfcFragment) {
-                                    EdsBkycIdfcFragment edsBkycIdfcFragment = (EdsBkycIdfcFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
-                                    edsBkycIdfcFragment.sendData(pidDataJson.toString());//
-                                    //  (pid//DataJson.toString());
-                                }
-                                if (fragment instanceof EdsEkycIdfcFragment) {
-                                    EdsEkycIdfcFragment edsEkycIdfcFragment = (EdsEkycIdfcFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
-                                    edsEkycIdfcFragment.sendData(String.valueOf(result_resp), String.valueOf(awbNo), order_id);
-                                }
-                                if (fragment instanceof EdsEkycNiyoFragment) {
-                                    EdsEkycNiyoFragment edsEkycNiyoFragment = (EdsEkycNiyoFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
-                                    edsEkycNiyoFragment.sendData(pidDataJson.toString());
-                                }
-                                if (fragment instanceof EdsEkycAntWorkFragment) {
-                                    EdsEkycAntWorkFragment edsEkycAntWorkFragment = (EdsEkycAntWorkFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
-                                    edsEkycAntWorkFragment.sendData(result_resp, String.valueOf(awbNo), order_id);
-                                }
-                                if (fragment instanceof EdsEkycFreyoFragment) {
-                                    EdsEkycFreyoFragment edsEkycFreyoFragment = (EdsEkycFreyoFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
-                                    edsEkycFreyoFragment.sendData(pidDataJson.toString(), String.valueOf(awbNo), order_id);
-                                }
-                            } else {
-                                showSnackbar(jobj_piddata.getString("errInfo"));
                             }
+                        } catch (Exception e) {
+                            Log.e("Error", "Error while deserialze pid data", e);
                         }
-                    } catch (Exception e) {
-                        Log.e("Error", "Error while deserialze pid data", e);
-                    }
                     } else {
                         imageHandler.onActivityResult(requestCode, resultCode, data);
                     }
@@ -1714,6 +1822,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
                 } else {
                     imageHandler.onActivityResult(requestCode, resultCode, data);
                 }
+            }
         } catch (Exception e) {
             e.printStackTrace();
             showSnackbar(e.getMessage());
@@ -1722,7 +1831,8 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
 
     private void handleScanResult(Intent data) {
         if (data != null) {
-            Constants.SCANNED_DATA = data.getStringExtra(ScannerActivity.SCANNED_CODE);
+            String scannedData = data.getStringExtra(ScannerActivity.SCANNED_CODE);
+            Constants.SCANNED_DATA = scannedData;
         }
     }
 
@@ -1736,13 +1846,15 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
         Log.e("onPageScrolled", position + "");
         fragment = edsDetailPagerAdapter.getItem(activityEdsDetailBinding.qcViewPager.getCurrentItem());
         if (fragment instanceof DocumentListCollectionFragment) {
-            documentData = (DocumentListCollectionFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
+            DocumentListCollectionFragment documentListCollectionFragment = (DocumentListCollectionFragment) edsDetailPagerAdapter.getRegisteredFragment(activityEdsDetailBinding.qcViewPager.getCurrentItem());
+            documentData = documentListCollectionFragment;
             documentData.setDetail(position, edsWithActivityList.edsActivityWizards.get(position));
         }
     }
 
     @Override
     public void onPageSelected(int position) {
+        // Log.e("onPageSelected" , position+"");
         arrayList_image_validation.clear();
     }
 
@@ -1784,12 +1896,27 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
     private String getPIDOptionsFincare() {
         try {
             int fingerCount = 1;
-            int fingerFormat;
+            int fingerType = 1;
+            int fingerFormat = 0;
+            //            if (Constants.IS_ICICI_FINKARE.equalsIgnoreCase("icici")) {
+            //                fingerFormat = 1;
+            //            } else if (Constants.IS_ICICI_FINKARE.equalsIgnoreCase("fin")) {
+            //                fingerFormat = 0;
+            //            }
+            //            if (Constants.IS_ICICI_FINKARE.equalsIgnoreCase("icici")) {
+            //                fingerFormat = 1;
+            //            } else
+            // 0X
+            //            if (Constants.IS_ICICI_FINKARE.equalsIgnoreCase("fin")) {
+            //                fingerFormat = 0;
+            //            } else {
+            //
+            //            }
             fingerFormat = Constants.IS_ICICI_FINKARE;
             String pidVer = "2.0";
             String timeOut = "10000";
             String posh = "UNKNOWN";
-            if (!positions.isEmpty()) {
+            if (positions.size() > 0) {
                 posh = positions.toString().replace("[", "").replace("]", "").replaceAll("[\\s+]", "");
             }
             Opts opts = new Opts();
@@ -1805,6 +1932,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
             opts.posh = posh;
             opts.env = "P";
             opts.wadh = getWADH("2.5FYNNN");
+            //opts.wadh = "E0jzJ/P8UopUHAieZn8CKqS4WPMi5ZSYXgfnlfkWjrc";
             PidOptions pidOptions = new PidOptions();
             pidOptions.ver = "2.0";
             pidOptions.Opts = opts;
@@ -1824,11 +1952,13 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
             Constants.TEMP_FYPE_NIYO = edsWithActivityList.edsActivityWizards.get(activityEdsDetailBinding.qcViewPager.getCurrentItem()).getQuestionFormFields().getFtype();
 
             int fingerCount = 1;
+            int fingerType = 0;
             int fingerFormat = 0;
+            //  fingerFormat = 1;
             String pidVer = "2.0";
             String timeOut = "10000";
             String posh = "UNKNOWN";
-            if (!positions.isEmpty()) {
+            if (positions.size() > 0) {
                 posh = positions.toString().replace("[", "").replace("]", "").replaceAll("[\\s+]", "");
             }
             Opts opts = new Opts();
@@ -1864,12 +1994,13 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
     private String getPIDOptionsidfc() {
         try {
             int fingerCount = 1;
-            int fingerFormat;
+            int fingerType = 0;
+            int fingerFormat = 0;
             fingerFormat = 1;
             String pidVer = "2.0";
             String timeOut = "10000";
             String posh = "UNKNOWN";
-            if (!positions.isEmpty()) {
+            if (positions.size() > 0) {
                 posh = positions.toString().replace("[", "").replace("]", "").replaceAll("[\\s+]", "");
             }
             Opts opts = new Opts();
@@ -1899,14 +2030,18 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
 
     private String getPIDOptionsFreyo() {
         try {
+
             Constants.TEMP_FYPE_NIYO = edsWithActivityList.edsActivityWizards.get(activityEdsDetailBinding.qcViewPager.getCurrentItem()).getQuestionFormFields().getFtype();
+
+
             int fingerCount = 1;
-            int fingerFormat;
+            int fingerType = 0;
+            int fingerFormat = 0;
             fingerFormat = Constants.IS_ICICI_FINKARE;
             String pidVer = "2.0";
             String timeOut = "10000";
             String posh = "UNKNOWN";
-            if (!positions.isEmpty()) {
+            if (positions.size() > 0) {
                 posh = positions.toString().replace("[", "").replace("]", "").replaceAll("[\\s+]", "");
             }
             Opts opts = new Opts();
@@ -1922,6 +2057,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
             opts.posh = posh;
             opts.env = "P";
             opts.wadh = getWADH("2.5FYNNY");
+            //opts.wadh = "E0jzJ/P8UopUHAieZn8CKqS4WPMi5ZSYXgfnlfkWjrc";
             PidOptions pidOptions = new PidOptions();
             pidOptions.ver = "2.0";
             pidOptions.Opts = opts;
@@ -1937,14 +2073,17 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
 
     private String getPIDOptionsICICIStandard() {
         try {
+
             Constants.TEMP_FYPE_NIYO = edsWithActivityList.edsActivityWizards.get(activityEdsDetailBinding.qcViewPager.getCurrentItem()).getQuestionFormFields().getFtype();
+
             int fingerCount = 1;
-            int fingerFormat;
+            int fingerType = 0;
+            int fingerFormat = 0;
             fingerFormat = Constants.IS_ICICI_FINKARE;
             String pidVer = "2.0";
             String timeOut = "10000";
             String posh = "UNKNOWN";
-            if (!positions.isEmpty()) {
+            if (positions.size() > 0) {
                 posh = positions.toString().replace("[", "").replace("]", "").replaceAll("[\\s+]", "");
             }
             Opts opts = new Opts();
@@ -2121,7 +2260,7 @@ public class EDSDetailActivity extends BaseActivity<ActivityEdsDetailBinding, ED
     public void cancelRbLScreen() {
         Intent intent = new Intent(this, EDSUndeliveredActivity.class);
         intent.putParcelableArrayListExtra(getString(R.string.data), new ArrayList<>(edsActivityResponseWizards));
-        intent.putExtra("edsResponse", gson.toJson(edsDetailViewModel.edsWithActivityList.get().edsResponse));
+        intent.putExtra("edsResponse", edsDetailViewModel.edsWithActivityList.get().edsResponse);
         intent.putExtra(Constants.RESCHEDULE_ENABLE, reschedule_enable);
         intent.putExtra(Constants.COMPOSITE_KEY, composite_key);
         intent.putExtra("awb", awbNo);

@@ -1,0 +1,11 @@
+<androidx.appcompat.widget.AppCompatEditText
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="65dp"
+    android:background="@drawable/curved_rectangle_otp"
+    android:backgroundTint="@color/grey_F4"
+    android:cursorVisible="false"
+    android:gravity="center"
+    android:inputType="number"
+    android:maxLength="1"
+    android:maxLines="1" />

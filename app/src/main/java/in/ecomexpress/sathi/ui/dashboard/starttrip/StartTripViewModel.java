@@ -2,6 +2,7 @@ package in.ecomexpress.sathi.ui.dashboard.starttrip;
 
 import static android.content.Context.ALARM_SERVICE;
 import static in.ecomexpress.sathi.utils.Constants.DISTANCE_API_KEY;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -25,24 +26,30 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
+
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import in.ecomexpress.geolocations.LocationService;
 import in.ecomexpress.geolocations.LocationTracker;
@@ -51,7 +58,7 @@ import in.ecomexpress.sathi.SathiApplication;
 import in.ecomexpress.sathi.backgroundServices.SyncServicesV2;
 import in.ecomexpress.sathi.repo.IDataManager;
 import in.ecomexpress.sathi.repo.local.db.model.CommonDRSListItem;
-import in.ecomexpress.sathi.repo.local.db.model.RVPQCImageTable;
+import in.ecomexpress.sathi.repo.local.db.model.Remark;
 import in.ecomexpress.sathi.repo.local.db.model.RescheduleEdsD;
 import in.ecomexpress.sathi.repo.remote.RestApiErrorHandler;
 import in.ecomexpress.sathi.repo.remote.model.commonrequest.CommonUserIdRequest;
@@ -74,9 +81,6 @@ import in.ecomexpress.sathi.repo.remote.model.masterdata.GlobalConfigurationMast
 import in.ecomexpress.sathi.repo.remote.model.masterdata.MasterDataConfig;
 import in.ecomexpress.sathi.repo.remote.model.masterdata.Reverse;
 import in.ecomexpress.sathi.repo.remote.model.masterdata.masterRequest;
-import in.ecomexpress.sathi.repo.remote.model.mps.DRSRvpQcMpsResponse;
-import in.ecomexpress.sathi.repo.remote.model.mps.QcItem;
-import in.ecomexpress.sathi.repo.remote.model.mps.RvpMpsQualityCheck;
 import in.ecomexpress.sathi.repo.remote.model.trip.ImageResponse;
 import in.ecomexpress.sathi.repo.remote.model.trip.StartTripRequest;
 import in.ecomexpress.sathi.ui.base.BaseViewModel;
@@ -84,6 +88,7 @@ import in.ecomexpress.sathi.ui.dashboard.global_activity.GlobalDialogActivity;
 import in.ecomexpress.sathi.ui.dashboard.landing.DashboardActivity;
 import in.ecomexpress.sathi.utils.CommonUtils;
 import in.ecomexpress.sathi.utils.Constants;
+import in.ecomexpress.sathi.utils.CryptoUtils;
 import in.ecomexpress.sathi.utils.GlobalConstant;
 import in.ecomexpress.sathi.utils.Logger;
 import in.ecomexpress.sathi.utils.SathiContentProvider;
@@ -96,6 +101,10 @@ import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Function5;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 @HiltViewModel
 public class StartTripViewModel extends BaseViewModel<StartTripCallBack> {
@@ -108,6 +117,7 @@ public class StartTripViewModel extends BaseViewModel<StartTripCallBack> {
     Reschedule_info_awb_list rescheduleData;
     EdsRescheduleRequest edsRescheduleRequest;
     ArrayList<RescheduleEdsD> rescheduleEdsDS = new ArrayList<>();
+
     @SuppressLint("StaticFieldLeak")
     Context context;
     boolean isDcContains = false;
@@ -133,6 +143,10 @@ public class StartTripViewModel extends BaseViewModel<StartTripCallBack> {
 
     public void onTypeOfVehicle(AdapterView<?> parent, View view, int pos, long id) {
         getNavigator().TypeOfVehicle(parent.getSelectedItem().toString());
+    }
+
+    public void getClickStart() {
+        Log.d("is viewmodel connect", "viewmodel connect");
     }
 
     public void onVehicleNumber() {
@@ -170,13 +184,6 @@ public class StartTripViewModel extends BaseViewModel<StartTripCallBack> {
                                     getDataManager().setDRSId((long) lastMileDRSListNewResponse.getTodoResponse().getDrs_list_response().getRevDrsList().get(0).getDrs());
                                 }
                             }
-
-                            // RVP MPS
-                            if (lastMileDRSListNewResponse.getTodoResponse().getDrs_list_response().getRevMpsDrsList() != null && !lastMileDRSListNewResponse.getTodoResponse().getDrs_list_response().getRevMpsDrsList().isEmpty()) {
-                                saveRVPMPSList(lastMileDRSListNewResponse.getTodoResponse().getDrs_list_response().getRevMpsDrsList());
-                                getDataManager().setDRSId((long) lastMileDRSListNewResponse.getTodoResponse().getDrs_list_response().getRevMpsDrsList().get(0).getDrs());
-                            }
-
                             if (lastMileDRSListNewResponse.getTodoResponse().getDrs_list_response().getEdsList() != null) {
                                 saveEDSNewList(lastMileDRSListNewResponse.getTodoResponse().getDrs_list_response().getEdsList());
                                 if (!lastMileDRSListNewResponse.getTodoResponse().getDrs_list_response().getEdsList().isEmpty()) {
@@ -316,35 +323,37 @@ public class StartTripViewModel extends BaseViewModel<StartTripCallBack> {
 
     public void getAllNewDRS(DRSResponse drsResponse) {
         try {
-            // Modification :- // Saving Data to Room DataBase for RVP_MPS-- Done by Gupta JI
             CompositeDisposable compositeDisposable = new CompositeDisposable();
-            compositeDisposable.add(Observable.zip(getDataManager().getDRSListForward(), getDataManager().getDRSListNewRTS(), getDataManager().getDRSListRVP(), getDataManager().getDRSListRVPMPS(), getDataManager().getDrsListNewEds(), getDataManager().getEdsRescheduleFlag(), getDataManager().getAllRemarks(getDataManager().getCode(), TimeUtils.getDateYearMonthMillies()), (drsForwardTypeResponses, drsReturnToShipperTypeNewResponses, drsReverseQCTypeResponses, drsRvpQcMpsResponses, edsResponses, rescheduleEdsDS, remarks) -> {
-                List<CommonDRSListItem> commonDRSListItems = new ArrayList<>();
-                for (DRSForwardTypeResponse fwd : drsForwardTypeResponses) {
-                    CommonDRSListItem item = new CommonDRSListItem(GlobalConstant.ShipmentTypeConstants.FWD, fwd);
-                    commonDRSListItems.add(item);
-                }
-                for (IRTSBaseInterface rts : drsReturnToShipperTypeNewResponses.getCombinedList()) {
-                    CommonDRSListItem item = new CommonDRSListItem(GlobalConstant.ShipmentTypeConstants.RTS, rts);
-                    commonDRSListItems.add(item);
-                }
-                for (DRSReverseQCTypeResponse rvp : drsReverseQCTypeResponses) {
-                    CommonDRSListItem item = new CommonDRSListItem(GlobalConstant.ShipmentTypeConstants.RVP, rvp);
-                    commonDRSListItems.add(item);
-                }
-                for (EDSResponse eds : edsResponses) {
-                    CommonDRSListItem item = new CommonDRSListItem(GlobalConstant.ShipmentTypeConstants.EDS, eds);
-                    commonDRSListItems.add(item);
-                }
-                for (DRSRvpQcMpsResponse eds : drsRvpQcMpsResponses) {
-                    CommonDRSListItem item = new CommonDRSListItem(GlobalConstant.ShipmentTypeConstants.RVP_MPS, eds);
-                    commonDRSListItems.add(item);
-                }
-                if (commonDRSListItems != null) {
-                    getAllConsigneeProfile(drsResponse);
-                }
-                return commonDRSListItems;
-            }).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui()).subscribe());
+            compositeDisposable.add(Observable.zip(getDataManager().getDRSListForward(), getDataManager().getDRSListNewRTS(), getDataManager().getDRSListRVP(), getDataManager().getDrsListNewEds(), getDataManager().getAllRemarks(getDataManager().getCode(), TimeUtils.getDateYearMonthMillies()), new Function5<List<DRSForwardTypeResponse>, DRSReturnToShipperTypeNewResponse, List<DRSReverseQCTypeResponse>, List<EDSResponse>, List<Remark>, List<CommonDRSListItem>>() {
+                        @RequiresApi(api = Build.VERSION_CODES.O)
+                        @Override
+                        public List<CommonDRSListItem> apply(List<DRSForwardTypeResponse> drsForwardTypeResponses, DRSReturnToShipperTypeNewResponse drsReturnToShipperTypeNewResponses, List<DRSReverseQCTypeResponse> drsReverseQCTypeResponses, List<EDSResponse> edsResponses, List<Remark> remarks) {
+                            List<CommonDRSListItem> commonDRSListItems = new ArrayList<>();
+                            for (DRSForwardTypeResponse fwd : drsForwardTypeResponses) {
+                                CommonDRSListItem item = new CommonDRSListItem(GlobalConstant.ShipmentTypeConstants.FWD, fwd);
+                                commonDRSListItems.add(item);
+                            }
+                            for (IRTSBaseInterface rts : drsReturnToShipperTypeNewResponses.getCombinedList()) {
+                                CommonDRSListItem item = new CommonDRSListItem(GlobalConstant.ShipmentTypeConstants.RTS, rts);
+                                commonDRSListItems.add(item);
+                            }
+                            for (DRSReverseQCTypeResponse rvp : drsReverseQCTypeResponses) {
+                                CommonDRSListItem item = new CommonDRSListItem(GlobalConstant.ShipmentTypeConstants.RVP, rvp);
+                                commonDRSListItems.add(item);
+                            }
+                            for (EDSResponse eds : edsResponses) {
+                                CommonDRSListItem item = new CommonDRSListItem(GlobalConstant.ShipmentTypeConstants.EDS, eds);
+                                commonDRSListItems.add(item);
+                            }
+                            if (commonDRSListItems != null) {
+                                getAllConsigneeProfile(drsResponse);
+                            }
+                            return commonDRSListItems;
+                        }
+                    }).subscribeOn(getSchedulerProvider().io()).
+                    observeOn(getSchedulerProvider().ui()).
+                    subscribe(commonDRSListItems -> {
+                    }, throwable -> Logger.e(TAG, String.valueOf(throwable))));
         } catch (Exception e) {
             getNavigator().showError(e.getMessage());
             Logger.e(TAG, String.valueOf(e));
@@ -358,8 +367,11 @@ public class StartTripViewModel extends BaseViewModel<StartTripCallBack> {
             if (drsResponse.getTodoResponse().getDrs_list_response().getForwardDrsList() != null && !drsResponse.getTodoResponse().getDrs_list_response().getForwardDrsList().isEmpty()) {
                 for (int i = 0; i < drsResponse.getTodoResponse().getDrs_list_response().getForwardDrsList().size(); i++) {
                     // Creating profile Found object by own now
+                    ProfileFound profileFound = new ProfileFound();
+                    profileFound.setAwb_number(drsResponse.getTodoResponse().getDrs_list_response().getForwardDrsList().get(i).getAwbNo());
+                    profileFound.setDelivery_latitude(drsResponse.getTodoResponse().getDrs_list_response().getForwardDrsList().get(i).getConsigneeDetails().getAddress().getLocation().getLat());
+                    profileFound.setDelivery_longitude(drsResponse.getTodoResponse().getDrs_list_response().getForwardDrsList().get(i).getConsigneeDetails().getAddress().getLocation().getLat());
                     if (drsResponse.getTodoResponse().getDrs_list_response().getForwardDrsList().get(i).getAddress_profiled() != null && drsResponse.getTodoResponse().getDrs_list_response().getForwardDrsList().get(i).getAddress_profiled().equalsIgnoreCase("Y")) {
-                        ProfileFound profileFound = getFwdProfileFound(drsResponse, i);
                         profileFoundList.add(profileFound);
                     }
                     consigneeProfile = new Consignee_profile();
@@ -371,8 +383,11 @@ public class StartTripViewModel extends BaseViewModel<StartTripCallBack> {
             if (drsResponse.getTodoResponse().getDrs_list_response().getRevDrsList() != null && !drsResponse.getTodoResponse().getDrs_list_response().getRevDrsList().isEmpty()) {
                 for (int i = 0; i < drsResponse.getTodoResponse().getDrs_list_response().getRevDrsList().size(); i++) {
                     // Creating profile Found object by own now
+                    ProfileFound profileFound = new ProfileFound();
+                    profileFound.setAwb_number(drsResponse.getTodoResponse().getDrs_list_response().getRevDrsList().get(i).getAwbNo());
+                    profileFound.setDelivery_latitude(drsResponse.getTodoResponse().getDrs_list_response().getRevDrsList().get(i).getConsigneeDetails().getAddress().getLocation().getLat());
+                    profileFound.setDelivery_longitude(drsResponse.getTodoResponse().getDrs_list_response().getRevDrsList().get(i).getConsigneeDetails().getAddress().getLocation().getLat());
                     if (drsResponse.getTodoResponse().getDrs_list_response().getRevDrsList().get(i).getAddress_profiled() != null && drsResponse.getTodoResponse().getDrs_list_response().getRevDrsList().get(i).getAddress_profiled().equalsIgnoreCase("Y")) {
-                        ProfileFound profileFound = getRvpQcProfileFound(drsResponse, i);
                         profileFoundList.add(profileFound);
                     }
                     consigneeProfile = new Consignee_profile();
@@ -380,28 +395,15 @@ public class StartTripViewModel extends BaseViewModel<StartTripCallBack> {
                     consigneeProfile.setShipper_id(drsResponse.getTodoResponse().getDrs_list_response().getRevDrsList().get(i).getShipmentDetails().getShipper_id() + "");
                 }
             }
-
-            // Saving Data to Room DataBase for RVP_MPS-- Done by Gupta JI
-            if (drsResponse.getTodoResponse().getDrs_list_response().getRevMpsDrsList() != null && !drsResponse.getTodoResponse().getDrs_list_response().getRevMpsDrsList().isEmpty()) {
-                for (int i = 0; i < drsResponse.getTodoResponse().getDrs_list_response().getRevMpsDrsList().size(); i++) {
-                    // creating profile Found object by own now
-                    if (drsResponse.getTodoResponse().getDrs_list_response().getRevMpsDrsList().get(i).getAddress_profiled() != null && drsResponse.getTodoResponse().getDrs_list_response().getRevMpsDrsList().get(i).getAddress_profiled().equalsIgnoreCase("Y")) {
-                        ProfileFound profileFound = getMpsProfileFound(drsResponse, i);
-                        profileFoundList.add(profileFound);
-                    }
-
-                    // till here
-                    consigneeProfile = new Consignee_profile();
-                    consigneeProfile.setAwb(drsResponse.getTodoResponse().getDrs_list_response().getRevMpsDrsList().get(i).getAwbNo() + "");
-                    consigneeProfile.setShipper_id(drsResponse.getTodoResponse().getDrs_list_response().getRevMpsDrsList().get(i).getShipmentDetails().getShipper_id() + "");
-                }
-            }
             // Saving data to room for EDS
             if (drsResponse.getTodoResponse().getDrs_list_response().getEdsList() != null && !drsResponse.getTodoResponse().getDrs_list_response().getEdsList().isEmpty()) {
                 for (int i = 0; i < drsResponse.getTodoResponse().getDrs_list_response().getEdsList().size(); i++) {
-                    // Creating Profile Found object inserting values.
+                    // Creating profile Found object by own now
+                    ProfileFound profileFound = new ProfileFound();
+                    profileFound.setAwb_number(drsResponse.getTodoResponse().getDrs_list_response().getEdsList().get(i).getAwbNo());
+                    profileFound.setDelivery_latitude(drsResponse.getTodoResponse().getDrs_list_response().getEdsList().get(i).getConsigneeDetail().getAddress().getLocation().getLat());
+                    profileFound.setDelivery_longitude(drsResponse.getTodoResponse().getDrs_list_response().getEdsList().get(i).getConsigneeDetail().getAddress().getLocation().getLng());
                     if (drsResponse.getTodoResponse().getDrs_list_response().getEdsList().get(i).getAddress_profiled() != null && drsResponse.getTodoResponse().getDrs_list_response().getEdsList().get(i).getAddress_profiled().equalsIgnoreCase("Y")) {
-                        ProfileFound profileFound = getEdsProfileFound(drsResponse, i);
                         profileFoundList.add(profileFound);
                     }
                     consigneeProfile = new Consignee_profile();
@@ -430,50 +432,24 @@ public class StartTripViewModel extends BaseViewModel<StartTripCallBack> {
         }
     }
 
-    private ProfileFound getEdsProfileFound(DRSResponse drsResponse, int i) {
-        ProfileFound profileFound = new ProfileFound();
-        profileFound.setAwb_number(drsResponse.getTodoResponse().getDrs_list_response().getEdsList().get(i).getAwbNo());
-        profileFound.setDelivery_latitude(drsResponse.getTodoResponse().getDrs_list_response().getEdsList().get(i).getConsigneeDetail().getAddress().getLocation().getLat());
-        profileFound.setDelivery_longitude(drsResponse.getTodoResponse().getDrs_list_response().getEdsList().get(i).getConsigneeDetail().getAddress().getLocation().getLng());
-        return profileFound;
-    }
-
-    private ProfileFound getMpsProfileFound(DRSResponse drsResponse, int i) {
-        ProfileFound profileFound = new ProfileFound();
-        profileFound.setAwb_number(drsResponse.getTodoResponse().getDrs_list_response().getRevMpsDrsList().get(i).getAwbNo());
-        profileFound.setDelivery_latitude(drsResponse.getTodoResponse().getDrs_list_response().getRevMpsDrsList().get(i).getConsigneeDetails().getAddress().getLocation().getLat());
-        profileFound.setDelivery_longitude(drsResponse.getTodoResponse().getDrs_list_response().getRevMpsDrsList().get(i).getConsigneeDetails().getAddress().getLocation().getLng());
-        return profileFound;
-    }
-
-    private ProfileFound getRvpQcProfileFound(DRSResponse drsResponse, int i) {
-        ProfileFound profileFound = new ProfileFound();
-        profileFound.setAwb_number(drsResponse.getTodoResponse().getDrs_list_response().getRevDrsList().get(i).getAwbNo());
-        profileFound.setDelivery_latitude(drsResponse.getTodoResponse().getDrs_list_response().getRevDrsList().get(i).getConsigneeDetails().getAddress().getLocation().getLat());
-        profileFound.setDelivery_longitude(drsResponse.getTodoResponse().getDrs_list_response().getRevDrsList().get(i).getConsigneeDetails().getAddress().getLocation().getLng());
-        return profileFound;
-    }
-
-    private ProfileFound getFwdProfileFound(DRSResponse drsResponse, int i) {
-        ProfileFound profileFound = new ProfileFound();
-        profileFound.setAwb_number(drsResponse.getTodoResponse().getDrs_list_response().getForwardDrsList().get(i).getAwbNo());
-        profileFound.setDelivery_latitude(drsResponse.getTodoResponse().getDrs_list_response().getForwardDrsList().get(i).getConsigneeDetails().getAddress().getLocation().getLat());
-        profileFound.setDelivery_longitude(drsResponse.getTodoResponse().getDrs_list_response().getForwardDrsList().get(i).getConsigneeDetails().getAddress().getLocation().getLng());
-        return profileFound;
-    }
-
     private void saveProfileFoundList(List<ProfileFound> profileFounds) {
         try {
             CompositeDisposable compositeDisposable = new CompositeDisposable();
-            compositeDisposable.add(getDataManager().saveProfileFoundList(profileFounds).observeOn(getSchedulerProvider().ui()).subscribeOn(getSchedulerProvider().io()).subscribe(aBoolean -> Logger.e(TAG, String.valueOf(aBoolean)), throwable -> {}));
+            compositeDisposable.add(getDataManager().
+                    saveProfileFoundList(profileFounds).observeOn(getSchedulerProvider().ui()).subscribeOn(getSchedulerProvider().io()).
+                    subscribe(aBoolean -> Logger.e(TAG, String.valueOf(aBoolean)), throwable -> {
+                    }));
         } catch (Exception e) {
             getNavigator().showError(e.getMessage());
+            Logger.e(TAG, String.valueOf(e));
         }
     }
 
     @TargetApi(Build.VERSION_CODES.O)
     public void uploadData(Activity context, String imageUrl, String imageKey, int imageId, String vehicleNumber, String vehicleType, String typeOfVehicle, String routeName, long actualMeterReading, List<ImageResponse> imageResponseList, String device_name) {
         this.context = context;
+        imageKey = getFileName(imageKey);
+        ImageResponse imageResponse = new ImageResponse(imageKey, imageId);
         StartTripViewModel.this.setIsLoading(false);
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
             return;
@@ -486,6 +462,8 @@ public class StartTripViewModel extends BaseViewModel<StartTripCallBack> {
         } else {
             request = new StartTripRequest(vehicleNumber, typeOfVehicle, vehicleType, StartTripViewModel.this.getDataManager().getCode(), routeName, Calendar.getInstance().getTimeInMillis(), actualMeterReading, getDataManager().getCurrentLatitude(), getDataManager().getCurrentLongitude(), imei, getDataManager().getLocationCode(), String.valueOf(getDataManager().getIsAdmEmp()), imageResponseList, device_name);
         }
+        writeRestAPIRequst(timeStamp, request);
+        writeEvent(timeStamp, "After image upload: Uploading data to server.");
         try {
             StartTripViewModel.this.getCompositeDisposable().add(StartTripViewModel.this.getDataManager().doStartTripApiCall(getDataManager().getAuthToken(), getDataManager().getEcomRegion(), request)
                     .subscribeOn(StartTripViewModel.this.getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui()).subscribe(response -> {
@@ -500,7 +478,6 @@ public class StartTripViewModel extends BaseViewModel<StartTripCallBack> {
                                 values.put(SathiContentProvider.name, "Sathi Trip Started");
                                 getNavigator().getActivityContext().getContentResolver().insert(SathiContentProvider.CONTENT_URI, values);
                                 setAppSettingAlarm(getNavigator().getActivityContext());
-
                                 getDataManager().setLiveTrackingTripId(response.getResponse().getLive_tracking_trip_id());
                                 getDataManager().setLiveTrackingTripIdForApi(response.getResponse().getLive_tracking_trip_id());
                                 getDataManager().setStartTripTime(System.currentTimeMillis());
@@ -531,6 +508,7 @@ public class StartTripViewModel extends BaseViewModel<StartTripCallBack> {
                                 LocationTracker.setBothDistanceToZero(getNavigator().getActivityContext());
                             } else {
                                 StartTripViewModel.this.setIsLoading(false);
+                                writeRestAPIResponse(timeStamp, response);
                                 if (response.getResponse().getDescription().equalsIgnoreCase("Invalid Authentication Token.")) {
                                     getNavigator().doLogout(response.getResponse().getDescription());
                                 } else {
@@ -542,25 +520,38 @@ public class StartTripViewModel extends BaseViewModel<StartTripCallBack> {
                             is_start_clicked = true;
                             getNavigator().enableSubmitButton();
                             StartTripViewModel.this.setIsLoading(false);
+                            RestApiErrorHandler restApiErrorHandler = new RestApiErrorHandler(e.getCause());
+                            restApiErrorHandler.writeErrorLogs(timeStamp, e.getMessage());
                             getNavigator().showDescription(e.getMessage());
+                            Logger.e(TAG, String.valueOf(e));
                         }
                     }, throwable -> {
                         is_start_clicked = true;
                         getNavigator().enableSubmitButton();
+                        RestApiErrorHandler restApiErrorHandler = new RestApiErrorHandler(throwable);
+                        restApiErrorHandler.writeErrorLogs(timeStamp, throwable.getMessage());
                         StartTripViewModel.this.setIsLoading(false);
                         String error;
                         try {
                             error = new RestApiErrorHandler(throwable).getErrorDetails().getEResponse().getDescription();
                             getNavigator().showErrorMessage(error.contains("HTTP 500 "));
                         } catch (Exception e) {
+                            restApiErrorHandler = new RestApiErrorHandler(e.getCause());
+                            restApiErrorHandler.writeErrorLogs(timeStamp, e.getMessage());
                             getNavigator().showDescription(e.getMessage());
+                            Logger.e(TAG, String.valueOf(e));
                         }
                     }));
         } catch (Exception e) {
             is_start_clicked = true;
             getNavigator().enableSubmitButton();
             getNavigator().showError(e.getMessage());
+            RestApiErrorHandler restApiErrorHandler = new RestApiErrorHandler(e.getCause());
+            restApiErrorHandler.writeErrorLogs(timeStamp, e.getMessage());
             StartTripViewModel.this.setIsLoading(false);
+            getNavigator().showDescription(e.getMessage());
+            getNavigator().onHandleError(new RestApiErrorHandler(e.fillInStackTrace()).getErrorDetails().getEResponse().getDescription());
+            Logger.e(TAG, String.valueOf(e));
         }
     }
 
@@ -580,20 +571,7 @@ public class StartTripViewModel extends BaseViewModel<StartTripCallBack> {
         try {
             try {
                 if (DashboardActivity.lt != null && getDataManager().getLiveTrackingTripId() != null && !getDataManager().getLiveTrackingTripId().equalsIgnoreCase("")) {
-                    DashboardActivity.lt.startTrackingWithParameters(
-                            getNavigator().getActivityContext(), Constants.APP_NAME,
-                            Constants.VERSION_NAME, "LastMile", getDataManager().getCode(),
-                            getDataManager().getLocationCode(),
-                            getDataManager().getVehicleType(),
-                            getDataManager().getAuthToken(),
-                            getDataManager().getLiveTrackingTripId(),
-                            "start", getDataManager().getLiveTrackingMaxFileSize(),
-                            Constants.LIVE_TRACKING_URL,
-                            getDataManager().getLiveTrackingAccuracy(),
-                            getDataManager().getLiveTrackingInterval(),
-                            Integer.parseInt(getDataManager().getLatLngLimit()),
-                            DISTANCE_API_KEY, getDataManager().getLiveTrackingDisplacement(),
-                            getDataManager().getDistance());
+                    DashboardActivity.lt.startTrackingWithParameters(getNavigator().getActivityContext(), Constants.APP_NAME, Constants.VERSION_NAME, "LastMile", getDataManager().getCode(), getDataManager().getLocationCode(), getDataManager().getVehicleType(), getDataManager().getAuthToken(), getDataManager().getLiveTrackingTripId(), "start", getDataManager().getLiveTrackingMaxFileSize(), Constants.LIVE_TRACKING_URL, getDataManager().getLiveTrackingAccuracy(), getDataManager().getLiveTrackingInterval(), Integer.parseInt(getDataManager().getLatLngLimit()), DISTANCE_API_KEY, getDataManager().getLiveTrackingDisplacement(), getDataManager().getDistance());
                 }
             } catch (Exception e) {
                 Logger.e(TAG, String.valueOf(e));
@@ -628,6 +606,69 @@ public class StartTripViewModel extends BaseViewModel<StartTripCallBack> {
             imageKey = imageKey.substring(0, imageKey.lastIndexOf("."));
         }
         return imageKey;
+    }
+
+    @SuppressLint("CheckResult")
+    public void uploadAWSImage(Activity context, String timeStamp, String vehicalNumber, String vehicleType, String typeOfVehicle, String imageUri, String routeName, Long meterReading, String imageCode) {
+        try {
+            setIsLoading(true);
+            uploadImageServer(context, imageUri, imageCode, timeStamp, vehicalNumber, vehicleType, typeOfVehicle, routeName, meterReading);
+        } catch (Exception e) {
+            getNavigator().showDescription(e.getMessage());
+            Logger.e(TAG, String.valueOf(e));
+        }
+    }
+
+    private void uploadImageServer(Activity context, String imageUrl, String imageCode, String timeStamp, String vehicleNumber, String vehicleType, String typeOfVehicle, String routeName, Long meterReading) {
+        StartTripViewModel.this.setIsLoading(true);
+        getNavigator().disableSubmitButton();
+        final long timeStampTag = System.currentTimeMillis();
+        writeEvent(timeStampTag, "Event to upload image, create request body and map before upload image. ");
+        try {
+            is_start_clicked = false;
+            File file = new File(imageUrl);
+            byte[] bytes = CryptoUtils.decryptFile1(file.toString(), Constants.ENC_DEC_KEY);
+            RequestBody mFile = RequestBody.create(MediaType.parse("application/octet-stream"), bytes);
+            MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("image", file.getName(), mFile);
+            RequestBody trip_emp_code = RequestBody.create(MediaType.parse("text/plain"), getDataManager().getCode());
+            RequestBody trip_image_ts = RequestBody.create(MediaType.parse("text/plain"), timeStamp);
+            RequestBody image_code = RequestBody.create(MediaType.parse("text/plain"), imageCode);
+            RequestBody image_name = RequestBody.create(MediaType.parse("text/plain"), file.getName());
+            RequestBody image_type = RequestBody.create(MediaType.parse("text/plain"), "Trip");
+            Map<String, RequestBody> map = new HashMap<>();
+            map.put("image", mFile);
+            map.put("trip_emp_code", trip_emp_code);
+            map.put("trip_image_ts", trip_image_ts);
+            map.put("image_code", image_code);
+            map.put("image_name", image_name);
+            map.put("image_type", image_type);
+            Map<String, String> headers = new HashMap<>();
+            headers.put("token", getDataManager().getAuthToken());
+            getCompositeDisposable().add(getDataManager().doImageUploadApiCallStartStop(getDataManager().getAuthToken(), getDataManager().getEcomRegion(), headers, map, fileToUpload).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().io()).subscribe(imageUploadResponse -> {
+                writeEvent(timeStampTag, "Successfully get image upload response: Image Name: " + imageUploadResponse.getFileName());
+                if (imageUploadResponse != null) {
+                    if (imageUploadResponse.getStatus().equalsIgnoreCase("Success")) {
+                        //uploadData(context, imageUrl, imageUploadResponse.getFileName(), imageUploadResponse.getImageId(), vehicleNumber, vehicleType, typeOfVehicle, routeName, meterReading);
+                    } else {
+                        StartTripViewModel.this.setIsLoading(false);
+                        //uploadData(context, imageUrl, "", -1, vehicleNumber, vehicleType, typeOfVehicle, routeName, meterReading);
+                    }
+                }
+            }, throwable -> {
+                getNavigator().enableSubmitButton();
+                RestApiErrorHandler restApiErrorHandler = new RestApiErrorHandler(throwable);
+                restApiErrorHandler.writeErrorLogs(timeStampTag, throwable.getMessage());
+                setIsLoading(false);
+                Logger.e(TAG, String.valueOf(throwable));
+                //uploadData(context, imageUrl, "", -1, vehicleNumber, vehicleType, typeOfVehicle, routeName, meterReading);
+            }));
+        } catch (Exception ex) {
+            getNavigator().enableSubmitButton();
+            RestApiErrorHandler restApiErrorHandler = new RestApiErrorHandler(ex.getCause());
+            restApiErrorHandler.writeErrorLogs(timeStampTag, ex.getMessage());
+            //uploadData(context, imageUrl, "", -1, vehicleNumber, vehicleType, typeOfVehicle, routeName, meterReading);
+            Logger.e(TAG, String.valueOf(ex));
+        }
     }
 
     public void onStartTrip() {
@@ -722,85 +763,6 @@ public class StartTripViewModel extends BaseViewModel<StartTripCallBack> {
             }));
         } catch (Exception e) {
             getNavigator().showError(e.getMessage());
-            Logger.e(TAG, String.valueOf(e));
-        }
-    }
-
-    @SuppressLint("CheckResult")
-    private void saveRVPMPSList(List<DRSRvpQcMpsResponse> drsReverseQCTypeResponses) {
-        try {
-            Observable.fromCallable(() -> {
-                for (DRSRvpQcMpsResponse response : drsReverseQCTypeResponses) {
-                    try {
-                        response.setCompositeKey(response.getDrs() + "" + response.getAwbNo());
-                    } catch (Exception e) {
-                        Logger.e(TAG, String.valueOf(e));
-                        RestApiErrorHandler restApiErrorHandler = new RestApiErrorHandler(e.getCause());
-                        restApiErrorHandler.writeErrorLogs(0, e.getMessage());
-                    }
-                }
-                return drsReverseQCTypeResponses;
-            }).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui()).subscribe(this::saveRVPMPSAfterGeoCoding);
-        } catch (Exception e) {
-            Logger.e(TAG, String.valueOf(e));
-        }
-    }
-
-    private void saveRVPMPSAfterGeoCoding(List<DRSRvpQcMpsResponse> drsReverseQCTypeResponses) {
-        HashSet<DRSRvpQcMpsResponse> drsReverseQCTypeResponses_set = new HashSet<>();
-        for (int i = 0; i < drsReverseQCTypeResponses.size(); i++) {
-            if (!String.valueOf(drsReverseQCTypeResponses.get(i).getCompositeKey()).startsWith("null") && !drsReverseQCTypeResponses.get(i).getCompositeKey().equalsIgnoreCase("")) {
-                drsReverseQCTypeResponses_set.add(drsReverseQCTypeResponses.get(i));
-            }
-            RVPQCImageTable rvpqcImageTable = new RVPQCImageTable();
-            rvpqcImageTable.awb_number = drsReverseQCTypeResponses.get(i).getAwbNo();
-            getCompositeDisposable().add(getDataManager().insert(rvpqcImageTable).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui()).subscribe(aBoolean -> {
-            }, throwable -> {
-                Logger.e(TAG, String.valueOf(throwable));
-                RestApiErrorHandler restApiErrorHandler = new RestApiErrorHandler(throwable.getCause());
-                restApiErrorHandler.writeErrorLogs(0, throwable.getMessage());
-            }));
-        }
-        for (DRSRvpQcMpsResponse drsReverseQCTypeResponse : drsReverseQCTypeResponses_set) {
-            try {
-                getCompositeDisposable().add(getDataManager().isRVPDRSExist(drsReverseQCTypeResponse.getCompositeKey()).flatMap(Observable::just).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().io()).subscribe(aBoolean -> {
-                    if (!aBoolean) {
-                        addRVPMPSwithQC(drsReverseQCTypeResponse);
-                    }
-                }, throwable -> {
-                    RestApiErrorHandler restApiErrorHandler = new RestApiErrorHandler(throwable.getCause());
-                    restApiErrorHandler.writeErrorLogs(0, throwable.getMessage());
-                    Log.e(TAG, "throwable: " + throwable.getMessage());
-                }));
-            } catch (Exception e) {
-                Logger.e(TAG, String.valueOf(e));
-            }
-        }
-    }
-
-    private void addRVPMPSwithQC(DRSRvpQcMpsResponse drsReverseQCTypeResponse) {
-        try {
-            List<QcItem> mpsQcItems = drsReverseQCTypeResponse.getShipmentDetails().getQcItems();
-
-            for (int i = 0; i < mpsQcItems.size(); i++) {
-                mpsQcItems.get(i).setAwbNo(drsReverseQCTypeResponse.getAwbNo());
-                mpsQcItems.get(i).setDrs(drsReverseQCTypeResponse.getDrs());
-                List<RvpMpsQualityCheck> qualityCheckList = mpsQcItems.get(i).getQualityChecks();
-                for (int j = 0; j < qualityCheckList.size(); j++) {
-                    qualityCheckList.get(j).setAwbNo(drsReverseQCTypeResponse.getAwbNo());
-                    qualityCheckList.get(j).setDrs(drsReverseQCTypeResponse.getDrs());
-                }
-                mpsQcItems.get(i).setQualityChecks(qualityCheckList);
-            }
-            getCompositeDisposable().add(Observable.merge(getDataManager().saveDRSRVPMPSListQualityCheck(mpsQcItems), getDataManager().saveDRSRVPMPS(drsReverseQCTypeResponse)).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui()).subscribe(aBoolean -> {
-            }, throwable -> {
-                Logger.e(TAG, String.valueOf(throwable));
-                RestApiErrorHandler restApiErrorHandler = new RestApiErrorHandler(throwable.getCause());
-                restApiErrorHandler.writeErrorLogs(0, throwable.getMessage());
-            }));
-
-
-        } catch (Exception e) {
             Logger.e(TAG, String.valueOf(e));
         }
     }
@@ -978,7 +940,7 @@ public class StartTripViewModel extends BaseViewModel<StartTripCallBack> {
             masterRequest request = new masterRequest();
             request.setUsername(getDataManager().getCode());
             writeRestAPIRequst(timeStamp, request);
-            getCompositeDisposable().add(getDataManager().doMasterReasonApiCall(getDataManager().getAuthToken(), getDataManager().getEcomRegion(), request).flatMap(new Function<>() {
+            getCompositeDisposable().add(getDataManager().doMasterReasonApiCall(getDataManager().getAuthToken(), getDataManager().getEcomRegion(), request).flatMap(new Function<MasterDataConfig, SingleSource<?>>() {
                 @SuppressLint("CheckResult")
                 @Override
                 public SingleSource<?> apply(MasterDataConfig masterDataReasonCodeResponse) {
@@ -1063,9 +1025,6 @@ public class StartTripViewModel extends BaseViewModel<StartTripCallBack> {
                                                 if (globalConfigurationMaster.getConfigGroup().equalsIgnoreCase("ESP_EARNING_VISIBILITY")) {
                                                     getDataManager().setESP_EARNING_VISIBILITY(Boolean.parseBoolean(globalConfigurationMaster.getConfigValue()));
                                                 }
-                                                if (globalConfigurationMaster.getConfigGroup().equalsIgnoreCase("ODH_VISIBILITY")) {
-                                                    getDataManager().setODH_VISIBILITY(Boolean.parseBoolean(globalConfigurationMaster.getConfigValue()));
-                                                }
                                                 if (globalConfigurationMaster.getConfigGroup().equalsIgnoreCase("CAMPAIGN_VISIBILITY")) {
                                                     getDataManager().setCampaignStatus(Boolean.parseBoolean(globalConfigurationMaster.getConfigValue()));
                                                 }
@@ -1088,6 +1047,10 @@ public class StartTripViewModel extends BaseViewModel<StartTripCallBack> {
                                                     getDataManager().setIsSignatureImageMandatory(globalConfigurationMaster.getConfigValue());
                                                 } else if (globalConfigurationMaster.getConfigGroup().equalsIgnoreCase("IS_EDISPUTE_IMAGE_MANDATORY")) {
                                                     getDataManager().setEDISPUTE(globalConfigurationMaster.getConfigValue());
+                                                }
+                                                // Distance Api Enable:-
+                                                if (globalConfigurationMaster.getConfigGroup().equalsIgnoreCase("IS_DISTANCE_API_ENABLE")) {
+                                                    getDataManager().setDistanceAPIEnabled(Boolean.valueOf(globalConfigurationMaster.getConfigValue()));
                                                 }
                                             }
                                             for (GlobalConfigurationMaster globalConfigurationMaster : globalConfigurationMasterList) {

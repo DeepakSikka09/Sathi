@@ -2,7 +2,6 @@ package in.ecomexpress.sathi.ui.dummy.eds.eds_success_fail;
 
 import static in.ecomexpress.sathi.utils.Constants.IS_CASH_COLLECTION_ENABLE;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -20,8 +19,6 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-
-import com.google.gson.Gson;
 
 import javax.inject.Inject;
 
@@ -43,6 +40,7 @@ public class EDSSuccessFailActivity extends BaseActivity<ActivityEdsSuccessFailB
     @Inject
     EDSSuccessFailViewModel EDSSuccessFailViewModel;
     ActivityEdsSuccessFailBinding activitySuccessScreenBinding;
+
     Long awb = null;
     private Handler handler;
     int shipment_status = 0;
@@ -50,9 +48,7 @@ public class EDSSuccessFailActivity extends BaseActivity<ActivityEdsSuccessFailB
     EDSResponse edsResponseCommit;
     private boolean eds_success = false;
     String feedbackTextMessage;
-    Gson gson = new Gson();
 
-    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,9 +89,11 @@ public class EDSSuccessFailActivity extends BaseActivity<ActivityEdsSuccessFailB
                 }
             }
             awb = getIntent().getExtras().getLong(Constants.INTENT_KEY, 0);
-            activitySuccessScreenBinding.awb.setText("AWB NO:- " + awb);
-            edsResponseCommit = gson.fromJson(getIntent().getStringExtra("edsResponseCommit"), EDSResponse.class);
+            activitySuccessScreenBinding.awb.setText("AWB NO:- " + String.valueOf(awb));
+
+            edsResponseCommit = getIntent().getParcelableExtra("edsResponseCommit");
             EDSSuccessFailViewModel.setContent(edsResponseCommit);
+
             if (EDSSuccessFailViewModel.getDataManager().getDuplicateCashReceipt().equalsIgnoreCase("true") && IS_CASH_COLLECTION_ENABLE) {
                 activitySuccessScreenBinding.lltFooter.setVisibility(View.GONE);
                 activitySuccessScreenBinding.lltFooterCashReceipt.setVisibility(View.VISIBLE);

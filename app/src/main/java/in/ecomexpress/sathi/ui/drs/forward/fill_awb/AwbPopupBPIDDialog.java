@@ -2,6 +2,7 @@ package in.ecomexpress.sathi.ui.drs.forward.fill_awb;
 
 import static in.ecomexpress.sathi.utils.CommonUtils.logButtonEventInGoogleAnalytics;
 import static in.ecomexpress.sathi.utils.CommonUtils.logScreenNameInGoogleAnalytics;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
@@ -14,11 +15,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
+
 import javax.inject.Inject;
+
 import dagger.hilt.android.AndroidEntryPoint;
 import in.ecomexpress.sathi.R;
 import in.ecomexpress.sathi.databinding.CustomDialogMessageFwdBinding;
@@ -30,6 +34,7 @@ import in.ecomexpress.sathi.ui.drs.forward.signature.ISignatureNavigator;
 import in.ecomexpress.sathi.ui.drs.forward.signature.SignatureViewModel;
 import in.ecomexpress.sathi.utils.CommonUtils;
 import in.ecomexpress.sathi.utils.Constants;
+import in.ecomexpress.sathi.utils.GlobalConstant;
 import in.ecomexpress.sathi.utils.ImageHandler;
 import in.ecomexpress.sathi.utils.Logger;
 import in.ecomexpress.sathi.utils.NetworkUtils;
@@ -81,6 +86,7 @@ public class AwbPopupBPIDDialog extends BaseDialog implements ISignatureNavigato
     public void dismissDialog() {
         dismissDialog("");
         layoutFillAwbBinding.popupElement.setVisibility(View.GONE);
+
     }
 
     @Override
@@ -93,45 +99,60 @@ public class AwbPopupBPIDDialog extends BaseDialog implements ISignatureNavigato
             logButtonEventInGoogleAnalytics(TAG, "ManualBPIDInputFwdOnSubmitBPClick", "ManuallyEnteredBPID " + layoutFillAwbBinding.edtNum.getText().toString(), context);
             if (layoutFillAwbBinding.edtNum.getText().toString().equalsIgnoreCase(return_package_barcode)) {
                 myDialogCloseListener.setStatusOfAwb(true, layoutFillAwbBinding.edtNum.getText().toString());
+
                 dismissDialog();
             } else {
+
                 myDialogCloseListener.setStatusOfAwb(false, layoutFillAwbBinding.edtNum.getText().toString());
+
                 dismissDialog();
             }
         }
+
     }
 
     @Override
-    public void showHandleError(boolean status) {}
+    public void showHandleError(boolean status) {
+
+    }
 
     @Override
     public void onCaptureImage() {
+
         try {
-            if (!isNetworkConnected()) {
-                showError(getString(R.string.check_internet));
-                return;
-            }
+
             AlertDialog.Builder builder = new AlertDialog.Builder(context,R.style.Theme_MaterialComponents_Light_Dialog_Alert);
             String AlertText1 = "Attention : ";
             builder.setMessage(AlertText1 + getString(R.string.alert)).setCancelable(false).setPositiveButton("OK", (dialog, id) -> imageHandler.captureImage(awb_no + "_" + drs_id_num + "_Mismatch_BP_Image.png", layoutFillAwbBinding.image, "Mismatch_BP_Image"));
             AlertDialog alert = builder.create();
             alert.show();
         } catch (Exception e) {
+
             Logger.e(AwbPopupBPIDDialog.class.getName(), e.getMessage());
+
         }
+
     }
 
     @Override
-    public void onCaptureImage2() {}
+    public void onCaptureImage2() {
+
+    }
 
     @Override
-    public void saveSignature() {}
+    public void saveSignature() {
+
+    }
 
     @Override
-    public void showSuccessStatus(ForwardCommit forwardCommit) {}
+    public void showSuccessStatus(ForwardCommit forwardCommit) {
+
+    }
 
     @Override
-    public void submitErrorAlert() {}
+    public void submitErrorAlert() {
+
+    }
 
     @Override
     public void showError(String msgStr) {
@@ -143,8 +164,11 @@ public class AwbPopupBPIDDialog extends BaseDialog implements ISignatureNavigato
         }
     }
 
+
     @Override
-    public void onClear() {}
+    public void onClear() {
+
+    }
 
     @Override
     public String getCompositeKey() {
@@ -152,10 +176,14 @@ public class AwbPopupBPIDDialog extends BaseDialog implements ISignatureNavigato
     }
 
     @Override
-    public void enableEditText(boolean b) {}
+    public void enableEditText(boolean b) {
+
+    }
 
     @Override
-    public void hideEdit(String select) {}
+    public void hideEdit(String select) {
+
+    }
 
     @Override
     public String getReceiverName() {
@@ -163,22 +191,35 @@ public class AwbPopupBPIDDialog extends BaseDialog implements ISignatureNavigato
     }
 
     @Override
-    public void onDRSForwardItemFetch(DRSForwardTypeResponse drsForwardTypeResponse) {}
+    public void onDRSForwardItemFetch(DRSForwardTypeResponse drsForwardTypeResponse) {
+
+    }
 
     @Override
-    public void setConsigneeDistance(int meter) {}
+    public void setConsigneeDistance(int meter) {
+
+    }
 
     @Override
-    public void setConsingeeProfiling(boolean enable) {}
+    public void setConsingeeProfiling(boolean enable) {
+
+    }
 
     @Override
-    public void saveCommit() {}
+    public void saveCommit() {
+
+    }
 
     @Override
-    public void callCommit(String valueOf, String fileName, String compositeKey) {}
+    public void callCommit(String valueOf, String fileName, String compositeKey) {
+
+    }
 
     @Override
-    public void onHandleError(String error) {}
+    public void onHandleError(String error) {
+
+    }
+
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         layoutFillAwbBinding = DataBindingUtil.inflate(inflater, R.layout.layout_fill_awb_bpid, container, false);
@@ -187,45 +228,55 @@ public class AwbPopupBPIDDialog extends BaseDialog implements ISignatureNavigato
             layoutFillAwbBinding.setViewModel(awbPopupDialogViewModel);
             awbPopupDialogViewModel.setNavigator(this);
             logScreenNameInGoogleAnalytics(TAG, context);
+
+
             Constants.LOCATION_ACCURACY = awbPopupDialogViewModel.getDataManager().getUndeliverConsigneeRANGE();
             if (awbPopupDialogViewModel.getIsAwbScan()) {
                 awbPopupDialogViewModel.getIsAwbScan();
             }
+
+
             forwardCommit.setAwb(awb_no);
             awbPopupDialogViewModel.setImageRequired(false);
             awbPopupDialogViewModel.onForwardDRSCommit(forwardCommit);
             awbPopupDialogViewModel.fetchForwardShipment(drs_id_num, awb_no);
             awbPopupDialogViewModel.getConsigneeProfiling();
             awbPopupDialogViewModel.setDeliveryAddress("Office");
+
+
             imageHandler = new ImageHandler(getBaseActivity()) {
                 @Override
                 public void onBitmapReceived(final Bitmap bitmap, final String imageUri, final ImageView imageView, String imageName, String imageCode, int pos, boolean verifyImage) {
                     // Blur Image Recognition Using Laplacian Variance:-
+
                     context.runOnUiThread(() -> {
-                        if (!NetworkUtils.isNetworkConnected(context)) {
-                            showError(getString(R.string.check_internet));
-                            return;
-                        }
+
                         if (CommonUtils.checkImageIsBlurryOrNot(context, "FWD", bitmap, imageCaptureCount, awbPopupDialogViewModel.getDataManager())) {
                             imageCaptureCount++;
                         } else {
                             if (imageView != null) {
+                                isImageCaptured = true;
+                                awbPopupDialogViewModel.setImageCaptured(true);
+                                mimageView = imageView;
+                                mbitmap = bitmap;
+                                imageFileName = imageUri;
                                 if (NetworkUtils.isNetworkConnected(context)) {
-                                    isImageCaptured = true;
-                                    awbPopupDialogViewModel.setImageCaptured(true);
-                                    mimageView = imageView;
-                                    mbitmap = bitmap;
-                                    imageFileName = imageUri;
                                     awbPopupDialogViewModel.uploadImageServer(awb_no + "_" + drs_id_num + "_Mismatch_BP_Image.png", imageUri, imageCode, Long.parseLong(awb_no), Integer.parseInt(drs_id_num), "", bitmap, composite_key, false);
+                                } else {
+                                    imageView.setImageBitmap(bitmap);
+                                    awbPopupDialogViewModel.uploadAWSImage(imageUri, "Mismatch_BP_Image", awb_no + "_" + drs_id_num + "_Mismatch_BP_Image.png", -1, GlobalConstant.ImageSyncStatus.IMAGE_SYNC_STATUS_NO, false, composite_key, false);
                                 }
                             }
                         }
                     });
                 }
             };
+
         } catch (Exception e) {
             Logger.e(AwbPopupBPIDDialog.class.getName(), e.getMessage());
         }
+
+
         return view;
     }
 
@@ -235,18 +286,25 @@ public class AwbPopupBPIDDialog extends BaseDialog implements ISignatureNavigato
     }
 
     @Override
-    public void setCommitOffline(String imageUri) {}
+    public void setCommitOffline(String imageUri) {
+
+    }
 
     @Override
-    public void scanAwb() {}
+    public void scanAwb() {
+
+    }
 
     @Override
-    public void mResultReceiver1(String strScancode) {}
+    public void mResultReceiver1(String strScancode) {
+
+    }
 
     @Override
     public boolean getScanedResult() {
         return false;
     }
+
 
     @Override
     public String getotp() {
@@ -254,10 +312,14 @@ public class AwbPopupBPIDDialog extends BaseDialog implements ISignatureNavigato
     }
 
     @Override
-    public void switchLayoutGone() {}
+    public void switchLayoutGone() {
+
+    }
 
     @Override
-    public void showScanAlert() {}
+    public void showScanAlert() {
+
+    }
 
     @Override
     public void onResume() {
@@ -267,6 +329,7 @@ public class AwbPopupBPIDDialog extends BaseDialog implements ISignatureNavigato
             layoutFillAwbBinding.image.setVisibility(View.VISIBLE);
         } else {
             layoutFillAwbBinding.image.setVisibility(View.GONE);
+
         }
     }
 
@@ -275,11 +338,15 @@ public class AwbPopupBPIDDialog extends BaseDialog implements ISignatureNavigato
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         super.onActivityResult(requestCode, resultCode, data);
         try {
-            imageHandler.onActivityResult(requestCode, resultCode, data);
+            {
+                imageHandler.onActivityResult(requestCode, resultCode, data);
+            }
         } catch (Exception e) {
             Logger.e(AwbPopupBPIDDialog.class.getName(), e.getMessage());
+
         }
     }
 

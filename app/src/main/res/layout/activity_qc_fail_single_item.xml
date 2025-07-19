@@ -1,0 +1,73 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.drs.rvp.qc_failure_list.QcFailItemViewModel" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/popup_element"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/_7DP"
+            app:cardElevation="@dimen/_10DP">
+
+            <LinearLayout
+                android:id="@+id/fail_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5DP"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:weightSum=".10">
+
+                <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                    android:id="@+id/qcfail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight=".06"
+                    android:hint="Check_Image"
+                    android:padding="@dimen/_5DP"
+                    android:text="@{ viewModel.qcitem()}"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+                <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                    android:id="@+id/mandate_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight=".02"
+                    android:gravity="center"
+                    android:hint="M"
+                    android:padding="@dimen/_5DP"
+                    android:text="@{ viewModel.mandatoryCheck()}"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+                <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                    android:id="@+id/true_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight=".02"
+                    android:gravity="center"
+                    android:hint="true"
+                    android:padding="@dimen/_5DP"
+                    android:text="@{ viewModel.qcStatus()}"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</layout>

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
-
 import androidx.room.Room;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -89,6 +88,15 @@ import in.ecomexpress.sathi.ui.drs.rts.rts_main_list.RTSShipmentListAdapter;
 import in.ecomexpress.sathi.ui.drs.rts.rts_scan_and_deliver.RTSScanActivityViewModel;
 import in.ecomexpress.sathi.ui.drs.rts.rts_signature.RTSSignatureViewModel;
 import in.ecomexpress.sathi.ui.drs.rts.rts_success.RTSSuccessViewModel;
+import in.ecomexpress.sathi.ui.drs.rvp.awbscan.CaptureScanViewModel;
+import in.ecomexpress.sathi.ui.drs.rvp.qc_failure_list.QcFailAdapter;
+import in.ecomexpress.sathi.ui.drs.rvp.qc_failure_list.RVPQcFailureViewModel;
+import in.ecomexpress.sathi.ui.drs.rvp.rvp_qc_details.RvpQcDataDetailsViewModel;
+import in.ecomexpress.sathi.ui.drs.rvp.rvp_qc_list.RvpQcListViewModel;
+import in.ecomexpress.sathi.ui.drs.rvp.rvp_secure_activity.RVPSecureDeliveryViewModel;
+import in.ecomexpress.sathi.ui.drs.rvp.signature.RVPSignatureViewModel;
+import in.ecomexpress.sathi.ui.drs.rvp.success.RVPSuccessViewModel;
+import in.ecomexpress.sathi.ui.drs.rvp.undelivered.RVPUndeliveredViewModel;
 import in.ecomexpress.sathi.ui.drs.secure_delivery.SecureDeliveryViewModel;
 import in.ecomexpress.sathi.ui.drs.sms.SMSViewModel;
 import in.ecomexpress.sathi.ui.drs.todolist.DRSListAdapter;
@@ -279,6 +287,7 @@ public class AppModule {
         return Constants.API_KEY;
     }
 
+
     /**
      * Provide api url string.
      *
@@ -302,6 +311,7 @@ public class AppModule {
         return dataHelper;
     }
 
+
     /**
      * Provide database helper idb helper.
      *
@@ -314,6 +324,7 @@ public class AppModule {
         return databaseHelper;
     }
 
+
     /**
      * Provide preference helper preference helper.
      *
@@ -325,6 +336,7 @@ public class AppModule {
     @Singleton
     IPreferenceHelper providePreferenceHelper(PreferenceHelper preferenceHelper) {
         return preferenceHelper;
+
     }
 
     /**
@@ -336,7 +348,15 @@ public class AppModule {
     @Provides
     @Singleton
     IRestApiHelper provideRestApiHelper(RestApiHelper restApiHelper, StorageHelper storageHelper) {
+//        if (BuildConfig.BUILD_TYPE.equalsIgnoreCase("release")) {
+        //  return restApiHelper;
+//        }
+//        if (BuildConfig.DEBUG) {
+        // return storageHelper;
+//        } else {
+
         return restApiHelper;
+//        }
     }
 
     @SuppressLint({"MissingPermission", "HardwareIds"})
@@ -351,27 +371,30 @@ public class AppModule {
         deviceDetails.setSdkVersion(Build.VERSION.RELEASE);
         deviceDetails.setSdkVersionCode(Build.VERSION.SDK_INT);
         return deviceDetails;
+
     }
+
 
     @Provides
     OkHttpClient provideOkHttpClient() {
-        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(message -> {
-            int maxLogSize = 4000;
-            for (int i = 0; i <= message.length() / maxLogSize; i++) {
-                int start = i * maxLogSize;
-                int end = Math.min((i + 1) * maxLogSize, message.length());
-                Log.d("API_LOGS", message.substring(start, end));
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+            @Override
+            public void log(String message) {
+                int maxLogSize = 4000;
+                for (int i = 0; i <= message.length() / maxLogSize; i++) {
+                    int start = i * maxLogSize;
+                    int end = (i + 1) * maxLogSize;
+                    end = end > message.length() ? message.length() : end;
+                    Log.i("okhttp", message.substring(start, end));
+                }
             }
         });
-
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        return new OkHttpClient.Builder()
-                .readTimeout(150, TimeUnit.SECONDS)
+        return new OkHttpClient().newBuilder().readTimeout(150, TimeUnit.SECONDS)
                 .writeTimeout(150, TimeUnit.SECONDS)
-                .connectTimeout(150, TimeUnit.SECONDS)
-                .addInterceptor(httpLoggingInterceptor)
-                .build();
+                .connectTimeout(150, TimeUnit.SECONDS).addInterceptor(httpLoggingInterceptor).build();
+
     }
 
     @Provides
@@ -425,7 +448,8 @@ public class AppModule {
     }
 
     @Provides
-    DaysAttendanceStausViewModel provideDaysAttendanceStausViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application application) {
+    DaysAttendanceStausViewModel provideDaysAttendanceStausViewModel(IDataManager dataManager, ISchedulerProvider
+            schedulerProvider, Application application) {
         return new DaysAttendanceStausViewModel(dataManager, schedulerProvider, application);
     }
 
@@ -456,7 +480,8 @@ public class AppModule {
 
 
     @Provides
-    CustumDialogViewModel provideCustumDialogViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application application) {
+    CustumDialogViewModel provideCustumDialogViewModel(IDataManager dataManager, ISchedulerProvider
+            schedulerProvider, Application application) {
         return new CustumDialogViewModel(dataManager, schedulerProvider, application);
     }
 
@@ -506,7 +531,8 @@ public class AppModule {
     }
 
     @Provides
-    PerformanceViewModel providePerformancefViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    PerformanceViewModel providePerformancefViewModel(IDataManager dataManager,
+                                                      ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new PerformanceViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
@@ -521,7 +547,8 @@ public class AppModule {
     }
 
     @Provides
-    StopTripViewModel provideStopTripViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application application) {
+    StopTripViewModel provideStopTripViewModel(IDataManager dataManager, ISchedulerProvider
+            schedulerProvider, Application application) {
         return new StopTripViewModel(dataManager, schedulerProvider, application);
     }
 
@@ -536,7 +563,8 @@ public class AppModule {
     }
 
     @Provides
-    TrainingViewModel providTrainingViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    TrainingViewModel providTrainingViewModel(IDataManager dataManager,
+                                              ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new TrainingViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
@@ -560,8 +588,10 @@ public class AppModule {
         return new ForwardCommit();
     }
 
+
     @Provides
-    DisputeDialogViewModel provideDisputeDialogViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    DisputeDialogViewModel provideDisputeDialogViewModel(IDataManager dataManager,
+                                                         ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new DisputeDialogViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
@@ -571,9 +601,11 @@ public class AppModule {
     }
 
     @Provides
-    public MPSScanViewModel provideMPSScanViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    public MPSScanViewModel provideMPSScanViewModel(IDataManager dataManager,
+                                                    ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new MPSScanViewModel(dataManager, schedulerProvider, sathiApplication);
     }
+
 
     @Provides
     ScannerItemAdapter provideScannerItemAdapter() {
@@ -581,14 +613,17 @@ public class AppModule {
     }
 
     @Provides
-    FwdOBDCompleteViewModel provideFwdOBDCompleteViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    FwdOBDCompleteViewModel provideFwdOBDCompleteViewModel(IDataManager dataManager,
+                                                           ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new FwdOBDCompleteViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
     @Provides
-    FwdOBDProductDetailViewModel provideFwdOBDProductDetailViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    FwdOBDProductDetailViewModel provideFwdOBDProductDetailViewModel(IDataManager dataManager,
+                                                                     ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new FwdOBDProductDetailViewModel(dataManager, schedulerProvider, sathiApplication);
     }
+
 
     @Provides
     FwdOBDQcFailViewModel provideFwdOBDQcFailViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
@@ -610,33 +645,39 @@ public class AppModule {
         return new OBDStartOTPViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
+
     @Provides
     OBDStopOTPViewModel provideObdOtpVerifyViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new OBDStopOTPViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
     @Provides
-    OtherNumberDialogViewModel provideOtherNumberDialogViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    OtherNumberDialogViewModel provideOtherNumberDialogViewModel(IDataManager dataManager,
+                                                                 ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new OtherNumberDialogViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
     @Provides
-    ShipmentEarnDialogViewModel provideShipmentEarnDialogViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    ShipmentEarnDialogViewModel provideShipmentEarnDialogViewModel(IDataManager dataManager, ISchedulerProvider
+            schedulerProvider, Application sathiApplication) {
         return new ShipmentEarnDialogViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
     @Provides
-    SignatureViewModel provideSignatureViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    SignatureViewModel provideSignatureViewModel(IDataManager dataManager,
+                                                 ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new SignatureViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
     @Provides
-    FWDSuccessViewModel providesFWDSuccessViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    FWDSuccessViewModel providesFWDSuccessViewModel(IDataManager dataManager,
+                                                    ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new FWDSuccessViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
     @Provides
-    UndeliveredViewModel provideUndeliveredViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    UndeliveredViewModel provideUndeliveredViewModel(IDataManager dataManager,
+                                                     ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new UndeliveredViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
@@ -671,22 +712,84 @@ public class AppModule {
     }
 
     @Provides
-    public in.ecomexpress.sathi.ui.dummy.eds.eds_scan.CaptureScanViewModel provideCaptureEdsScanViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    public CaptureScanViewModel provideCaptureScanViewModel(IDataManager dataManager,
+                                                            ISchedulerProvider schedulerProvider, Application sathiApplication) {
+        return new CaptureScanViewModel(dataManager, schedulerProvider, sathiApplication);
+    }
+
+    @Provides
+    public in.ecomexpress.sathi.ui.dummy.eds.eds_scan.CaptureScanViewModel provideCaptureEdsScanViewModel(IDataManager dataManager,
+                                                                                                       ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new in.ecomexpress.sathi.ui.dummy.eds.eds_scan.CaptureScanViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
     @Provides
-    public EDSSuccessFailViewModel provideEDSSuccessFailViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    public EDSSuccessFailViewModel provideEDSSuccessFailViewModel(IDataManager dataManager,
+                                                                  ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new EDSSuccessFailViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
     @Provides
-    public EdsEkycIdfcViewModel provideEdsEkycIdfcViewViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    public EdsEkycIdfcViewModel provideEdsEkycIdfcViewViewModel(IDataManager dataManager,
+                                                               ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new EdsEkycIdfcViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
     @Provides
-    SecureDeliveryViewModel provideSecureDeliveryViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    RVPQcFailureViewModel provideRVPQcFailureViewModel(IDataManager dataManager,
+                                                       ISchedulerProvider schedulerProvider, Application sathiApplication) {
+        return new RVPQcFailureViewModel(dataManager, schedulerProvider, sathiApplication);
+    }
+
+    @Provides
+    QcFailAdapter provideQcFailAdapter() {
+        return new QcFailAdapter(new ArrayList<>());
+    }
+
+
+    @Provides
+    RvpQcDataDetailsViewModel provideRvpQcDataDetailsViewModel(IDataManager dataManager,
+                                                               ISchedulerProvider schedulerProvider, Application sathiApplication) {
+        return new RvpQcDataDetailsViewModel(dataManager, schedulerProvider, sathiApplication);
+    }
+
+
+    @Provides
+    RvpQcListViewModel provideRvpQcListViewModel(IDataManager dataManager,
+                                                 ISchedulerProvider schedulerProvider, Application sathiApplication) {
+        return new RvpQcListViewModel(dataManager, schedulerProvider, sathiApplication);
+    }
+
+    @Provides
+    RVPSecureDeliveryViewModel providerrvpsecuredeliveryactivity(IDataManager dataManager,
+                                                                 ISchedulerProvider schedulerProvider, Application sathiApplication) {
+        return new RVPSecureDeliveryViewModel(dataManager, schedulerProvider, sathiApplication);
+    }
+
+
+    @Provides
+    RVPSignatureViewModel providesSignatureViewModel(IDataManager dataManager,
+                                                     ISchedulerProvider iSchedulerProvider, Application sathiApplication) {
+        return new RVPSignatureViewModel(dataManager, iSchedulerProvider, sathiApplication);
+    }
+
+
+
+    @Provides
+    RVPSuccessViewModel providesRVPSuccessViewModel(IDataManager dataManager,
+                                                    ISchedulerProvider schedulerProvider, Application sathiApplication) {
+        return new RVPSuccessViewModel(dataManager, schedulerProvider, sathiApplication);
+    }
+
+    @Provides
+    RVPUndeliveredViewModel provideRVPUndeliveredViewModel(IDataManager dataManager,
+                                                           ISchedulerProvider schedulerProvider, Application sathiApplication) {
+        return new RVPUndeliveredViewModel(dataManager, schedulerProvider, sathiApplication);
+    }
+
+    @Provides
+    SecureDeliveryViewModel provideSecureDeliveryViewModel(IDataManager dataManager,
+                                                           ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new SecureDeliveryViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
@@ -701,7 +804,8 @@ public class AppModule {
     }
 
     @Provides
-    SMSViewModel provideRateUsViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application application) {
+    SMSViewModel provideRateUsViewModel(IDataManager dataManager, ISchedulerProvider
+            schedulerProvider, Application application) {
         return new SMSViewModel(dataManager, schedulerProvider, application);
     }
 
@@ -735,6 +839,7 @@ public class AppModule {
         return new PendingHistoryAdapter(new ArrayList<>());
     }
 
+
     @Provides
     PendingHistoryDetailViewModel providePendingHistoryDetailViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application application) {
         return new PendingHistoryDetailViewModel(dataManager, schedulerProvider, application);
@@ -746,58 +851,66 @@ public class AppModule {
     }
 
     @Provides
-    ProfileViewModel provideProfileViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application application) {
+    ProfileViewModel provideProfileViewModel(IDataManager dataManager,
+                                             ISchedulerProvider schedulerProvider, Application application) {
         return new ProfileViewModel(dataManager, schedulerProvider, application);
     }
 
     @Provides
-    AcDocumentListViewModel provideAcDocumentListViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    AcDocumentListViewModel provideAcDocumentListViewModel(IDataManager dataManager,
+                                                           ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new AcDocumentListViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
     @Provides
     AcDocumentListCollectionAdapter provideAcDocumentListCollectionAdapter() {
-        return new AcDocumentListCollectionAdapter(new ArrayList<>(), new ArrayList<>());
+        return new AcDocumentListCollectionAdapter(new ArrayList<Boolean>(), new ArrayList<Boolean>());
     }
 
     @Provides
-    CaptureImageViewModel provideCaptureImageViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    CaptureImageViewModel provideCaptureImageViewModel(IDataManager dataManager,
+                                                       ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new CaptureImageViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
     @Provides
     CaptureImageAdapter provideCaptureImageAdapter() {
-        return new CaptureImageAdapter(new ArrayList<>(), new ArrayList<>());
+        return new CaptureImageAdapter(new ArrayList<Boolean>(), new ArrayList<Boolean>());
     }
 
     @Provides
-    CashCollectionViewModel provideCashCollectionViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    CashCollectionViewModel provideCashCollectionViewModel(IDataManager dataManager,
+                                                           ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new CashCollectionViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
     @Provides
-    DocumentListViewModel provideDocumentListViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    DocumentListViewModel provideDocumentListViewModel(IDataManager dataManager,
+                                                       ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new DocumentListViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
     @Provides
     DocumentListCollectionAdapter provideDocumentListCollectionAdapter() {
-        return new DocumentListCollectionAdapter(new ArrayList<>(), new ArrayList<>());
+        return new DocumentListCollectionAdapter(new ArrayList<Boolean>(), new ArrayList<Boolean>());
     }
 
     @Provides
-    DummyViewModel provideDummyViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    DummyViewModel provideDummyViewModel(IDataManager dataManager,
+                                         ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new DummyViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
     @Provides
-    EDSDetailViewModel provideEDSDetailViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    EDSDetailViewModel provideEDSDetailViewModel(IDataManager dataManager,
+                                                 ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new EDSDetailViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
     @Provides
-    EDSDetailPagerAdapter provideEDSDetailPagerAdapter(EDSDetailActivity activity, IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
-        return new EDSDetailPagerAdapter(activity.getSupportFragmentManager(), new EdsWithActivityList(), new ArrayList<>(), new EDSDetailViewModel(dataManager, schedulerProvider, sathiApplication));
+    EDSDetailPagerAdapter provideEDSDetailPagerAdapter(EDSDetailActivity activity, IDataManager dataManager,
+                                                       ISchedulerProvider schedulerProvider, Application sathiApplication) {
+        return new EDSDetailPagerAdapter(activity.getSupportFragmentManager(), new EdsWithActivityList(), new ArrayList<MasterActivityData>(), new EDSDetailViewModel(dataManager, schedulerProvider, sathiApplication));
     }
 
     @Provides
@@ -806,42 +919,48 @@ public class AppModule {
     }
 
     @Provides
-    EdsBkycIdfcViewModel provideEdsEkycIdfcModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    EdsBkycIdfcViewModel provideEdsEkycIdfcModel(IDataManager dataManager,
+                                                 ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new EdsBkycIdfcViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
     @Provides
-    DocumentCollectionViewModel provideDocumentCollectionViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    DocumentCollectionViewModel provideDocumentCollectionViewModel(IDataManager dataManager,
+                                                                   ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new DocumentCollectionViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
     @Provides
     DocumentCollectionAdapter provideDocumentCollectionAdapter() {
-        return new DocumentCollectionAdapter(new ArrayList<>(), new ArrayList<>());
+        return new DocumentCollectionAdapter(new ArrayList<Boolean>(), new ArrayList<Boolean>());
     }
 
     @Provides
-    DocumentVerificationViewModel provideDocumentVerificationViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    DocumentVerificationViewModel provideDocumentVerificationViewModel(IDataManager dataManager,
+                                                                       ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new DocumentVerificationViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
     @Provides
     DocumentVerificationAdapter provideDocumentVerificationAdapter() {
-        return new DocumentVerificationAdapter(new ArrayList<>(), new ArrayList<>());
+        return new DocumentVerificationAdapter(new ArrayList<Boolean>(), new ArrayList<Boolean>());
     }
 
     @Provides
-    EdsEkycHdfcViewModel provideEdsEkycHdfcModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    EdsEkycHdfcViewModel provideEdsEkycHdfcModel(IDataManager dataManager,
+                                                 ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new EdsEkycHdfcViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
     @Provides
-    EdsEkycNiyoViewModel provideEdsEkycNiyoModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application app) {
+    EdsEkycNiyoViewModel provideEdsEkycNiyoModel(IDataManager dataManager,
+                                                 ISchedulerProvider schedulerProvider, Application app) {
         return new EdsEkycNiyoViewModel(dataManager, schedulerProvider, app);
     }
 
     @Provides
-    EdsRblViewModel provideEdsRblModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    EdsRblViewModel provideEdsRblModel(IDataManager dataManager,
+                                       ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new EdsRblViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
@@ -857,69 +976,82 @@ public class AppModule {
     }
 
     @Provides
-    OpvFragmentViewModel provideOpvFragmentViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    OpvFragmentViewModel provideOpvFragmentViewModel(IDataManager dataManager,
+                                                     ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new OpvFragmentViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
 
     @Provides
-    EdsOtpViewModel providesEdsOtpViewModel(IDataManager dataManager, ISchedulerProvider iSchedulerProvider, Application sathiApplication) {
+    EdsOtpViewModel providesEdsOtpViewModel(IDataManager dataManager,
+                                            ISchedulerProvider iSchedulerProvider, Application sathiApplication) {
         return new EdsOtpViewModel(dataManager, iSchedulerProvider, sathiApplication);
     }
 
     @Provides
-    ResOpvFragmentViewModel provideResOpvFragmentViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    ResOpvFragmentViewModel provideResOpvFragmentViewModel(IDataManager dataManager,
+                                                           ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new ResOpvFragmentViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
 
     @Provides
-    EDSSignatureViewModel providesEDSSignatureViewModel(IDataManager dataManager, ISchedulerProvider iSchedulerProvider, Application sathiApplication) {
+    EDSSignatureViewModel providesEDSSignatureViewModel(IDataManager dataManager,
+                                                        ISchedulerProvider iSchedulerProvider, Application sathiApplication) {
         return new EDSSignatureViewModel(dataManager, iSchedulerProvider, sathiApplication);
     }
 
     @Provides
-    EdsTaskListActivityModel provideEdsTaskListActivityModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    EdsTaskListActivityModel provideEdsTaskListActivityModel(IDataManager dataManager,
+                                                             ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new EdsTaskListActivityModel(dataManager, schedulerProvider ,sathiApplication);
     }
 
     @Provides
-    EdsEkycAntWorkViewModel edsEkycAntWorkViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application app) {
+    EdsEkycAntWorkViewModel edsEkycAntWorkViewModel(IDataManager dataManager,
+                                                    ISchedulerProvider schedulerProvider, Application app) {
         return new EdsEkycAntWorkViewModel(dataManager, schedulerProvider,app);
     }
 
     @Provides
-    EdsEkycFreyoViewModel provideEdsEkycFreyoViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application app) {
+    EdsEkycFreyoViewModel provideEdsEkycFreyoViewModel(IDataManager dataManager,
+                                                       ISchedulerProvider schedulerProvider, Application app) {
         return new EdsEkycFreyoViewModel(dataManager, schedulerProvider,app);
     }
 
     @Provides
-    EdsEkycPaytmViewModel provideEdsEkycPaytmViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    EdsEkycPaytmViewModel provideEdsEkycPaytmViewModel(IDataManager dataManager,
+                                                       ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new EdsEkycPaytmViewModel(dataManager, schedulerProvider ,sathiApplication);
     }
 
     @Provides
-    IciciStandardViewModel provideIciciStandardViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider , Application sathiApplication) {
+    IciciStandardViewModel provideIciciStandardViewModel(IDataManager dataManager,
+                                                    ISchedulerProvider schedulerProvider , Application sathiApplication) {
         return new IciciStandardViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
     @Provides
-    IciciViewModel provideIciciViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider , Application sathiApplication) {
+    IciciViewModel provideIciciViewModel(IDataManager dataManager,
+                                            ISchedulerProvider schedulerProvider , Application sathiApplication) {
         return new IciciViewModel(dataManager, schedulerProvider, sathiApplication);
     }
 
     @Provides
-    PaytmViewModel providePaytmViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application app) {
+    PaytmViewModel providePaytmViewModel(IDataManager dataManager,
+                                         ISchedulerProvider schedulerProvider, Application app) {
         return new PaytmViewModel(dataManager, schedulerProvider,app);
     }
 
     @Provides
-    in.ecomexpress.sathi.ui.dummy.eds.undeilvered_eds.UndeliveredViewModel providesUndeliveredViewModel(IDataManager dataManager, ISchedulerProvider iSchedulerProvider, Application sathiApplication) {
+    in.ecomexpress.sathi.ui.dummy.eds.undeilvered_eds.UndeliveredViewModel providesUndeliveredViewModel(IDataManager dataManager,
+                                                                                                        ISchedulerProvider iSchedulerProvider, Application sathiApplication) {
         return new in.ecomexpress.sathi.ui.dummy.eds.undeilvered_eds.UndeliveredViewModel(dataManager, iSchedulerProvider ,sathiApplication);
     }
 
     @Provides
-    VodafoneViewModel provideVodafoneViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
+    VodafoneViewModel provideVodafoneViewModel(IDataManager dataManager,
+                                               ISchedulerProvider schedulerProvider, Application sathiApplication) {
         return new VodafoneViewModel(dataManager, schedulerProvider ,sathiApplication);
     }
 }

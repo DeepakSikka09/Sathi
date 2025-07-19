@@ -22,6 +22,8 @@ public interface IUndeliveredNavigator {
 
     void onDatePicker();
 
+
+
     void onSubmitSuccess(ForwardCommit forwardCommit);
 
     void OpenFailScreen(ForwardCommit forwardCommit);
@@ -70,7 +72,7 @@ public interface IUndeliveredNavigator {
 
     void pickDateVisibility();
 
-    void onCallBridgeCheckStatus();
+
 
     void undeliverShipment(boolean failFlag, boolean b);
 

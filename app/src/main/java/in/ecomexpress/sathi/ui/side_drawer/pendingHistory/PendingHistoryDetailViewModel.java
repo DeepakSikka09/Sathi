@@ -2,6 +2,7 @@ package in.ecomexpress.sathi.ui.side_drawer.pendingHistory;
 
 import static com.paytmmoneyagent.core.utils.CoreUtility.getString;
 import static in.ecomexpress.sathi.utils.CommonUtils.logButtonEventInGoogleAnalytics;
+
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.app.Dialog;
@@ -9,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import in.ecomexpress.sathi.R;
 import in.ecomexpress.sathi.SathiApplication;
@@ -22,7 +24,10 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+
 import javax.inject.Inject;
+
 import in.ecomexpress.sathi.repo.IDataManager;
 import in.ecomexpress.sathi.repo.local.data.eds.EDSActivityImageRequest;
 import in.ecomexpress.sathi.repo.local.data.eds.EDSCommitResponse;
@@ -75,7 +80,7 @@ public class PendingHistoryDetailViewModel extends BaseViewModel<IPendingHistory
                 if (pushApis.getShipmentCaterogy().equalsIgnoreCase("FWD")) {
                     fetchForwardShipment(awb_no);
                 } else if (pushApis.getShipmentCaterogy().equalsIgnoreCase("RVP") || pushApis.getShipmentCaterogy().equalsIgnoreCase("RQC")) {
-                    fetchRVPShipment(composite_key, awb_no, pushApis.isRvp_mps());
+                    fetchRVPShipment(composite_key, awb_no);
                 } else if (pushApis.getShipmentCaterogy().equalsIgnoreCase("EDS")) {
                     fetchEDSShipment(composite_key, awb_no);
                 } else if (pushApis.getShipmentCaterogy().equalsIgnoreCase("RTS")) {
@@ -102,21 +107,18 @@ public class PendingHistoryDetailViewModel extends BaseViewModel<IPendingHistory
         }
     }
 
-    public void fetchRVPShipment(String composite_key, long awb_no, boolean isFromMps) {
+    public void fetchRVPShipment(String composite_key, long awb_no) {
         try {
-            if(isFromMps){
-                getCompositeDisposable().add(getDataManager().loadMpsShipmentDetailsFromDB(composite_key).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui()).subscribe(drsMpsTypeResponse -> {
-                    getNavigator().setDRSStatus(drsMpsTypeResponse.getShipmentSyncStatus());
-                    getShipmentImageStatus(awb_no, false);
-                }, throwable -> getNavigator().showError(throwable.getMessage())));
-            } else{
-                getCompositeDisposable().add(getDataManager().getRVPDRS(composite_key).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui()).subscribe(drsReverseQCTypeResponse -> {
-                    getNavigator().setDRSStatus(drsReverseQCTypeResponse.getShipmentSyncStatus());
-                    getShipmentImageStatus(awb_no, false);
-                }, throwable -> getNavigator().showError(throwable.getMessage())));
-            }
+            getCompositeDisposable().add(getDataManager().getRVPDRS(composite_key).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui()).subscribe(drsReverseQCTypeResponse -> {
+                getNavigator().setDRSStatus(drsReverseQCTypeResponse.getShipmentSyncStatus());
+                getShipmentImageStatus(awb_no, false);
+            }, throwable -> {
+                writeErrors(Calendar.getInstance().getTimeInMillis(), new Exception(throwable));
+                Logger.e(TAG, String.valueOf(throwable));
+            }));
         } catch (Exception e) {
             getNavigator().showError(e.getMessage());
+            Logger.e(TAG, String.valueOf(e));
         }
     }
 
@@ -539,37 +541,23 @@ public class PendingHistoryDetailViewModel extends BaseViewModel<IPendingHistory
                         compositeKey = pushApi.getCompositeKey();
                     }
                     String finalCompositeKey = compositeKey;
-                    if(rvpCommit.isRvp_mps()){
-                        getDataManager().updateRvpMpsStatus(compositeKey, shipment_status).subscribe(aBoolean -> {
-                            pushApi.setShipmentStatus(GlobalConstant.CommitStatus.CommitSynced);
-                            updateSyncStatusInDRSRVpTable(true, finalCompositeKey);
-                            compositeDisposable.add(getDataManager().deleteSyncedImage(rvpCommitResponse.getResponse().getAwb_no()).subscribe(aBoolean1 -> {}));
-                            compositeDisposable.add(getDataManager().deleteSyncedFWD(Long.parseLong(rvpCommitResponse.getResponse().getAwb_no())).subscribe(aBoolean2 -> {}));
-                            compositeDisposable.add(getDataManager().saveCommitPacket(pushApi).subscribe(aBoolean13 -> {}));
-                            getDataManager().setCallClicked(rvpCommitResponse.getResponse().getAwb_no() + "RVPCall", true);
-                            getNavigator().setSuccessName();
-                            dismissProgressDialog();
-                        }, throwable -> {
-                            dismissProgressDialog();
-                            getNavigator().showError("Re-Upload The Committed Shipment");
-                            saveCommit(rvpCommit, String.valueOf(pushApi.CompositeKey));
-                        });
-                    } else{
-                        getDataManager().updateRvpStatus(compositeKey, shipment_status).subscribe(aBoolean -> {
-                            pushApi.setShipmentStatus(GlobalConstant.CommitStatus.CommitSynced);
-                            updateSyncStatusInDRSRVpTable(false, finalCompositeKey);
-                            compositeDisposable.add(getDataManager().deleteSyncedImage(rvpCommitResponse.getResponse().getAwb_no()).subscribe(aBoolean1 -> {}));
-                            compositeDisposable.add(getDataManager().deleteSyncedFWD(Long.parseLong(rvpCommitResponse.getResponse().getAwb_no())).subscribe(aBoolean2 -> {}));
-                            compositeDisposable.add(getDataManager().saveCommitPacket(pushApi).subscribe(aBoolean13 -> {}));
-                            getDataManager().setCallClicked(rvpCommitResponse.getResponse().getAwb_no() + "RVPCall", true);
-                            getNavigator().setSuccessName();
-                            dismissProgressDialog();
-                        }, throwable -> {
-                            dismissProgressDialog();
-                            getNavigator().showError("Re-Upload The Committed Shipment");
-                            saveCommit(rvpCommit, String.valueOf(pushApi.CompositeKey));
-                        });
-                    }
+                    getDataManager().updateRvpStatus(compositeKey, shipment_status).subscribe(aBoolean -> {
+                        pushApi.setShipmentStatus(GlobalConstant.CommitStatus.CommitSynced);
+                        updateSyncStatusInDRSRVpTable(finalCompositeKey);
+                        compositeDisposable.add(getDataManager().deleteSyncedImage(rvpCommitResponse.getResponse().getAwb_no()).subscribe(aBoolean1 -> {
+                        }));
+                        compositeDisposable.add(getDataManager().deleteSyncedFWD(Long.parseLong(rvpCommitResponse.getResponse().getAwb_no())).subscribe(aBoolean2 -> {
+                        }));
+                        compositeDisposable.add(getDataManager().saveCommitPacket(pushApi).subscribe(aBoolean13 -> {
+                        }));
+                        getDataManager().setCallClicked(rvpCommitResponse.getResponse().getAwb_no() + "RVPCall", true);
+                        getNavigator().setSuccessName();
+                        dismissProgressDialog();
+                    }, throwable -> {
+                        dismissProgressDialog();
+                        getNavigator().showError("Re-Upload The Committed Shipment");
+                        saveCommit(rvpCommit, String.valueOf(pushApi.CompositeKey));
+                    });
                 } else if ((rvpCommitResponse.getResponse().getCode().equalsIgnoreCase("E107")) || (rvpCommitResponse.getResponse().getCode().equalsIgnoreCase("107"))) {
                     dismissProgressDialog();
                     LocalLogout();
@@ -599,13 +587,10 @@ public class PendingHistoryDetailViewModel extends BaseViewModel<IPendingHistory
 
     }
 
-    private void updateSyncStatusInDRSRVpTable(boolean isFromMps, String composite_key) {
+    private void updateSyncStatusInDRSRVpTable(String composite_key) {
         CompositeDisposable compositeDisposable = new CompositeDisposable();
-        if(isFromMps){
-            compositeDisposable.add(getDataManager().updateSyncStatusMps(composite_key, 2).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().io()).subscribe(aBoolean -> {}, throwable -> Logger.e(TAG, String.valueOf(throwable))));
-        } else{
-            compositeDisposable.add(getDataManager().updateSyncStatusRVP(composite_key, 2).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().io()).subscribe(aBoolean -> {}, throwable -> Logger.e(TAG, String.valueOf(throwable))));
-        }
+        compositeDisposable.add(getDataManager().updateSyncStatusRVP(composite_key, 2).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().io()).subscribe(aBoolean -> {
+        }, throwable -> Logger.e(TAG, String.valueOf(throwable))));
     }
 
     private void saveCommit(RvpCommit rvpCommit, String composite_key) {

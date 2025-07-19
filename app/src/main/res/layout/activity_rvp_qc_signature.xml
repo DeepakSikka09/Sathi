@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.drs.rvp_new.activity.RvpQcSignatureActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <include
+            android:id="@+id/header"
+            layout="@layout/common_header"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/header"
+            app:layout_constraintBottom_toTopOf="@id/bottomSubmitButton">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <include
+                    android:id="@+id/rqc_awb_header"
+                    layout="@layout/rvp_with_awb_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <View
+                    android:id="@+id/dividerOne"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_7DP"
+                    android:background="@color/green_FF"
+                    app:layout_constraintTop_toBottomOf="@id/rqc_awb_header" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/pickupDetailsContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_15DP"
+                    app:layout_constraintTop_toBottomOf="@id/dividerOne">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/addressHeading"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="@string/pick_up_address"
+                        android:fontFamily="@font/roboto_medium"
+                        android:textColor="@color/black"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:textSize="@dimen/_21SP" />
+
+                    <RadioGroup
+                        android:id="@+id/pickupAddressInformation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10DP"
+                        android:orientation="horizontal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/addressHeading">
+
+                        <com.google.android.material.radiobutton.MaterialRadioButton
+                            android:id="@+id/selectOffice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:buttonTint="@color/black"
+                            android:checked="false"
+                            android:text="@string/office"
+                            android:textColor="@color/black"
+                            android:layout_weight="0.33"
+                            android:textSize="@dimen/_18SP"
+                            android:fontFamily="@font/roboto_medium" />
+
+                        <com.google.android.material.radiobutton.MaterialRadioButton
+                            android:id="@+id/selectResidence"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:buttonTint="@color/black"
+                            android:checked="false"
+                            android:layout_weight="0.33"
+                            android:text="@string/residence"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_18SP"
+                            android:fontFamily="@font/roboto_medium" />
+
+                        <com.google.android.material.radiobutton.MaterialRadioButton
+                            android:id="@+id/selectOther"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:buttonTint="@color/black"
+                            android:checked="false"
+                            android:text="@string/other"
+                            android:layout_weight="0.33"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_18SP"
+                            android:fontFamily="@font/roboto_medium"/>
+
+                    </RadioGroup>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/pickupDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10DP"
+                        app:layout_constraintTop_toBottomOf="@id/pickupAddressInformation">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/pickupHeading"
+                            android:layout_width="@dimen/_0DP"
+                            android:layout_height="wrap_content"
+                            android:text="@string/picked_from"
+                            android:textColor="@color/black"
+                            android:fontFamily="@font/roboto_medium"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toTopOf="@+id/pickupPersonNameSpinner"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:textSize="@dimen/_18SP" />
+
+                        <Spinner
+                            android:id="@+id/pickupPersonNameSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/spinner_custom"
+                            android:entries="@array/Select"
+                            android:padding="@dimen/_10DP"
+                            app:layout_constraintTop_toBottomOf="@+id/pickupHeading"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:theme="@style/MatchSpinnerTheme" />
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1DP"
+                            android:background="@color/black"
+                            app:layout_constraintStart_toStartOf="@id/pickupPersonNameSpinner"
+                            app:layout_constraintEnd_toEndOf="@id/pickupPersonNameSpinner"
+                            app:layout_constraintTop_toBottomOf="@id/pickupPersonNameSpinner"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/pickupPersonNameTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColorHint="@color/textHintColor"
+                        app:hintTextColor="@color/dark_gray"
+                        app:boxStrokeColor="@color/black_1A"
+                        android:layout_marginTop="@dimen/_15DP"
+                        app:layout_constraintTop_toBottomOf="@id/pickupDetails"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:theme="@style/ThemeOverlay.AppTheme.TextInputEditText.Outlined">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/pickupPersonName"
+                            style="@style/TextStyle.Title.Sub"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:cursorVisible="false"
+                            android:hint="@string/Name"
+                            android:textColorHint="@color/textHintColor"
+                            android:maxLines="1"
+                            android:textColor="@color/black_1A"
+                            android:textSize="@dimen/_21SP"
+                            android:fontFamily="@font/roboto_medium"
+                            android:padding="@dimen/_7DP"
+                            android:singleLine="true"
+                            tools:ignore="RtlHardcoded" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <include
+                        android:id="@+id/captureImageButtonOne"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_15DP"
+                        layout="@layout/rvp_qc_capture_image_button"
+                        app:layout_constraintStart_toEndOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/pickupPersonNameTitle" />
+
+                    <include
+                        android:id="@+id/captureImageButtonTwo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        layout="@layout/rvp_qc_capture_image_button"
+                        android:layout_marginTop="@dimen/_15DP"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toEndOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/captureImageButtonOne"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/rvpSignatureContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_5DP"
+                    android:layout_marginTop="@dimen/_5DP"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/pickupDetailsContainer">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/rvpSignatureMandatory"
+                        android:layout_width="@dimen/_0DP"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5DP"
+                        android:text="@string/take_signature"
+                        android:textColor="@color/black_1A"
+                        android:textSize="@dimen/_21SP"
+                        android:fontFamily="@font/roboto_medium"
+                        app:layout_constraintEnd_toStartOf="@+id/clearSignaturePad"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/clearSignaturePad"
+                        android:layout_width="@dimen/_0DP"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_5DP"
+                        android:gravity="end"
+                        android:text="@string/rts_clear"
+                        android:textColor="@color/black_1A"
+                        android:textSize="@dimen/_21SP"
+                        android:fontFamily="@font/roboto_medium"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/rvpSignatureMandatory"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <in.ecomexpress.sathi.utils.signature_pad.views.SignaturePad
+                        android:id="@+id/signaturePadView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5DP"
+                        android:background="@drawable/rounded_background"
+                        android:elevation="@dimen/_10DP"
+                        android:gravity="center"
+                        android:minHeight="@dimen/_250DP"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/rvpSignatureMandatory" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+        <include
+            android:id="@+id/bottomSubmitButton"
+            layout="@layout/rvp_bottom_button_single"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

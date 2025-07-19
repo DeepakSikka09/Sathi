@@ -42,6 +42,7 @@ public class LoginVerifyOtpActivity extends BaseActivity<ActivityLoginVerifyOtpB
     @Inject
     LoginVerifyOtpViewModel loginVerifyOtpViewModel;
     boolean flag = true;
+    boolean manualFlag = false;
     ActivityLoginVerifyOtpBinding activityLoginVerifyOtpBinding;
     boolean flagValue, manualOtpFlag;
     private static final int REQ_USER_CONSENT = 200;
@@ -112,8 +113,10 @@ public class LoginVerifyOtpActivity extends BaseActivity<ActivityLoginVerifyOtpB
     @Override
     public void onResendOtp() {
         try {
-            activityLoginVerifyOtpBinding.enterOtpLayoutChild3.setVisibility(View.VISIBLE);
-            activityLoginVerifyOtpBinding.enterOtpLayoutChild2.setVisibility(View.GONE);
+            if (manualFlag) {
+                activityLoginVerifyOtpBinding.enterOtpLayoutChild3.setVisibility(View.VISIBLE);
+                activityLoginVerifyOtpBinding.enterOtpLayoutChild2.setVisibility(View.GONE);
+            }
             loginVerifyOtpViewModel.resendOtp("none");
         } catch (Exception e) {
             e.printStackTrace();
@@ -218,6 +221,7 @@ public class LoginVerifyOtpActivity extends BaseActivity<ActivityLoginVerifyOtpB
         public void onTick(long millisUntilFinished) {
             try {
                 String hms = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)), TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                System.out.println(hms);
                 activityLoginVerifyOtpBinding.timerTv.setTextColor(Color.parseColor("#27AD92"));
                 activityLoginVerifyOtpBinding.timerTv.setText(hms);
                 activityLoginVerifyOtpBinding.resendTv.setBackgroundColor(getResources().getColor(R.color.light_gray));
@@ -274,18 +278,18 @@ public class LoginVerifyOtpActivity extends BaseActivity<ActivityLoginVerifyOtpB
         }
     }
 
-    @SuppressLint("UnspecifiedRegisterReceiverFlag")
     private void registerBroadcastReceiver() {
         smsBroadcastReceiver = new SmsBroadcastReceiver();
-        smsBroadcastReceiver.smsBroadcastReceiverListener = new SmsBroadcastReceiver.SmsBroadcastReceiverListener() {
-            @Override
-            public void onSuccess(Intent intent) {
-                startActivityForResult(intent, REQ_USER_CONSENT);
-            }
+        smsBroadcastReceiver.smsBroadcastReceiverListener =
+                new SmsBroadcastReceiver.SmsBroadcastReceiverListener() {
+                    @Override
+                    public void onSuccess(Intent intent) {
+                        startActivityForResult(intent, REQ_USER_CONSENT);
+                    }
 
-            @Override
-            public void onFailure() {}
-        };
+                    @Override
+                    public void onFailure() {}
+                };
         IntentFilter intentFilter = new IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION);
         registerReceiver(smsBroadcastReceiver, intentFilter);
     }

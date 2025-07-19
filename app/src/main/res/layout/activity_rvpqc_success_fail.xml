@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -8,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        tools:context=".ui.drs.rvp.activity.RvpQcSuccessFailActivity">
+        tools:context=".ui.drs.rvp_new.activity.RvpQcSuccessFailActivity">
 
         <include
             android:id="@+id/header"
@@ -16,22 +15,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <include
-            android:id="@+id/rqc_awb_header"
-            layout="@layout/rvp_with_awb_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/header" />
-
-        <View
-            android:id="@+id/dividerOne"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_7DP"
-            android:background="@color/green_FF"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rqc_awb_header" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/shipmentStatusMessage"
@@ -44,7 +27,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:drawablePadding="@dimen/_20DP"
-            app:layout_constraintTop_toBottomOf="@id/dividerOne"
+            app:layout_constraintTop_toBottomOf="@id/header"
             android:drawableTop="@drawable/scanned_successfully_icon"
             app:layout_constraintBottom_toTopOf="@id/bottomSubmitButton"/>
 
@@ -58,5 +41,4 @@
             app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>

@@ -3,6 +3,7 @@ package in.ecomexpress.sathi.repo.local.db;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -15,7 +16,6 @@ import in.ecomexpress.sathi.repo.local.db.model.EdsWithActivityList;
 import in.ecomexpress.sathi.repo.local.db.model.ImageModel;
 import in.ecomexpress.sathi.repo.local.db.model.LiveTrackingLogTable;
 import in.ecomexpress.sathi.repo.local.db.model.MsgLinkData;
-import in.ecomexpress.sathi.repo.local.db.model.RVPMPSWithQC;
 import in.ecomexpress.sathi.repo.local.db.model.RVPQCImageTable;
 import in.ecomexpress.sathi.repo.local.db.model.Remark;
 import in.ecomexpress.sathi.repo.local.db.model.RescheduleEdsD;
@@ -51,9 +51,6 @@ import in.ecomexpress.sathi.repo.remote.model.masterdata.RTSReasonCodeMaster;
 import in.ecomexpress.sathi.repo.remote.model.masterdata.RVPReasonCodeMaster;
 import in.ecomexpress.sathi.repo.remote.model.masterdata.Reverse;
 import in.ecomexpress.sathi.repo.remote.model.masterdata.SampleQuestion;
-import in.ecomexpress.sathi.repo.remote.model.mps.DRSRvpQcMpsResponse;
-import in.ecomexpress.sathi.repo.remote.model.mps.QcItem;
-import in.ecomexpress.sathi.repo.remote.model.mps.RvpMpsQualityCheck;
 import in.ecomexpress.sathi.repo.remote.model.payphi.raise_dispute.PaymentDisputedAwb;
 import in.ecomexpress.sathi.utils.Constants;
 import io.reactivex.Observable;
@@ -147,22 +144,6 @@ public class DBHelper implements IDBHelper {
                     }
                 }
             }
-            return true;
-        });
-    }
-
-    @Override
-    public Observable<Boolean> saveDRSRVPMPSListQualityCheck(List<QcItem> rvpQualityChecksQcItems) {
-        return Observable.fromCallable(() -> {
-            mAppDatabase.drsRvpMpsWithQCDAO().insertQCMPS(rvpQualityChecksQcItems);
-            return true;
-        });
-    }
-
-    @Override
-    public Observable<Boolean> saveDRSRVPMPS(DRSRvpQcMpsResponse drsReverseQCTypeResponses) {
-        return Observable.fromCallable(() -> {
-            mAppDatabase.drsRvpMpsWithQCDAO().insert(drsReverseQCTypeResponses);
             return true;
         });
     }
@@ -275,11 +256,6 @@ public class DBHelper implements IDBHelper {
     }
 
     @Override
-    public Observable<List<QcItem>> getQCDetailsForPickupActivity(long awbNo, int drs) {
-        return Observable.fromCallable(() -> mAppDatabase.drsRvpMpsWithQCDAO().getQCDetailsForPickupActivity(awbNo, drs));
-    }
-
-    @Override
     public Observable<List<EDSResponse>> getUnSyncEdsList() {
         return Observable.fromCallable(() -> mAppDatabase.drsEdsNewDao().getUnSyncEdsList());
     }
@@ -383,18 +359,6 @@ public class DBHelper implements IDBHelper {
     }
 
     @Override
-    public Observable<List<DRSRvpQcMpsResponse>> getDRSListRVPMPS() {
-        return Observable.fromCallable(() -> {
-            List<DRSRvpQcMpsResponse> response = mAppDatabase.drsRvpMpsWithQCDAO().loadAllRVPMPSDRSList();
-            for (DRSRvpQcMpsResponse drsRvpQcMpsResponse : response) {
-                RVPMPSWithQC rvpmpsWithQC = mAppDatabase.drsRvpMpsWithQCDAO().getRvpMpsWithQc(drsRvpQcMpsResponse.getCompositeKey());
-                drsRvpQcMpsResponse.getShipmentDetails().setQcItems(rvpmpsWithQC.qcItemList);
-            }
-            return response;
-        });
-    }
-
-    @Override
     public Observable<List<EDSResponse>> getDrsListNewEds() {
         return Observable.fromCallable(() -> mAppDatabase.drsEdsNewDao().loadAllEDSList());
     }
@@ -427,16 +391,6 @@ public class DBHelper implements IDBHelper {
     @Override
     public Observable<DRSReverseQCTypeResponse> getRVPDRS(String composite_key) {
         return Observable.fromCallable(() -> mAppDatabase.drsRvpWithQCDAO().loadRVPDRS(composite_key));
-    }
-
-    @Override
-    public Observable<DRSRvpQcMpsResponse> loadMpsShipmentDetailsFromDB(String composite_key) {
-        return Observable.fromCallable(() -> mAppDatabase.drsRvpMpsWithQCDAO().loadMpsShipmentDetailsFromDB(composite_key));
-    }
-
-    @Override
-    public Observable<List<QcItem>> getMPSQcValues() {
-        return Observable.fromCallable(() -> mAppDatabase.drsRvpMpsWithQCDAO().getMPSQcValues());
     }
 
     @Override
@@ -473,11 +427,6 @@ public class DBHelper implements IDBHelper {
     }
 
     @Override
-    public Observable<Long> getRVPMPSStatusCount(int status) {
-        return Observable.fromCallable(() -> mAppDatabase.drsRvpMpsWithQCDAO().getRVPMpsStatusCount(status));
-    }
-
-    @Override
     public Observable<Boolean> deleteQCData(int drs, long awbNo) {
         return Observable.fromCallable(() -> {
             try {
@@ -488,19 +437,7 @@ public class DBHelper implements IDBHelper {
             }
             return false;
         });
-    }
 
-    @Override
-    public Observable<Boolean> deleteMpsQcDataFromQcItemTable(int drs, long awbNo) {
-        return Observable.fromCallable(() -> {
-            try {
-                mAppDatabase.drsRvpMpsWithQCDAO().deleteMpsQcDataFromQcItemTable(drs, awbNo);
-                return true;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return false;
-        });
     }
 
     @Override
@@ -609,14 +546,6 @@ public class DBHelper implements IDBHelper {
     public Observable<Boolean> updateRvpStatus(String composite_key, int status) {
         return Observable.fromCallable(() -> {
             mAppDatabase.drsRvpWithQCDAO().updateRvpStatus(composite_key, status);
-            return true;
-        });
-    }
-
-    @Override
-    public Observable<Boolean> updateRvpMpsStatus(String composite_key, int status) {
-        return Observable.fromCallable(() -> {
-            mAppDatabase.drsRvpMpsWithQCDAO().updateRvpMpsStatus(composite_key, status);
             return true;
         });
     }
@@ -748,8 +677,6 @@ public class DBHelper implements IDBHelper {
             mAppDatabase.drsRtsNewDAO().nukeDetailTable();
             mAppDatabase.drsRtsNewDAO().nukeShipmentTable();
             mAppDatabase.drsRvpWithQCDAO().nukeTable();
-            mAppDatabase.drsRvpMpsWithQCDAO().nukeTable();
-            mAppDatabase.drsRvpMpsWithQCDAO().nukeTableQc();
             mAppDatabase.edsDocumentListMasterActivityDAO().nukeTable();
 //            mAppDatabase.edsMasterActivityDAO().nukeTable();
 //            mAppDatabase.drsedsReasonCodeDao().nukeTable();
@@ -773,8 +700,6 @@ public class DBHelper implements IDBHelper {
             mAppDatabase.drsRtsNewDAO().nukeDetailTable();
             mAppDatabase.drsRtsNewDAO().nukeShipmentTable();
             mAppDatabase.drsRvpWithQCDAO().nukeTable();
-            mAppDatabase.drsRvpMpsWithQCDAO().nukeTable();
-            mAppDatabase.drsRvpMpsWithQCDAO().nukeTableQc();
             mAppDatabase.edsDocumentListMasterActivityDAO().nukeTable();
             mAppDatabase.edsMasterActivityDAO().nukeTable();
             mAppDatabase.drsedsReasonCodeDao().nukeTable();
@@ -784,8 +709,6 @@ public class DBHelper implements IDBHelper {
             mAppDatabase.drsRtsDAO().nukeTable();
             mAppDatabase.DisputedAwbDAO().nukeTable();
             mAppDatabase.drsRvpWithQCDAO().nukeTableQc();
-            mAppDatabase.drsRvpMpsWithQCDAO().deleteEntireMpsShipmentTable();
-            mAppDatabase.drsRvpMpsWithQCDAO().deleteEntireQcItemTable();
             return true;
         });
     }
@@ -875,11 +798,6 @@ public class DBHelper implements IDBHelper {
     }
 
     @Override
-    public Observable<RVPMPSWithQC> getRvpMpsWithQc(String composite_key) {
-        return Observable.fromCallable(() -> mAppDatabase.drsRvpMpsWithQCDAO().getRvpMpsWithQc(composite_key));
-    }
-
-    @Override
     public Observable<CallbridgeConfiguration> loadallcallbridge() {
         return Observable.fromCallable(() -> mAppDatabase.callbridgedao().loadAll());
     }
@@ -909,14 +827,6 @@ public class DBHelper implements IDBHelper {
     }
 
     @Override
-    public Observable<Boolean> updateRVPMpsCallAttempted(Long awbNo, int isCallAttempted) {
-        return Observable.fromCallable(() -> {
-            mAppDatabase.drsRvpMpsWithQCDAO().updateRVPMpsCallAttempted(awbNo, isCallAttempted);
-            return true;
-        });
-    }
-
-    @Override
     public Observable<List<RVPReasonCodeMaster>> getAllRVPUndeliveredReasonCode(String isSecure) {
         return Observable.fromCallable(() -> {
             if (isSecure.equalsIgnoreCase("true")) {
@@ -942,20 +852,6 @@ public class DBHelper implements IDBHelper {
             ArrayList qcCode = new ArrayList<String>();
             for (RvpQualityCheck rvpQualityCheck : rvpQualityCheckList) {
                 qcCode.add(rvpQualityCheck.getQcCode());
-            }
-            return mAppDatabase.drsRVPQCMasterDao().getRVPQCMasterDescription(qcCode);
-        });
-    }
-
-
-    @Override
-    public Observable<List<SampleQuestion>> getRvpMpsMasterDescriptions(List<QcItem> qcItemList) {
-        return Observable.fromCallable(() -> {
-            ArrayList qcCode = new ArrayList<String>();
-            for (QcItem qcItem : qcItemList) {
-                for (RvpMpsQualityCheck rvpMpsQualityCheck : qcItem.getQualityChecks()) {
-                    qcCode.add(rvpMpsQualityCheck.getQcCode());
-                }
             }
             return mAppDatabase.drsRVPQCMasterDao().getRVPQCMasterDescription(qcCode);
         });
@@ -1035,11 +931,6 @@ public class DBHelper implements IDBHelper {
     @Override
     public Observable<Long> getisForwardCallattempted(long awb) {
         return Observable.fromCallable(() -> mAppDatabase.drsForwardDAO().getisCallattempted(awb));
-    }
-
-    @Override
-    public Observable<Long> getIsMpsCallAttempted(long awb) {
-        return Observable.fromCallable(() -> mAppDatabase.drsRvpMpsWithQCDAO().getIsMpsCallAttempted(awb));
     }
 
     @Override
@@ -1375,14 +1266,6 @@ public class DBHelper implements IDBHelper {
     public Observable<Boolean> updateSyncStatusRVP(String composite_key, int syncStatus) {
         return Observable.fromCallable(() -> {
             mAppDatabase.drsRvpWithQCDAO().updateSyncStatus(composite_key, syncStatus);
-            return true;
-        });
-    }
-
-    @Override
-    public Observable<Boolean> updateSyncStatusMps(String composite_key, int syncStatus) {
-        return Observable.fromCallable(() -> {
-            mAppDatabase.drsRvpMpsWithQCDAO().updateSyncStatus(composite_key, syncStatus);
             return true;
         });
     }

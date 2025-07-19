@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:background="@color/white">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/order_constraint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingVertical="@dimen/_30DP"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_awbno"
+            style="@style/title_text_style"
+            android:layout_marginStart="@dimen/_15DP"
+            android:text="AWB : "
+            android:tint="@color/black_1A"
+            app:layout_constraintBottom_toBottomOf="@id/tv_order_no"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_order_no" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_order_no"
+            style="@style/title_text_style"
+            android:layout_width="@dimen/_0DP"
+            android:layout_marginHorizontal="@dimen/_5DP"
+            android:maxLines="1"
+            app:layout_constraintEnd_toStartOf="@id/tv_payment_product_type"
+            app:layout_constraintStart_toEndOf="@id/tv_awbno"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/tv_payment_product_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/_15DP"
+            android:background="@drawable/rqc_tag_icon"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

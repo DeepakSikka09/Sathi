@@ -82,18 +82,8 @@ public class FlagMap implements Parcelable {
         this.is_mdc_rvp_qc_disabled = is_mdc_rvp_qc_disabled;
     }
 
-    public String getSmart_qc() {
-        return smart_qc;
-    }
-
-    public void setSmart_qc(String smart_qc) {
-        this.smart_qc = smart_qc;
-    }
-
     @JsonProperty("is_mdc_rvp_qc_disabled")
     private String is_mdc_rvp_qc_disabled = "false";
-    @JsonProperty("smart_qc")
-    private String smart_qc = "false";
 
     @JsonProperty("is_address_updated")
     private String is_address_updated = "false";
@@ -148,6 +138,5 @@ public class FlagMap implements Parcelable {
         parcel.writeString(this.is_mobile_updated);
         parcel.writeString(this.is_location_updated);
         parcel.writeString(this.is_mdc_rvp_qc_disabled);
-        parcel.writeString(this.smart_qc);
     }
 }

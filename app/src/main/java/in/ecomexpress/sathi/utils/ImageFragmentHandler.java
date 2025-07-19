@@ -26,12 +26,12 @@ public abstract class ImageFragmentHandler {
         imageProcessor = new ImageProcessor(activity);
     }
 
-   /* private boolean checkPermission() {
+    private boolean checkPermission() {
         boolean status = false;
         BaseActivity baseActivity = (BaseActivity) activity;
         baseActivity.requestPermissionsSafely(Constants.permissions, 100);
         return status;
-    }*/
+    }
 
     public void captureImage(String imageName, ImageView imgView, String imageCode) {
         this.imageName = imageName;

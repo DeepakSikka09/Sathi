@@ -249,7 +249,6 @@ public class DRSReverseQCTypeResponse implements Parcelable, CInterface {
     public ArrayList<callbridge_details> getCallbridge_details() {
         return callbridge_details;
     }
-
     @JsonProperty("callbridge_details")
     public void setCallbridge_details(ArrayList<callbridge_details> callbridge_details) {
         this.callbridge_details = callbridge_details;

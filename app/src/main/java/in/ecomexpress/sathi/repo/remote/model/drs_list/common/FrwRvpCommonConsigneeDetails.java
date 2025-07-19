@@ -146,7 +146,6 @@ public class FrwRvpCommonConsigneeDetails implements Parcelable {
     public String getMobile(){
         return mobile;
     }
-
     @JsonProperty("mobile")
     public void setMobile(String mobile){
         this.mobile = mobile;

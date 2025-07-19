@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.drs.rvp.activity.UndeliveredOtpActivity">
+    tools:context=".ui.drs.rvp_new.activity.UndeliveredOtpActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -191,10 +191,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:layout_marginStart="@dimen/_15DP"
+            android:layout_marginStart="@dimen/_20DP"
             android:layout_marginTop="@dimen/_15DP"
-            android:scaleX="1.2"
-            android:scaleY="1.2"
+            android:scaleX="1.8"
+            android:scaleY="1.8"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/dividerThree"/>
 
@@ -203,14 +203,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/customer_not_sharing_the_otp_ncode"
-            android:textSize="@dimen/_16SP"
+            android:textSize="@dimen/_18SP"
             android:textColor="@color/grey_78"
             android:fontFamily="@font/roboto_regular"
             android:layout_marginVertical="@dimen/_15DP"
             app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/_10DP"
             app:layout_constraintStart_toEndOf="@id/checkbox"
-            app:layout_constraintTop_toTopOf="@id/checkbox"
-            app:layout_constraintBottom_toBottomOf="@id/checkbox"/>
+            app:layout_constraintTop_toBottomOf="@id/dividerThree"/>
 
         <include
             android:id="@+id/bottomSubmitButton"

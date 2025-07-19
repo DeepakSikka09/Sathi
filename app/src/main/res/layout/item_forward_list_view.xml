@@ -1,12 +1,13 @@
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="in.ecomexpress.sathi.ui.drs.todolist.ForwardItemViewModel" />
+
     </data>
 
     <in.ecomexpress.sathi.utils.SwipeLayout
@@ -21,6 +22,7 @@
             android:layout_height="wrap_content"
             android:background="@color/offwhite"
             android:orientation="horizontal">
+
 
             <androidx.cardview.widget.CardView
                 android:layout_width="@dimen/_10DP"
@@ -66,13 +68,14 @@
                             android:paddingStart="@dimen/_5DP"
                             android:paddingLeft="@dimen/_5DP"
                             android:weightSum=".10">
-
+                            <!--Name,AWB,pin-->
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".050"
                                 android:background="@null"
                                 android:orientation="vertical">
+
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -121,7 +124,9 @@
                                         android:textColor="@color/green"
                                         android:textColorHint="@color/green"
                                         android:textSize="13sp" />
+
                                 </LinearLayout>
+
 
                                 <in.ecomexpress.sathi.utils.fonts.CustomTextBold
                                     android:layout_width="wrap_content"
@@ -157,6 +162,7 @@
                                         android:textColor="@color/gray"
                                         android:textColorHint="@color/gray"
                                         android:textSize="13sp" />
+                                    <!--    </LinearLayout>-->
 
                                     <View
                                         android:id="@+id/viewDivider"
@@ -180,6 +186,16 @@
                                         android:textColor="@color/gray"
                                         android:textColorHint="@color/gray"
                                         android:textSize="13sp" />
+
+                                    <!--    <View
+                                            android:layout_width="1dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_gravity="center"
+                                            android:layout_margin="@dimen/_5DP"
+                                            android:background="@color/colorPrimary"
+                                            android:gravity="center" />
+    -->
+
                                 </LinearLayout>
 
                                 <LinearLayout
@@ -223,6 +239,15 @@
                                     android:orientation="vertical"
                                     android:visibility="gone">
 
+                                    <!--  <LinearLayout
+                                          android:layout_width="match_parent"
+                                          android:layout_height="wrap_content"
+                                          android:layout_gravity="center"
+                                          android:background="@color/white"
+                                          android:gravity="center"
+                                          android:orientation="vertical">-->
+
+
                                     <in.ecomexpress.sathi.utils.fonts.CustomTextBold
                                         android:id="@+id/fullAddress_CustomTextBold"
                                         android:layout_width="wrap_content"
@@ -233,10 +258,15 @@
                                         android:text="@{ viewModel.address }"
                                         android:textColor="@color/gray"
                                         android:textSize="13sp" />
+
+
+                                    <!--  </LinearLayout>-->
                                 </LinearLayout>
 
                             </LinearLayout>
 
+
+                            <!--call n navigation icon-->
                             <RelativeLayout
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
@@ -246,6 +276,7 @@
                                 android:gravity="end"
                                 android:orientation="horizontal"
                                 android:weightSum=".10">
+
 
                                 <TextView
                                     android:id="@+id/missedcall"
@@ -282,6 +313,7 @@
                                     android:visibility="gone"
                                     app:srcCompat="@drawable/ic_reschedule" />
 
+
                                 <ImageView
                                     android:id="@+id/call"
                                     android:layout_width="35dp"
@@ -290,6 +322,7 @@
                                     android:layout_marginStart="@dimen/_10DP"
                                     android:layout_marginTop="@dimen/_10DP"
                                     android:layout_marginEnd="@dimen/_10DP"
+                                    android:layout_marginRight="@dimen/_10DP"
                                     android:layout_toStartOf="@id/navView"
                                     android:background="@drawable/forward"
                                     android:gravity="end"
@@ -297,6 +330,8 @@
                                     android:padding="@dimen/_2DP"
                                     android:scaleType="centerCrop"
                                     app:srcCompat="@drawable/ic_action_callbridge" />
+
+                                <!-- android:onClick="@{() -> viewModel.onCallClick()}"-->
 
                                 <LinearLayout
                                     android:id="@+id/navView"
@@ -342,25 +377,19 @@
                                             tools:ignore="VectorDrawableCompat" />
 
                                     </FrameLayout>
-
                                 </LinearLayout>
-
-                                <TextView
-                                    android:id="@+id/shipmentWeightText"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:background="@drawable/shipment_weight_bg"
-                                    android:textAlignment="center"
-                                    android:textColor="@android:color/black"
-                                    android:textSize="13sp"
-                                    android:textStyle="bold"
-                                    android:layout_alignParentBottom="true"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_marginBottom="@dimen/_5DP"
-                                    android:layout_marginEnd="@dimen/_5DP"
-                                    android:visibility="gone"/>
-
+                                <!-- <ImageView
+                                     android:layout_alignTop="@id/navView"
+                                     android:id="@+id/resechdicon"
+                                     android:layout_width="@dimen/_35DP"
+                                     android:layout_height="@dimen/_35DP"
+                                     android:layout_marginRight="@dimen/_10DP"
+                                     android:visibility="gone"
+                                     app:srcCompat="@drawable/ic_reschedule" />-->
                             </RelativeLayout>
+
+                            <!--   android:background="@drawable/forward"
+                            app:srcCompat="@drawable/ic_action_trip"-->
 
                         </LinearLayout>
 

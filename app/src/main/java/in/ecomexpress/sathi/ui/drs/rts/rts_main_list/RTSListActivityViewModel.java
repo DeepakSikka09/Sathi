@@ -20,7 +20,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+
 import javax.inject.Inject;
+
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import in.ecomexpress.sathi.R;
 import in.ecomexpress.sathi.repo.IDataManager;
@@ -56,10 +58,12 @@ public class RTSListActivityViewModel extends BaseViewModel<IRTSListActivityNavi
     int disputedCount = 0;
     int assignedCount = 0;
     Details details_data;
+    boolean is_otp_required = false;
     List<ShipmentsDetail> shipmentsDetails_data;
     ObservableField<String> scanDeliverObservable = new ObservableField<>("");
     ObservableField<List<ShipmentsDetail>> listShipmentObserver = new ObservableField<>();
     private List<RTSReasonCodeMaster> listRTSReasonCodeMaster = new ArrayList<>();
+    public Map<Long, Boolean> damageFlyerImageCaptured = new HashMap<>();
     public boolean isAllFWDChecked = false;
     public boolean isAllRVPChecked = false;
     private Dialog dialog;
@@ -100,6 +104,7 @@ public class RTSListActivityViewModel extends BaseViewModel<IRTSListActivityNavi
         try {
             getCompositeDisposable().add(getDataManager().getVWDetails(id).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui()).subscribe(details -> {
                 details_data = details;
+                is_otp_required = details_data.isIs_otp_required();
                 scanDeliverObservable.set(details.getScan_deliver());
             }));
         } catch (Exception e) {
@@ -155,6 +160,25 @@ public class RTSListActivityViewModel extends BaseViewModel<IRTSListActivityNavi
     }
 
     /*
+     * This method is used check whether shipment details contains valid awb or not and return valid boolean.
+     * */
+    public Boolean getFilterOutput(String awbNo) {
+        try {
+            for (ShipmentsDetail shipmentsDetail : Objects.requireNonNull(listShipmentObserver.get())) {
+                if (String.valueOf(shipmentsDetail.getAwbNo()).equalsIgnoreCase(awbNo)) {
+                    return true;
+                }
+                if (shipmentsDetail.getParentAwbNo().equalsIgnoreCase(awbNo)) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            getNavigator().onErrorMessage(e.getMessage());
+        }
+        return false;
+    }
+
+    /*
     * This method is used to check all shipments are in assigned mode or not and return boolean value accordingly.
     * */
     private boolean areAllShipmentsUnassigned() {
@@ -188,7 +212,7 @@ public class RTSListActivityViewModel extends BaseViewModel<IRTSListActivityNavi
                         }
                     }
                 }
-                if((shipmentsDetail.getStatus().equalsIgnoreCase(Constants.RTSMANUALLYDELIVERED) || shipmentsDetail.getStatus().equalsIgnoreCase(Constants.RTSDELIVERED)) && CommonUtils.getRtsDeliveredImagesValue(shipmentsDetail.getFlagsMap()) && CommonUtils.capturedImageCount(shipmentsDetail.getAwbNo()) <= 1){
+                if((shipmentsDetail.getStatus().equalsIgnoreCase(Constants.RTSMANUALLYDELIVERED) || shipmentsDetail.getStatus().equalsIgnoreCase(Constants.RTSDELIVERED)) && CommonUtils.getRtsDeliveredImagesValue(shipmentsDetail.getFlagsMap()).equalsIgnoreCase("true") && CommonUtils.capturedImageCount(shipmentsDetail.getAwbNo()) <= 1){
                     pendingImageCaptureCount++;
                 }
             }
@@ -422,20 +446,43 @@ public class RTSListActivityViewModel extends BaseViewModel<IRTSListActivityNavi
                 List<RTSReasonCodeMaster> filteredRTSMasterReasonCodes;
                 List<ShipmentsDetail> listShipment = listShipmentObserver.get();
                 int counterSelected = 0;
-                try{
-                    for (ShipmentsDetail shipmentsDetail : Objects.requireNonNull(listShipment)) {
-                        if (shipmentsDetail.isChecked()) {
-                            counterSelected++;
-                        }
+                for (ShipmentsDetail shipmentsDetail : Objects.requireNonNull(listShipment)) {
+                    if (shipmentsDetail.isChecked()) {
+                        counterSelected++;
                     }
-                    if (counterSelected != 0) {
+                }
+                if (counterSelected != 0) {
+                    try {
                         if (listShipment.size() == 1) {
-                            filteredRTSMasterReasonCodes = new ArrayList<>(rtsReasonCodeMasters);
-                        } else{
                             filteredRTSMasterReasonCodes = new ArrayList<>();
-                            boolean isRTSSingle = (counterSelected != listShipment.size());
                             for (RTSReasonCodeMaster rtsReasonCodeMaster : rtsReasonCodeMasters) {
-                                if (rtsReasonCodeMaster.getMasterDataAttributeResponse().isRTS_SINGLE() == isRTSSingle) {
+                                if (rtsReasonCodeMaster.getMasterDataAttributeResponse().DS_SL) {
+                                    filteredRTSMasterReasonCodes.add(rtsReasonCodeMaster);
+                                } else {
+                                    filteredRTSMasterReasonCodes.add(rtsReasonCodeMaster);
+                                }
+                            }
+                            int count = 0;
+                            for (int i = 0; i < filteredRTSMasterReasonCodes.size(); i++) {
+                                if (filteredRTSMasterReasonCodes.get(i).getMasterDataAttributeResponse().DS_SL) {
+                                    Collections.swap(filteredRTSMasterReasonCodes, count, i);
+                                    count++;
+                                }
+                            }
+                            Collections.reverse(filteredRTSMasterReasonCodes);
+                            getNavigator().showPopupWindowUndelivered(filteredRTSMasterReasonCodes);
+                            return;
+                        }
+                    } catch (Exception e) {
+                        Logger.e(TAG, String.valueOf(e));
+                    }
+                    if (counterSelected != listShipment.size()) {
+                        filteredRTSMasterReasonCodes = new ArrayList<>();
+                        for (RTSReasonCodeMaster rtsReasonCodeMaster : rtsReasonCodeMasters) {
+                            if (rtsReasonCodeMaster.getMasterDataAttributeResponse().isRTS_SINGLE()) {
+                                if (rtsReasonCodeMaster.getMasterDataAttributeResponse().DS_SL) {
+                                    filteredRTSMasterReasonCodes.add(rtsReasonCodeMaster);
+                                } else {
                                     filteredRTSMasterReasonCodes.add(rtsReasonCodeMaster);
                                 }
                             }
@@ -450,11 +497,30 @@ public class RTSListActivityViewModel extends BaseViewModel<IRTSListActivityNavi
                         Collections.reverse(filteredRTSMasterReasonCodes);
                         getNavigator().showPopupWindowUndelivered(filteredRTSMasterReasonCodes);
                     } else {
-                        getNavigator().showMessage(getApplication().getString(R.string.select_awb_first));
+                        filteredRTSMasterReasonCodes = new ArrayList<>();
+                        for (RTSReasonCodeMaster rtsReasonCodeMaster : rtsReasonCodeMasters) {
+                            if (!rtsReasonCodeMaster.getMasterDataAttributeResponse().isRTS_SINGLE()) {
+                                if (rtsReasonCodeMaster.getMasterDataAttributeResponse().DS_SL) {
+                                    filteredRTSMasterReasonCodes.add(rtsReasonCodeMaster);
+                                } else {
+                                    filteredRTSMasterReasonCodes.add(rtsReasonCodeMaster);
+                                }
+                            }
+                        }
+                        int count = 0;
+                        for (int i = 0; i < filteredRTSMasterReasonCodes.size(); i++) {
+                            if (filteredRTSMasterReasonCodes.get(i).getMasterDataAttributeResponse().DS_SL) {
+                                Collections.swap(filteredRTSMasterReasonCodes, count, i);
+                                count++;
+                            }
+                        }
+                        Collections.reverse(filteredRTSMasterReasonCodes);
+                        getNavigator().showPopupWindowUndelivered(filteredRTSMasterReasonCodes);
                     }
-                } catch (Exception e){
-                    Logger.e(TAG + "showPopupWindow", e.getMessage());
+                } else {
+                    getNavigator().showMessage(getApplication().getString(R.string.select_awb_first));
                 }
+
             }));
         } catch (Exception e) {
             getNavigator().onErrorMessage(e.getMessage());
@@ -466,6 +532,64 @@ public class RTSListActivityViewModel extends BaseViewModel<IRTSListActivityNavi
      * This method is used update all the shipment.
      * */
     public void updateShipment(ShipmentsDetail shipmentsDetail) {
+        try {
+            getCompositeDisposable().add(getDataManager().updateRTSShipmentDetail(shipmentsDetail).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui()).subscribe(aBoolean -> {
+                getNavigator().notifyAdapter();
+                getShipments1(Constants.rtsVWDetailID);
+            }));
+        } catch (Exception e) {
+            getNavigator().onErrorMessage(e.getMessage());
+        }
+    }
+
+    /*
+     * @ShipmentsDetail:- It is the collection of shipments.
+     * This method accept only one shipment at a time and check whether this shipment is in assign mode or not.
+     * */
+    public void updateScannedShipment(ShipmentsDetail shipmentsDetails) {
+        try {
+            shipmentsDetails.setChecked(false);
+            if (shipmentsDetails.getStatus().contains(Constants.RTSASSIGNED)) {
+                if (Objects.requireNonNull(Mode.get()).equalsIgnoreCase(Constants.RTSDeliveryMode)) {
+                    if (Boolean.TRUE.equals(OutPackDamage.get())) {
+                        shipmentsDetails.setStatus(Constants.RTSDELIVEREDBbutDAMAGED);
+                    } else {
+                        if (shipmentsDetails.isIs_flyer_scanned()) {
+                            shipmentsDetails.setStatus(Constants.RTSDELIVERED);
+                        }
+                    }
+                    shipmentsDetails.setReasonCode(999);
+                } else if (Objects.requireNonNull(Mode.get()).equalsIgnoreCase(Constants.RTSReAssignMode)) {
+                    if (shipmentsDetails.getStatus().contains(Constants.RTSASSIGNED)) {
+                        getNavigator().onErrorMessage(getApplication().getString(R.string.this_shipment_is_already_assigned));
+                    } else {
+                        shipmentsDetails.setStatus(Constants.RTSASSIGNED);
+                        shipmentsDetails.setChecked(false);
+                    }
+                    shipmentsDetails.setReasonCode(0);
+                }
+            } else if (shipmentsDetails.getStatus().contains(Constants.RTSDELIVERED)) {
+                if (Objects.requireNonNull(Mode.get()).equalsIgnoreCase(Constants.RTSDeliveryMode)) {
+                    getNavigator().onErrorMessage(getApplication().getString(R.string.shipment_already_marked_as_delivered));
+                } else if (Objects.requireNonNull(Mode.get()).equalsIgnoreCase(Constants.RTSReAssignMode)) {
+                    shipmentsDetails.setStatus(Constants.RTSASSIGNED);
+                    shipmentsDetails.setChecked(false);
+                }
+            } else if (shipmentsDetails.getStatus().contains(Constants.RTSUNDELIVERED)) {
+                if (Objects.requireNonNull(Mode.get()).equalsIgnoreCase(Constants.RTSDeliveryMode)) {
+                    getNavigator().onErrorMessage(getApplication().getString(R.string.shipment_already_marked_as_undelivered));
+                } else if (Objects.requireNonNull(Mode.get()).equalsIgnoreCase(Constants.RTSReAssignMode)) {
+                    shipmentsDetails.setStatus(Constants.RTSASSIGNED);
+                    shipmentsDetails.setChecked(false);
+                }
+            }
+            updateScannedShipment1(shipmentsDetails);
+        } catch (Exception e) {
+            getNavigator().onErrorMessage(e.getMessage());
+        }
+    }
+
+    public void updateScannedShipment1(ShipmentsDetail shipmentsDetail) {
         try {
             getCompositeDisposable().add(getDataManager().updateRTSShipmentDetail(shipmentsDetail).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui()).subscribe(aBoolean -> {
                 getNavigator().notifyAdapter();
@@ -550,6 +674,18 @@ public class RTSListActivityViewModel extends BaseViewModel<IRTSListActivityNavi
     public String getAwb() {
         ShipmentsDetail shipmentsDetail = new ShipmentsDetail();
         return String.valueOf(shipmentsDetail.getAwbNo());
+    }
+
+    public void getScannedShipment(long ScannedAwbNo) {
+        ShipmentsDetail[] shipmentsDetails = {new ShipmentsDetail()};
+        try {
+            getCompositeDisposable().add(getDataManager().getShipmentData(ScannedAwbNo).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui()).subscribe(shipmentsDetail -> {
+                shipmentsDetails[0] = shipmentsDetail;
+                getNavigator().getShipmentDetail(shipmentsDetails[0]);
+            }));
+        } catch (Exception e) {
+            getNavigator().onErrorMessage(e.getMessage());
+        }
     }
 
     public void isAttributeAvailable(int reasonCode, RTSReasonCodeMaster rtsReasonCodeMaster, Integer reason_id, boolean is_image_captured) {

@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.ecomexpress.sathi.ui.drs.rvp.awbscan.CaptureScanActivity">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.drs.rvp.awbscan.CaptureScanViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/offwhite">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/rvptool"
+            android:padding="@dimen/_10DP"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imageViewBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/back"
+                android:src="@drawable/back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/white" />
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/TextStyle.Title.Sub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rvp_capture_and_scan"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_15SP"
+                android:textStyle="bold"
+                app:fontFamily="@font/roboto_bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/imageViewNext"
+                app:layout_constraintStart_toEndOf="@id/imageViewBack"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/imageViewNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_5DP"
+                android:fontFamily="@font/roboto_bold"
+                android:text="@string/v2_0_0"
+                android:textColor="@color/yellow"
+                android:textSize="@dimen/_15SP"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1DP"
+            android:background="@color/red_ecom"
+            app:layout_constraintTop_toBottomOf="@id/header" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/awb_cl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/view">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textViewAWB"
+                style="@style/TextStyle.Title.Sub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:text="@string/awb"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_15SP"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/awb"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/awb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:text="@string/awb_no"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_15SP"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_0DP"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/awb_cl">
+
+            <ScrollView
+                android:id="@+id/scanner_sv"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_0DP"
+                app:layout_constraintBottom_toTopOf="@id/lltFooter"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_child1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/offwhite"
+                    android:padding="@dimen/_10DP">
+
+                    <FrameLayout
+                        android:id="@+id/scanner_frame"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_200DP"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.journeyapps.barcodescanner.DecoratedBarcodeView
+                            android:id="@+id/zxing_barcode_scanner"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_230DP"
+                            android:background="@color/white"
+                            app:zxing_scanner_layout="@layout/custom_scanner_view">
+
+                            <com.google.android.material.imageview.ShapeableImageView
+                                android:id="@+id/iv_flash"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:layout_margin="@dimen/_8DP"
+                                android:src="@drawable/flashoff" />
+
+                        </com.journeyapps.barcodescanner.DecoratedBarcodeView>
+                    </FrameLayout>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardViewQC"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_10DP"
+                        android:background="@color/offwhite"
+                        android:elevation="@dimen/_20DP"
+                        app:cardCornerRadius="@dimen/_7DP"
+                        app:cardElevation="@dimen/_25DP"
+                        app:layout_constraintTop_toBottomOf="@id/scanner_frame">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:padding="@dimen/_10DP">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/txtbfpck_cl"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/border_2dp_grey"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <com.google.android.material.imageview.ShapeableImageView
+                                    android:id="@+id/imgVwStatusIndicator1"
+                                    android:layout_width="@dimen/_50DP"
+                                    android:layout_height="@dimen/_50DP"
+                                    android:background="@{viewModel.imageOpen ? @drawable/tick : @drawable/cross}"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:id="@+id/txtbfpck"
+                                    android:layout_width="@dimen/_0DP"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/_5DP"
+                                    android:background="@color/transparent"
+                                    android:fontFamily="@font/roboto_regular"
+                                    android:text="@string/capture_first_image_bf_pkg"
+                                    android:textSize="@dimen/_12SP"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toStartOf="@id/imgCamBfPkg"
+                                    app:layout_constraintStart_toEndOf="@id/imgVwStatusIndicator1"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <com.google.android.material.imageview.ShapeableImageView
+                                    android:id="@+id/imgCamBfPkg"
+                                    android:layout_width="@dimen/_50DP"
+                                    android:layout_height="@dimen/_50DP"
+                                    android:layout_margin="@dimen/_5DP"
+                                    android:background="@android:color/transparent"
+                                    android:contentDescription="@string/camera"
+                                    android:onClick="@{() -> viewModel.captureImageBeforePackaging()}"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/cam" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/sampleImage_AppCompatTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center|end"
+                                android:layout_marginTop="@dimen/_5DP"
+                                android:layout_marginBottom="@dimen/_5DP"
+                                android:padding="@dimen/_2DP"
+                                android:text="@string/click_here_for_sample_image"
+                                android:textColor="@color/light_blue"
+                                android:textSize="@dimen/_16SP"
+                                android:visibility="gone"
+                                app:layout_constraintBottom_toTopOf="@id/txtbf2pck_cl"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/txtbfpck_cl" />
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/txtbf2pck_cl"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_10DP"
+                                android:background="@drawable/border_2dp_grey"
+                                app:layout_constraintTop_toBottomOf="@id/sampleImage_AppCompatTextView">
+
+                                <com.google.android.material.imageview.ShapeableImageView
+                                    android:id="@+id/imgVwStatusIndicator_two"
+                                    android:layout_width="@dimen/_50DP"
+                                    android:layout_height="@dimen/_50DP"
+                                    android:background="@{viewModel.imageOpen_two ? @drawable/tick : @drawable/cross}"
+                                    android:contentDescription="@string/camera"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:id="@+id/txtbfpck_two"
+                                    android:layout_width="@dimen/_0DP"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/_5DP"
+                                    android:background="@color/transparent"
+                                    android:fontFamily="@font/roboto_regular"
+                                    android:text="@string/capture_second_image_bf_pkg"
+                                    android:textSize="@dimen/_12SP"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toStartOf="@id/imgCamBfPkg_two"
+                                    app:layout_constraintStart_toEndOf="@id/imgVwStatusIndicator_two"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <com.google.android.material.imageview.ShapeableImageView
+                                    android:id="@+id/imgCamBfPkg_two"
+                                    android:layout_width="@dimen/_50DP"
+                                    android:layout_height="@dimen/_50DP"
+                                    android:layout_margin="@dimen/_5DP"
+                                    android:background="@android:color/transparent"
+                                    android:contentDescription="@string/camera"
+                                    android:onClick="@{() -> viewModel.captureImageTwoBeforePackaging()}"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/cam" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/ll_before_pkf_scan"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_10DP"
+                                android:background="@drawable/border_2dp_grey"
+                                app:layout_constraintTop_toBottomOf="@id/txtbf2pck_cl">
+
+                                <com.google.android.material.imageview.ShapeableImageView
+                                    android:id="@+id/imgVwStatusIndicator2"
+                                    android:layout_width="@dimen/_50DP"
+                                    android:layout_height="@dimen/_50DP"
+                                    android:background="@{viewModel.scanCodeOpen ? @drawable/tick : @drawable/cross}"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:id="@+id/textViewBarcode1"
+                                    android:layout_width="@dimen/_0DP"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/_5DP"
+                                    android:background="@color/transparent"
+                                    android:textSize="@dimen/_12SP"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toStartOf="@id/imgScanBfPkg"
+                                    app:layout_constraintStart_toEndOf="@id/imgVwStatusIndicator2"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <com.google.android.material.imageview.ShapeableImageView
+                                    android:id="@+id/imgScanBfPkg"
+                                    android:layout_width="@dimen/_0DP"
+                                    android:layout_height="@dimen/_45DP"
+                                    android:layout_margin="@dimen/_5DP"
+                                    android:background="@android:color/transparent"
+                                    android:contentDescription="@string/camera"
+                                    android:onClick="@{() -> viewModel.scanCodeBeforePackaging()}"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/ic_scan_barcode" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/layoutafterimage"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_10DP"
+                                android:background="@drawable/border_2dp_grey"
+                                app:layout_constraintTop_toBottomOf="@id/ll_before_pkf_scan">
+
+                                <com.google.android.material.imageview.ShapeableImageView
+                                    android:id="@+id/imgVwStatusIndicator3"
+                                    android:layout_width="@dimen/_50DP"
+                                    android:layout_height="@dimen/_50DP"
+                                    android:background="@{viewModel.imageClose ? @drawable/tick : @drawable/cross}"
+                                    android:contentDescription="@string/camera"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:id="@+id/txtafpck"
+                                    android:layout_width="@dimen/_0DP"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/_5DP"
+                                    android:background="@color/transparent"
+                                    android:fontFamily="@font/roboto_regular"
+                                    android:text="@string/capture_image_af_pkg"
+                                    android:textSize="@dimen/_12SP"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toStartOf="@id/imgCamAfPkg"
+                                    app:layout_constraintStart_toEndOf="@id/imgVwStatusIndicator3"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <com.google.android.material.imageview.ShapeableImageView
+                                    android:id="@+id/imgCamAfPkg"
+                                    android:layout_width="@dimen/_50DP"
+                                    android:layout_height="@dimen/_50DP"
+                                    android:layout_margin="@dimen/_5DP"
+                                    android:background="@android:color/transparent"
+                                    android:contentDescription="@string/camera"
+                                    android:onClick="@{() -> viewModel.captureImageAfterPackaging()}"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/cam" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/layoutaftersacan"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_10DP"
+                                android:background="@drawable/border_2dp_grey"
+                                app:layout_constraintTop_toBottomOf="@id/layoutafterimage">
+
+                                <com.google.android.material.imageview.ShapeableImageView
+                                    android:id="@+id/imgVwStatusIndicator4"
+                                    android:layout_width="@dimen/_50DP"
+                                    android:layout_height="@dimen/_50DP"
+                                    android:background="@{viewModel.scanCodeClose ? @drawable/tick : @drawable/cross}"
+                                    android:contentDescription="@string/camera"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:id="@+id/textViewBarcode2"
+                                    android:layout_width="@dimen/_0DP"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/_5DP"
+                                    android:background="@color/transparent"
+                                    android:textSize="@dimen/_12SP"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toStartOf="@id/imgScanAfPkg"
+                                    app:layout_constraintStart_toEndOf="@id/imgVwStatusIndicator4"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <com.google.android.material.imageview.ShapeableImageView
+                                    android:id="@+id/imgScanAfPkg"
+                                    android:layout_width="@dimen/_0DP"
+                                    android:layout_height="@dimen/_50DP"
+                                    android:layout_margin="@dimen/_5DP"
+                                    android:background="@android:color/transparent"
+                                    android:contentDescription="@string/camera"
+                                    android:onClick="@{() -> viewModel.scanCodeAfterPackaging()}"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/ic_scan_barcode" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </com.google.android.material.card.MaterialCardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </ScrollView>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/lltFooter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_10DP"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_20DP"
+                    android:layout_marginRight="@dimen/_20DP"
+                    android:layout_marginBottom="@dimen/_10DP"
+                    android:background="@drawable/csat_outer"
+                    android:padding="@dimen/_5DP"
+                    app:layout_constraintBottom_toTopOf="@id/proceed_btn">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_5DP"
+                        android:background="@drawable/csat_border"
+                        android:backgroundTint="@color/white">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/msg_heading"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/message_csat"
+                            android:textColor="@color/orange"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxLines="4"
+                            android:text="@string/do_not_forget_to_ask_the_ncustomer_to_provide_nfeedback_on_the_shared_csat_nmessage_and_email_link"
+                            android:textAlignment="center"
+                            android:textColor="@color/light_blue"
+                            android:textStyle="bold"
+                            app:layout_constraintTop_toBottomOf="@id/msg_heading" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/proceed_btn"
+                    style="@style/Button.Primary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:backgroundTint="@null"
+                    android:onClick="@{() -> viewModel.OnProceed()}"
+                    android:text="@string/proceed"
+                    android:textSize="@dimen/_15SP"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

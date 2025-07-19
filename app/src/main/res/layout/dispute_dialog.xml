@@ -180,7 +180,7 @@
                             android:layout_margin="@dimen/_10DP"
                             android:background="@drawable/fwd_button"
                             android:onClick="@{()->viewModel.onSubmitClick()}"
-                            android:text="@string/submitButton"
+                            android:text="@string/submittxt"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_15SP"
                             android:textStyle="bold" />
@@ -269,7 +269,7 @@
                                     android:layout_margin="@dimen/_10DP"
                                     android:background="@drawable/fwd_button"
                                     android:onClick="@{() -> viewModel.onOtpSubmitClick()}"
-                                    android:text="@string/submitButton"
+                                    android:text="@string/submittxt"
                                     android:textColor="@color/white"
                                     android:textSize="@dimen/_15SP"
                                     android:textStyle="bold" />

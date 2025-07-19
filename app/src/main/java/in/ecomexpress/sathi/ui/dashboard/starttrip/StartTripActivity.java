@@ -6,6 +6,7 @@ import static in.ecomexpress.sathi.utils.CommonUtils.logScreenNameInGoogleAnalyt
 import static in.ecomexpress.sathi.utils.CommonUtils.verifyVehicleNumber;
 import static in.ecomexpress.sathi.utils.WatermarkUtils.getRealPathFromURI;
 import static in.ecomexpress.sathi.utils.WatermarkUtils.getResizedBitmap;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -24,10 +25,14 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
+
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -35,7 +40,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
+
 import javax.inject.Inject;
+
 import dagger.hilt.android.AndroidEntryPoint;
 import in.ecomexpress.sathi.BR;
 import in.ecomexpress.sathi.R;
@@ -46,6 +53,7 @@ import in.ecomexpress.sathi.ui.base.BaseActivity;
 import in.ecomexpress.sathi.ui.drs.todolist.ToDoListActivity;
 import in.ecomexpress.sathi.utils.Constants;
 import in.ecomexpress.sathi.utils.CryptoUtils;
+import in.ecomexpress.sathi.utils.DigitalCropImageHandler;
 import in.ecomexpress.sathi.utils.ImageHandler;
 import in.ecomexpress.sathi.utils.Logger;
 import in.ecomexpress.sathi.utils.MessageManager;
@@ -66,6 +74,7 @@ public class StartTripActivity extends BaseActivity<ActivityNewStartTripBinding,
     String vehicleType = "", typeOfVehicle = "";
     String getVehicle = null;
     ArrayList<ImageResponse> imageResponseArrayList = new ArrayList<>();
+
     @Inject
     StartTripViewModel mRunIdViewModel;
 
@@ -77,6 +86,7 @@ public class StartTripActivity extends BaseActivity<ActivityNewStartTripBinding,
     private String device = (Build.MANUFACTURER + ":" + Build.MODEL).toUpperCase(Locale.US);
     private String device_name = "android";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +95,7 @@ public class StartTripActivity extends BaseActivity<ActivityNewStartTripBinding,
         logScreenNameInGoogleAnalytics(TAG, this);
         activityNewStartTripBinding = getViewDataBinding();
         mRunIdViewModel.setNavigator(this);
+        mRunIdViewModel.getClickStart();
         activityNewStartTripBinding.header.headingName.setText(R.string.start_trip);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
@@ -384,6 +395,7 @@ public class StartTripActivity extends BaseActivity<ActivityNewStartTripBinding,
 
     @Override
     public void onHandleError(String errorResponse) {
+
         try {
             context.runOnUiThread(() -> MessageManager.showToast(context, errorResponse));
         } catch (Exception e) {
@@ -449,6 +461,7 @@ public class StartTripActivity extends BaseActivity<ActivityNewStartTripBinding,
 
     @Override
     public void showDescription(String description) {
+
         context.runOnUiThread(() -> Toast.makeText(context, description, Toast.LENGTH_LONG).show());
     }
 

@@ -112,7 +112,7 @@ public class RVPItemViewModel {
             long start_time = mCommonDRSListItem.getDrsReverseQCTypeResponse().getShipmentDetails().getSlot_details().getStart_time();
             long end_time = mCommonDRSListItem.getDrsReverseQCTypeResponse().getShipmentDetails().getSlot_details().getEnd_time();
             if (start_time == 0 && end_time == 0) {
-                if (mCommonDRSListItem.getProfileFound() != null && mCommonDRSListItem.getProfileFound().getTime_slot() != null && !mCommonDRSListItem.getProfileFound().getTime_slot().isEmpty()) {
+                if (mCommonDRSListItem.getProfileFound().getTime_slot() != null && !mCommonDRSListItem.getProfileFound().getTime_slot().isEmpty()) {
                     return mCommonDRSListItem.getProfileFound().getTime_slot();
                 } else {
                     return "";
@@ -122,13 +122,15 @@ public class RVPItemViewModel {
             }
         } catch (Exception e) {
             Logger.e(TAG, String.valueOf(e));
-            return "";
         }
+        return "";
     }
 
     public String getPin() {
         try {
-            if (mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details()!=null) {
+            //String pin = mCommonDRSListItem.getDrsReverseQCTypeResponse().getShipmentDetails().getPin();
+            if (mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details()!=null)
+            {
                 String pin = String.valueOf(mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(0).getPin());
                 return pin != null && !pin.isEmpty() ? "PIN: " + pin : "";
             }

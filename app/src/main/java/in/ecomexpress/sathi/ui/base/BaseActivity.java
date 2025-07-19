@@ -29,7 +29,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,11 +40,9 @@ import com.google.android.material.snackbar.Snackbar;
 import javax.inject.Inject;
 import in.ecomexpress.sathi.R;
 import in.ecomexpress.sathi.SathiApplication;
-import in.ecomexpress.sathi.backgroundServices.SathiLocationService;
 import in.ecomexpress.sathi.repo.remote.model.DeviceDetails;
 import in.ecomexpress.sathi.ui.dashboard.global_activity.GlobalDialogActivity;
 import in.ecomexpress.sathi.utils.CommonUtils;
-import in.ecomexpress.sathi.utils.Constants;
 import in.ecomexpress.sathi.utils.Logger;
 import in.ecomexpress.sathi.utils.NetworkUtils;
 
@@ -71,69 +68,6 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
             Logger.e("BaseActivity-OnCreate", String.valueOf(e));
         }
         LocalBroadcastManager.getInstance(this).registerReceiver(mMockLocationReceiver, new IntentFilter("LIVE_TRACKING_MOCK_LOCATION"));
-    }
-    private void requestPermission() {
-        requestPermissionsSafely(Constants.permissionsupperN, 100);
-    }
-
-    private void requestPermissionBelowN() {
-        requestPermissionsSafely(Constants.permissions, 100);
-    }
-    private boolean checkPermission(String[] permissions) {
-        for (String permission : permissions) {
-            if (!hasPermission(permission)) {
-                return false;
-            }
-        }
-        return true;
-    }
-    public void appPermissions()
-    {
-        try {
-            if (Build.VERSION.SDK_INT >= 23) {
-                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    if (!checkPermission(Constants.permissionsupperN)) {
-                        requestPermission();
-                    } else {
-                        deviceDetails.setDeviceId(CommonUtils.getImei(getApplicationContext()));
-                    }
-                } else {
-                    if (!checkPermission(Constants.permissions)) {
-                        requestPermissionBelowN();
-                    } else {
-                        deviceDetails.setDeviceId(CommonUtils.getImei(getApplicationContext()));
-                    }
-                }
-            } else {
-                deviceDetails.setDeviceId(CommonUtils.getImei(getApplicationContext()));
-
-            }
-        } catch (Exception e) {
-            showSnackbar(e.getMessage());
-
-        }
-    }
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        for (int i = 0, len = permissions.length; i < len; i++) {
-            String permission = permissions[i];
-            if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
-                // User Rejected The Permission
-                boolean showRationale = shouldShowRequestPermissionRationale(permission);
-                if (!showRationale) {
-                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    Uri uri = Uri.fromParts("package", getPackageName(), null);
-                    intent.setData(uri);
-                    startActivityForResult(intent, 1);
-                }
-            } else if (checkPermission(permissions)) {
-                deviceDetails.setDeviceId(CommonUtils.getImei(getApplicationContext()));
-            } else {
-                showSnackbar(getString(R.string.permission_required));
-            }
-        }
     }
 
     public void adjustFontScale(Configuration configuration) {
@@ -183,7 +117,6 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
     @Override
     protected void onResume() {
         super.onResume();
-        appPermissions();
     }
 
     @Override
@@ -203,10 +136,12 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
     }
 
     @Override
-    public void onFragmentAttached() {}
+    public void onFragmentAttached() {
+    }
 
     @Override
-    public void onFragmentDetached(String tag) {}
+    public void onFragmentDetached(String tag) {
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -245,7 +180,6 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
      * Check endpoint const or not.
      */
     public boolean eventValidator(String endPointName) {
-        // If URL is not in the login response then it will return true.
         return SathiApplication.hashMapAppUrl.get(endPointName) == null;
     }
 

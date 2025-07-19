@@ -4,7 +4,11 @@ import static in.ecomexpress.sathi.utils.CommonUtils.applyTransitionToBackFromAc
 import static in.ecomexpress.sathi.utils.CommonUtils.applyTransitionToOpenActivity;
 import static in.ecomexpress.sathi.utils.CommonUtils.logScreenNameInGoogleAnalytics;
 import static in.ecomexpress.sathi.utils.Constants.ConsigneeDirectAlternateMobileNo;
+import static in.ecomexpress.sathi.utils.Constants.eds_call_count;
 import static in.ecomexpress.sathi.utils.Constants.forward_call_count;
+import static in.ecomexpress.sathi.utils.Constants.rts_call_count;
+import static in.ecomexpress.sathi.utils.Constants.rvp_call_count;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -19,6 +23,7 @@ import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.text.InputFilter;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -28,12 +33,15 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
+
 import com.budiyev.android.codescanner.CodeScanner;
 import com.nlscan.android.scan.ScanManager;
 import com.nlscan.android.scan.ScanSettings;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -41,8 +49,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
+
 import dagger.hilt.android.AndroidEntryPoint;
+import in.ecomexpress.barcodelistner.BarcodeHandler;
+import in.ecomexpress.barcodelistner.BarcodeResult;
 import in.ecomexpress.sathi.BR;
 import in.ecomexpress.sathi.R;
 import in.ecomexpress.sathi.databinding.ActivityUndeliveredBinding;
@@ -74,7 +86,7 @@ import in.ecomexpress.sathi.utils.TimeUtils;
 import io.reactivex.disposables.CompositeDisposable;
 
 @AndroidEntryPoint
-public class UndeliveredActivity extends BaseActivity<ActivityUndeliveredBinding, UndeliveredViewModel> implements IUndeliveredNavigator, MyDialogCloseListener {
+public class UndeliveredActivity extends BaseActivity<ActivityUndeliveredBinding, UndeliveredViewModel> implements IUndeliveredNavigator, BarcodeResult, MyDialogCloseListener {
 
     private final String TAG = UndeliveredActivity.class.getSimpleName();
     public static int imageCaptureCount = 0;
@@ -89,7 +101,8 @@ public class UndeliveredActivity extends BaseActivity<ActivityUndeliveredBinding
     Boolean scannedStatus = false;
     AwbPopupDialog awbPopupDialog;
     MyDialogCloseListener myDialogCloseListener;
-    String getDrsApiKey = "", getDrsPstnKey = "", getDrsPin = "", composite_key = "";
+    BarcodeHandler barcodeHandler;
+    String getDrsApiKey = "", getDrsPstnKey = "", getCbConfigCallType = "", masterPstnFormat = "", getDrsPin = "", composite_key = "";
     Dialog dialog;
     CallbridgeConfiguration callbridgeConfiguration = null;
     String groupName = Constants.SELECT;
@@ -135,6 +148,8 @@ public class UndeliveredActivity extends BaseActivity<ActivityUndeliveredBinding
         super.onCreate(savedInstanceState);
         undeliveredViewModel.setNavigator(this);
         mActivityUndeliveredBinding = getViewDataBinding();
+        barcodeHandler = new BarcodeHandler(this, "ScannerLM", this);
+        barcodeHandler.enableScanner();
         myDialogCloseListener = this;
         logScreenNameInGoogleAnalytics(TAG, this);
         undeliveredViewModel.getDataManager().setLoginPermission(false);
@@ -214,17 +229,17 @@ public class UndeliveredActivity extends BaseActivity<ActivityUndeliveredBinding
                 public void onBitmapReceived(final Bitmap bitmap, final String imageUri, final ImageView imageView, String imageName, String imageCode, int pos, boolean verifyImage) {
                     runOnUiThread(() -> {
                         try {
-                            if (!NetworkUtils.isNetworkConnected(UndeliveredActivity.this)) {
-                                showError(getString(R.string.check_internet));
-                                return;
-                            }
                             if (CommonUtils.checkImageIsBlurryOrNot(UndeliveredActivity.this, "FWD", bitmap, imageCaptureCount, undeliveredViewModel.getDataManager())) {
                                 imageCaptureCount++;
                             } else {
                                 if (imageView != null) mimageView = imageView;
                                 mbitmap = bitmap;
                                 isImageCaptured = true;
-                                undeliveredViewModel.uploadImageServer(forwardCommit.getAwb() + "_" + forwardCommit.getDrs_id() + "_UndeliveredImage.png", imageUri, "UndeliveredImage", Long.parseLong(forwardCommit.getAwb()), Integer.parseInt(forwardCommit.getDrs_id()), "", bitmap, composite_key);
+                                if (NetworkUtils.isNetworkConnected(UndeliveredActivity.this)) {
+                                    undeliveredViewModel.uploadImageServer(forwardCommit.getAwb() + "_" + forwardCommit.getDrs_id() + "_UndeliveredImage.png", imageUri, "UndeliveredImage", Long.parseLong(forwardCommit.getAwb()), Integer.parseInt(forwardCommit.getDrs_id()), "", bitmap, composite_key);
+                                } else {
+                                    undeliveredViewModel.uploadAWSImage(imageUri, "UndeliveredImage", forwardCommit.getAwb() + "_" + forwardCommit.getDrs_id() + "_UndeliveredImage.png", false);
+                                }
                             }
                         } catch (Exception e) {
                             Logger.e(UndeliveredActivity.class.getName(), e.getMessage());
@@ -652,12 +667,17 @@ public class UndeliveredActivity extends BaseActivity<ActivityUndeliveredBinding
             if (!scannedStatus) {
                 mCodeScanner.startPreview();
             }
+            barcodeHandler = new BarcodeHandler(this, "ScannerLM", this);
+            barcodeHandler.enableScanner();
             undeliveredViewModel.getIsAwbScan();
             if (SignatureViewModel.device.equals(Constants.NEWLAND)) {
                 mScanMgr = ScanManager.getInstance();
                 mScanMgr.startScan();
                 mScanMgr.enableBeep();
                 mScanMgr.setOutpuMode(ScanSettings.Global.VALUE_OUT_PUT_MODE_BROADCAST);
+            } else {
+                barcodeHandler = new BarcodeHandler(this, "ScannerLM", this);
+                barcodeHandler.enableScanner();
             }
         } else {
             mActivityUndeliveredBinding.scannerFrame.setVisibility(View.GONE);
@@ -745,55 +765,50 @@ public class UndeliveredActivity extends BaseActivity<ActivityUndeliveredBinding
     }
 
     @SuppressLint("SetTextI18n")
-    public void makeCallDialog()
-    {
-        if (!call_allowed)
-        {
+    public void makeCallDialog() {
+        if (!call_allowed) {
             undelivered(false);
-        }
-        else
-        {
-            try
-            {
-                dialog = new Dialog(this);
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.activity_undelivered_call_dialog);
-                dialog.setCancelable(true);
-                dialog.setCanceledOnTouchOutside(false);
-                TextView name = dialog.findViewById(R.id.name);
-                name.setText("Name : " + forwardCommit.getConsignee_name());
-                TextView awb = dialog.findViewById(R.id.awb);
-                awb.setText("AWB : " + forwardCommit.getAwb());
-                ImageView dialogButton = dialog.findViewById(R.id.call);
-                // if button is clicked, close the custom dialog
-                dialogButton.setOnClickListener(v -> {
-                    undeliveredViewModel.getDataManager().setCallClicked(forwardCommit.getAwb() + "ForwardCall", false);
-                    try {
-                        if (drsFWDResponse.getFlags().getFlagMap().getIs_callbridge_enabled().equalsIgnoreCase("true") &&
-                                drsFWDResponse.getCallbridge_details() != null) {
-                            makeCallonClick();
+        } else try {
+            dialog = new Dialog(this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.activity_undelivered_call_dialog);
+            dialog.setCancelable(true);
+            dialog.setCanceledOnTouchOutside(false);
+            TextView name = dialog.findViewById(R.id.name);
+            name.setText("Name : " + forwardCommit.getConsignee_name());
+            TextView awb = dialog.findViewById(R.id.awb);
+            awb.setText("AWB : " + forwardCommit.getAwb());
+            ImageView dialogButton = dialog.findViewById(R.id.call);
+            // if button is clicked, close the custom dialog
+            dialogButton.setOnClickListener(v -> {
+                undeliveredViewModel.getDataManager().setCallClicked(forwardCommit.getAwb() + "ForwardCall", false);
+                try {
+                    if (drsFWDResponse.getFlags().getFlagMap().getIs_callbridge_enabled().equalsIgnoreCase("true") &&
+                            drsFWDResponse.getCallbridge_details()!=null)
+                    {
+                        makeCallonClick();
+                    }
+                    else
+                    {
+                        if (!TextUtils.isEmpty(ConsigneeDirectAlternateMobileNo) && ConsigneeDirectAlternateMobileNo != null && !ConsigneeDirectAlternateMobileNo.equals("0")) {
+                            showDirectCallDialog();
                         } else {
-                            if (!TextUtils.isEmpty(ConsigneeDirectAlternateMobileNo) && ConsigneeDirectAlternateMobileNo != null && !ConsigneeDirectAlternateMobileNo.equals("0")) {
-                                showDirectCallDialog();
-                            } else {
-                                undeliveredViewModel.consigneeContactNumber.set(drsFWDResponse.getConsigneeDetails().getMobile());
-                                forward_call_count = forward_call_count + 1;
-                                undeliveredViewModel.getDataManager().setForwardCallCount(forwardCommit.getAwb() + "FWD", forward_call_count);
-                                CommonUtils.startCallIntent(drsFWDResponse.getConsigneeDetails().getMobile(), getActivityContext(), UndeliveredActivity.this);
-                            }
-
+                            undeliveredViewModel.consigneeContactNumber.set(drsFWDResponse.getConsigneeDetails().getMobile());
+                            forward_call_count = forward_call_count + 1;
+                            undeliveredViewModel.getDataManager().setForwardCallCount(forwardCommit.getAwb() + "FWD", forward_call_count);
+                            CommonUtils.startCallIntent(drsFWDResponse.getConsigneeDetails().getMobile(), getActivityContext(), UndeliveredActivity.this);
                         }
 
-                        dialog.dismiss();
-                    } catch (Exception e) {
-                        Logger.e(UndeliveredActivity.class.getName(), e.getMessage());
                     }
-                });
-                dialog.show();
-            } catch (Exception e) {
-                Logger.e(UndeliveredActivity.class.getName(), e.getMessage());
-            }
-            //undeliveredViewModel.callBridgeCheckStatusApi(drsFWDResponse.getFlags().getFlagMap().getIs_callbridge_enabled(), false, forwardCommit.getAwb(), forwardCommit.getDrs_id());
+
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    Logger.e(UndeliveredActivity.class.getName(), e.getMessage());
+                }
+            });
+            dialog.show();
+        } catch (Exception e) {
+            Logger.e(UndeliveredActivity.class.getName(), e.getMessage());
         }
     }
 
@@ -867,7 +882,7 @@ public class UndeliveredActivity extends BaseActivity<ActivityUndeliveredBinding
                             } else if (masterPstnFormat.contains(this.getString(R.string.pstn_pin))) {*/
                            //     callingformat = masterPstnFormat.replaceAll(this.getString(R.string.pstn_pin), getDrsPin);
                              //   Constants.call_pin = String.valueOf(getDrsPin);
-                                callingformat = drsFWDResponse.getCallbridge_details().get(0).getCallbridge_number()+","+drsFWDResponse.getCallbridge_details().get(0).getPin().substring(0, 4)+","+ drsFWDResponse.getCallbridge_details().get(0).getPin().substring(4)+"#";
+                                callingformat = drsFWDResponse.getCallbridge_details().get(0).getCallbridge_number()+","+drsFWDResponse.getCallbridge_details().get(0).getPin()+"#";
                                 Constants.call_pin = String.valueOf(drsFWDResponse.getCallbridge_details().get(0).getPin());
                                 Constants.calling_format = callingformat;
                                 Constants.shipment_type = Constants.FWD;
@@ -964,13 +979,10 @@ public class UndeliveredActivity extends BaseActivity<ActivityUndeliveredBinding
         }
     }
 
-    // On capture image
+    // on capture image
     @Override
     public void onCaptureImage() {
-        if (!isNetworkConnected()) {
-            showError(getString(R.string.check_internet));
-            return;
-        }
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.Theme_Material3_Light_Dialog_Alert);
         String AlertText1 = "Attention : ";
         builder.setMessage(AlertText1 + getString(R.string.alert)).setCancelable(false).setPositiveButton("OK", (dialog, id) -> imageHandler.captureImage(forwardCommit.getAwb() + "_" + forwardCommit.getDrs_id() + "_UndeliveredImage.png", mActivityUndeliveredBinding.image, "Undelivered.png"));
@@ -1214,7 +1226,7 @@ public class UndeliveredActivity extends BaseActivity<ActivityUndeliveredBinding
                 showSnackbar("Please Verify OTP");
                 return;
             }
-            if (!undeliveredViewModel.ud_otp_commit_status.equalsIgnoreCase("VERIFIED") && forwardReasonCodeMaster.getMasterDataAttributeResponse().cALLM && undeliveredViewModel.getDataManager().getCallClicked(forwardCommit.getAwb() + "ForwardCall")) {
+            if (forwardReasonCodeMaster.getMasterDataAttributeResponse().cALLM && undeliveredViewModel.getDataManager().getCallClicked(forwardCommit.getAwb() + "ForwardCall")) {
                 makeCallDialog();
                 return;
             }
@@ -1307,7 +1319,7 @@ public class UndeliveredActivity extends BaseActivity<ActivityUndeliveredBinding
             if (!undeliveredViewModel.getDataManager().getDirectUndeliver()) {
                 undelivered(failFlag);
             } else {
-                if (call_allowed && !undeliveredViewModel.ud_otp_commit_status.equalsIgnoreCase("VERIFIED")) {
+                if (call_allowed) {
                     undeliveredViewModel.callApi(drsFWDResponse.getFlags().getFlagMap().getIs_callbridge_enabled(), failFlag, forwardCommit.getAwb(), forwardCommit.getDrs_id());
                 } else {
                     undelivered(failFlag);
@@ -1317,7 +1329,7 @@ public class UndeliveredActivity extends BaseActivity<ActivityUndeliveredBinding
             if (!undeliveredViewModel.getDataManager().getDirectUndeliver()) {
                 undelivered(failFlag);
             } else {
-                if (call_allowed && !undeliveredViewModel.ud_otp_commit_status.equalsIgnoreCase("VERIFIED")) {
+                if (!call_allowed) {
                     undeliveredViewModel.callApi(drsFWDResponse.getFlags().getFlagMap().getIs_callbridge_enabled(), failFlag, forwardCommit.getAwb(), forwardCommit.getDrs_id());
                 } else {
                     undelivered(failFlag);
@@ -1327,7 +1339,7 @@ public class UndeliveredActivity extends BaseActivity<ActivityUndeliveredBinding
             if (!undeliveredViewModel.getDataManager().getDirectUndeliver()) {
                 undelivered(failFlag);
             } else {
-                if (call_allowed && is_call_mandatory && !undeliveredViewModel.ud_otp_commit_status.equalsIgnoreCase("VERIFIED")) {
+                if (call_allowed && is_call_mandatory) {
                     undeliveredViewModel.callApi(drsFWDResponse.getFlags().getFlagMap().getIs_callbridge_enabled(), failFlag, forwardCommit.getAwb(), forwardCommit.getDrs_id());
                 } else {
                     undelivered(failFlag);
@@ -1338,7 +1350,7 @@ public class UndeliveredActivity extends BaseActivity<ActivityUndeliveredBinding
                 if (!undeliveredViewModel.getDataManager().getDirectUndeliver()) {
                     undelivered(failFlag);
                 } else {
-                    if (call_allowed && !undeliveredViewModel.ud_otp_commit_status.equalsIgnoreCase("VERIFIED")) {
+                    if (call_allowed) {
                         undeliveredViewModel.callApi(drsFWDResponse.getFlags().getFlagMap().getIs_callbridge_enabled(), failFlag, forwardCommit.getAwb(), forwardCommit.getDrs_id());
                     } else {
                         undelivered(failFlag);
@@ -1544,49 +1556,6 @@ public class UndeliveredActivity extends BaseActivity<ActivityUndeliveredBinding
         mActivityUndeliveredBinding.flagIsRescheduled.setVisibility(View.GONE);
     }
 
-    @Override
-    public void onCallBridgeCheckStatus() {
-        try
-        {
-            dialog = new Dialog(this);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.activity_undelivered_call_dialog);
-            dialog.setCancelable(true);
-            dialog.setCanceledOnTouchOutside(false);
-            TextView name = dialog.findViewById(R.id.name);
-            name.setText("Name : " + forwardCommit.getConsignee_name());
-            TextView awb = dialog.findViewById(R.id.awb);
-            awb.setText("AWB : " + forwardCommit.getAwb());
-            ImageView dialogButton = dialog.findViewById(R.id.call);
-            // if button is clicked, close the custom dialog
-            dialogButton.setOnClickListener(v -> {
-                undeliveredViewModel.getDataManager().setCallClicked(forwardCommit.getAwb() + "ForwardCall", false);
-                try {
-                    if (drsFWDResponse.getFlags().getFlagMap().getIs_callbridge_enabled().equalsIgnoreCase("true") &&
-                            drsFWDResponse.getCallbridge_details() != null) {
-                        makeCallonClick();
-                    } else {
-                        if (!TextUtils.isEmpty(ConsigneeDirectAlternateMobileNo) && ConsigneeDirectAlternateMobileNo != null && !ConsigneeDirectAlternateMobileNo.equals("0")) {
-                            showDirectCallDialog();
-                        } else {
-                            undeliveredViewModel.consigneeContactNumber.set(drsFWDResponse.getConsigneeDetails().getMobile());
-                            forward_call_count = forward_call_count + 1;
-                            undeliveredViewModel.getDataManager().setForwardCallCount(forwardCommit.getAwb() + "FWD", forward_call_count);
-                            CommonUtils.startCallIntent(drsFWDResponse.getConsigneeDetails().getMobile(), getActivityContext(), UndeliveredActivity.this);
-                        }
-
-                    }
-                    dialog.dismiss();
-                } catch (Exception e) {
-                    Logger.e(UndeliveredActivity.class.getName(), e.getMessage());
-                }
-            });
-            dialog.show();
-        } catch (Exception e) {
-            Logger.e(UndeliveredActivity.class.getName(), e.getMessage());
-        }
-    }
-
 
     private void undelivered(boolean failFlag) {
         try {
@@ -1606,19 +1575,12 @@ public class UndeliveredActivity extends BaseActivity<ActivityUndeliveredBinding
             if (undeliveredViewModel.loginDate().equalsIgnoreCase(String.valueOf(mDay)) && undeliveredViewModel.getDataManager().getLoginMonth() == mMonth) {
                 if (!failFlag) {
                     String dialog_message = getString(R.string.commitdialog);
-                    String positiveButtonText = getString(R.string.proceed_now);
+                    String positiveButtonText = getString(R.string.yes);
                     if (Constants.CONSIGNEE_PROFILE && meterRange > undeliveredViewModel.getDataManager().getUndeliverConsigneeRANGE() && undeliveredViewModel.getDataManager().getConsigneeProfileValue().equalsIgnoreCase("W")) {
-                        dialog_message = "⚠️ You are not attempting the shipment at the consignee's location.\n\n"
-                                + "📍 **Your Current Location:** " + undeliveredViewModel.getDataManager().getCurrentLatitude()
-                                + ", " + undeliveredViewModel.getDataManager().getCurrentLongitude() + "\n"
-                                + "**Distance from Consignee:** " + meterRange + " meters away.\n\n"
-                                + "❓ Are you sure you want to commit?";
-                        positiveButtonText = getString(R.string.proceed_now);
+                        dialog_message = "You are not attempting the shipment at Consignee’s location. Your current location = " + undeliveredViewModel.getDataManager().getCurrentLatitude() + ", " + undeliveredViewModel.getDataManager().getCurrentLongitude() + " You are " + meterRange + " meter away from consignee location. \nAre you sure you want to commit?";
+                        positiveButtonText = getString(R.string.yes);
                     } else if (Constants.CONSIGNEE_PROFILE && meterRange > undeliveredViewModel.getDataManager().getUndeliverConsigneeRANGE() && undeliveredViewModel.getDataManager().getConsigneeProfileValue().equalsIgnoreCase("R")) {
-                        dialog_message = "🚫 You are not allowed to commit this shipment as you are not at the consignee's location.\n\n"
-                                + "📍 **Your Current Location:** " + undeliveredViewModel.getDataManager().getCurrentLatitude()
-                                + ", " + undeliveredViewModel.getDataManager().getCurrentLongitude() + "\n"
-                                + "**Distance from Consignee:** " + meterRange + " meters away.";
+                        dialog_message = "You are not allowed to commit this shipment as you are not attempting at consignee location. your current location = " + undeliveredViewModel.getDataManager().getCurrentLatitude() + ", " + undeliveredViewModel.getDataManager().getCurrentLongitude() + " You are " + meterRange + " meter away from consignee location";
                         positiveButtonText = getString(R.string.ok);
                     } else if (Constants.CONSIGNEE_PROFILE && meterRange > undeliveredViewModel.getDataManager().getUndeliverConsigneeRANGE()) {
                         if (NetworkUtils.isNetworkConnected(UndeliveredActivity.this)) {
@@ -1719,6 +1681,10 @@ public class UndeliveredActivity extends BaseActivity<ActivityUndeliveredBinding
     }
 
     @Override
+    public void onResult(String s) {
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         try {
@@ -1763,10 +1729,10 @@ public class UndeliveredActivity extends BaseActivity<ActivityUndeliveredBinding
         ImageView crossDialog = dialog.findViewById(R.id.crssdialog);
         crossDialog.setOnClickListener(v -> dialog.dismiss());
         call.setOnClickListener(v -> {
-            undeliveredViewModel.consigneeContactNumber.set(drsFWDResponse.getCallbridge_details().get(0).getCallbridge_number()+","+drsFWDResponse.getCallbridge_details().get(0).getPin().substring(0, 4)+","+ drsFWDResponse.getCallbridge_details().get(0).getPin().substring(4)+"#");
+            undeliveredViewModel.consigneeContactNumber.set(drsFWDResponse.getCallbridge_details().get(0).getCallbridge_number()+","+drsFWDResponse.getCallbridge_details().get(0).getPin()+"#");
             forward_call_count = forward_call_count + 1;
             undeliveredViewModel.getDataManager().setForwardCallCount(awb + "FWD", forward_call_count);
-            Intent intent1 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + drsFWDResponse.getCallbridge_details().get(0).getCallbridge_number()+","+drsFWDResponse.getCallbridge_details().get(0).getPin().substring(0, 4)+","+ drsFWDResponse.getCallbridge_details().get(0).getPin().substring(4)+"#"));
+            Intent intent1 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + drsFWDResponse.getCallbridge_details().get(0).getCallbridge_number()+","+drsFWDResponse.getCallbridge_details().get(0).getPin()+"#"));
             intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent1);
             dialog.dismiss();
@@ -1815,4 +1781,6 @@ public class UndeliveredActivity extends BaseActivity<ActivityUndeliveredBinding
         dialog.show();
         dialog.getWindow().setAttributes(lp);
     }
+
+
 }

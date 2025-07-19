@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-//import org.json.XML;
+import org.json.XML;
 import org.simpleframework.xml.core.Persister;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -340,7 +340,7 @@ public class EdsEkycHdfcFragment extends BaseFragment<FragmentEkycHdfcBinding, E
 //
 //            }
             //converting json to xml
-//             String xml_data = XML.toString(obj);
+             String xml_data = XML.toString(obj);
             char ch = '"';
 
 
@@ -383,7 +383,7 @@ public class EdsEkycHdfcFragment extends BaseFragment<FragmentEkycHdfcBinding, E
                     "<filler2>\n" +
                     "<![CDATA[" + pidData + "]]></filler2>\n" +
                     "<filler3>" +
-                    "<![CDATA[" + "<DeviceInfo " + "xml_data" +"</DeviceInfo>]]></filler3>\n" +
+                    "<![CDATA[" + "<DeviceInfo " + xml_data +"</DeviceInfo>]]></filler3>\n" +
                    // "<![CDATA[" + "<DeviceInfo <Resp errCode=\"0\" errInfo=\"Capture Success\" fCount=\"1\" fType=\"0\" iCount=\"0\" iType=\"0\" nmPoints=\"27\" pCount=\"0\" pType=\"0\" qScore=\"81\"/>" + "]]></filler3>" +
                     "<filler4>?</filler4>\n" +
                     "<!--Optional:-->\n" +

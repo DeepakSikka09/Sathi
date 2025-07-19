@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        tools:context=".ui.drs.rvp.activity.CancelReasonCodeListActivity">
+        tools:context=".ui.drs.rvp_new.activity.CancelReasonCodeListActivity">
+
 
         <include
             android:id="@+id/header"
@@ -40,8 +41,8 @@
             android:id="@+id/txt_quest"
             android:layout_width="@dimen/_0DP"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_20DP"
             android:layout_marginTop="@dimen/_10DP"
+            android:layout_marginHorizontal="@dimen/_20DP"
             android:gravity="center_vertical"
             android:text="@string/why_are_you_making_it_undelivered"
             android:textColor="@color/black_1A"
@@ -67,8 +68,8 @@
             android:id="@+id/txt_reason"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_20DP"
             android:layout_marginTop="@dimen/_5DP"
+            android:layout_marginHorizontal="@dimen/_20DP"
             android:layout_marginBottom="@dimen/_10DP"
             android:text="@string/refused_to_accept"
             android:textColor="@color/black_1A"
@@ -124,7 +125,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/view_bottom"
-            tools:listitem="@layout/item_cancel_reason_code" />
+            tools:listitem="@layout/item_cancel_reason_code"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

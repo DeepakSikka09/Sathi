@@ -319,69 +319,14 @@ public class FwdOBDCompleteActivity extends BaseActivity<ActivityFwdObdOdrCompBi
             int mMonth = calendar.get(Calendar.MONTH) + 1;
             if (fwdOBDCompleteViewModel.loginDate().equalsIgnoreCase(String.valueOf(mDay)) && fwdOBDCompleteViewModel.getDataManager().getLoginMonth() == mMonth) {
                 if (!failFlag) {
-                    String dialog_message;
-                    String positiveButtonText;
+                    String dialog_message = "Shipment will be mark as Undelivered";
+                    String positiveButtonText = getString(R.string.ok);
                     if (Constants.CONSIGNEE_PROFILE && meterRange > fwdOBDCompleteViewModel.getDataManager().getUndeliverConsigneeRANGE() && fwdOBDCompleteViewModel.getDataManager().getConsigneeProfileValue().equalsIgnoreCase("W")) {
-                        dialog_message = "⚠️ You are not attempting the shipment at the consignee's location.\n\n"
-                                + "📍 **Your Current Location:** " + fwdOBDCompleteViewModel.getDataManager().getCurrentLatitude()
-                                + ", " + fwdOBDCompleteViewModel.getDataManager().getCurrentLongitude() + "\n"
-                                + "**Distance from Consignee:** " + meterRange + " meters away.\n\n"
-                                + "❓ Are you sure you want to commit?";
-                        positiveButtonText = getString(R.string.proceed_now);
-                        AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.Theme_MaterialComponents_Light_Dialog_Alert);
-                        builder.setCancelable(false);
-                        builder.setMessage(dialog_message);
-                        forwardCommit.setLocation_verified(meterRange <= fwdOBDCompleteViewModel.getDataManager().getUndeliverConsigneeRANGE());
-                        builder.setPositiveButton(positiveButtonText, (dialog, which) -> {
-                            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                                return;
-                            }
-                            mLastClickTime = SystemClock.elapsedRealtime();
-                            if (fwdOBDCompleteViewModel.getDataManager().getConsigneeProfileValue().equalsIgnoreCase("R") && meterRange > fwdOBDCompleteViewModel.getDataManager().getUndeliverConsigneeRANGE()) {
-                                dialog.dismiss();
-                            } else if (consigneeProfiling && meterRange > fwdOBDCompleteViewModel.getDataManager().getUndeliverConsigneeRANGE()) {
-                                dialog.dismiss();
-                            }
-
-                            if (NetworkUtils.isNetworkConnected(FwdOBDCompleteActivity.this)) {
-                                fwdOBDCompleteViewModel.createCommitPacketCashCollection(forwardCommit, dateSet, composite_key);
-                            } else {
-                                fwdOBDCompleteViewModel.onUndeliveredApiCall(FwdOBDCompleteActivity.this, dateSet, composite_key);
-                            }
-                        });
-                        AlertDialog alert = builder.create();
-                        alert.show();
-                        return;
+                        dialog_message = "You are not attempting the shipment at Consignee’s location. Your current location = " + fwdOBDCompleteViewModel.getDataManager().getCurrentLatitude() + ", " + fwdOBDCompleteViewModel.getDataManager().getCurrentLongitude() + " You are " + meterRange + " meter away from consignee location. \nAre you sure you want to commit?";
+                        positiveButtonText = getString(R.string.yes);
                     } else if (Constants.CONSIGNEE_PROFILE && meterRange > fwdOBDCompleteViewModel.getDataManager().getUndeliverConsigneeRANGE() && fwdOBDCompleteViewModel.getDataManager().getConsigneeProfileValue().equalsIgnoreCase("R")) {
-                        dialog_message = "🚫 You are not allowed to commit this shipment as you are not at the consignee's location.\n\n"
-                                + "📍 **Your Current Location:** " + fwdOBDCompleteViewModel.getDataManager().getCurrentLatitude()
-                                + ", " + fwdOBDCompleteViewModel.getDataManager().getCurrentLongitude() + "\n"
-                                + "**Distance from Consignee:** " + meterRange + " meters away.";
+                        dialog_message = "You are not allowed to commit this shipment as you are not attempting at consignee location. your current location = " + fwdOBDCompleteViewModel.getDataManager().getCurrentLatitude() + ", " + fwdOBDCompleteViewModel.getDataManager().getCurrentLongitude() + " You are " + meterRange + " meter away from consignee location";
                         positiveButtonText = getString(R.string.ok);
-                        AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.Theme_MaterialComponents_Light_Dialog_Alert);
-                        builder.setCancelable(false);
-                        builder.setMessage(dialog_message);
-                        forwardCommit.setLocation_verified(meterRange <= fwdOBDCompleteViewModel.getDataManager().getUndeliverConsigneeRANGE());
-                        builder.setPositiveButton(positiveButtonText, (dialog, which) -> {
-                            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                                return;
-                            }
-                            mLastClickTime = SystemClock.elapsedRealtime();
-                            if (fwdOBDCompleteViewModel.getDataManager().getConsigneeProfileValue().equalsIgnoreCase("R") && meterRange > fwdOBDCompleteViewModel.getDataManager().getUndeliverConsigneeRANGE()) {
-                                dialog.dismiss();
-                            } else if (consigneeProfiling && meterRange > fwdOBDCompleteViewModel.getDataManager().getUndeliverConsigneeRANGE()) {
-                                dialog.dismiss();
-                            }
-
-                            if (NetworkUtils.isNetworkConnected(FwdOBDCompleteActivity.this)) {
-                                fwdOBDCompleteViewModel.createCommitPacketCashCollection(forwardCommit, dateSet, composite_key);
-                            } else {
-                                fwdOBDCompleteViewModel.onUndeliveredApiCall(FwdOBDCompleteActivity.this, dateSet, composite_key);
-                            }
-                        });
-                        AlertDialog alert = builder.create();
-                        alert.show();
-                        return;
                     } else if (Constants.CONSIGNEE_PROFILE && meterRange > fwdOBDCompleteViewModel.getDataManager().getUndeliverConsigneeRANGE()) {
                         if (NetworkUtils.isNetworkConnected(FwdOBDCompleteActivity.this)) {
                             fwdOBDCompleteViewModel.createCommitPacketCashCollection(forwardCommit, dateSet, composite_key);
@@ -397,16 +342,30 @@ public class FwdOBDCompleteActivity extends BaseActivity<ActivityFwdObdOdrCompBi
                         }
                         return;
                     }
-                    else {
-                        forwardCommit.setLocation_verified(meterRange <= fwdOBDCompleteViewModel.getDataManager().getUndeliverConsigneeRANGE());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.Theme_MaterialComponents_Light_Dialog_Alert);
+                    builder.setCancelable(false);
+                    builder.setMessage(dialog_message);
+                    forwardCommit.setLocation_verified(meterRange <= fwdOBDCompleteViewModel.getDataManager().getUndeliverConsigneeRANGE());
+                    builder.setPositiveButton(positiveButtonText, (dialog, which) -> {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
+                        if (fwdOBDCompleteViewModel.getDataManager().getConsigneeProfileValue().equalsIgnoreCase("R") && meterRange > fwdOBDCompleteViewModel.getDataManager().getUndeliverConsigneeRANGE()) {
+                            dialog.dismiss();
+                        } else if (consigneeProfiling && meterRange > fwdOBDCompleteViewModel.getDataManager().getUndeliverConsigneeRANGE()) {
+                            dialog.dismiss();
+                        }
 
                         if (NetworkUtils.isNetworkConnected(FwdOBDCompleteActivity.this)) {
                             fwdOBDCompleteViewModel.createCommitPacketCashCollection(forwardCommit, dateSet, composite_key);
                         } else {
                             fwdOBDCompleteViewModel.onUndeliveredApiCall(FwdOBDCompleteActivity.this, dateSet, composite_key);
                         }
-                        return;
-                    }
+                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                    return;
                 }
 
                 if (NetworkUtils.isNetworkConnected(FwdOBDCompleteActivity.this)) {

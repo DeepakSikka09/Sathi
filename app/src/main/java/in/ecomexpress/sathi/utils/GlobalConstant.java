@@ -56,10 +56,10 @@ public interface GlobalConstant {
         String CONSIGNEE_PROFILE_URL = "consigneeprofile_get-profile";
         String LOG_FILE_UPLOAD_URL = "logFileUpload";
         String START_STOP_POST_TRIP = "postTripImage";
+
         String SELFIE_IMAGE_UPLOAD = "selfie_post_image";
         String POST_IMAGE_URL = "postImage";
         String RVP_IMAGE_URL = "rvp_postimage";
-        String RVP_MPS_IMAGE_URL = "rvp_mps_postimage";
         String POST_IMAGE_BYTE_URL = "rvp_postimage_byte";
         String AADHAR_MASKIMG_API = "aadhar_masking_api";
         String RESCHEDULE_STATUS = "get_reschedule_status";
@@ -92,7 +92,7 @@ public interface GlobalConstant {
         String shipment_reschedule_details = "shipment_reschedule_details";
         String unify_apps_lms = "unify_apps_lms";
         String unify_apps_campaign = "unify_apps_campaign";
-        String modular_shipment = "unify_apps_modular_shipment";
+        String OSRM_TRACKING="osrm_tracking";
     }
 
     interface APP_URL {
@@ -104,7 +104,6 @@ public interface GlobalConstant {
         String FWD_OBD = "FWD_OBD";
         String RTS = "RTS";
         String RVP = "RVP";
-        String RVP_MPS = "RVP_MPS";
         String RQC = "RQC";
         String EDS = "EDS";
         String OTHER = "OTHER";
@@ -116,7 +115,6 @@ public interface GlobalConstant {
         String RTS = "RTS";
         String RVP = "RVP";
         String RVP_QC = "RVP_QC";
-        String RVP_MPS = "RVP_MPS";
         String EDS = "EDS";
         String OTHERS = "OTHERS";
         String UD_RTS_IMAGE = "UD_RTS_IMAGE";

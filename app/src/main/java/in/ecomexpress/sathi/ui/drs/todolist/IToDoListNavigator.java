@@ -8,7 +8,6 @@ import java.util.List;
 import in.ecomexpress.sathi.databinding.ItemEdsListViewBinding;
 import in.ecomexpress.sathi.databinding.ItemForwardListViewBinding;
 import in.ecomexpress.sathi.databinding.ItemRvpListViewBinding;
-import in.ecomexpress.sathi.databinding.ItemRvpMpsListViewBinding;
 import in.ecomexpress.sathi.repo.local.db.model.CommonDRSListItem;
 import in.ecomexpress.sathi.repo.local.db.model.Remark;
 import in.ecomexpress.sathi.repo.remote.model.ErrorResponse;
@@ -87,8 +86,6 @@ public interface IToDoListNavigator {
     void setRVPRemark(Remark remark, ItemRvpListViewBinding mBinding);
 
     void UpdateDRSAdapter();
-
-    void setRVPMPSRemark(Remark remark, ItemRvpMpsListViewBinding mBinding);
 
     Activity getActivityReference();
 }

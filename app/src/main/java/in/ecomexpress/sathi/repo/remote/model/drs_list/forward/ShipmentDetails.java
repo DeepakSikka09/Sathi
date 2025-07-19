@@ -4,12 +4,16 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.room.Embedded;
+import androidx.room.Ignore;
 import androidx.room.RoomWarnings;
 import androidx.room.TypeConverters;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
+
 import in.ecomexpress.sathi.repo.local.db.db_utils.QcItemConverter;
 import in.ecomexpress.sathi.repo.remote.model.drs_list.edsnew.SlotDetails;
 
@@ -39,9 +43,6 @@ public class ShipmentDetails implements Parcelable{
 
     @JsonProperty("collectable_value")
     private Double collectableValue;
-
-    @JsonProperty("volumetric_weight")
-    private double volumetric_weight;
 
     @JsonProperty("shipper")
     private String shipper;
@@ -202,6 +203,7 @@ public class ShipmentDetails implements Parcelable{
     @JsonProperty("is_obd")
     private boolean is_obd;
 
+
     @JsonProperty("qc_item")
     @TypeConverters(QcItemConverter.class)
     public ArrayList<qc_item> qc_item;
@@ -226,7 +228,6 @@ public class ShipmentDetails implements Parcelable{
         dest.writeString(this.type);
         dest.writeValue(this.declaredValue);
         dest.writeValue(this.collectableValue);
-        dest.writeValue(this.volumetric_weight);
         dest.writeString(this.shipper);
         dest.writeString(this.order);
         dest.writeString(this.pin);
@@ -241,13 +242,13 @@ public class ShipmentDetails implements Parcelable{
         dest.writeList(qc_item);
     }
 
-    public ShipmentDetails() {}
+    public ShipmentDetails() {
+    }
 
     protected ShipmentDetails(Parcel in) {
         this.type = in.readString();
         this.declaredValue = (Double) in.readValue(Double.class.getClassLoader());
         this.collectableValue = (Double) in.readValue(Double.class.getClassLoader());
-        this.volumetric_weight = in.readDouble();
         this.shipper = in.readString();
         this.order = in.readString();
         this.pin = in.readString();
@@ -259,11 +260,11 @@ public class ShipmentDetails implements Parcelable{
         this.status = in.readString();
         this.remarks = in.readString();
         this.shipper_id = in.readInt();
-        this.qc_item = new ArrayList<>();
+        this.qc_item = new ArrayList<qc_item>();
         in.readList(this.qc_item,qc_item.class.getClassLoader());
     }
 
-    public static final Creator<ShipmentDetails> CREATOR = new Creator<>() {
+    public static final Creator<ShipmentDetails> CREATOR = new Creator<ShipmentDetails>() {
         @Override
         public ShipmentDetails createFromParcel(Parcel source) {
             return new ShipmentDetails(source);
@@ -315,13 +316,5 @@ public class ShipmentDetails implements Parcelable{
 
     public void setVendorName(String vendorName) {
         this.vendorName = vendorName;
-    }
-
-    public double getVolumetric_weight() {
-        return volumetric_weight;
-    }
-
-    public void setVolumetric_weight(double volumetric_weight) {
-        this.volumetric_weight = volumetric_weight;
     }
 }

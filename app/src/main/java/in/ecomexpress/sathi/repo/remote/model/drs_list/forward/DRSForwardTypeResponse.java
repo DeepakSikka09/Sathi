@@ -7,19 +7,21 @@ import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
+
 import in.ecomexpress.sathi.repo.local.db.db_utils.CallBridgeConverter;
 import in.ecomexpress.sathi.repo.remote.model.ErrorResponse;
 import in.ecomexpress.sathi.repo.remote.model.drs_list.common.CInterface;
 import in.ecomexpress.sathi.repo.remote.model.drs_list.common.FrwRvpCommonConsigneeDetails;
 import in.ecomexpress.sathi.utils.GlobalConstant;
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity(tableName = "DRSForward")
@@ -87,15 +89,14 @@ public class DRSForwardTypeResponse extends ErrorResponse implements CInterface,
 
     @JsonProperty("address_status")
     private String address_status;
-
     @JsonProperty("address_quality_category")
     private String address_quality_category;
-
     @JsonProperty("address_quality_score")
     private String address_quality_score= "0";
 
     @JsonProperty("address_profiled")
     private String address_profiled= "N";
+
 
     @NonNull
     @JsonIgnore
@@ -139,6 +140,7 @@ public class DRSForwardTypeResponse extends ErrorResponse implements CInterface,
     @JsonIgnore
     @ColumnInfo(name = "mpsAWBNos")
     public String mpsAWBs;
+
 
     @JsonProperty("mps_awb_nos")
     @Ignore
@@ -224,12 +226,10 @@ public class DRSForwardTypeResponse extends ErrorResponse implements CInterface,
     public void setShipmentDetails(ShipmentDetails shipmentDetails) {
         this.shipmentDetails = shipmentDetails;
     }
-
     @JsonProperty("callbridge_details")
     public ArrayList<callbridge_details> getCallbridge_details() {
         return callbridge_details;
     }
-
     @JsonProperty("callbridge_details")
     public void setCallbridge_details(ArrayList<callbridge_details> callbridge_details) {
         this.callbridge_details = callbridge_details;

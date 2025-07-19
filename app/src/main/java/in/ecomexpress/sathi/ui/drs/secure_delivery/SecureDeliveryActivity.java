@@ -5,6 +5,7 @@ import static in.ecomexpress.sathi.ui.drs.todolist.DRSListAdapter.commonDRSListI
 import static in.ecomexpress.sathi.utils.CommonUtils.applyTransitionToBackFromActivity;
 import static in.ecomexpress.sathi.utils.CommonUtils.applyTransitionToOpenActivity;
 import static in.ecomexpress.sathi.utils.CommonUtils.logScreenNameInGoogleAnalytics;
+import static in.ecomexpress.sathi.utils.Constants.INTENT_KEY_RVP_WITH_QC;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -21,14 +22,22 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+
 import com.google.gson.Gson;
 import com.nlscan.android.scan.ScanManager;
+
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
+import javax.inject.Named;
+
 import dagger.hilt.android.AndroidEntryPoint;
+import in.ecomexpress.barcodelistner.BarcodeHandler;
+import in.ecomexpress.barcodelistner.BarcodeResult;
 import in.ecomexpress.sathi.BR;
 import in.ecomexpress.sathi.R;
 import in.ecomexpress.sathi.databinding.ActivityForwardSecureDeliveryBinding;
@@ -48,17 +57,20 @@ import in.ecomexpress.sathi.ui.drs.forward.signature.SignatureActivity;
 import in.ecomexpress.sathi.ui.drs.forward.undelivered_fwd.UndeliveredActivity;
 import in.ecomexpress.sathi.ui.drs.forward.undelivered_fwd.UndeliveredBPIDActivity;
 import in.ecomexpress.sathi.ui.auth.login.LoginActivity;
-import in.ecomexpress.sathi.ui.drs.forward.details.ScannerActivity;
+import in.ecomexpress.sathi.ui.drs.rvp.awbscan.ScannerActivity;
+import in.ecomexpress.sathi.ui.drs.rvp.rvp_qc_list.RvpQcListActivity;
+import in.ecomexpress.sathi.ui.drs.rvp.undelivered.RVPUndeliveredActivity;
 import in.ecomexpress.sathi.utils.CommonUtils;
 import in.ecomexpress.sathi.utils.Constants;
 import in.ecomexpress.sathi.utils.PreferenceUtils;
 
 @AndroidEntryPoint
-public class SecureDeliveryActivity extends BaseActivity<ActivityForwardSecureDeliveryBinding, SecureDeliveryViewModel> implements ISecureDeliveryNavigator {
+public class SecureDeliveryActivity extends BaseActivity<ActivityForwardSecureDeliveryBinding, SecureDeliveryViewModel> implements ISecureDeliveryNavigator, BarcodeResult {
 
     private final String TAG = SecureDeliveryActivity.class.getSimpleName();
     private final static int MY_REQUEST_CODE = 1;
     private final int REQUEST_CODE_SCAN = 1101;
+    BarcodeHandler barcodeHandler;
     @Inject
     SecureDeliveryViewModel secureDeliveryViewModel;
     @Inject
@@ -82,7 +94,7 @@ public class SecureDeliveryActivity extends BaseActivity<ActivityForwardSecureDe
     String delight_encrypted_otp1;
     String delight_encrypted_otp2;
     boolean isDelightShipment;
-    boolean rescheduleEnable;
+    boolean rescudeEnable;
     boolean sign_image_required;
     String fwd_del_image = "";
     String drs_id_num, consignee_mobile, consignee_alternate_mobile = "";
@@ -91,12 +103,11 @@ public class SecureDeliveryActivity extends BaseActivity<ActivityForwardSecureDe
     String return_package_barcode = "";
     String ScanValue = "";
     String manualEnterBP = "";
-    String showForwardUndeliveredButton = "No";
+    String shw_fwd_undl_btn = "No";
     private boolean is_amazon_schedule_enable;
-    private String mpsShipment;
+    private String mpsShipment, mpsAWBs;
     private boolean is_cash_collection;
     private boolean resend_secure_otp;
-    Gson gson = new Gson();
 
     public static Intent getStartIntent(Context context) {
         return new Intent(context, SecureDeliveryActivity.class);
@@ -110,7 +121,11 @@ public class SecureDeliveryActivity extends BaseActivity<ActivityForwardSecureDe
         activityForwardSecureDeliveryBinding = getViewDataBinding();
         logScreenNameInGoogleAnalytics(TAG, this);
         try {
-            activityForwardSecureDeliveryBinding.callBridge.setImageResource(R.drawable.ic_scan_barcode);
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+                activityForwardSecureDeliveryBinding.callBridge.setImageResource(R.drawable.barcode);
+            } else {
+                activityForwardSecureDeliveryBinding.callBridge.setImageResource(R.drawable.ic_scan_barcode);
+            }
             awbNo = getIntent().getLongExtra(Constants.INTENT_KEY, 0);
             sign_image_required = getIntent().getBooleanExtra(Constants.sign_image_required, false);
             if (getIntent().getStringExtra(Constants.FWD_DEL_IMAGE) != null)
@@ -166,7 +181,7 @@ public class SecureDeliveryActivity extends BaseActivity<ActivityForwardSecureDe
                 consignee_alternate_mobile = getIntent().getStringExtra(Constants.CONSIGNEE_ALTERNATE_MOBILE);
             }
             if (getIntent().getStringExtra(Constants.SHOW_FWD_UNDL_BTN) != null) {
-                showForwardUndeliveredButton = getIntent().getStringExtra(Constants.SHOW_FWD_UNDL_BTN);
+                shw_fwd_undl_btn = getIntent().getStringExtra(Constants.SHOW_FWD_UNDL_BTN);
 
             }
             call_allowed = getIntent().getBooleanExtra("call_allowed", false);
@@ -192,6 +207,7 @@ public class SecureDeliveryActivity extends BaseActivity<ActivityForwardSecureDe
             isDigitalPaymentAllowed = getIntent().getBooleanExtra(Constants.IS_CARD, false);
             isSecureDelivery = getIntent().getParcelableExtra(Constants.SECURE_DELIVERY);
             mpsShipment = getIntent().getExtras().getString(Constants.MPS);
+            mpsAWBs = getIntent().getExtras().getString(Constants.MPS_AWB_NOS);
             composite_key = getIntent().getStringExtra(Constants.COMPOSITE_KEY);
             if (shipmentType.equalsIgnoreCase(Constants.FWD)) {
                 secureDeliveryViewModel.getFWDShipmentData(forwardCommit, composite_key, consignee_mobile);
@@ -202,7 +218,7 @@ public class SecureDeliveryActivity extends BaseActivity<ActivityForwardSecureDe
             } else if (shipmentType.equalsIgnoreCase(Constants.EDS)) {
                 try {
                     activityForwardSecureDeliveryBinding.enterOtp.setHint(getResources().getString(R.string.eds_refno));
-                    rescheduleEnable = getIntent().getBooleanExtra(Constants.RESCHEDULE_ENABLE, false);
+                    rescudeEnable = getIntent().getBooleanExtra(Constants.RESCHEDULE_ENABLE, false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -218,6 +234,9 @@ public class SecureDeliveryActivity extends BaseActivity<ActivityForwardSecureDe
         }
         activityForwardSecureDeliveryBinding.consigneeAddress.setMovementMethod(new ScrollingMovementMethod());
         activityForwardSecureDeliveryBinding.consigneeName.setMovementMethod(new ScrollingMovementMethod());
+
+        barcodeHandler = new BarcodeHandler(this, "ScannerLM", this);
+        barcodeHandler.enableScanner();
         if (resend_secure_otp) {
             activityForwardSecureDeliveryBinding.resend.setVisibility(View.VISIBLE);
         } else {
@@ -240,7 +259,7 @@ public class SecureDeliveryActivity extends BaseActivity<ActivityForwardSecureDe
         if (shipmentType.equalsIgnoreCase("fwd")) {
 
 
-            if (showForwardUndeliveredButton.equalsIgnoreCase("Yes")) {
+            if (shw_fwd_undl_btn.equalsIgnoreCase("Yes")) {
                 if (!return_package_barcode.equals("")) {
                     activityForwardSecureDeliveryBinding.btDeliver.setVisibility(View.GONE);
                     activityForwardSecureDeliveryBinding.btBpID.setVisibility(View.VISIBLE);
@@ -298,6 +317,14 @@ public class SecureDeliveryActivity extends BaseActivity<ActivityForwardSecureDe
                 e.printStackTrace();
             }
         }
+
+        if (barcodeHandler != null) {
+            barcodeHandler.disableScanner();
+            barcodeHandler.onDestroy();
+            barcodeHandler = null;
+        }
+        barcodeHandler = new BarcodeHandler(this, "ScannerLM", this);
+        barcodeHandler.enableScanner();
     }
 
     @Override
@@ -363,7 +390,7 @@ public class SecureDeliveryActivity extends BaseActivity<ActivityForwardSecureDe
             rvpClick(commonDRSListItemRVPClick);
         } else {
 
-            if (showForwardUndeliveredButton.equalsIgnoreCase("Yes") && return_package_barcode.equals("")) {
+            if (shw_fwd_undl_btn.equalsIgnoreCase("Yes") && return_package_barcode.equals("")) {
                 openDetailActivity();
             } else {
 
@@ -489,10 +516,36 @@ public class SecureDeliveryActivity extends BaseActivity<ActivityForwardSecureDe
 
     private void rvpClick(CommonDRSListItem commonDRSListItem) {
         if (commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getSecure_delivery() != null) {
+            if (!commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getSecure_delivery().getPinb() && !commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getSecure_delivery().getOTP() && !commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getSecure_delivery().getSecure_pin()) {
+                Intent intent = RvpQcListActivity.getStartIntent(this);
+                intent.putExtra(Constants.DRS_PSTN_KEY, getDrsPstnKey);
+                intent.putExtra(Constants.DRS_API_KEY, getDrsApiKey);
+                intent.putExtra(Constants.DRS_PIN, getDrsPin);
+                intent.putExtra(Constants.DRS_ID_NUM, String.valueOf(commonDRSListItem.getDrsReverseQCTypeResponse().getDrs()));
+                intent.putExtra(Constants.OFD_OTP, commonDRSListItem.getDrsReverseQCTypeResponse().getShipmentDetails().getOfd_otp());
+                intent.putExtra("call_allowed", commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getCallAllowed());
+                intent.putExtra(Constants.COMPOSITE_KEY, commonDRSListItem.getDrsReverseQCTypeResponse().getCompositeKey());
+                intent.putExtra(Constants.INTENT_KEY, commonDRSListItem.getDrsReverseQCTypeResponse().getAwbNo());
+                startActivity(intent);
+                applyTransitionToOpenActivity(this);
+            } else {
                 handleLayoutVisibility();
                 activityForwardSecureDeliveryBinding.btUndeliver.setVisibility(View.GONE);
                 activityForwardSecureDeliveryBinding.textchng.setVisibility(View.GONE);
-
+            }
+        } else {
+            Intent intent = RvpQcListActivity.getStartIntent(this);
+            intent.putExtra(Constants.DRS_PSTN_KEY, getDrsPstnKey);
+            intent.putExtra(Constants.DRS_API_KEY, getDrsApiKey);
+            intent.putExtra(Constants.DRS_PIN, getDrsPin);
+            intent.putExtra(Constants.OFD_OTP, commonDRSListItem.getDrsReverseQCTypeResponse().getShipmentDetails().getOfd_otp());
+            intent.putExtra("call_allowed", commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getCallAllowed());
+            intent.putExtra(Constants.COMPOSITE_KEY, commonDRSListItem.getDrsReverseQCTypeResponse().getCompositeKey());
+            intent.putExtra(Constants.DRS_ID, commonDRSListItem.getDrsReverseQCTypeResponse().getDrs());
+            intent.putExtra(Constants.DRS_ID_NUM, String.valueOf(commonDRSListItem.getDrsReverseQCTypeResponse().getDrs()));
+            intent.putExtra(Constants.INTENT_KEY, commonDRSListItem.getDrsReverseQCTypeResponse().getAwbNo());
+            startActivity(intent);
+            applyTransitionToOpenActivity(this);
         }
     }
 
@@ -567,7 +620,7 @@ public class SecureDeliveryActivity extends BaseActivity<ActivityForwardSecureDe
 
     @Override
     public void onRVPUndelivered(RvpCommit rvpCommit) {
-        /*try {
+        try {
             Intent intent;
             intent = new Intent(this, RVPUndeliveredActivity.class);
             intent.putExtra(Constants.DRS_PSTN_KEY, getDrsPstnKey);
@@ -585,7 +638,7 @@ public class SecureDeliveryActivity extends BaseActivity<ActivityForwardSecureDe
         } catch (Exception e) {
             e.printStackTrace();
             showSnackbar(e.getMessage());
-        }*/
+        }
     }
 
     @Override
@@ -598,9 +651,9 @@ public class SecureDeliveryActivity extends BaseActivity<ActivityForwardSecureDe
             intent.putExtra(Constants.DRS_API_KEY, getDrsApiKey);
             intent.putExtra(Constants.DRS_PIN, getDrsPin);
             intent.putExtra(Constants.COMPOSITE_KEY, composite_key);
-            intent.putExtra(Constants.RESCHEDULE_ENABLE, rescheduleEnable);
+            intent.putExtra(Constants.RESCHEDULE_ENABLE, rescudeEnable);
             intent.putExtra(Constants.CONSIGNEE_ALTERNATE_MOBILE, consignee_alternate_mobile);
-            intent.putExtra("edsResponse", gson.toJson(secureDeliveryViewModel.edsWithActivityList()));
+            intent.putExtra("edsResponse", secureDeliveryViewModel.edsWithActivityList());
             intent.putExtra("awb", awbNo);
             intent.putExtra("call_allowed", call_allowed);
             intent.putExtra("navigator", "OTP");
@@ -790,6 +843,8 @@ public class SecureDeliveryActivity extends BaseActivity<ActivityForwardSecureDe
 
             if (requestCode == REQUEST_CODE_SCAN) {
                 handleScanResult(data);
+            } else {
+                barcodeHandler.onActivityResult(requestCode, resultCode, data);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1060,7 +1115,7 @@ public class SecureDeliveryActivity extends BaseActivity<ActivityForwardSecureDe
                     fwdActivitiesData.setResend_otp_enable(resend_secure_otp);
                     fwdActivitiesData.setCompositeKey(composite_key);
                     fwdActivitiesData.setDrsId(Integer.parseInt(drs_id_num));
-                    fwdActivitiesData.setShow_fwd_undl_btn(showForwardUndeliveredButton);
+                    fwdActivitiesData.setShow_fwd_undl_btn(shw_fwd_undl_btn);
                     fwdActivitiesData.setConsignee_alternate_number(consignee_alternate_mobile);
                     fwdActivitiesData.setReturn_package_barcode(manualEnterBP);
                     fwdActivitiesData.setScanValue(ScanValue);
@@ -1074,7 +1129,19 @@ public class SecureDeliveryActivity extends BaseActivity<ActivityForwardSecureDe
 
 
                 }
-            }  else if (shipmentType.equalsIgnoreCase(Constants.EDS)) {
+            } else if (shipmentType.equalsIgnoreCase(Constants.RVP)) {
+                intent = RvpQcListActivity.getStartIntent(context);
+                intent.putExtra(Constants.DRS_PSTN_KEY, getDrsPstnKey);
+                intent.putExtra(Constants.DRS_API_KEY, getDrsApiKey);
+                intent.putExtra("call_allowed", call_allowed);
+                intent.putExtra(Constants.DRS_PIN, getDrsPin);
+                intent.putExtra(Constants.DRS_ID_NUM, drs_id_num);
+                intent.putExtra(Constants.sign_image_required, sign_image_required);
+                intent.putExtra(Constants.COMPOSITE_KEY, composite_key);
+                intent.putExtra(Constants.INTENT_KEY, awbNo);
+                startActivity(intent);
+                applyTransitionToOpenActivity(this);
+            } else if (shipmentType.equalsIgnoreCase(Constants.EDS)) {
                 intent = EdsTaskListActivity.getStartIntent(context);
                 intent.putExtra(Constants.DRS_PSTN_KEY, getDrsPstnKey);
                 intent.putExtra(Constants.DRS_API_KEY, getDrsApiKey);
@@ -1084,7 +1151,7 @@ public class SecureDeliveryActivity extends BaseActivity<ActivityForwardSecureDe
                 intent.putExtra(Constants.INTENT_KEY, awbNo);
                 intent.putExtra(Constants.ORDER_ID, order_id);
                 intent.putExtra(Constants.IS_KYC_ACTIVE, is_kyc_active);
-                intent.putExtra(Constants.RESCHEDULE_ENABLE, rescheduleEnable);
+                intent.putExtra(Constants.RESCHEDULE_ENABLE, rescudeEnable);
                 intent.putExtra(Constants.COMPOSITE_KEY, composite_key);
                 intent.putExtra(Constants.INTENT_KEY1, new_Awb);
                 startActivity(intent);
@@ -1170,7 +1237,7 @@ public class SecureDeliveryActivity extends BaseActivity<ActivityForwardSecureDe
     }
 
     public void getundeliverRvp() {
-        /*Intent intent;
+        Intent intent;
         intent = new Intent(this, RVPUndeliveredActivity.class);
         intent.putExtra(Constants.DRS_PSTN_KEY, getDrsPstnKey);
         intent.putExtra(Constants.DRS_API_KEY, getDrsApiKey);
@@ -1182,7 +1249,7 @@ public class SecureDeliveryActivity extends BaseActivity<ActivityForwardSecureDe
         intent.putExtra(INTENT_KEY_RVP_WITH_QC, secureDeliveryViewModel.getRvpWithQc());
         intent.putExtra(Constants.SHIPMENT_TYPE, secureDeliveryViewModel.getRvpWithQc().drsReverseQCTypeResponse.getShipmentDetails().getType());
         startActivity(intent);
-        applyTransitionToOpenActivity(this);*/
+        applyTransitionToOpenActivity(this);
     }
 
     public void getundeliver() {
@@ -1195,7 +1262,7 @@ public class SecureDeliveryActivity extends BaseActivity<ActivityForwardSecureDe
         intent.putExtra("call_allowed", call_allowed);
         intent.putExtra(Constants.CONSIGNEE_ALTERNATE_MOBILE, consignee_alternate_mobile);
         intent.putExtra(Constants.COMPOSITE_KEY, composite_key);
-        intent.putExtra("edsResponse", gson.toJson(secureDeliveryViewModel.edsWithActivityList()));
+        intent.putExtra("edsResponse", secureDeliveryViewModel.edsWithActivityList());
         intent.putExtra("awb", awbNo);
         intent.putExtra("navigator", "act_list");
         startActivity(intent);
@@ -1346,5 +1413,9 @@ public class SecureDeliveryActivity extends BaseActivity<ActivityForwardSecureDe
                 }.start();
             }
         }
+    }
+
+    @Override
+    public void onResult(String s) {
     }
 }

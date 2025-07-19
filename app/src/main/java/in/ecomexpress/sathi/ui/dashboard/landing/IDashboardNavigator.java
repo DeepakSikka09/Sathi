@@ -8,6 +8,10 @@ import in.ecomexpress.sathi.repo.remote.model.masterdata.DashboardBanner;
 
 public interface IDashboardNavigator {
 
+    void openChangePasswordActivity();
+
+    void openProfileActivity();
+
     void openStatisticsActivity();
 
     void openTodo();
@@ -30,9 +34,9 @@ public interface IDashboardNavigator {
 
     void onCampaignClick();
 
-    void onTrainingClick();
+    void onLogoutClick(boolean flag);
 
-    void onODHClick();
+    void onTrainingClick();
 
     void showError(String error);
 

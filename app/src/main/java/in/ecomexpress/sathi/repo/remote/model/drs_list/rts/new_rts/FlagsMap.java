@@ -11,7 +11,7 @@ import java.io.Serializable;
 public class FlagsMap implements Serializable {
 
     @JsonProperty("RET_DEL_IMAGE")
-    private String RET_DEL_IMAGE;
+    private String RET_DEL_IMAGE = "";
 
     public String getRET_DEL_IMAGE() {
         return RET_DEL_IMAGE;
@@ -24,6 +24,8 @@ public class FlagsMap implements Serializable {
     @NonNull
     @Override
     public String toString() {
-        return "FlagsMap{" + "retDelImage='" + RET_DEL_IMAGE + '\'' + '}';
+        return "FlagsMap{" +
+                "RET_DEL_IMAGE='" + RET_DEL_IMAGE + '\'' +
+                '}';
     }
 }

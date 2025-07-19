@@ -8,6 +8,7 @@ import static in.ecomexpress.sathi.utils.Constants.CAMERA_SCANNER_CODE;
 import static in.ecomexpress.sathi.utils.Constants.IMAGE_SCANNER_CODE;
 import static in.ecomexpress.sathi.utils.Constants.PICK_FROM_CAMERA;
 import static in.ecomexpress.sathi.utils.Constants.REQUEST_CODE_SCAN;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -27,10 +28,16 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
+
 import androidx.annotation.Nullable;
+
 import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
+import javax.inject.Named;
+
 import dagger.hilt.android.AndroidEntryPoint;
+import in.ecomexpress.barcodelistner.BarcodeResult;
 import in.ecomexpress.sathi.BR;
 import in.ecomexpress.sathi.R;
 import in.ecomexpress.sathi.databinding.ActivityForwardDetailBinding;
@@ -41,6 +48,7 @@ import in.ecomexpress.sathi.ui.drs.forward.disputeDailog.DisputeDialog;
 import in.ecomexpress.sathi.ui.drs.forward.otherNumber.OtherNumberDialog;
 import in.ecomexpress.sathi.ui.drs.forward.signature.SignatureActivity;
 import in.ecomexpress.sathi.ui.drs.forward.undelivered_fwd.UndeliveredActivity;
+import in.ecomexpress.sathi.ui.drs.rvp.awbscan.ScannerActivity;
 import in.ecomexpress.sathi.utils.CommonUtils;
 import in.ecomexpress.sathi.utils.Constants;
 import in.ecomexpress.sathi.utils.Logger;
@@ -48,7 +56,7 @@ import in.ecomexpress.sathi.repo.local.data.fwd.ForwardCommit;
 import in.ecomexpress.sathi.utils.PreferenceUtils;
 
 @AndroidEntryPoint
-public class ForwardDetailActivity extends BaseActivity<ActivityForwardDetailBinding, ForwardDetailViewModel> implements IForwardDetailNavigator {
+public class ForwardDetailActivity extends BaseActivity<ActivityForwardDetailBinding, ForwardDetailViewModel> implements IForwardDetailNavigator, BarcodeResult {
 
     private final String TAG = ForwardDetailActivity.class.getSimpleName();
     @Inject
@@ -822,6 +830,24 @@ public class ForwardDetailActivity extends BaseActivity<ActivityForwardDetailBin
     protected void onResume() {
         super.onResume();
         forwardDetailViewModel.getDisputedAwb(String.valueOf(awbNo));
+    }
+
+    @Override
+    public void onResult(String strScancode) {
+        Log.e("AWB no IN RTS", "Scan result is" + strScancode);
+        if (strScancode != null) {
+            strScancode = strScancode.replaceAll("\\s+", "");
+            if (strScancode.equalsIgnoreCase(String.valueOf(awbNo)) || strScancode.equalsIgnoreCase(order_id)) {
+                scannedStatus = true;
+                showToast("AWB matched");
+            } else {
+                scannedStatus = false;
+                showToast("AWB not matched");
+            }
+        } else {
+            scannedStatus = false;
+            showToast("Please scan Awb");
+        }
     }
 
     @SuppressLint("SetTextI18n")

@@ -84,5 +84,4 @@ public interface IUndeliveredNavigator {
     void resendSms(Boolean alternateclick);
     void voiceTimer();
     void VoiceCallOtp();
-    void onCallBridgeCheckStatus();
 }

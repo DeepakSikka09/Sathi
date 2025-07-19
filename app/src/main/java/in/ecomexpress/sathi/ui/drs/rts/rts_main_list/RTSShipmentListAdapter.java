@@ -279,7 +279,7 @@ public class RTSShipmentListAdapter extends RecyclerView.Adapter<BaseViewHolder>
                          * rtsDeliveredImage: Check capture two image flag true or false.
                          * capturedImageCount : Check FE capture both image or not.
                          * */
-                        if(shipmentsDetail.getStatus().equalsIgnoreCase(Constants.RTSDELIVERED) && CommonUtils.getRtsDeliveredImagesValue(shipmentsDetail.getFlagsMap())){
+                        if(shipmentsDetail.getStatus().equalsIgnoreCase(Constants.RTSDELIVERED) && CommonUtils.getRtsDeliveredImagesValue(shipmentsDetail.getFlagsMap()).equalsIgnoreCase("true")){
                             workForTwoImage(true, true, mBinding, CommonUtils.capturedImageCount(shipmentsDetail.getAwbNo()));
                         }
                     }
@@ -289,7 +289,7 @@ public class RTSShipmentListAdapter extends RecyclerView.Adapter<BaseViewHolder>
                 }
 
                 // Check shipment is manually marked delivered or not.
-                if((shipmentsDetail.getStatus().equalsIgnoreCase(Constants.RTSMANUALLYDELIVERED) || shipmentsDetail.getStatus().equalsIgnoreCase(Constants.RTSDELIVERED)) && CommonUtils.getRtsDeliveredImagesValue(shipmentsDetail.getFlagsMap())){
+                if((shipmentsDetail.getStatus().equalsIgnoreCase(Constants.RTSMANUALLYDELIVERED) || shipmentsDetail.getStatus().equalsIgnoreCase(Constants.RTSDELIVERED)) && CommonUtils.getRtsDeliveredImagesValue(shipmentsDetail.getFlagsMap()).equalsIgnoreCase("true")){
                     workForTwoImage(true, true, mBinding, CommonUtils.capturedImageCount(shipmentsDetail.getAwbNo()));
                 }
 

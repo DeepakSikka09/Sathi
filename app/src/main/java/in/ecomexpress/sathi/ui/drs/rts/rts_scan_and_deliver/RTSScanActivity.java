@@ -44,6 +44,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
+import javax.inject.Named;
+
 import dagger.hilt.android.AndroidEntryPoint;
 import in.ecomexpress.sathi.BR;
 import in.ecomexpress.sathi.R;
@@ -158,9 +160,9 @@ public class RTSScanActivity extends BaseActivity<ActivityRtsScanBinding, RTSSca
                             capturedImageBitmap = bitmap;
                             capturedImageView = imgView;
                             if (isNetworkConnected()) {
-                                getViewModel().uploadImageOnServer(imageName, imageUri, imageCode, imageClickedAwbNo, 0, rtsVWDetailID, getString(R.string.ud_rts_image), RTSScanActivity.this);
+                                getViewModel().uploadImageOnServer(imageName, imageUri, imageCode, shipment_awb_no, 0, rtsVWDetailID, getString(R.string.ud_rts_image), RTSScanActivity.this);
                             } else {
-                                getViewModel().saveImageDB(imageUri, imageCode, imageName, 0, rtsVWDetailID, imageClickedAwbNo, -1, getString(R.string.ud_rts_image), 0);
+                                getViewModel().saveImageDB(imageUri, imageCode, imageName, 0, rtsVWDetailID, shipment_awb_no, -1, getString(R.string.ud_rts_image), 0);
                             }
                         }
                     } catch (Exception e) {
@@ -296,7 +298,7 @@ public class RTSScanActivity extends BaseActivity<ActivityRtsScanBinding, RTSSca
                 return;
             }
             if(!shipmentsDetails_set.isEmpty()){
-                if(shipmentsDetails_set.get(0).getStatus().equalsIgnoreCase(Constants.RTSDELIVERED) && CommonUtils.getRtsDeliveredImagesValue(shipmentsDetails_set.get(0).getFlagsMap()) && CommonUtils.capturedImageCount(shipmentsDetails_set.get(0).getAwbNo()) <= 1){
+                if(shipmentsDetails_set.get(0).getStatus().equalsIgnoreCase(Constants.RTSDELIVERED) && CommonUtils.getRtsDeliveredImagesValue(shipmentsDetails_set.get(0).getFlagsMap()).equalsIgnoreCase("true") && CommonUtils.capturedImageCount(shipmentsDetails_set.get(0).getAwbNo()) <= 1){
                     setErrorSound(getString(R.string.capture_both_images_to_proceed_further), true);
                     return;
                 }
@@ -404,7 +406,7 @@ public class RTSScanActivity extends BaseActivity<ActivityRtsScanBinding, RTSSca
         try {
             logButtonEventInGoogleAnalytics(TAG, getString(R.string.handlesaveactionclick), "", this);
             if (!shipmentsDetails_set.isEmpty()) {
-                if(shipmentsDetails_set.get(0).getStatus().equalsIgnoreCase(Constants.RTSDELIVERED) && CommonUtils.getRtsDeliveredImagesValue(shipmentsDetails_set.get(0).getFlagsMap()) && CommonUtils.capturedImageCount(shipmentsDetails_set.get(0).getAwbNo()) <= 1){
+                if(shipmentsDetails_set.get(0).getStatus().equalsIgnoreCase(Constants.RTSDELIVERED) && CommonUtils.getRtsDeliveredImagesValue(shipmentsDetails_set.get(0).getFlagsMap()).equalsIgnoreCase("true") && CommonUtils.capturedImageCount(shipmentsDetails_set.get(0).getAwbNo()) <= 1){
                     setErrorSound(getString(R.string.capture_both_images_to_proceed_further), true);
                     return;
                 }
@@ -611,7 +613,6 @@ public class RTSScanActivity extends BaseActivity<ActivityRtsScanBinding, RTSSca
     @Override
     public void setAwbNoForFlyer(long awbNoForFlyer) {
         shipment_awb_no = awbNoForFlyer;
-        imageClickedAwbNo = awbNoForFlyer;
     }
 
     @Override

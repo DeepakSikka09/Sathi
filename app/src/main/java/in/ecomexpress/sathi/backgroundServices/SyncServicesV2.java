@@ -1,6 +1,7 @@
 package in.ecomexpress.sathi.backgroundServices;
 
 import static in.ecomexpress.sathi.utils.Constants.DISTANCE_API_KEY;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -26,19 +27,23 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+
 import org.json.JSONObject;
+
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
@@ -51,9 +56,12 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import javax.inject.Inject;
+
 import dagger.hilt.android.AndroidEntryPoint;
 import in.ecomexpress.geolocations.LocationService;
 import in.ecomexpress.sathi.R;
@@ -310,13 +318,11 @@ public class SyncServicesV2 extends Service implements GoogleApiClient.Connectio
     @SuppressLint("InvalidWakeLockTag")
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent!=null) {
-            isStopService = intent.getBooleanExtra("stops", true);
-            if (isStopService) {
-                stopSelf();
-            } else {
-                startForGroundService();
-            }
+        isStopService = intent.getBooleanExtra("stops", true);
+        if (isStopService) {
+            stopSelf();
+        } else {
+            startForGroundService();
         }
         getAllNewDRS();
         getAllApiUrl();
@@ -660,12 +666,15 @@ public class SyncServicesV2 extends Service implements GoogleApiClient.Connectio
                 }
             }, throwable -> {
                 Constants.UPLOADEDS_CALLED = false;
+                sendFailedCommit(throwable, edsCommitTemp.toString());
                 if (pushApi.getShipmentStatus() == GlobalConstant.CommitStatus.CommitAssign) {
                     updatestatus(pushApi, GlobalConstant.CommitStatus.CommitSecondAttempt);
                 } else if (pushApi.getShipmentStatus() == GlobalConstant.CommitStatus.CommitSecondAttempt) {
                     updatestatus(pushApi, GlobalConstant.CommitStatus.CommitSyncedFailed);
                 }
+                writeCrashes(timeStamp, new Exception(throwable));
                 valueData = false;
+                Logger.e(TAG, String.valueOf(throwable));
             }));
         } catch (Exception e) {
             Constants.UPLOADEDS_CALLED = false;
@@ -691,13 +700,12 @@ public class SyncServicesV2 extends Service implements GoogleApiClient.Connectio
         }, throwable -> Logger.e(TAG, String.valueOf(throwable))));
     }
 
-    private void updateSyncStatusInDRSRVpTable(boolean isFromMps, String composite_key) {
+    private void updateSyncStatusInDRSRVpTable(String composite_key) {
+        final long TimeStampTag = System.currentTimeMillis();
+        writeAnalytics(TimeStampTag, "Changing Status of RVP:" + composite_key + " to synced.");
         CompositeDisposable compositeDisposable = new CompositeDisposable();
-        if(isFromMps){
-            compositeDisposable.add(mDataManager.updateSyncStatusMps(composite_key, 2).subscribeOn(iSchedulerProvider.io()).observeOn(iSchedulerProvider.io()).subscribe(aBoolean -> {}, throwable -> Logger.e(TAG, String.valueOf(throwable))));
-        } else{
-            compositeDisposable.add(mDataManager.updateSyncStatusRVP(composite_key, 2).subscribeOn(iSchedulerProvider.io()).observeOn(iSchedulerProvider.io()).subscribe(aBoolean -> {}, throwable -> Logger.e(TAG, String.valueOf(throwable))));
-        }
+        compositeDisposable.add(mDataManager.updateSyncStatusRVP(composite_key, 2).subscribeOn(iSchedulerProvider.io()).observeOn(iSchedulerProvider.io()).subscribe(aBoolean -> {
+        }, throwable -> Logger.e(TAG, String.valueOf(throwable))));
     }
 
     public void updateSyncStatusInDRSRTSTable(long vendorID) {
@@ -792,13 +800,14 @@ public class SyncServicesV2 extends Service implements GoogleApiClient.Connectio
                 }
             }, throwable -> {
                 Constants.UPLOADEDS_CALLED = false;
-                if (pushApi.getShipmentStatus() == GlobalConstant.CommitStatus.CommitAssign) {
+                writeCrashes(timeStamp, new Exception(throwable));
+                sendFailedCommit(throwable, fwdCommit.toString());
+                if (pushApi.getShipmentStatus() == GlobalConstant.CommitStatus.CommitAssign)
                     updatestatus(pushApi, GlobalConstant.CommitStatus.CommitSecondAttempt);
-                }
-                else if (pushApi.getShipmentStatus() == GlobalConstant.CommitStatus.CommitSecondAttempt) {
+                else if (pushApi.getShipmentStatus() == GlobalConstant.CommitStatus.CommitSecondAttempt)
                     updatestatus(pushApi, GlobalConstant.CommitStatus.CommitSyncedFailed);
-                }
                 valueData = false;
+                Logger.e(TAG, String.valueOf(throwable));
             }));
         } catch (Exception e) {
             Constants.UPLOADEDS_CALLED = false;
@@ -812,6 +821,9 @@ public class SyncServicesV2 extends Service implements GoogleApiClient.Connectio
         if (forwardCommit[0].getUd_otp().equalsIgnoreCase("VERIFIED") || forwardCommit[0].getRd_otp().equalsIgnoreCase("VERIFIED")) {
             mDataManager.setFWD_UD_RD_OTPVerfied(forwardCommit[0].getAwb() + "Forward", true);
         }
+    }
+
+    private void sendFailedCommit(Throwable throwable, String message) {
     }
 
     private void updatestatus(PushApi pushApi, int i) {
@@ -1071,18 +1083,20 @@ public class SyncServicesV2 extends Service implements GoogleApiClient.Connectio
                 }
             }, throwable -> {
                 valueData = false;
-                if (pushApi.getShipmentStatus() == GlobalConstant.CommitStatus.CommitAssign) {
+                sendFailedCommit(throwable, rtsCommitTemp.toString());
+                if (pushApi.getShipmentStatus() == GlobalConstant.CommitStatus.CommitAssign)
                     updatestatus(pushApi, GlobalConstant.CommitStatus.CommitSecondAttempt);
-                }
-                else if (pushApi.getShipmentStatus() == GlobalConstant.CommitStatus.CommitSecondAttempt) {
+                else if (pushApi.getShipmentStatus() == GlobalConstant.CommitStatus.CommitSecondAttempt)
                     updatestatus(pushApi, GlobalConstant.CommitStatus.CommitSyncedFailed);
-                }
                 writeCrashes(timeStamp, new Exception(throwable));
                 Logger.e(TAG, String.valueOf(throwable));
             }));
         } catch (Exception e) {
             valueData = false;
+            sendFailedCommit(Objects.requireNonNull(e.getCause()), rtsCommitTemp.toString());
             updatestatus(pushApi, 0);
+            writeCrashes(timeStamp, e);
+            Logger.e(TAG, String.valueOf(e));
         }
     }
 
@@ -1130,45 +1144,24 @@ public class SyncServicesV2 extends Service implements GoogleApiClient.Connectio
                     Logger.e(TAG, String.valueOf(e));
                     compositeKey = pushApi.getCompositeKey();
                 }
-                boolean isFromMps;
-                isFromMps = rvpCommitTemp != null && rvpCommitTemp.isRvp_mps();
-                if(isFromMps){
-                    mDataManager.updateRvpMpsStatus(compositeKey, shipment_status).subscribe(aBoolean -> {
-                        pushApi.setShipmentStatus(GlobalConstant.CommitStatus.CommitSynced);
-                        updateSyncStatusInDRSRVpTable(true, rvpCommitResponse.getResponse().getDrs_no() + rvpCommitResponse.getResponse().getAwb_no());
-                        compositeDisposable.add(mDataManager.deleteSyncedImage(rvpCommitResponse.getResponse().getAwb_no()).subscribe(aBoolean1 -> {}));
-                        compositeDisposable.add(mDataManager.saveCommitPacket(pushApi).subscribe(aBoolean12 -> sendBoardCast()));
-                        // Setting call preference after sync:-
-                        mDataManager.setCallClicked(rvpCommitResponse.getResponse().getAwb_no() + "RVPCall", true);
-                        valueData = false;
-                    }, throwable -> {
-                        if (pushApi.getShipmentStatus() == GlobalConstant.CommitStatus.CommitAssign) {
-                            updatestatus(pushApi, GlobalConstant.CommitStatus.CommitSecondAttempt);
-                        }
-                        else if (pushApi.getShipmentStatus() == GlobalConstant.CommitStatus.CommitSecondAttempt) {
-                            updatestatus(pushApi, GlobalConstant.CommitStatus.CommitSyncedFailed);
-                        }
-                        valueData = false;
-                    });
-                } else{
-                    mDataManager.updateRvpStatus(compositeKey, shipment_status).subscribe(aBoolean -> {
-                        pushApi.setShipmentStatus(GlobalConstant.CommitStatus.CommitSynced);
-                        updateSyncStatusInDRSRVpTable(false, rvpCommitResponse.getResponse().getDrs_no() + rvpCommitResponse.getResponse().getAwb_no());
-                        compositeDisposable.add(mDataManager.deleteSyncedImage(rvpCommitResponse.getResponse().getAwb_no()).subscribe(aBoolean1 -> {}));
-                        compositeDisposable.add(mDataManager.saveCommitPacket(pushApi).subscribe(aBoolean12 -> sendBoardCast()));
-                        // Setting call preference after sync:-
-                        mDataManager.setCallClicked(rvpCommitResponse.getResponse().getAwb_no() + "RVPCall", true);
-                        valueData = false;
-                    }, throwable -> {
-                        if (pushApi.getShipmentStatus() == GlobalConstant.CommitStatus.CommitAssign) {
-                            updatestatus(pushApi, GlobalConstant.CommitStatus.CommitSecondAttempt);
-                        }
-                        else if (pushApi.getShipmentStatus() == GlobalConstant.CommitStatus.CommitSecondAttempt) {
-                            updatestatus(pushApi, GlobalConstant.CommitStatus.CommitSyncedFailed);
-                        }
-                        valueData = false;
-                    });
-                }
+                mDataManager.updateRvpStatus(compositeKey, shipment_status).subscribe(aBoolean -> {
+                    pushApi.setShipmentStatus(GlobalConstant.CommitStatus.CommitSynced);
+                    updateSyncStatusInDRSRVpTable(rvpCommitResponse.getResponse().getDrs_no() + rvpCommitResponse.getResponse().getAwb_no());
+                    compositeDisposable.add(mDataManager.deleteSyncedImage(rvpCommitResponse.getResponse().getAwb_no()).subscribe(aBoolean1 -> {
+                    }));
+                    compositeDisposable.add(mDataManager.saveCommitPacket(pushApi).subscribe(aBoolean12 -> sendBoardCast()));
+                    // Setting call preference after sync:-
+                    mDataManager.setCallClicked(rvpCommitResponse.getResponse().getAwb_no() + "RVPCall", true);
+                    valueData = false;
+                }, throwable -> {
+                    writeCrashes(timeStamp, new Exception(throwable));
+                    if (pushApi.getShipmentStatus() == GlobalConstant.CommitStatus.CommitAssign)
+                        updatestatus(pushApi, GlobalConstant.CommitStatus.CommitSecondAttempt);
+                    else if (pushApi.getShipmentStatus() == GlobalConstant.CommitStatus.CommitSecondAttempt)
+                        updatestatus(pushApi, GlobalConstant.CommitStatus.CommitSyncedFailed);
+                    valueData = false;
+                    Logger.e(TAG, String.valueOf(throwable));
+                });
             } else if ((rvpCommitResponse.getResponse().getCode().equalsIgnoreCase("E107")) || (rvpCommitResponse.getResponse().getCode().equalsIgnoreCase("107"))) {
                 Constants.UPLOADEDS_CALLED = false;
                 valueData = false;
@@ -1176,13 +1169,14 @@ public class SyncServicesV2 extends Service implements GoogleApiClient.Connectio
             }
         }, throwable -> {
             Constants.UPLOADEDS_CALLED = false;
-            if (pushApi.getShipmentStatus() == GlobalConstant.CommitStatus.CommitAssign) {
+            sendFailedCommit(throwable, rvpCommitTemp.toString());
+            if (pushApi.getShipmentStatus() == GlobalConstant.CommitStatus.CommitAssign)
                 updatestatus(pushApi, GlobalConstant.CommitStatus.CommitSecondAttempt);
-            }
-            else if (pushApi.getShipmentStatus() == GlobalConstant.CommitStatus.CommitSecondAttempt) {
+            else if (pushApi.getShipmentStatus() == GlobalConstant.CommitStatus.CommitSecondAttempt)
                 updatestatus(pushApi, GlobalConstant.CommitStatus.CommitSyncedFailed);
-            }
+            writeCrashes(timeStamp, new Exception(throwable));
             valueData = false;
+            Logger.e(TAG, String.valueOf(throwable));
         }));
     }
 

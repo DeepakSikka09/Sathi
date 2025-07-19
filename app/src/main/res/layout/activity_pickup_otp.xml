@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.drs.rvp.activity.PickupOtpActivity">
+    tools:context=".ui.drs.rvp_new.activity.PickupOtpActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -208,6 +208,7 @@
             android:fontFamily="@font/roboto_regular"
             android:layout_marginVertical="@dimen/_15DP"
             app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/_10DP"
             app:layout_constraintStart_toEndOf="@id/checkbox"
             app:layout_constraintTop_toTopOf="@id/checkbox"
             app:layout_constraintBottom_toBottomOf="@id/checkbox"/>

@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
+
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/remarks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_20DP"
+        android:layout_marginTop="@dimen/_15DP"
         android:fontFamily="@font/roboto_bold"
         android:textColor="@color/black"
         android:text="@string/remarks"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edit_text_remarks"
@@ -35,18 +38,17 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etRemarks"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_100DP"
+            android:layout_height="@dimen/_150DP"
             android:fontFamily="@font/roboto_regular"
             android:gravity="left"
             android:inputType="text|textMultiLine"
             android:maxLines="4"
             android:text=""
             android:textColor="@color/black_1A"
-            android:textSize="@dimen/_16SP"
+            android:textSize="@dimen/_21SP"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+            app:layout_constraintStart_toStartOf="parent"
+            /></com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

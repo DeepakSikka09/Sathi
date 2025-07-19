@@ -13,7 +13,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/layout_cv"
             android:layout_width="match_parent"
@@ -24,11 +23,9 @@
             app:cardElevation="@dimen/_25DP"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/enter_otp_layout_child2"
                     app:layout_constraintTop_toTopOf="parent"
@@ -37,6 +34,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_5DP"
                     android:background="@color/dashboardtool">
+
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/header"
@@ -96,7 +94,7 @@
                             android:background="@drawable/fwd_button"
                             app:fontFamily="@font/roboto_bold"
                             android:textAlignment="center"
-                            android:clickable="false"
+                            android:onClick="@{() -> viewModel.onResendOtpClick()}"
                             android:padding="@dimen/_10DP"
                             android:text="@string/resend"
                             android:textColor="@color/white"
@@ -106,9 +104,7 @@
                             app:layout_constraintTop_toBottomOf="@id/timer_tv" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/enter_otp_layout_child3"
                     android:layout_width="match_parent"
@@ -218,11 +214,8 @@
                                 app:fontFamily="@font/roboto_bold"
                                 android:textSize="@dimen/_15SP"
                                 android:textStyle="bold" />
-
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
                 <com.google.android.material.progressindicator.CircularProgressIndicator
                     android:id="@+id/address_looking_up"
                     android:layout_width="wrap_content"
@@ -237,6 +230,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/notp_cl"
@@ -268,7 +262,5 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>

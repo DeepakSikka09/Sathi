@@ -67,6 +67,7 @@
                 app:layout_constraintStart_toEndOf="@id/sideDrawerView"
                 app:layout_constraintTop_toTopOf="parent" />
 
+
             <com.google.android.material.textview.MaterialTextView
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -81,6 +82,7 @@
                 android:text="@string/v2_0_0"
                 android:textColor="@color/black_1A"
                 android:textSize="@dimen/_15SP" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -114,10 +116,10 @@
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/viewPager"
                     android:layout_width="match_parent"
-                    android:layout_height="115dp"
-                    android:layout_marginStart="@dimen/_25DP"
-                    android:layout_marginTop="@dimen/_10DP"
-                    android:layout_marginEnd="@dimen/_25DP"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="@dimen/_20DP"
+                    android:layout_marginTop="@dimen/_15DP"
+                    android:layout_marginEnd="@dimen/_20DP"
                     app:elevation="15dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -136,8 +138,8 @@
                     app:tabPaddingStart="8dp" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <View
             android:id="@+id/view"
@@ -145,6 +147,7 @@
             android:layout_height="@dimen/_8DP"
             android:background="@color/green_FF"
             app:layout_constraintTop_toBottomOf="@+id/toolCon" />
+
 
         <ScrollView
             android:layout_width="match_parent"
@@ -233,6 +236,7 @@
                         app:layout_constraintStart_toStartOf="@id/img_attendence"
                         app:layout_constraintTop_toBottomOf="@id/img_attendence" />
 
+
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/img_sync"
                         android:layout_width="0dp"
@@ -266,26 +270,26 @@
                     app:layout_constraintTop_toBottomOf="@id/constraint1">
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/odh_icon"
+                        android:id="@+id/stats"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/odh_icon"
-                        android:onClick="@{() -> viewModel.onODHClick()}"
+                        android:onClick="@{() -> viewModel.onServerClickstatistics()}"
+                        android:src="@drawable/performance"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintWidth_percent="0.25" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/odhText"
+                        android:id="@+id/performance_txtView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_2DP"
                         android:maxLines="1"
-                        android:text="@string/odh"
+                        android:text="@string/performance"
                         android:textSize="@dimen/_12SP"
-                        app:layout_constraintEnd_toEndOf="@id/odh_icon"
-                        app:layout_constraintStart_toStartOf="@id/odh_icon"
-                        app:layout_constraintTop_toBottomOf="@id/odh_icon" />
+                        app:layout_constraintEnd_toEndOf="@id/stats"
+                        app:layout_constraintStart_toStartOf="@id/stats"
+                        app:layout_constraintTop_toBottomOf="@id/stats" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/img_training"
@@ -293,10 +297,10 @@
                         android:layout_height="wrap_content"
                         android:onClick="@{() -> viewModel.onTrainingClick()}"
                         android:src="@drawable/e_pathshaala"
-                        app:layout_constraintBottom_toBottomOf="@id/odh_icon"
+                        app:layout_constraintBottom_toBottomOf="@id/stats"
                         app:layout_constraintEnd_toStartOf="@id/img_sos"
-                        app:layout_constraintStart_toEndOf="@id/odh_icon"
-                        app:layout_constraintTop_toTopOf="@id/odh_icon"
+                        app:layout_constraintStart_toEndOf="@id/stats"
+                        app:layout_constraintTop_toTopOf="@id/stats"
                         app:layout_constraintWidth_percent="0.25" />
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -333,6 +337,7 @@
                         app:layout_constraintStart_toStartOf="@id/img_sos"
                         app:layout_constraintTop_toBottomOf="@id/img_sos" />
 
+
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/img_more"
                         android:layout_width="0dp"
@@ -356,39 +361,8 @@
                         app:layout_constraintEnd_toEndOf="@id/img_more"
                         app:layout_constraintStart_toStartOf="@id/img_more"
                         app:layout_constraintTop_toBottomOf="@id/img_more" />
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraint3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10DP"
-                    app:layout_constraintTop_toBottomOf="@id/constraint2">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/stats"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:onClick="@{() -> viewModel.onServerClickstatistics()}"
-                        android:src="@drawable/performance"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintWidth_percent="0.25" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/performance_txtView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_2DP"
-                        android:maxLines="1"
-                        android:text="@string/performance"
-                        android:textSize="@dimen/_12SP"
-                        app:layout_constraintEnd_toEndOf="@id/stats"
-                        app:layout_constraintStart_toStartOf="@id/stats"
-                        app:layout_constraintTop_toBottomOf="@id/stats" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
                     android:id="@+id/view1"
@@ -396,7 +370,8 @@
                     android:layout_height="@dimen/_8DP"
                     android:layout_marginTop="@dimen/_15DP"
                     android:background="@color/green_FF"
-                    app:layout_constraintTop_toBottomOf="@id/constraint3" />
+                    app:layout_constraintTop_toBottomOf="@id/constraint2" />
+
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/pendingTask_layout"

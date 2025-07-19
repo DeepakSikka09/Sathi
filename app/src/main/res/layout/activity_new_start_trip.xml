@@ -372,7 +372,7 @@
             android:backgroundTint="@color/colorAccent"
             android:fontFamily="@font/muli_bold"
             android:onClick="@{() -> viewModel.onStartTrip()}"
-            android:text="@string/submitButton"
+            android:text="@string/submittxt"
             android:textColor="@color/white"
             android:textSize="@dimen/_20SP"
             app:layout_constraintBottom_toBottomOf="parent"

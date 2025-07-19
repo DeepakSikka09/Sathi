@@ -10,6 +10,7 @@ import in.ecomexpress.sathi.BuildConfig;
 public class Constants {
     public static final String DB_NAME = "sathi_database.db";
     public static final String DECRYPT_IDFC = "0id6Fc0Pe7M22";
+    public static final String IS_SECURE_DELIVERY = "false";
     public static float IS_USING_FAKE_GPS = 0;
     public static boolean UPLOADEDS_CALLED = false;
     public static String Esper_key = "ZtXVTpNc6g5uqNXpbUKYbC8tr2z03E";
@@ -83,6 +84,7 @@ public class Constants {
     public static int eds_call_count = 0;
     public static int rvp_call_count = 0;
     public static int rts_call_count = 0;
+    public static final String CAMSCANNER_APPKEY = "54420fb6455ac11e0e23311470-rpbzrkcerff";
     public static final int CONSIGNEE_PROFILING_METER_RANGE = 100;
     public static final String EMP_CODE = "employee_code";
     public static final String TOKEN = "auth_token";
@@ -90,6 +92,7 @@ public class Constants {
     public static final long INVALID_USER = 107;
     public static final String MESSAGE = "message";
     public static final String OTHERS = "OTHERS";
+    public static final String SECURE_UNDELIVERED = "secure_undelivered";
     public static final String DRS_PSTN_KEY = "drs_pstn_key";
     public static final String DRS_API_KEY = "drs_api_key";
     public static final String SECURE_DELIVERY = "secure_delivery";
@@ -117,7 +120,6 @@ public class Constants {
     public static final String FWD = "fwd";
     public static final String RTS = "rts";
     public static final String RVP = "rvp";
-    public static final String RVP_MPS = "rvp_mps";
     public static final String RQC = "RQC";
     public static final String EDS = "eds";
     public static final String PPD = "PPD";
@@ -150,9 +152,10 @@ public class Constants {
 
     public static final String[] permissionsupperN = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.GET_ACCOUNTS, Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS, Manifest.permission.CALL_PHONE, Manifest.permission.ANSWER_PHONE_CALLS, Manifest.permission.READ_CALL_LOG, Manifest.permission.WRITE_CALL_LOG, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.CAMERA, Manifest.permission.SEND_SMS, Manifest.permission.READ_PHONE_STATE};
 
-    //public static final String[] permissionsbelowN = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.GET_ACCOUNTS, Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS, Manifest.permission.CALL_PHONE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.CAMERA, Manifest.permission.SEND_SMS, Manifest.permission.READ_PHONE_STATE};
+    public static final String[] permissionsbelowN = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.GET_ACCOUNTS, Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS, Manifest.permission.CALL_PHONE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.CAMERA, Manifest.permission.SEND_SMS, Manifest.permission.READ_PHONE_STATE};
 
     public static final String INTENT_KEY = "intent_key";
+    public static final String otp_required_for_delivery = "otp_required_for_delivery";
     public static final String ORDER_ID = "order_id";
     public static final String OFD_OTP = "OFD_OTP";
     public static final String DRS_ID_NUM = "drs_id_num";
@@ -160,6 +163,8 @@ public class Constants {
     public static boolean uD_OTP_API_CHECK = false;
     public static boolean rD_OTP_API_CHECK = false;
     public static final String INTENT_KEY1 = "intent_key1";
+    public static final String INTENT_KEY_RVP_WITH_QC = "rvp_with_qc";
+    public static final String INTENT_KEY_RVP_SAMPLE_QUESTIONS = "rvp_sample_questions";
     public static final String INTENT_KEY_EDS_WITH_ACTIVITY = "eds_with_activity";
     public static final String INTENT_KEY_EDS_MASTER_LIST = "eds_master_list";
     public static final String FAIL = "FAIL";
@@ -171,8 +176,6 @@ public class Constants {
     //RVP QC Delivered and Undelivered constants
     public static final String RVPDELIVERED = "delivered";
     public static final String RVP_DELIVERED_REASON_CODE = "450";
-    public static final String RQC_FAILED_REASON_CODE = "426";
-    public static final String RVP_QC_CUSTOMER_NOT_SHARING_OTP_REASON_CODE = "24204";
     public static final String RVPUNDELIVERED = "undelivered";
     //EDS Delivered and Undelivered constants
     public static final String EDSDELIVERED = "delivered";
@@ -188,6 +191,9 @@ public class Constants {
     public static final String RTSMANUALLYDELIVEREDbutDAMAGED = RTSMANUALLYDELIVERED + " But Packet Damaged";
     public static final String RTSDeliveryMode = "Delivery Mode";
     public static final String RTSReAssignMode = "Re-Assign Mode";
+    //for qc pager adapter
+    public static final String QC_CHECK_LIST = "CheckList";
+    public static final String QC_SAMPLE_QC = "SampleQc";
     //for EDS Activity List pager adapter
     public static final String EDS_ACTIVITY_LIST = "activityList";
     public static final String EDS_MASTER_LIST = "masterList";
@@ -276,6 +282,20 @@ public class Constants {
     public static int failedShipmentStatus = 3;
     public static int successShipmentStatus = 2;
 
+    public static int splitdecimal(double number) {
+        int integer = (int) number;
+        double decimal = (100 * number - 100 * integer);
+        int i = (int) decimal;
+        System.out.println(decimal);
+        System.out.println(i);
+        return i;
+    }
+
+    public static class NotificationState {
+        public static final int UNREAD = 2;
+        public static final boolean UNDELIVERED = false;
+    }
+
     // All EDS reason code attributes
     public static boolean EDS_OTP = false;
     public static boolean SECURED = false;
@@ -288,7 +308,7 @@ public class Constants {
     public static boolean EDS_PAYTM_IMAGE = false;
     public static boolean EDS_DC = false;
     public static boolean EDS_DV = false;
-    public static final int DB_VERSION = 101;
+    public static final int DB_VERSION = 96;
 
     /*V2 prod configurations:-
      * public static final String PAYPHI_APPID_PROD = "79f5561ba4629c3b";
@@ -314,6 +334,7 @@ public class Constants {
      * public static String LIVE_TRACKING_URL = "https://test.ecomexpress.in:8030/location/saathi_v3_send_location/";
      * */
 
+    public static final String BROADCAST_DETECTED_ACTIVITY = "activity_intent";
     public static long number_of_fwd_shipments = 0;
     public static String device = (Build.MANUFACTURER + ":" + Build.MODEL).toUpperCase(Locale.US);
     public static final int PICK_FROM_CAMERA = 0x000010;
@@ -332,16 +353,7 @@ public class Constants {
     public static final String ITEM_DESCRIPTION = "ITEM_DESCRIPTION";
     public static final String CONSIGNEE_NAME = "CONSIGNEE_NAME";
     public static final String SECURE_DELIVERY_OTP = "SECURE_DELIVERY_OTP";
-    public static final String IS_FROM_MPS = "IS_FROM_MPS";
-    public static final String DRS_ASSIGN_DATE = "DRS_ASSIGN_DATE";
     public static final String QC_WIZARDS = "QC_WIZARDS";
     public static final String IS_FAILED = "IS_FAILED";
     public static final String IS_FROM = "IS_FROM";
-    public static final String IS_IMAGE_MISSING = "IS_IMAGE_MISSING";
-    public static final String SMART_QC_ENABLED = "SMART_QC_ENABLED";
-    public static final String IS_RVP_PHONEPE_SHIPMENT = "IS_RVP_PHONEPE_SHIPMENT";
-    public static final String IS_FROM_CUSTOMER_NOT_SHARING_OTP = "IS_FROM_CUSTOMER_NOT_SHARING_OTP";
-    public static final String SOURCE_OF_ORIGIN = "SOURCE_OF_ORIGIN";
-    public static final String TRAINING = "TRAINING";
-    public static final String ODH = "ODH";
 }

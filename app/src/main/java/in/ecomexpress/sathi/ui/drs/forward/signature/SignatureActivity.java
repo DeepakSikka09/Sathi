@@ -5,6 +5,7 @@ import static in.ecomexpress.sathi.utils.CommonUtils.applyTransitionToBackFromAc
 import static in.ecomexpress.sathi.utils.CommonUtils.applyTransitionToOpenActivity;
 import static in.ecomexpress.sathi.utils.CommonUtils.logScreenNameInGoogleAnalytics;
 import static in.ecomexpress.sathi.utils.Constants.REQUEST_CODE_SCAN;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -18,20 +19,27 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+
 import com.google.zxing.ResultPoint;
 import com.journeyapps.barcodescanner.BarcodeCallback;
 import com.journeyapps.barcodescanner.DefaultDecoderFactory;
 import com.nlscan.android.scan.ScanManager;
 import com.nlscan.android.scan.ScanSettings;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Calendar;
 import java.util.List;
+
 import javax.inject.Inject;
+
 import dagger.hilt.android.AndroidEntryPoint;
+import in.ecomexpress.barcodelistner.BarcodeHandler;
+import in.ecomexpress.barcodelistner.BarcodeResult;
 import in.ecomexpress.sathi.BR;
 import in.ecomexpress.sathi.R;
 import in.ecomexpress.sathi.databinding.ActivitySignatureBinding;
@@ -53,7 +61,7 @@ import in.ecomexpress.sathi.utils.Logger;
 import in.ecomexpress.sathi.utils.NetworkUtils;
 
 @AndroidEntryPoint
-public class SignatureActivity extends BaseActivity<ActivitySignatureBinding, SignatureViewModel> implements ISignatureNavigator, MyDialogCloseListener {
+public class SignatureActivity extends BaseActivity<ActivitySignatureBinding, SignatureViewModel> implements ISignatureNavigator, BarcodeResult, MyDialogCloseListener {
 
     private final String TAG = SignatureActivity.class.getSimpleName();
     @Inject
@@ -61,6 +69,7 @@ public class SignatureActivity extends BaseActivity<ActivitySignatureBinding, Si
     ActivitySignatureBinding mActivitySignatureBinding;
     Boolean scannedStatus = false;
     private boolean isScannerPaused = false;
+    BarcodeHandler barcodeHandler;
     ImageHandler imageHandler;
 
     private boolean CAPTURE_IMAGE = false;
@@ -105,8 +114,12 @@ public class SignatureActivity extends BaseActivity<ActivitySignatureBinding, Si
         mActivitySignatureBinding.etEmail.setEnabled(false);
         signatureViewModel.getDataManager().setLoginPermission(false);
         mActivitySignatureBinding.imageScan.setImageResource(R.drawable.scan);
+        barcodeHandler = new BarcodeHandler(this, "ScannerLM", this);
+        barcodeHandler.enableScanner();
         signatureViewModel.setNavigator(this);
         myDialogCloseListener = this;
+
+
         Constants.LOCATION_ACCURACY = signatureViewModel.getDataManager().getUndeliverConsigneeRANGE();
         if (signatureViewModel.getIsAwbScan()) {
             signatureViewModel.getIsAwbScan();
@@ -189,6 +202,9 @@ public class SignatureActivity extends BaseActivity<ActivitySignatureBinding, Si
                 }
             }
 
+
+            //signatureViewModel.setFwdDelImageRequired(fwd_del_image);
+
             signatureViewModel.onForwardDRSCommit(forwardCommit);
             imageHandler = new ImageHandler(this) {
                 @Override
@@ -197,10 +213,6 @@ public class SignatureActivity extends BaseActivity<ActivitySignatureBinding, Si
                     runOnUiThread(() -> {
                         try {
                             if (imageCode.equalsIgnoreCase("FWD_Delivered_Image_1")) {
-                                if (!NetworkUtils.isNetworkConnected(SignatureActivity.this)) {
-                                    showError(getString(R.string.check_internet));
-                                    return;
-                                }
                                 if (CommonUtils.checkImageIsBlurryOrNot(SignatureActivity.this, "FWD", bitmap, imageCaptureCount, signatureViewModel.getDataManager())) {
                                     imageCaptureCount++;
                                 } else {
@@ -210,13 +222,15 @@ public class SignatureActivity extends BaseActivity<ActivitySignatureBinding, Si
                                         mimageView = imageView;
                                         mbitmap = bitmap;
                                         imageFileName = imageUri;
-                                        signatureViewModel.uploadImageServer(forwardCommit.getAwb() + "_" + forwardCommit.getDrs_id() + "_FWD_Delivered_Image_1.png", imageUri, imageCode, Long.parseLong(forwardCommit.getAwb()), Integer.parseInt(forwardCommit.getDrs_id()), "", bitmap, composite_key, false);
+                                        if (NetworkUtils.isNetworkConnected(SignatureActivity.this)) {
+                                            signatureViewModel.uploadImageServer(forwardCommit.getAwb() + "_" + forwardCommit.getDrs_id() + "_FWD_Delivered_Image_1.png", imageUri, imageCode, Long.parseLong(forwardCommit.getAwb()), Integer.parseInt(forwardCommit.getDrs_id()), "", bitmap, composite_key, false);
+                                        } else {
+                                            imageView.setImageBitmap(bitmap);
+                                            signatureViewModel.uploadAWSImage(imageUri, "FWD_Delivered_Image_1", forwardCommit.getAwb() + "_" + forwardCommit.getDrs_id() + "_FWD_Delivered_Image_1.png", -1, GlobalConstant.ImageSyncStatus.IMAGE_SYNC_STATUS_NO, false, composite_key, false);
+                                        }
                                     }
                                 }
                             } else if (imageCode.equalsIgnoreCase("FWD_Delivered_Image_2")) {
-                                if (!NetworkUtils.isNetworkConnected(SignatureActivity.this)) {
-                                    showError(getString(R.string.check_internet));
-                                }
                                 if (CommonUtils.checkImageIsBlurryOrNot(SignatureActivity.this, "FWD", bitmap, secondimageCaptureCount, signatureViewModel.getDataManager())) {
                                     secondimageCaptureCount++;
                                 } else {
@@ -226,7 +240,12 @@ public class SignatureActivity extends BaseActivity<ActivitySignatureBinding, Si
                                         mimageView = imageView;
                                         mbitmap = bitmap;
                                         imageFileName = imageUri;
-                                        signatureViewModel.uploadImageServer(forwardCommit.getAwb() + "_" + forwardCommit.getDrs_id() + "_FWD_Delivered_Image_2.png", imageUri, imageCode, Long.parseLong(forwardCommit.getAwb()), Integer.parseInt(forwardCommit.getDrs_id()), "", bitmap, composite_key, false);
+                                        if (NetworkUtils.isNetworkConnected(SignatureActivity.this)) {
+                                            signatureViewModel.uploadImageServer(forwardCommit.getAwb() + "_" + forwardCommit.getDrs_id() + "_FWD_Delivered_Image_2.png", imageUri, imageCode, Long.parseLong(forwardCommit.getAwb()), Integer.parseInt(forwardCommit.getDrs_id()), "", bitmap, composite_key, false);
+                                        } else {
+                                            imageView.setImageBitmap(bitmap);
+                                            signatureViewModel.uploadAWSImage(imageUri, "FWD_Delivered_Image_2", forwardCommit.getAwb() + "_" + forwardCommit.getDrs_id() + "_FWD_Delivered_Image_2.png", -1, GlobalConstant.ImageSyncStatus.IMAGE_SYNC_STATUS_NO, false, composite_key, false);
+                                        }
                                     }
                                 }
                             }
@@ -247,10 +266,20 @@ public class SignatureActivity extends BaseActivity<ActivitySignatureBinding, Si
             signatureViewModel.fetchForwardShipment(forwardCommit.getDrs_id(), forwardCommit.getAwb());
             signatureViewModel.getConsigneeProfiling();
         } catch (Exception e) {
+
             Logger.e(SignatureActivity.class.getName(), e.getMessage());
+
+            RestApiErrorHandler restApiErrorHandler = new RestApiErrorHandler(e.getCause());
+            restApiErrorHandler.writeErrorLogs(0, e.getMessage());
         }
         mActivitySignatureBinding.scrollView.setFillViewport(true);
+
         mActivitySignatureBinding.ivFlash.setOnClickListener(view -> switchFlashlight());
+        // Check permission granted:-
+        if (!CommonUtils.isAllPermissionAllow(this)) {
+            openSettingActivity();
+            return;
+        }
         try {
             mActivitySignatureBinding.ivBarcode.getBarcodeView().setDecoderFactory(new DefaultDecoderFactory());
             mActivitySignatureBinding.ivBarcode.initializeFromIntent(getIntent());
@@ -381,10 +410,15 @@ public class SignatureActivity extends BaseActivity<ActivitySignatureBinding, Si
     }
 
     @Override
-    public void showScanAlert() {}
+    public void showScanAlert() {
+
+    }
+
 
     @Override
-    public void dismissDialog() {}
+    public void dismissDialog() {
+
+    }
 
     @Override
     public void onSubmitBPClick() {
@@ -432,8 +466,8 @@ public class SignatureActivity extends BaseActivity<ActivitySignatureBinding, Si
     public void onCaptureImage() {
         if (scannedStatus) {
             try {
-                if (!isNetworkConnected()) {
-                    showError(getString(R.string.check_internet));
+                if (!CommonUtils.isAllPermissionAllow(this)) {
+                    openSettingActivity();
                     return;
                 }
                 CAPTURE_IMAGE = !CAPTURE_IMAGE;
@@ -455,8 +489,8 @@ public class SignatureActivity extends BaseActivity<ActivitySignatureBinding, Si
     public void onCaptureImage2() {
         if (scannedStatus) {
             try {
-                if (!isNetworkConnected()) {
-                    showError(getString(R.string.check_internet));
+                if (!CommonUtils.isAllPermissionAllow(this)) {
+                    openSettingActivity();
                     return;
                 }
                 CAPTURE_IMAGE = !CAPTURE_IMAGE;
@@ -498,6 +532,8 @@ public class SignatureActivity extends BaseActivity<ActivitySignatureBinding, Si
                     Logger.e(SignatureActivity.class.getName(), e.getMessage());
                 }
             }
+            barcodeHandler = new BarcodeHandler(this, "ScannerLM", this);
+            barcodeHandler.enableScanner();
             signatureViewModel.getIsAwbScan();
             if (SignatureViewModel.device.equals(Constants.NEWLAND)) {
                 mScanMgr = ScanManager.getInstance();
@@ -507,6 +543,8 @@ public class SignatureActivity extends BaseActivity<ActivitySignatureBinding, Si
                 IntentFilter intFilter = new IntentFilter(ScanManager.ACTION_SEND_SCAN_RESULT);
                 registerReceiver(signatureViewModel.mResultReceiver(), intFilter);
             } else {
+                barcodeHandler = new BarcodeHandler(this, "ScannerLM", this);
+                barcodeHandler.enableScanner();
                 try {
                     mActivitySignatureBinding.ivBarcode.resume();
                 } catch (Exception e) {
@@ -628,9 +666,15 @@ public class SignatureActivity extends BaseActivity<ActivitySignatureBinding, Si
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         try {
-            if (CAPTURE_IMAGE) {
-                CAPTURE_IMAGE = false;
-                imageHandler.onActivityResult(requestCode, resultCode, data);
+            if (requestCode == REQUEST_CODE_SCAN) {
+                handleScanResult(data);
+            } else if (requestCode == 23456) {
+                barcodeHandler.onActivityResult(requestCode, resultCode, data);
+            } else {
+                if (CAPTURE_IMAGE) {
+                    CAPTURE_IMAGE = false;
+                    imageHandler.onActivityResult(requestCode, resultCode, data);
+                }
             }
         } catch (Exception e) {
             Logger.e(SignatureActivity.class.getName(), e.getMessage());
@@ -638,8 +682,12 @@ public class SignatureActivity extends BaseActivity<ActivitySignatureBinding, Si
         }
     }
 
-    public void saveBitmapInFile() {
+    private void handleScanResult(Intent data) {
+    }
+
+    public Boolean saveBitmapInFile() {
         try {
+            //File fileDir = new File(Environment.getExternalStorageDirectory(), "/" + Constants.EcomExpress);
             File fileDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "/" + Constants.EcomExpress);
             if (!fileDir.exists()) fileDir.mkdirs();
             File file = new File(fileDir, forwardCommit.getAwb() + "_" + forwardCommit.getDrs_id() + "_signature.png");
@@ -651,28 +699,27 @@ public class SignatureActivity extends BaseActivity<ActivitySignatureBinding, Si
             if (well.sameAs(emptyBitmap)) {
                 showSnackbar("Please place signature.");
                 ostream.close();
+                return false;
             } else {
                 if (!signatureViewModel.getDataManager().isCounterDelivery() && signatureViewModel.getCounterDeliveryRange() < signatureViewModel.getDataManager().getDCRANGE()) {
                     showError("Shipment cannot be marked delivered within the DC");
+                    return false;
                 }
                 if (Constants.CONSIGNEE_PROFILE) {
                     String dialog_message = getString(R.string.commitdialog);
                     String positiveButtonText = getString(R.string.yes);
                     if (consigneeProfiling && meterRange > signatureViewModel.getDataManager().getUndeliverConsigneeRANGE() && signatureViewModel.getDataManager().getConsigneeProfileValue().equalsIgnoreCase("W")) {
-                        dialog_message = "⚠️ You are not attempting the shipment at the consignee's location.\n\n"
-                                + "📍 **Your Current Location:** " + signatureViewModel.getDataManager().getCurrentLatitude()
-                                + ", " + signatureViewModel.getDataManager().getCurrentLongitude() + "\n"
-                                + "**Distance from Consignee:** " + meterRange + " meters away.\n\n"
-                                + "❓ Are you sure you want to commit?";
+                        dialog_message = "You are not attempting the shipment at Consignee’s location. your current location = " + signatureViewModel.getDataManager().getCurrentLatitude() + ", " + signatureViewModel.getDataManager().getCurrentLongitude() + " You are " + meterRange + " meter away from consignee location, \nAre you sure you want to commit?";
                         positiveButtonText = getString(R.string.yes);
                     } else if (Constants.CONSIGNEE_PROFILE && meterRange > signatureViewModel.getDataManager().getUndeliverConsigneeRANGE() && signatureViewModel.getDataManager().getConsigneeProfileValue().equalsIgnoreCase("R")) {
-                        dialog_message = "🚫 You are not allowed to commit this shipment as you are not at the consignee's location.\n\n"
-                                + "📍 **Your Current Location:** " + signatureViewModel.getDataManager().getCurrentLatitude()
-                                + ", " + signatureViewModel.getDataManager().getCurrentLongitude() + "\n"
-                                + "**Distance from Consignee:** " + meterRange + " meters away.";
+                        dialog_message = "You are not allowed to commit this shipment as you are not attempting at consignee location. your current location = " + signatureViewModel.getDataManager().getCurrentLatitude() + ", " + signatureViewModel.getDataManager().getCurrentLongitude() + " You are " + meterRange + " meter away from consignee location";
                         positiveButtonText = getString(R.string.ok);
                     } else {
-                        forwardCommit.setLocation_verified(meterRange <= signatureViewModel.getDataManager().getUndeliverConsigneeRANGE());
+                        if (meterRange > signatureViewModel.getDataManager().getUndeliverConsigneeRANGE()) {
+                            forwardCommit.setLocation_verified(false);
+                        } else {
+                            forwardCommit.setLocation_verified(true);
+                        }
                         BitmapUtils.saveBitmap(file, well);
                         try {
                             imageFileName = file.getAbsolutePath();
@@ -691,7 +738,11 @@ public class SignatureActivity extends BaseActivity<ActivitySignatureBinding, Si
                     AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.Theme_Material3_Light_Dialog_Alert);
                     builder.setCancelable(false);
                     builder.setMessage(dialog_message);
-                    forwardCommit.setLocation_verified(meterRange <= signatureViewModel.getDataManager().getUndeliverConsigneeRANGE());
+                    if (meterRange > signatureViewModel.getDataManager().getUndeliverConsigneeRANGE()) {
+                        forwardCommit.setLocation_verified(false);
+                    } else {
+                        forwardCommit.setLocation_verified(true);
+                    }
                     builder.setPositiveButton(positiveButtonText, (dialog, which) -> {
                         if (signatureViewModel.getDataManager().getConsigneeProfileValue().equalsIgnoreCase("W") || signatureViewModel.getDataManager().getConsigneeProfileValue().equalsIgnoreCase("N")) {
                             BitmapUtils.saveBitmap(file, well);
@@ -716,6 +767,7 @@ public class SignatureActivity extends BaseActivity<ActivitySignatureBinding, Si
                     }
                     AlertDialog alert = builder.create();
                     alert.show();
+                    return true;
                 } else {
                     if (signatureViewModel.getDataManager().isCounterDelivery() && signatureViewModel.getCounterDeliveryRange() < signatureViewModel.getDataManager().getDCRANGE()) {
                         forwardCommit.setLocation_verified(false);
@@ -737,10 +789,12 @@ public class SignatureActivity extends BaseActivity<ActivitySignatureBinding, Si
                         restApiErrorHandler.writeErrorLogs(0, e.getMessage());
                         Logger.e(SignatureActivity.class.getName(), e.getMessage());
                     }
+                    return true;
                 }
             }
         } catch (Exception e) {
             Logger.e(SignatureActivity.class.getName(), e.getMessage());
+            return false;
         }
     }
 
@@ -749,6 +803,10 @@ public class SignatureActivity extends BaseActivity<ActivitySignatureBinding, Si
         super.onBackPressed();
         mActivitySignatureBinding.ivBarcode.setTorchOff();
         applyTransitionToBackFromActivity(this);
+    }
+
+    @Override
+    public void onResult(String strScancode) {
     }
 
     //to check flashlight is on or off

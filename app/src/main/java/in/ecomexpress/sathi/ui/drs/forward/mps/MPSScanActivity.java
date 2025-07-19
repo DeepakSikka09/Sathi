@@ -3,6 +3,7 @@ package in.ecomexpress.sathi.ui.drs.forward.mps;
 import static in.ecomexpress.sathi.utils.CommonUtils.applyTransitionToBackFromActivity;
 import static in.ecomexpress.sathi.utils.CommonUtils.applyTransitionToOpenActivity;
 import static in.ecomexpress.sathi.utils.CommonUtils.logScreenNameInGoogleAnalytics;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,19 +12,26 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.journeyapps.barcodescanner.CaptureActivity;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 import com.nlscan.android.scan.ScanManager;
 import com.nlscan.android.scan.ScanSettings;
+
 import java.util.ArrayList;
 import java.util.Locale;
+
 import javax.inject.Inject;
+import javax.inject.Named;
+
 import dagger.hilt.android.AndroidEntryPoint;
+import in.ecomexpress.barcodelistner.BarcodeResult;
 import in.ecomexpress.sathi.BR;
 import in.ecomexpress.sathi.R;
 import in.ecomexpress.sathi.databinding.ActivityFwdScanAwbBinding;
@@ -39,7 +47,7 @@ import in.ecomexpress.sathi.utils.Constants;
 import in.ecomexpress.sathi.utils.Logger;
 
 @AndroidEntryPoint
-public class MPSScanActivity extends BaseActivity<ActivityFwdScanAwbBinding, MPSScanViewModel> implements MPSScanNavigator {
+public class MPSScanActivity extends BaseActivity<ActivityFwdScanAwbBinding, MPSScanViewModel> implements BarcodeResult, MPSScanNavigator {
 
     private final String TAG = MPSScanActivity.class.getSimpleName();
     @Inject
@@ -358,4 +366,10 @@ public class MPSScanActivity extends BaseActivity<ActivityFwdScanAwbBinding, MPS
             }
         }
     }
+
+    @Override
+    public void onResult(String s) {
+    }
+
+
 }

@@ -2,6 +2,7 @@ package in.ecomexpress.sathi;
 
 import static in.ecomexpress.sathi.utils.Constants.Shield_Secret_Key;
 import static in.ecomexpress.sathi.utils.Constants.Shield_Site_Id;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
@@ -14,15 +15,19 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.StrictMode;
 import android.provider.Settings;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.multidex.MultiDex;
+
 import com.paytmmoneyagent.core.MoneyQrScannerConfig;
 import com.shield.android.Shield;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+
 import dagger.hilt.android.HiltAndroidApp;
 import in.ecomexpress.sathi.di.component.DaggerAppComponent;
 import in.ecomexpress.sathi.repo.remote.model.drs_list.rts.new_rts.ShipmentsDetail;
@@ -33,8 +38,8 @@ import io.esper.devicesdk.EsperDeviceSDK;
 
 @HiltAndroidApp
 public class SathiApplication extends Application implements Application.ActivityLifecycleCallbacks, LifecycleObserver {
-
     public static String APP_NAME = "SATHiV2";
+
     public static HashMap<String, String> hashMapAppUrl = new HashMap<>();
     private static double globalFELat;
     @SuppressLint("StaticFieldLeak")
@@ -98,24 +103,39 @@ public class SathiApplication extends Application implements Application.Activit
         registerActivityLifecycleCallbacks(this);
         instance = this;
         APP_NAME = getResources().getString(R.string.app_name);
-        Shield shield = new Shield.Builder(this, Shield_Site_Id, Shield_Secret_Key).build();
+        //AppSignatureHelper appSignature = new AppSignatureHelper(this);
+        //appSignature.getAppSignatures();
+        //registerNetConnectivityBR();
+
+        Shield shield = new Shield.Builder(this, Shield_Site_Id,
+                Shield_Secret_Key).build();
         Shield.setSingletonInstance(shield);
+
     }
 
     public static SathiApplication getInstance() {
         return instance;
     }
 
+    /* private void registerNetConnectivityBR(){
+         IntentFilter filter = new IntentFilter();
+         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+         registerReceiver(new InternetConectivityStateReceiver(), filter);
+     }
+ */
     @Override
     public void onTerminate() {
         super.onTerminate();
     }
 
-    @Override
-    public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {}
 
     @Override
-    public void onActivityStarted(@NonNull Activity activity) {}
+    public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
+    }
+
+    @Override
+    public void onActivityStarted(@NonNull Activity activity) {
+    }
 
     @Override
     public void onActivityResumed(@NonNull Activity activity) {
@@ -123,16 +143,21 @@ public class SathiApplication extends Application implements Application.Activit
     }
 
     @Override
-    public void onActivityPaused(@NonNull Activity activity) {}
+    public void onActivityPaused(@NonNull Activity activity) {
+    }
 
     @Override
-    public void onActivityStopped(@NonNull Activity activity) {}
+    public void onActivityStopped(@NonNull Activity activity) {
+    }
 
     @Override
-    public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {}
+    public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
+    }
 
     @Override
-    public void onActivityDestroyed(@NonNull Activity activity) {}
+    public void onActivityDestroyed(@NonNull Activity activity) {
+
+    }
 
     public void optimizeBattery() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -147,3 +172,4 @@ public class SathiApplication extends Application implements Application.Activit
         }
     }
 }
+

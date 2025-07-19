@@ -27,7 +27,6 @@ public class PushApi {
     public String vendor_name = "";
 
     private int shipmentStatus;
-    private boolean rvp_mps;
     private String shipmentCaterogy;
     private String requestId;
     private String appId;
@@ -62,7 +61,6 @@ public class PushApi {
     public void setShipmentCaterogy(String shipmentCaterogy) {
         this.shipmentCaterogy = shipmentCaterogy;
     }
-
     public String getShipmentDeliveryStatus() {
         return ShipmentDeliveryStatus;
     }
@@ -169,13 +167,5 @@ public class PushApi {
                 ", requestData='" + requestData + '\'' +
                 ", commitUrl='" + commitUrl + '\'' +
                 '}';
-    }
-
-    public boolean isRvp_mps() {
-        return rvp_mps;
-    }
-
-    public void setRvp_mps(boolean rvp_mps) {
-        this.rvp_mps = rvp_mps;
     }
 }

@@ -8,6 +8,9 @@
     <color name="dashboardbg">#E8EAF6</color>
     <color name="button_disable_color">#B8B8B8</color>
     <color name="button_enable_color">#25408F</color>
+    <color name="dashboardview">#7986CB</color>
+    <color name="shipment_scanned_already">#ffa022</color>
+    <color name="shipment_tro_locked">#ee3148</color>
     <color name="colorAccent">#5C6BC0</color>
     <color name="blue">#E8EAF6</color>
     <color name="bluelite">#bfc2d4</color>
@@ -30,8 +33,10 @@
     <color name="blue_8F">#25408F</color>
     <color name="green_FE">#DBE7FE</color>
 
+
     <color name="light_gray">#ECEFF1</color>
     <color name="gray">#616161</color>
+    <color name="gray_new">#BCC1CD</color>
     <color name="grey_1">#ddd</color>
     <color name="grey_border">#F2F1F1</color>
 
@@ -61,6 +66,7 @@
     <color name="rvptool">#8BC34A</color>
     <color name="rvplight">#F1F8E9</color>
 
+
     <color name="undel1">#FFFDE7</color>
     <color name="undel2">#FFF9C4</color>
     <color name="undel3">#FFF59D</color>
@@ -71,7 +77,26 @@
     <color name="del4">#7986CB</color>
     <color name="green_text">#2eb82e</color>
 
+    <color name="primary_grey_300">#E0E0E0</color>
     <color name="primary_grey_400">#BDBDBD</color>
+    <color name="primary_grey_700">#616161</color>
+    <color name="accent_indigo_500">#3F51B5</color>
+
+    <color name="camera_toolbar_background">#7FFFFFFF</color>
+
+    <color name="camera_shooter_text_color">#FFFFFF</color>
+    <color name="camera_message_text_color">#FFFF00</color>
+    <color name="camera_message_text_background">#7F000000</color>
+    <color name="camera_overlay_frame_color">#C000FF00</color>
+    <color name="camera_overlay_alert_color">#C0FF0000</color>
+
+    <color name="crop_thumb">#7f00ddff</color>
+
+    <!-- A light Holo shade of red -->
+    <!-- A dark Holo shade of blue -->
+    <color name="holo_blue_dark">#ff0099cc</color>
+    <color name="polygonViewCircleStrokeColor">#ff59a9ff</color>
+    <color name="polygonViewCircleBackground">#90e5f8ff</color>
 
     <color name="grey_78">#6E7478</color>
     <color name="black_1A">#1A1A1A</color>
@@ -83,12 +108,15 @@
     <color name="sathi_text_colour">#1A1A1A</color>
     <color name="light_blue_new">#DBE7FE</color>
     <color name="light_grey">#55000000</color>
+    <color name="grey_00">#1000</color>
     <color name="textHintColor">#8C9296</color>
 
+    //highLight color
     <color name="highlight_color">#C0FF0000</color>
     <color name="grey_fe">#DBE7FE</color>
     <color name="grey_E5">#D1D9E0E5</color>
     <color name="rvp_qc_capture_image_button_color">#DBE7FE</color>
     <color name="black_new">#1A1A1A</color>
+
 
 </resources>

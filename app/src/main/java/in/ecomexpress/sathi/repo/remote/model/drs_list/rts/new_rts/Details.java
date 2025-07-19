@@ -59,9 +59,6 @@ public class Details {
     @JsonProperty("is_otp_required")
     private boolean is_otp_required;
 
-    @JsonProperty("rts_skip_otp")
-    private boolean rts_skip_otp = true;
-
     @JsonProperty("RCHD_enabled")
     private boolean RCHD_enabled;
 
@@ -371,13 +368,5 @@ public class Details {
 
     public void setScan_deliver(String scan_deliver) {
         this.scan_deliver = scan_deliver;
-    }
-
-    public boolean isRts_skip_otp() {
-        return rts_skip_otp;
-    }
-
-    public void setRts_skip_otp(boolean rts_skip_otp) {
-        this.rts_skip_otp = rts_skip_otp;
     }
 }

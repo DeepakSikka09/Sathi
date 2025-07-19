@@ -767,9 +767,6 @@ public interface IPreferenceHelper {
     void setESP_EARNING_VISIBILITY(boolean espEarningVisibility);
     boolean getESP_EARNING_VISIBILITY();
 
-    void setODH_VISIBILITY(boolean odhVisibility);
-    boolean getODH_VISIBILITY();
-
     void setCheckAttendanceLoginStatus(boolean status);
     boolean getCheckAttendanceLoginStatus();
 
@@ -783,6 +780,7 @@ public interface IPreferenceHelper {
 
     void setCampaignStatus(Boolean status);
 
-
+    void setDistanceAPIEnabled(Boolean isDistanceAPIEnabled);
+    Boolean getDistanceAPIEnabled();
 
 }

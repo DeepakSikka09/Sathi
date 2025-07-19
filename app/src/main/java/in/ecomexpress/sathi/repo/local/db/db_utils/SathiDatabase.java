@@ -19,7 +19,6 @@ import in.ecomexpress.sathi.repo.local.db.dao.DRSRTSMasterDAO;
 import in.ecomexpress.sathi.repo.local.db.dao.DRSRVPMasterDAO;
 import in.ecomexpress.sathi.repo.local.db.dao.DRSRVPQCMasterDao;
 import in.ecomexpress.sathi.repo.local.db.dao.DRSRtsDAO;
-import in.ecomexpress.sathi.repo.local.db.dao.DRSRvpMpsWithQCDAO;
 import in.ecomexpress.sathi.repo.local.db.dao.DRSRvpWithQCDAO;
 import in.ecomexpress.sathi.repo.local.db.dao.DRSSequenceDao;
 import in.ecomexpress.sathi.repo.local.db.dao.DashboardDao;
@@ -70,14 +69,12 @@ import in.ecomexpress.sathi.repo.remote.model.masterdata.RTSReasonCodeMaster;
 import in.ecomexpress.sathi.repo.remote.model.masterdata.RVPReasonCodeMaster;
 import in.ecomexpress.sathi.repo.remote.model.masterdata.Reverse;
 import in.ecomexpress.sathi.repo.remote.model.masterdata.SampleQuestion;
-import in.ecomexpress.sathi.repo.remote.model.mps.DRSRvpQcMpsResponse;
-import in.ecomexpress.sathi.repo.remote.model.mps.QcItem;
 import in.ecomexpress.sathi.repo.remote.model.payphi.raise_dispute.PaymentDisputedAwb;
 import in.ecomexpress.sathi.utils.Constants;
 
 @Database(version = Constants.DB_VERSION, entities = {User.class, Details.class, DashboardBanner.class, GlobalConfigurationMaster.class, CbPstnOptions.class, CallbridgeConfiguration.class, ShipmentsDetail.class, Remark.class, MasterDocumentList.class, MasterActivityData.class, Call.class, EDSResponse.class, EDSActivityWizard.class, DRSForwardTypeResponse.class, DRSReturnToShipperTypeResponse.class, DRSReverseQCTypeResponse.class, RvpQualityCheck.class, SampleQuestion.class, PushApi.class, ForwardReasonCodeMaster.class, EDSReasonCodeMaster.class, GeneralQuestion.class, RTSReasonCodeMaster.class, RVPReasonCodeMaster.class, ProfileFound.class, ImageModel.class, ApiUrlData.class, RescheduleEdsD.class, MsgLinkData.class,
         LiveTrackingLogTable.class,
-        Forward.class, Reverse.class, PaymentDisputedAwb.class, DRSSequence.class, RVPQCImageTable.class, QcItem.class, DRSRvpQcMpsResponse.class}, exportSchema = false)
+        Forward.class, Reverse.class, PaymentDisputedAwb.class, DRSSequence.class, RVPQCImageTable.class}, exportSchema = false)
 @TypeConverters({Converters.class})
 
 public abstract class SathiDatabase extends RoomDatabase {
@@ -145,6 +142,4 @@ public abstract class SathiDatabase extends RoomDatabase {
     public abstract DisputedAwbDAO DisputedAwbDAO();
 
     public abstract RVPShipperIdDao rvpShipperIdDAO();
-
-    public abstract DRSRvpMpsWithQCDAO drsRvpMpsWithQCDAO();
 }

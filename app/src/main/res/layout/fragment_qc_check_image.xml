@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.ecomexpress.sathi.ui.signature.SignatureActivity">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.drs.rvp.rvp_qc_details.qc_check_image.QcCheckImageViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/parent_layout_popup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                app:layout_constraintTop_toTopOf="parent"
+                android:padding="@dimen/_5DP">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/textViewHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/remarks"
+                    android:paddingStart="@dimen/_5DP"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="@={viewModel.qcName}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13SP" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/ll_radio_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/textViewHeader"
+                    android:padding="@dimen/_5DP"
+                    android:weightSum="2">
+
+                    <RadioGroup
+                        android:id="@+id/rg_quality_check"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:weightSum=".10">
+
+                        <com.google.android.material.radiobutton.MaterialRadioButton
+                            android:id="@+id/radioYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".05"
+                            android:textColor="@color/black_1A"
+                            android:buttonTint="@color/rvptool"
+                            android:text="@string/yes"
+                            android:textSize="13sp" />
+
+                        <com.google.android.material.radiobutton.MaterialRadioButton
+                            android:id="@+id/radioNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".05"
+                            android:textColor="@color/black_1A"
+                            android:buttonTint="@color/rvptool"
+                            android:text="@string/no"
+                            android:textSize="@dimen/_13SP" />
+                    </RadioGroup>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/remarks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/border_2dp_grey"
+                    android:textColorHint="@color/grey"
+                    android:hint="@string/remarks"
+                    android:inputType="text"
+                    android:padding="@dimen/_10DP"
+                    app:layout_constraintTop_toBottomOf="@id/ll_radio_group"
+                    android:text="@={ viewModel.inputData}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13SP" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/image_preview_cl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5DP"
+                    app:layout_constraintTop_toBottomOf="@id/remarks"
+                    android:onClick="@{() -> viewModel.showImagePreview()}"
+                    android:orientation="horizontal"
+                    android:weightSum=".10">
+
+                    <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                        android:layout_width="@dimen/_0DP"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5DP"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/imageViewPreview"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:text="@string/preview_image_to_be_match_with_the_item"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13SP" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/imageViewPreview"
+                        android:layout_width="@dimen/_30DP"
+                        android:layout_height="@dimen/_30DP"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:src="@drawable/mastercard" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/imagelayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/image_preview_cl"
+                    android:layout_marginTop="@dimen/_5DP">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/capture_image_text"
+                        android:layout_width="@dimen/_0DP"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/imageViewCaptureImage_check_image"
+                        android:hint="@string/remarks"
+                        android:padding="@dimen/_5DP"
+                        android:fontFamily="@font/roboto_regular"
+                        android:text="@={viewModel.imageCaptureSetting}"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13SP" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/imageViewCaptureImage_check_image"
+                        android:layout_width="@dimen/_30DP"
+                        android:layout_height="@dimen/_30DP"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:onClick="@{() -> viewModel.onCaptureImageClick()}"
+                        app:srcCompat="@drawable/cam" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5DP"
+                    app:layout_constraintTop_toBottomOf="@id/imagelayout">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/heading_instruction"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5DP"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:fontFamily="@font/roboto_regular"
+                        android:text="@string/qc_instruction"
+                        android:background="@drawable/border_2dp_grey"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13SP" />
+
+                    <View
+                        android:id="@+id/view"
+                        app:layout_constraintTop_toBottomOf="@id/heading_instruction"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1DP"
+                        android:background="@color/blue" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_5DP"
+                        android:padding="@dimen/_5DP"
+                        app:layout_constraintTop_toBottomOf="@id/view"
+                        android:fontFamily="@font/roboto_regular"
+                        android:text="@={viewModel.instruction}"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13SP" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

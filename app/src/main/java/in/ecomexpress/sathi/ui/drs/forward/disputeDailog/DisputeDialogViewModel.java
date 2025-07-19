@@ -94,7 +94,9 @@ public class DisputeDialogViewModel extends BaseViewModel<IDisputeDialogNavigato
             map.put("drs_id", drdid);
             getCompositeDisposable().add(getDataManager()
                     .doUploadDisputeImageApiCall(getDataManager().getEcomRegion(), map, fileToUpload)
-                    .doOnSuccess(disputeImageApiResponse -> {})
+                    .doOnSuccess(disputeImageApiResponse -> {
+
+                    })
                     .subscribeOn(getSchedulerProvider().io())
                     .observeOn(getSchedulerProvider().ui())
                     .subscribe(disputeImageApiResponse -> {
@@ -113,11 +115,16 @@ public class DisputeDialogViewModel extends BaseViewModel<IDisputeDialogNavigato
                             getNavigator().onHandleError(error);
                         } catch (Exception e) {
                             Logger.e(DisputeDialogViewModel.class.getName(), e.getMessage());
+
                         }
                     }));
         } catch (Exception e) {
+            Logger.e(DisputeDialogViewModel.class.getName(), e.getMessage());
             setIsLoading(false);
-            getNavigator().onHandleError(e.getLocalizedMessage());
+            if (e instanceof Throwable) {
+                getNavigator().onHandleError(e.getLocalizedMessage());
+                getNavigator().onHandleError(new RestApiErrorHandler(e.fillInStackTrace()).getErrorDetails().getEResponse().getDescription());
+            }
         }
     }
 

@@ -3,6 +3,7 @@ package in.ecomexpress.sathi.repo.local.db;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import in.ecomexpress.sathi.repo.local.data.commit.PushApi;
 import in.ecomexpress.sathi.repo.local.db.model.ApiUrlData;
@@ -10,7 +11,6 @@ import in.ecomexpress.sathi.repo.local.db.model.EdsWithActivityList;
 import in.ecomexpress.sathi.repo.local.db.model.ImageModel;
 import in.ecomexpress.sathi.repo.local.db.model.LiveTrackingLogTable;
 import in.ecomexpress.sathi.repo.local.db.model.MsgLinkData;
-import in.ecomexpress.sathi.repo.local.db.model.RVPMPSWithQC;
 import in.ecomexpress.sathi.repo.local.db.model.RVPQCImageTable;
 import in.ecomexpress.sathi.repo.local.db.model.Remark;
 import in.ecomexpress.sathi.repo.local.db.model.RescheduleEdsD;
@@ -42,8 +42,6 @@ import in.ecomexpress.sathi.repo.remote.model.masterdata.RTSReasonCodeMaster;
 import in.ecomexpress.sathi.repo.remote.model.masterdata.RVPReasonCodeMaster;
 import in.ecomexpress.sathi.repo.remote.model.masterdata.Reverse;
 import in.ecomexpress.sathi.repo.remote.model.masterdata.SampleQuestion;
-import in.ecomexpress.sathi.repo.remote.model.mps.DRSRvpQcMpsResponse;
-import in.ecomexpress.sathi.repo.remote.model.mps.QcItem;
 import in.ecomexpress.sathi.repo.remote.model.payphi.raise_dispute.PaymentDisputedAwb;
 import io.reactivex.Observable;
 
@@ -66,10 +64,6 @@ public interface IDBHelper {
     Observable<Boolean> saveDRSNewRTSList(DRSReturnToShipperTypeNewResponse drsReturnToShipperTypeResponses);
 
     Observable<Boolean> saveDRSRVP(DRSReverseQCTypeResponse drsReverseQCTypeResponses);
-
-    Observable<Boolean> saveDRSRVPMPS(DRSRvpQcMpsResponse drsReverseQCTypeResponses);
-
-    Observable<Boolean> saveDRSRVPMPSListQualityCheck(List<QcItem> rvpQualityChecksQcItems);
 
     Observable<Boolean> saveNewDrsEDS(EDSResponse edsResponse);
 
@@ -95,11 +89,7 @@ public interface IDBHelper {
 
     Observable<List<RvpQualityCheck>> getQcValuesForAwb();
 
-    Observable<List<QcItem>> getMPSQcValues();
-
     Observable<List<DRSForwardTypeResponse>> getUnSyncForwardList();
-
-    Observable<List<QcItem>> getQCDetailsForPickupActivity(long awbNo, int drs);
 
     Observable<List<EDSResponse>> getUnSyncEdsList();
 
@@ -123,8 +113,6 @@ public interface IDBHelper {
 
     Observable<List<DRSReverseQCTypeResponse>> getDRSListRVP();
 
-    Observable<List<DRSRvpQcMpsResponse>> getDRSListRVPMPS();
-
     Observable<List<EDSResponse>> getDrsListNewEds();
 
     Observable<DRSForwardTypeResponse> getForwardDRS(String composite_key);
@@ -139,8 +127,6 @@ public interface IDBHelper {
 
     Observable<DRSReverseQCTypeResponse> getRVPDRS(String composite_key);
 
-    Observable<DRSRvpQcMpsResponse> loadMpsShipmentDetailsFromDB(String composite_key);
-
     Observable<Boolean> isRVPDRSExist(String composite_key);
 
     Observable<Long> insertOrUpdateForward(DRSForwardTypeResponse drsForwardTypeResponse);
@@ -150,8 +136,6 @@ public interface IDBHelper {
     Observable<Long> getRTSStatusCount(int status);
 
     Observable<Long> getRVPStatusCount(int status);
-
-    Observable<Long> getRVPMPSStatusCount(int status);
 
     Observable<String> getTypeOfShipment(String awb);
 
@@ -185,8 +169,6 @@ public interface IDBHelper {
 
     Observable<Boolean> updateRvpStatus(String composite_key, int status);
 
-    Observable<Boolean> updateRvpMpsStatus(String composite_key, int status);
-
     Observable<Boolean> updateRtsStatus(Long id, int status);
 
     Observable<Boolean> updateEdsStatus(String awbNo, int status);
@@ -196,8 +178,6 @@ public interface IDBHelper {
     Observable<Boolean> updateAssignDataForward(long awbNo, String assign_date);
 
     Observable<Boolean> updateTotalAttemptsForward(long awbNo, int attempts);
-
-    Observable<Boolean> updateRVPMpsCallAttempted(Long awbNo, int isCallAttempted);
 
     Observable<Boolean> deleteShipment(String compositkey);
 
@@ -223,8 +203,6 @@ public interface IDBHelper {
 
     Observable<RvpWithQC> getRvpWithQc(String composite_key);
 
-    Observable<RVPMPSWithQC> getRvpMpsWithQc(String composite_key);
-
     Observable<CallbridgeConfiguration> loadallcallbridge();
 
     Observable<EdsWithActivityList> getEdsWithActivityList(String composite_key);
@@ -240,8 +218,6 @@ public interface IDBHelper {
     Observable<List<RVPReasonCodeMaster>> getSubReasonCodeFromSubGroup(String selectedReason);
 
     Observable<List<SampleQuestion>> getRvpMasterDescriptions(List<RvpQualityCheck> rvpQualityCheckList);
-
-    Observable<List<SampleQuestion>> getRvpMpsMasterDescriptions(List<QcItem> rvpQualityCheckList);
 
     Observable<List<MasterActivityData>> getEDSMasterDescriptions(List<EDSActivityWizard> edsActivityWizards);
 
@@ -266,8 +242,6 @@ public interface IDBHelper {
     Observable<Long> getisForwardCallattempted(long awb);
 
     Observable<Long> getisRVPCallattempted(long awb);
-
-    Observable<Long> getIsMpsCallAttempted(long awb);
 
     Observable<Long> getisEDSCallattempted(Long awb);
 
@@ -349,8 +323,6 @@ public interface IDBHelper {
 
     Observable<Boolean> updateSyncStatusRVP(String composite_key, int syncStatus);
 
-    Observable<Boolean> updateSyncStatusMps(String composite_key, int syncStatus);
-
     Observable<Boolean> updateSyncStatusRTS(long vendorID, int syncStatus);
 
     Observable<Boolean> updateForwardMPSShipmentStatus(String[] awbArr, int shipmentUndeliveredStatus);
@@ -399,7 +371,6 @@ public interface IDBHelper {
 
     Observable<Boolean> deleteQCData(int drs, long awbNo);
 
-    Observable<Boolean> deleteMpsQcDataFromQcItemTable(int drs, long awbNo);
 
     Observable<Boolean> getCallStatus(long awb, int drs);
 

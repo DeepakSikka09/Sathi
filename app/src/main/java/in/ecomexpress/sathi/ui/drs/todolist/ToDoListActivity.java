@@ -66,13 +66,14 @@ import java.util.Objects;
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
+import in.ecomexpress.barcodelistner.BarcodeHandler;
+import in.ecomexpress.barcodelistner.BarcodeResult;
 import in.ecomexpress.sathi.BR;
 import in.ecomexpress.sathi.R;
 import in.ecomexpress.sathi.databinding.ActivityToDoListBinding;
 import in.ecomexpress.sathi.databinding.ItemEdsListViewBinding;
 import in.ecomexpress.sathi.databinding.ItemForwardListViewBinding;
 import in.ecomexpress.sathi.databinding.ItemRvpListViewBinding;
-import in.ecomexpress.sathi.databinding.ItemRvpMpsListViewBinding;
 import in.ecomexpress.sathi.repo.local.db.model.CommonDRSListItem;
 import in.ecomexpress.sathi.repo.local.db.model.LiveTrackingLogTable;
 import in.ecomexpress.sathi.repo.local.db.model.Remark;
@@ -82,7 +83,6 @@ import in.ecomexpress.sathi.repo.remote.model.drs_list.forward.DRSForwardTypeRes
 import in.ecomexpress.sathi.repo.remote.model.drs_list.rts.new_rts.IRTSBaseInterface;
 import in.ecomexpress.sathi.repo.remote.model.drs_list.rvp.DRSReverseQCTypeResponse;
 import in.ecomexpress.sathi.repo.remote.model.masterdata.CallbridgeConfiguration;
-import in.ecomexpress.sathi.repo.remote.model.mps.DRSRvpQcMpsResponse;
 import in.ecomexpress.sathi.ui.base.BaseActivity;
 import in.ecomexpress.sathi.ui.dashboard.drs.list.DRSListFragment;
 import in.ecomexpress.sathi.ui.dashboard.drs.map.googlemap.GBaseFragment;
@@ -98,7 +98,7 @@ import in.ecomexpress.sathi.utils.MessageManager;
 import in.ecomexpress.sathi.utils.MultiSpinner;
 
 @AndroidEntryPoint
-public class ToDoListActivity extends BaseActivity<ActivityToDoListBinding, ToDoListViewModel> implements IToDoListNavigator, DRSremarksInterface, MultiSpinner.MultiSpinnerListener, SearchView.OnQueryTextListener, DRSListFragment.DRSListRemarkListener, DRSListFragment.ListListener, DRSCallListener, MyDialogCloseListener {
+public class ToDoListActivity extends BaseActivity<ActivityToDoListBinding, ToDoListViewModel> implements BarcodeResult, IToDoListNavigator, DRSremarksInterface, MultiSpinner.MultiSpinnerListener, SearchView.OnQueryTextListener, DRSListFragment.DRSListRemarkListener, DRSListFragment.ListListener, DRSCallListener, MyDialogCloseListener {
 
     private static final String TAG = ToDoListActivity.class.getSimpleName();
     private ScanManager mScanMgr;
@@ -137,6 +137,7 @@ public class ToDoListActivity extends BaseActivity<ActivityToDoListBinding, ToDo
     BottomSheetDialog bottomSheetDialog;
     ArrayAdapter list_adapter;
     PopupWindow popupWindow;
+    BarcodeHandler barcodeHandler;
     String awb = null;
     String notify = null;
     private DrawerLayout mDrawer;
@@ -205,12 +206,9 @@ public class ToDoListActivity extends BaseActivity<ActivityToDoListBinding, ToDo
         TextView et = activityToDoListBinding.searchview.findViewById(R.id.search_src_text);
         et.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25)});
         try {
-            Bundle extras = getIntent().getExtras();
-            if (extras != null) {
-                notify = extras.getString("notify");
-                if (notify != null) {
-                    activityToDoListBinding.searchview.setQuery(String.valueOf(awb), true);
-                }
+            notify = Objects.requireNonNull(getIntent().getExtras()).getString("notify");
+            if (notify != null) {
+                activityToDoListBinding.searchview.setQuery(String.valueOf(awb), true);
             }
         } catch (Exception e) {
             Logger.e(TAG, String.valueOf(e));
@@ -275,6 +273,8 @@ public class ToDoListActivity extends BaseActivity<ActivityToDoListBinding, ToDo
         activityToDoListBinding.searchview.setOnQueryTextListener(onQueryTextListener);
         gMapFragment.setContext(ToDoListActivity.this);
         swipeEnabled = true;
+        barcodeHandler = new BarcodeHandler(this, "ScannerLM", this);
+        barcodeHandler.enableScanner();
         activityToDoListBinding.resetSort.setOnClickListener(v -> onResetSequenceClick());
     }
 
@@ -471,16 +471,6 @@ public class ToDoListActivity extends BaseActivity<ActivityToDoListBinding, ToDo
             enableExpandableList();
         } catch (Exception e) {
             Logger.e(TAG, String.valueOf(e));
-        }
-    }
-
-    @Override
-    public void setRVPMPSRemark(Remark remark, ItemRvpMpsListViewBinding mBinding) {
-        if (remark != null && remark.remark != null && !remark.remark.isEmpty()) {
-            mBinding.layoutRemarks.setVisibility(View.VISIBLE);
-            mBinding.remarks.setText(remark.remark);
-        } else {
-            mBinding.layoutRemarks.setVisibility(View.GONE);
         }
     }
 
@@ -824,12 +814,6 @@ public class ToDoListActivity extends BaseActivity<ActivityToDoListBinding, ToDo
                                 commonDRSListItem.setCommonDrsStatus(shipment_status);
                                 response.setShipmentStatus(shipment_status);
                             }
-                        } else if (Objects.equals(commonDRSListItem.getType(), GlobalConstant.ShipmentTypeConstants.RVP_MPS)) {
-                            DRSRvpQcMpsResponse response = commonDRSListItem.getDrsRvpQcMpsResponse();
-                            if (awbNo.equalsIgnoreCase(String.valueOf(response.getAwbNo()))) {
-                                commonDRSListItem.setCommonDrsStatus(shipment_status);
-                                response.setShipmentStatus(shipment_status);
-                            }
                         } else if (Objects.equals(commonDRSListItem.getType(), GlobalConstant.ShipmentTypeConstants.RTS)) {
                             IRTSBaseInterface response = commonDRSListItem.getIRTSInterface();
                             if (awbNo.equalsIgnoreCase(String.valueOf(response.getDetails().getId()))) {
@@ -907,6 +891,12 @@ public class ToDoListActivity extends BaseActivity<ActivityToDoListBinding, ToDo
         toDoListViewModel.getAllNewDRS();
         Constants.water_mark_emp_code = toDoListViewModel.getDataManager().getEmp_code();
         Constants.SYNCFLAG = true;
+        if (ToDoListViewModel.device.equals(Constants.NEWLAND)) {
+            IntentFilter intFilter = new IntentFilter(ScanManager.ACTION_SEND_SCAN_RESULT);
+            registerReceiver(toDoListViewModel.mResultReceiver(), intFilter);
+        } else {
+            barcodeHandler.enableScanner();
+        }
         if (isFilterApplied) {
             activityToDoListBinding.isfilter.setText(Constants.with_filter);
             Constants.is_filter_applied = Constants.with_filter;
@@ -915,6 +905,15 @@ public class ToDoListActivity extends BaseActivity<ActivityToDoListBinding, ToDo
             Constants.is_filter_applied = Constants.no_filter;
         }
         addListFragment();
+    }
+
+    @Override
+    public void onResult(String s) {
+        showSnackbar(s);
+        if (s != null) {
+            activityToDoListBinding.searchview.setQuery(s, false);
+            drsListFragment.filter(s);
+        }
     }
 
     @Override
@@ -1300,7 +1299,7 @@ public class ToDoListActivity extends BaseActivity<ActivityToDoListBinding, ToDo
                                 drsListFragment.notifyDataSetChanged();
                             };
                             Calendar c = Calendar.getInstance();
-                            final TimePickerDialog timePickerDialog = new TimePickerDialog(ToDoListActivity.this, R.style.Theme_AppCompat_Light_Dialog, timePickerListener, c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE) + 5, false);
+                            final TimePickerDialog timePickerDialog = new TimePickerDialog(ToDoListActivity.this,R.style.Theme_AppCompat_Light_Dialog, timePickerListener, c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE) + 5, false);
                             timePickerDialog.show();
                             bottomSheetDialog.dismiss();
                             break;
@@ -1326,9 +1325,7 @@ public class ToDoListActivity extends BaseActivity<ActivityToDoListBinding, ToDo
                 return String.valueOf(commonDRSListItem.getEdsResponse().getAwbNo());
             } else if (Type.equalsIgnoreCase(GlobalConstant.ShipmentTypeConstants.RVP)) {
                 return String.valueOf(commonDRSListItem.getDrsReverseQCTypeResponse().getAwbNo());
-            } else if (Type.equalsIgnoreCase(GlobalConstant.ShipmentTypeConstants.RVP_MPS)) {
-                return String.valueOf(commonDRSListItem.getDrsRvpQcMpsResponse().getAwbNo());
-            }else {
+            } else {
                 return null;
             }
         } catch (Exception e) {
@@ -1346,8 +1343,6 @@ public class ToDoListActivity extends BaseActivity<ActivityToDoListBinding, ToDo
                 return String.valueOf(commonDRSListItem.getEdsResponse().getConsigneeDetail().getMobile());
             } else if (Type.equalsIgnoreCase(GlobalConstant.ShipmentTypeConstants.RVP)) {
                 return String.valueOf(commonDRSListItem.getDrsReverseQCTypeResponse().getConsigneeDetails().getMobile());
-            }else if (Type.equalsIgnoreCase(GlobalConstant.ShipmentTypeConstants.RVP_MPS)) {
-                return String.valueOf(commonDRSListItem.getDrsRvpQcMpsResponse().getConsigneeDetails().getMobile());
             } else {
                 return null;
             }
@@ -1567,7 +1562,7 @@ public class ToDoListActivity extends BaseActivity<ActivityToDoListBinding, ToDo
 
     @Override
     public void onResetSequenceClick() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(ToDoListActivity.this, R.style.Base_ThemeOverlay_AppCompat_Dialog_Alert);
+        AlertDialog.Builder builder = new AlertDialog.Builder(ToDoListActivity.this,R.style.Base_ThemeOverlay_AppCompat_Dialog_Alert);
         builder.setCancelable(false);
         builder.setMessage(R.string.are_you_sure_to_reset_the_drs_sequence_to_default);
         builder.setPositiveButton(R.string.yes, (dialog, which) -> {

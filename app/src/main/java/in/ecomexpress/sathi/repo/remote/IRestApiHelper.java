@@ -53,6 +53,7 @@ import in.ecomexpress.sathi.repo.remote.model.covid.CovidApiResponse;
 import in.ecomexpress.sathi.repo.remote.model.covid.CovidRequest;
 import in.ecomexpress.sathi.repo.remote.model.device_upload.Biometric_requestdata;
 import in.ecomexpress.sathi.repo.remote.model.device_upload.Biometric_response;
+import in.ecomexpress.sathi.repo.remote.model.distancecalculations.DistanceApiResponse;
 import in.ecomexpress.sathi.repo.remote.model.dp_daily_earned.DPDailyEarnedAmount;
 import in.ecomexpress.sathi.repo.remote.model.dp_daily_earned.DPReferenceCodeRequest;
 import in.ecomexpress.sathi.repo.remote.model.dp_daily_earned.DPReferenceCodeResponse;
@@ -369,7 +370,7 @@ public interface IRestApiHelper {
 
     Single<ShipmentWeightResponse> doShipmentWeightApiCall(String authToken, String ecomregion, Map<String, String> headers, Map<String, RequestBody> multipartBody, MultipartBody.Part file);
 
-    Single<CholaResponse> doCholaURLAPI(String authToken, String ecomregion, CholaRequest cholaRequest, boolean isTraining);
+    Single<CholaResponse> doCholaURLAPI(String authToken, String ecomregion, CholaRequest cholaRequest);
 
     Single<RTSResendOTPResponse> doResendOtpApiCall(String authToken, String ecomregion, RTSResendOTPRequest resendOtpRequest);
 
@@ -395,5 +396,9 @@ public interface IRestApiHelper {
     Single<CholaResponse> doWebViewAPI(String authToken, String ecomregion, CholaRequest cholaRequest);
 
     Single<CholaResponse> doCampaignAPI(String authToken, String ecomregion, CholaRequest cholaRequest);
+    LiveData<DistanceApiResponse> distanceCalculationApi(String locationRequest,String annotations);
+
+    Single<DistanceApiResponse> distanceCalculationApis(String location,String annotations);
+
 
 }

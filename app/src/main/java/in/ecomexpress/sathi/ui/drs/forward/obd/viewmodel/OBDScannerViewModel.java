@@ -9,6 +9,7 @@ import in.ecomexpress.sathi.repo.IDataManager;
 import in.ecomexpress.sathi.repo.remote.model.drs_list.rvp.RvpFlyerDuplicateCheckRequest;
 import in.ecomexpress.sathi.ui.base.BaseViewModel;
 import in.ecomexpress.sathi.ui.drs.forward.obd.navigator.FlyerScanNavigator;
+import in.ecomexpress.sathi.ui.drs.rvp.awbscan.CaptureScanViewModel;
 import in.ecomexpress.sathi.utils.Logger;
 import in.ecomexpress.sathi.utils.rx.ISchedulerProvider;
 
@@ -40,17 +41,17 @@ public class OBDScannerViewModel extends BaseViewModel<FlyerScanNavigator> {
                                 getNavigator().onProceed();
                             }
                         } catch (Exception e) {
-                            Logger.e(OBDScannerViewModel.class.getName(), e.getMessage());
+                            Logger.e(CaptureScanViewModel.class.getName(), e.getMessage());
                         }
                     }, throwable -> {
                         try {
                             setIsLoading(false);
                         } catch (Exception e) {
-                            Logger.e(OBDScannerViewModel.class.getName(), e.getMessage());
+                            Logger.e(CaptureScanViewModel.class.getName(), e.getMessage());
                         }
                     }));
         } catch (Exception e) {
-            Logger.e(OBDScannerViewModel.class.getName(), e.getMessage());
+            Logger.e(CaptureScanViewModel.class.getName(), e.getMessage());
             writeErrors(System.currentTimeMillis(), e);
             setIsLoading(false);
         }

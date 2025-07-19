@@ -5,6 +5,7 @@ import static in.ecomexpress.sathi.utils.CommonUtils.applyTransitionToOpenActivi
 import static in.ecomexpress.sathi.utils.CommonUtils.logScreenNameInGoogleAnalytics;
 import static in.ecomexpress.sathi.utils.Constants.DISTANCE_API_KEY;
 import static in.ecomexpress.sathi.utils.WatermarkUtils.getResizedBitmap;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -22,18 +23,24 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
+
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.google.maps.DirectionsApi;
 import com.google.maps.GeoApiContext;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
 import com.google.maps.model.Unit;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
+
 import dagger.hilt.android.AndroidEntryPoint;
 import in.ecomexpress.geolocations.LocationBeans;
 import in.ecomexpress.geolocations.LocationService;
@@ -45,7 +52,10 @@ import in.ecomexpress.sathi.databinding.NewStoptripActivityBinding;
 import in.ecomexpress.sathi.ui.auth.login.LoginActivity;
 import in.ecomexpress.sathi.ui.base.BaseActivity;
 import in.ecomexpress.sathi.utils.cameraView.CameraXActivity;
+import in.ecomexpress.sathi.ui.auth.login.LoginActivity;
 import in.ecomexpress.sathi.utils.Constants;
+import in.ecomexpress.sathi.utils.DigitalCropImageHandler;
+import in.ecomexpress.sathi.utils.ImageHandler;
 import in.ecomexpress.sathi.utils.Logger;
 import in.ecomexpress.sathi.utils.MessageManager;
 
@@ -118,7 +128,26 @@ public class StopTripActivity extends BaseActivity<NewStoptripActivityBinding, S
             activityNewStopTripBinding.imageViewStart.setVisibility(View.GONE);
             vehicleFileName = null;
         });
+        setObservers();
+    }
 
+    private void setObservers() {
+        mRunIdViewModel.getDistanceCalculationWithSpeedApiResponseMutableLiveData().observe(this,distanceApiResponse -> {
+            if (distanceApiResponse != null) {
+                // modify the distance variable with speed
+            if (distanceApiResponse.getDistances() !=null) {
+                total_distance_with_speed = total_distance_with_speed+distanceApiResponse.getDistances().get(0).get(1).floatValue();
+            }
+            }
+        });
+        mRunIdViewModel.getDistanceCalculationApiResponseMutableLiveData().observe(this,distanceApiResponse -> {
+            if (distanceApiResponse != null) {
+                // modify the distance variable without speed
+            if (distanceApiResponse.getDistances()!=null) {
+                total_distance = total_distance+distanceApiResponse.getDistances().get(0).get(1).floatValue();
+            }
+            }
+        });
     }
 
 
@@ -392,6 +421,8 @@ public class StopTripActivity extends BaseActivity<NewStoptripActivityBinding, S
     @Override
     public void onDestroy() {
         LocalBroadcastManager.getInstance(getActivityContext()).unregisterReceiver(mMessageReceiver);
+        mRunIdViewModel.getDistanceCalculationApiResponseMutableLiveData().removeObservers(this);
+        mRunIdViewModel.getDistanceCalculationWithSpeedApiResponseMutableLiveData().removeObservers(this);
         super.onDestroy();
     }
 
@@ -543,7 +574,8 @@ public class StopTripActivity extends BaseActivity<NewStoptripActivityBinding, S
                                 try {
                                     LatLng lastlatLng = new LatLng(start_location.getLatitude(), start_location.getLongitude());
                                     LatLng firstlatLng = new LatLng(end_location.getLatitude(), end_location.getLongitude());
-                                    GeoApiContext context = new GeoApiContext().setApiKey(DISTANCE_API_KEY);
+                                    if (mRunIdViewModel.getDataManager().getDistanceAPIEnabled()) {
+                                        GeoApiContext context = new GeoApiContext().setApiKey(DISTANCE_API_KEY);
                                     DirectionsResult result = DirectionsApi.newRequest(context).mode(TravelMode.DRIVING).units(Unit.METRIC).origin(firstlatLng).optimizeWaypoints(true).destination(lastlatLng).awaitIgnoreError();
                                     String dis = (result.routes[0].legs[0].distance.humanReadable);
                                     if (dis.endsWith("km")) {
@@ -552,7 +584,18 @@ public class StopTripActivity extends BaseActivity<NewStoptripActivityBinding, S
                                         distance = Float.parseFloat(dis.replaceAll("[^\\d.]", ""));
                                     }
                                     total_distance = total_distance + distance;
-                                } catch (Exception e) {
+                                    } else {
+                                        StringBuilder builder = new StringBuilder();
+                                        builder.append(start_location.getLongitude());
+                                        builder.append(",");
+                                        builder.append(start_location.getLatitude());
+                                        builder.append(";");
+                                        builder.append(end_location.getLongitude());
+                                        builder.append(",");
+                                        builder.append(end_location.getLatitude());
+                                        mRunIdViewModel.distanceCalculationApi(builder.toString(), false);
+                                    }
+                                }catch (Exception e) {
                                     distance = start_location.distanceTo(end_location);
                                     total_distance = total_distance + distance;
                                 }
@@ -653,19 +696,31 @@ public class StopTripActivity extends BaseActivity<NewStoptripActivityBinding, S
                         end_location.setLongitude(filteredLatListSpeed.get(i).getLongitude());
                         distance = start_location.distanceTo(end_location);
                         if (distance > mRunIdViewModel.getDataManager().getDistance()) {
-                            LatLng lastlatLng = new LatLng(start_location.getLatitude(), start_location.getLongitude());
-                            LatLng firstlatLng = new LatLng(end_location.getLatitude(), end_location.getLongitude());
-                            GeoApiContext context = new GeoApiContext().setApiKey(DISTANCE_API_KEY);
-                            DirectionsResult result = DirectionsApi.newRequest(context).mode(TravelMode.DRIVING).units(Unit.METRIC).origin(firstlatLng).optimizeWaypoints(true).destination(lastlatLng).awaitIgnoreError();
-                            String dis = (result.routes[0].legs[0].distance.humanReadable);
+                            if (mRunIdViewModel.getDataManager().getDistanceAPIEnabled()) {
+                                LatLng lastlatLng = new LatLng(start_location.getLatitude(), start_location.getLongitude());
+                                LatLng firstlatLng = new LatLng(end_location.getLatitude(), end_location.getLongitude());
+                                GeoApiContext context = new GeoApiContext().setApiKey(DISTANCE_API_KEY);
+                                DirectionsResult result = DirectionsApi.newRequest(context).mode(TravelMode.DRIVING).units(Unit.METRIC).origin(firstlatLng).optimizeWaypoints(true).destination(lastlatLng).awaitIgnoreError();
+                                String dis = (result.routes[0].legs[0].distance.humanReadable);
                             if (dis.endsWith("km")) {
                                 distance = Float.parseFloat(dis.replaceAll("[^\\d.]", "")) * 1000;
                             } else {
                                 distance = Float.parseFloat(dis.replaceAll("[^\\d.]", ""));
                             }
+                                total_distance_with_speed = total_distance_with_speed + distance;
+                            } else {
+                                StringBuilder builder = new StringBuilder();
+                                builder.append(start_location.getLongitude());
+                                builder.append(",");
+                                builder.append(start_location.getLatitude());
+                                builder.append(";");
+                                builder.append(end_location.getLongitude());
+                                builder.append(",");
+                                builder.append(end_location.getLatitude());
+                                mRunIdViewModel.distanceCalculationApi(builder.toString(), true);
+                            }
                         }
-                        total_distance_with_speed = total_distance_with_speed + distance;
-                    } catch (Exception e) {
+                    }catch (Exception e) {
                         Logger.e(TAG, String.valueOf(e));
                         i++;
                     }

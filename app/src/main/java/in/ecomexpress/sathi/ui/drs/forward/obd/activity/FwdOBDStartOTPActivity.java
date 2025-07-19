@@ -16,7 +16,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -40,7 +39,6 @@ import in.ecomexpress.sathi.ui.base.BaseActivity;
 import in.ecomexpress.sathi.ui.drs.forward.obd.navigator.IObdOTPNavigator;
 import in.ecomexpress.sathi.ui.drs.forward.obd.viewmodel.OBDStartOTPViewModel;
 import in.ecomexpress.sathi.utils.Constants;
-import in.ecomexpress.sathi.utils.Logger;
 
 @AndroidEntryPoint
 public class FwdOBDStartOTPActivity extends BaseActivity<ActivityObdOtpVerificationBinding, OBDStartOTPViewModel> implements IObdOTPNavigator {
@@ -150,46 +148,29 @@ public class FwdOBDStartOTPActivity extends BaseActivity<ActivityObdOtpVerificat
     @Override
     public void onUndelivered(ForwardCommit forwardCommit) {
         try {
-            try {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Theme_MaterialComponents_Light_Dialog_Alert);
-                String AlertText1 = "Shipment will be mark as Undelivered";
-                builder.setMessage(AlertText1);
-                builder.setCancelable(false);
-                builder.setPositiveButton("OK", (dialog, id) -> {
-                    Intent intent = new Intent();
-                    FWDActivitiesData fwdActivitiesData = new FWDActivitiesData();
-                    intent = new Intent(FwdOBDStartOTPActivity.this, FwdOBDCompleteActivity.class);
-                    fwdActivitiesData.setDrsPin(getDrsPin);
-                    fwdActivitiesData.setDrsApiKey(getDrsApiKey);
-                    fwdActivitiesData.setDrsPstnKey(getDrsPstnKey);
-                    fwdActivitiesData.setOrderId(orderId);
-                    fwdActivitiesData.setCallAllowed(callAllowed);
-                    fwdActivitiesData.setConsignee_mobile(consigneeMobile);
-                    fwdActivitiesData.setConsignee_alternate_number(consigneeAlternateMobile);
-                    fwdActivitiesData.setDrsId(Integer.parseInt(drsIdNum));
-                    fwdActivitiesData.setAwbNo(longAwbNo);
-                    fwdActivitiesData.setCompositeKey(composite_key);
-                    fwdActivitiesData.setIs_amazon_reschedule_enabled(is_amazon_schedule_enable);
-                    fwdActivitiesData.setShipment_type(shipmentType);
-                    fwdActivitiesData.setSecure_undelivered(String.valueOf(obdOtpViewModel.isSecureOtp.get()));
-                    fwdActivitiesData.setCollected_value(obdOtpViewModel.getCollectableValue());
-                    intent.putExtra(getString(R.string.data), forwardCommit);
-                    intent.putExtra("fwdActivitiesData", fwdActivitiesData);
-                    intent.putExtra(Constants.OBD_AWB_NUMBER, awbNo);
-                    intent.putExtra(Constants.OBD_REFUSED, "OtpNotAvailable");
-                    startActivity(intent);
-                    applyTransitionToOpenActivity(this);
-                    dialog.dismiss();
-                });
-                builder.setNegativeButton(R.string.cancel, (dialog, which) -> {
-                    dialog.cancel();
-                });
-                AlertDialog alert = builder.create();
-                alert.show();
-            } catch (Exception e) {
-                Logger.e(FwdOBDStartOTPActivity.class.getSimpleName() + "alertShowForUndelivered", e.getMessage());
-            }
-
+            Intent intent = new Intent();
+            FWDActivitiesData fwdActivitiesData = new FWDActivitiesData();
+            intent = new Intent(FwdOBDStartOTPActivity.this, FwdOBDCompleteActivity.class);
+            fwdActivitiesData.setDrsPin(getDrsPin);
+            fwdActivitiesData.setDrsApiKey(getDrsApiKey);
+            fwdActivitiesData.setDrsPstnKey(getDrsPstnKey);
+            fwdActivitiesData.setOrderId(orderId);
+            fwdActivitiesData.setCallAllowed(callAllowed);
+            fwdActivitiesData.setConsignee_mobile(consigneeMobile);
+            fwdActivitiesData.setConsignee_alternate_number(consigneeAlternateMobile);
+            fwdActivitiesData.setDrsId(Integer.parseInt(drsIdNum));
+            fwdActivitiesData.setAwbNo(longAwbNo);
+            fwdActivitiesData.setCompositeKey(composite_key);
+            fwdActivitiesData.setIs_amazon_reschedule_enabled(is_amazon_schedule_enable);
+            fwdActivitiesData.setShipment_type(shipmentType);
+            fwdActivitiesData.setSecure_undelivered(String.valueOf(obdOtpViewModel.isSecureOtp.get()));
+            fwdActivitiesData.setCollected_value(obdOtpViewModel.getCollectableValue());
+            intent.putExtra(getString(R.string.data), forwardCommit);
+            intent.putExtra("fwdActivitiesData", fwdActivitiesData);
+            intent.putExtra(Constants.OBD_AWB_NUMBER, awbNo);
+            intent.putExtra(Constants.OBD_REFUSED, "OtpNotAvailable");
+            startActivity(intent);
+            applyTransitionToOpenActivity(this);
         } catch (Exception e) {
             e.printStackTrace();
             showSnackbar(e.getMessage());

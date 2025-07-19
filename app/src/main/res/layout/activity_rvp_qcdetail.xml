@@ -17,7 +17,7 @@
             layout="@layout/rvp_with_awb_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/header" />
+            app:layout_constraintTop_toBottomOf="@id/header"/>
 
         <View
             android:id="@+id/dividerOne"
@@ -28,96 +28,100 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rqcAwbHeader" />
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/nestedScrollingView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:fillViewport="true"
-            android:fitsSystemWindows="true"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:layout_constraintBottom_toTopOf="@id/deliveredShipmentButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/dividerOne">
 
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/nestedScrollingView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:fillViewport="true"
+                android:fitsSystemWindows="true"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dividerOne"
+                app:layout_constraintBottom_toTopOf="@id/deliveredShipmentButton">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/dividerOne">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/viewPagerLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:paddingHorizontal="@dimen/_20DP"
-                    android:paddingVertical="@dimen/_15DP"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:id="@+id/noQCImageView"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_150DP"
-                        android:scaleType="center"
-                        android:src="@drawable/rvp_image_placeholder"
-                        android:visibility="gone"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <androidx.viewpager2.widget.ViewPager2
-                        android:id="@+id/qcImageView"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_150DP"
-                        app:elevation="@dimen/_10DP"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/qcImageIndicator"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_25DP"
-                        android:background="@color/white"
-                        app:layout_constraintTop_toBottomOf="@id/qcImageView"
-                        app:tabBackground="@drawable/indicator_selector"
-                        app:tabGravity="center"
-                        app:tabIndicatorHeight="@dimen/_0DP"
-                        app:tabPaddingEnd="@dimen/_8DP"
-                        app:tabPaddingStart="@dimen/_8DP" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <View
-                    android:id="@+id/dividerTwo"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_7DP"
-                    android:background="@color/green_FF"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/viewPagerLayout" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_0DP"
-                    app:layout_constraintTop_toBottomOf="@+id/dividerTwo" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.core.widget.NestedScrollView>
-
-        <include
-            android:id="@+id/deliveredShipmentButton"
-            layout="@layout/rvp_bottom_button_single"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/viewPagerLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:paddingHorizontal="@dimen/_20DP"
+            android:paddingVertical="@dimen/_15DP"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/noQCImageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:src="@drawable/rvp_image_placeholder"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/qcImageView"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_150DP"
+                app:elevation="@dimen/_10DP"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/qcImageIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_25DP"
+                android:background="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/qcImageView"
+                app:tabBackground="@drawable/indicator_selector"
+                app:tabGravity="center"
+                app:tabIndicatorHeight="@dimen/_0DP"
+                app:tabPaddingEnd="@dimen/_8DP"
+                app:tabPaddingStart="@dimen/_8DP" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/dividerTwo"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_7DP"
+            android:background="@color/green_FF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/viewPagerLayout" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_0DP"
+            app:layout_constraintTop_toBottomOf="@+id/dividerTwo" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/deliveredShipmentButton"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_45DP"
+            android:layout_margin="@dimen/_20DP"
+            android:background="@drawable/bg_curve_corner"
+            android:backgroundTint="@color/blue_8F"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/submittxt"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_21SP"
+            app:backgroundTint="@null"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>

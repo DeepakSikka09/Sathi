@@ -3,6 +3,7 @@ package in.ecomexpress.sathi.ui.dashboard.landing;
 import static in.ecomexpress.sathi.utils.CommonUtils.applyTransitionToOpenActivity;
 import static in.ecomexpress.sathi.utils.CommonUtils.logScreenNameInGoogleAnalytics;
 import static in.ecomexpress.sathi.utils.Constants.Open_To_Do;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -23,6 +24,7 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -30,16 +32,20 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.scottyab.rootbeer.RootBeer;
+
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import javax.inject.Inject;
+
 import dagger.hilt.android.AndroidEntryPoint;
 import in.ecomexpress.geolocations.LocationTracker;
 import in.ecomexpress.sathi.BR;
@@ -50,6 +56,7 @@ import in.ecomexpress.sathi.backgroundServices.SyncServicesV2;
 import in.ecomexpress.sathi.databinding.ActivityDashboardBinding;
 import in.ecomexpress.sathi.repo.remote.model.ErrorResponse;
 import in.ecomexpress.sathi.repo.remote.model.masterdata.DashboardBanner;
+import in.ecomexpress.sathi.ui.auth.changepassword.ChangePasswordActivity;
 import in.ecomexpress.sathi.ui.auth.login.LoginActivity;
 import in.ecomexpress.sathi.ui.base.BaseActivity;
 import in.ecomexpress.sathi.ui.dashboard.attendance.activity.AttendanceActivity;
@@ -66,6 +73,7 @@ import in.ecomexpress.sathi.ui.dashboard.unattempted_shipments.DashboardActivity
 import in.ecomexpress.sathi.ui.dashboard.unattempted_shipments.UnattemptedShipmentActivity;
 import in.ecomexpress.sathi.ui.drs.todolist.ToDoListActivity;
 import in.ecomexpress.sathi.ui.side_drawer.drawer_main.SideDrawerActivity;
+import in.ecomexpress.sathi.ui.side_drawer.profile.ProfileActivity;
 import in.ecomexpress.sathi.utils.CommonUtils;
 import in.ecomexpress.sathi.utils.Constants;
 import in.ecomexpress.sathi.utils.GlobalConstant;
@@ -85,6 +93,7 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding, Da
     @Inject
     DashboardViewModel dashboardViewModel;
     Timer timer;
+    ChangePasswordActivity changePasswordActivity;
     List<DashboardBanner> getDashboardBanner;
     Activity activity;
     private LocationCapture mLocation;
@@ -203,6 +212,20 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding, Da
         }
     }
 
+
+    @Override
+    public void openChangePasswordActivity() {
+        changePasswordActivity = ChangePasswordActivity.newInstance();
+        changePasswordActivity.show(getSupportFragmentManager());
+        changePasswordActivity.setChangePasswordListener(this::finish);
+    }
+
+    @Override
+    public void openProfileActivity() {
+        startActivity(ProfileActivity.getStartIntent(DashboardActivity.this));
+        applyTransitionToOpenActivity(this);
+    }
+
     @Override
     public void openStatisticsActivity() {
         if (!isNetworkConnected()) {
@@ -226,11 +249,19 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding, Da
             blockAppAccess();
             return;
         }
+        if (!CommonUtils.isAllPermissionAllow(DashboardActivity.this)) {
+            openSettingActivity();
+            return;
+        }
         openStartTripActivity();
     }
 
     @Override
     public void openStopTrip() {
+        if (!CommonUtils.isAllPermissionAllow(DashboardActivity.this)) {
+            openSettingActivity();
+            return;
+        }
         try {
             if (dashboardViewModel.getUnAttemptedShipmentCount() > 0) {
                 openUnattemptedShipmentActivity();
@@ -246,6 +277,7 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding, Da
     public void noToDo() {
         showSnackbar(getString(R.string.start_your_trip));
     }
+
 
     @Override
     public void onHandleError(ErrorResponse errorDetails) {
@@ -280,10 +312,10 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding, Da
                     startActivity(intent);
                     applyTransitionToOpenActivity(this);
                 } else {
-                    showSnackbar(getString(R.string.this_feature_is_under_development));
+                    showStringError("This Feature Is Under Development");
                 }
             } catch (Exception e) {
-                showSnackbar(getString(R.string.this_feature_is_under_development));
+                showStringError("This Feature Is Under Development");
             }
         } else {
             activityDashboardBinding.fuelTxtView.setText("Fuel");
@@ -314,6 +346,7 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding, Da
         }
     }
 
+    @SuppressLint("NewApi")
     @Override
     public void onAttendanceClick() {
         if (!isNetworkConnected()) {
@@ -329,41 +362,54 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding, Da
         applyTransitionToOpenActivity(this);
     }
 
+
+    @Override
+    public void onLogoutClick(boolean flag) {
+        if (flag) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this, R.style.Base_ThemeOverlay_AppCompat_Dialog_Alert);
+            builder.setCancelable(false);
+            builder.setMessage("Are You Sure You Want To Logout?");
+            builder.setPositiveButton(R.string.yes, (dialog, which) -> {
+                // If user pressed "yes", then he is allowed to exit from application
+                if (!isNetworkConnected()) {
+                    showSnackbar(getResources().getString(R.string.no_network_error));
+                    return;
+                }
+                try {
+                    stopService(SyncServicesV2.getStopIntent(DashboardActivity.this));
+                    dashboardViewModel.logout();
+                } catch (Exception e) {
+                    Logger.e(TAG, String.valueOf(e));
+                }
+            });
+            builder.setNegativeButton(R.string.no, (dialog, which) -> {
+                // If user select "No", just startTripSyncDrs this dialog and continue with app
+                dialog.cancel();
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        } else {
+            showSnackbar("Your Trip Is Active. Stop Trip And Logout From App");
+        }
+    }
+
     @Override
     public void onTrainingClick() {
         try {
             if (!isNetworkConnected()) {
                 showSnackbar(getResources().getString(R.string.no_network_error));
             } else if (eventValidator(GlobalConstant.DynamicAppUrl.unify_apps)) {
-                showSnackbar(getString(R.string.this_feature_is_under_development));
+                showSnackbar("This Feature Is Under Development");
             } else {
                 Intent intent = new Intent(DashboardActivity.this, TrainingActivity.class);
-                intent.putExtra(Constants.SOURCE_OF_ORIGIN, Constants.TRAINING);
                 startActivity(intent);
                 applyTransitionToOpenActivity(this);
             }
         } catch (Exception e) {
-            showSnackbar(getString(R.string.this_feature_is_under_development));
+            showSnackbar("This Feature Is Under Development");
         }
     }
 
-    @Override
-    public void onODHClick() {
-        try {
-            if (!isNetworkConnected()) {
-                showSnackbar(getResources().getString(R.string.no_network_error));
-            } else if (eventValidator(GlobalConstant.DynamicAppUrl.modular_shipment) || !dashboardViewModel.getDataManager().getODH_VISIBILITY()) {
-                showSnackbar(getString(R.string.this_feature_is_under_development));
-            } else {
-                Intent intent = new Intent(DashboardActivity.this, TrainingActivity.class);
-                intent.putExtra(Constants.SOURCE_OF_ORIGIN, Constants.ODH);
-                startActivity(intent);
-                applyTransitionToOpenActivity(this);
-            }
-        } catch (Exception e) {
-            showSnackbar(getString(R.string.this_feature_is_under_development));
-        }
-    }
 
     @SuppressLint("NewApi")
     @Override
@@ -373,17 +419,17 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding, Da
                 showSnackbar(getResources().getString(R.string.no_network_error));
             } else if (dashboardViewModel.getDataManager().getCampaignStatus()) {
                 if (eventValidator(GlobalConstant.DynamicAppUrl.unify_apps_campaign)) {
-                    showSnackbar(getString(R.string.this_feature_is_under_development));
+                    showSnackbar("This Feature Is Under Development");
                 } else {
                     Intent intent = new Intent(DashboardActivity.this, CampaignActivity.class);
                     startActivity(intent);
                     applyTransitionToOpenActivity(this);
                 }
             } else {
-                showSnackbar(getString(R.string.this_feature_is_under_development));
+                showSnackbar("This Feature Is Under Development");
             }
         } catch (Exception e) {
-            showSnackbar(getString(R.string.this_feature_is_under_development));
+            showSnackbar("This Feature Is Under Development");
         }
     }
 
@@ -562,10 +608,6 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding, Da
     @Override
     protected void onResume() {
         super.onResume();
-        if (!CommonUtils.isAllPermissionAllow(DashboardActivity.this)) {
-            openSettingActivity();
-            return;
-        }
         if (dashboardViewModel.getDataManager().getTripId().equalsIgnoreCase("0") && !dashboardViewModel.getPreviousTripStatus()) {
             activityDashboardBinding.tripIcon.setImageResource(R.drawable.start_trip_icon);
         } else {
@@ -654,8 +696,7 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding, Da
             Logger.e(TAG, String.valueOf(e));
         }
         if (!checkPermission(Constants.permissions)) {
-            //requestPermission();
-            showSnackbar(getString(R.string.permission_required));
+            requestPermission();
         }
     }
 
@@ -676,6 +717,10 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding, Da
             }
         }
         return true;
+    }
+
+    private void requestPermission() {
+        requestPermissionsSafely(Constants.permissions, 100);
     }
 
     @Override

@@ -11,7 +11,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.util.Log;
+
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+
 import java.io.File;
 import java.util.Calendar;
 import java.util.List;
@@ -28,6 +33,7 @@ import in.ecomexpress.sathi.backgroundServices.SyncServicesV2;
 import in.ecomexpress.sathi.repo.IDataManager;
 import in.ecomexpress.sathi.repo.local.data.commit.PushApi;
 import in.ecomexpress.sathi.repo.remote.RestApiErrorHandler;
+import in.ecomexpress.sathi.repo.remote.model.distancecalculations.DistanceApiResponse;
 import in.ecomexpress.sathi.repo.remote.model.trip.ImageResponse;
 import in.ecomexpress.sathi.repo.remote.model.trip.StopTripRequest;
 import in.ecomexpress.sathi.repo.remote.model.trip.StopTripResponse;
@@ -50,6 +56,17 @@ public class StopTripViewModel extends BaseViewModel<StopTripCallBack> {
     private static final String TAG = StopTripViewModel.class.getSimpleName();
     boolean is_start_clicked = true;
     int pushApiSize = 0;
+    private final MediatorLiveData<DistanceApiResponse> distanceCalculationApiResponseMutableLiveData = new MediatorLiveData<>();
+
+    public MediatorLiveData<DistanceApiResponse> getDistanceCalculationApiResponseMutableLiveData() {
+        return distanceCalculationApiResponseMutableLiveData;
+    }
+    private final MediatorLiveData<DistanceApiResponse> distanceCalculationWithSpeedApiResponseMutableLiveData = new MediatorLiveData<>();
+
+    public MediatorLiveData<DistanceApiResponse> getDistanceCalculationWithSpeedApiResponseMutableLiveData() {
+        return distanceCalculationWithSpeedApiResponseMutableLiveData;
+    }
+
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     @Inject
@@ -401,4 +418,22 @@ public class StopTripViewModel extends BaseViewModel<StopTripCallBack> {
         super.onCleared();
         executor.shutdown();
     }
-}
+    public void distanceCalculationApi(String location, Boolean isDistanceCalculationWithSpeed) {
+        try{
+            LiveData<DistanceApiResponse> obj = getDataManager().distanceCalculationApi(location,"distance");
+            if (isDistanceCalculationWithSpeed){
+                    distanceCalculationWithSpeedApiResponseMutableLiveData.addSource(obj, selfDropResponse -> {
+                    distanceCalculationWithSpeedApiResponseMutableLiveData.removeSource(obj);
+                    distanceCalculationWithSpeedApiResponseMutableLiveData.setValue(selfDropResponse);
+                });
+            }else {
+                    distanceCalculationApiResponseMutableLiveData.addSource(obj, selfDropResponse -> {
+                    distanceCalculationApiResponseMutableLiveData.removeSource(obj);
+                    distanceCalculationApiResponseMutableLiveData.setValue(selfDropResponse);
+                });
+            }
+        } catch (Exception e){
+            Log.d(TAG, "distanceCalculationApi: FAILED" + e.getLocalizedMessage());
+            }
+        }
+    }

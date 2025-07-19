@@ -2,16 +2,24 @@ package in.ecomexpress.sathi.repo.remote;
 
 import android.content.Context;
 import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import in.ecomexpress.sathi.BuildConfig;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import in.ecomexpress.sathi.BuildConfig;
+
 import in.ecomexpress.sathi.SathiApplication;
 import in.ecomexpress.sathi.repo.local.data.callbridge.CallApiRequest;
 import in.ecomexpress.sathi.repo.local.data.eds.EDSCommitResponse;
@@ -59,6 +67,7 @@ import in.ecomexpress.sathi.repo.remote.model.covid.CovidApiResponse;
 import in.ecomexpress.sathi.repo.remote.model.covid.CovidRequest;
 import in.ecomexpress.sathi.repo.remote.model.device_upload.Biometric_requestdata;
 import in.ecomexpress.sathi.repo.remote.model.device_upload.Biometric_response;
+import in.ecomexpress.sathi.repo.remote.model.distancecalculations.DistanceApiResponse;
 import in.ecomexpress.sathi.repo.remote.model.dp_daily_earned.DPDailyEarnedAmount;
 import in.ecomexpress.sathi.repo.remote.model.dp_daily_earned.DPReferenceCodeRequest;
 import in.ecomexpress.sathi.repo.remote.model.dp_daily_earned.DPReferenceCodeResponse;
@@ -83,9 +92,9 @@ import in.ecomexpress.sathi.repo.remote.model.eds.AadharMaskingResponse;
 import in.ecomexpress.sathi.repo.remote.model.eds.AadharStatusResponse;
 import in.ecomexpress.sathi.repo.remote.model.eds.CashReceipt_Request;
 import in.ecomexpress.sathi.repo.remote.model.eds.CashReceipt_Response;
+import in.ecomexpress.sathi.repo.remote.model.eds.Get_Status_Masking;
 import in.ecomexpress.sathi.repo.remote.model.eds.EdsRescheduleRequest;
 import in.ecomexpress.sathi.repo.remote.model.eds.EdsRescheduleResponse;
-import in.ecomexpress.sathi.repo.remote.model.eds.Get_Status_Masking;
 import in.ecomexpress.sathi.repo.remote.model.eds.IDFCToken_Response;
 import in.ecomexpress.sathi.repo.remote.model.ekyc_xml_response.ekycXMLResponse;
 import in.ecomexpress.sathi.repo.remote.model.forward.dispute_dialog.DisputeApiResponse;
@@ -159,6 +168,7 @@ import in.ecomexpress.sathi.repo.remote.model.verifyOtp.LoginVerifyOtpRequest;
 import in.ecomexpress.sathi.repo.remote.model.verifyOtp.LoginVerifyOtpResponse;
 import in.ecomexpress.sathi.repo.remote.model.voice_otp.VoiceOTP;
 import in.ecomexpress.sathi.repo.remote.model.voice_otp.VoiceOTPResponse;
+
 import in.ecomexpress.sathi.utils.GlobalConstant;
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -172,6 +182,7 @@ import retrofit2.Response;
 @Singleton
 public class RestApiHelper implements IRestApiHelper {
 
+    private static final Logger log = LoggerFactory.getLogger(RestApiHelper.class);
     @Inject
     Context context;
     private final RetrofitService retrofitService;
@@ -399,18 +410,11 @@ public class RestApiHelper implements IRestApiHelper {
         RequestBody image_type = (RequestBody) multipartBody.get("image_type");
         RequestBody card_type = (RequestBody) multipartBody.get("card_type");
         RequestBody is_classification_required = (RequestBody) multipartBody.get("is_classification_required");
-        Log.e("hashMapAppUrl: ", " / " + SathiApplication.hashMapAppUrl.toString());
         if (imageType.equalsIgnoreCase("EDS")) {
             return retrofitService.doImageUploadApiCall(authToken, ecomregion, SathiApplication.hashMapAppUrl.get(GlobalConstant.DynamicAppUrl.IMAGE_EDS_URL), headers, file, awb_no, drs_no, image_name, image_code, image_type, card_type, is_classification_required);
         } else if (imageType.equalsIgnoreCase("rvp_qc")) {
             return retrofitService.doImageUploadApiCall(authToken, ecomregion, SathiApplication.hashMapAppUrl.get(GlobalConstant.DynamicAppUrl.RVP_IMAGE_URL), headers, file, awb_no, drs_no, image_name, image_code, image_type, card_type, is_classification_required);
-        }else if (imageType.equalsIgnoreCase(GlobalConstant.ImageTypeConstants.RVP_MPS)) {
-            RequestBody rvp_qc_image_key = (RequestBody) multipartBody.get("rvp_qc_image_key");
-            RequestBody no_of_item = (RequestBody) multipartBody.get("no_of_item");
-            RequestBody item_id = (RequestBody) multipartBody.get("item_id");
-            return retrofitService.doImageUploadRVPMpsApiCall(authToken, ecomregion, SathiApplication.hashMapAppUrl.get(GlobalConstant.DynamicAppUrl.RVP_MPS_IMAGE_URL), headers, file, awb_no, drs_no, rvp_qc_image_key, image_code, image_type, no_of_item, item_id, is_classification_required);
-        }
-        else {
+        } else {
             return retrofitService.doImageUploadApiCall(authToken, ecomregion, SathiApplication.hashMapAppUrl.get(GlobalConstant.DynamicAppUrl.POST_IMAGE_URL), headers, file, awb_no, drs_no, image_name, image_code, image_type, card_type, is_classification_required);
         }
     }
@@ -714,12 +718,8 @@ public class RestApiHelper implements IRestApiHelper {
     }
 
     @Override
-    public Single<CholaResponse> doCholaURLAPI(String authToken, String ecomregion, CholaRequest cholaRequest, boolean isTraining) {
-        if (isTraining) {
-            return retrofitService.doCholaURLAPI(SathiApplication.hashMapAppUrl.get(GlobalConstant.DynamicAppUrl.unify_apps), authToken, ecomregion, cholaRequest);
-        } else {
-            return retrofitService.doCholaURLAPI(SathiApplication.hashMapAppUrl.get(GlobalConstant.DynamicAppUrl.modular_shipment), authToken, ecomregion, cholaRequest);
-        }
+    public Single<CholaResponse> doCholaURLAPI(String authToken, String ecomregion, CholaRequest cholaRequest) {
+        return retrofitService.doCholaURLAPI(SathiApplication.hashMapAppUrl.get(GlobalConstant.DynamicAppUrl.unify_apps), authToken, ecomregion, cholaRequest);
     }
 
     @Override
@@ -808,5 +808,37 @@ public class RestApiHelper implements IRestApiHelper {
     public Single<CholaResponse> doCampaignAPI(String authToken, String ecomregion, CholaRequest cholaRequest) {
         return retrofitService.doCholaURLAPI(SathiApplication.hashMapAppUrl.get(GlobalConstant.DynamicAppUrl.unify_apps_campaign), authToken, ecomregion, cholaRequest);
 
+    }
+
+    @Override
+    public LiveData<DistanceApiResponse> distanceCalculationApi(String location, String annotations) {
+        MutableLiveData<DistanceApiResponse> distanceCalculationApiResponseMutableLiveData = new MutableLiveData<>();
+        retrofitService.distanceCalculationApi(SathiApplication.hashMapAppUrl.get(GlobalConstant.DynamicAppUrl.OSRM_TRACKING)+location,annotations).enqueue(new Callback<DistanceApiResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<DistanceApiResponse> call, @NonNull Response<DistanceApiResponse> response) {
+                Log.d( "onResponse: ",response.body().toString());
+                if (response.code() == 200) {
+                    Log.d( "onResponseSuccess: ",response.body().toString());
+                    distanceCalculationApiResponseMutableLiveData.setValue(response.body());
+                } else {
+                    DistanceApiResponse distanceCalculationApiResponse = new DistanceApiResponse();
+                    Log.d( "onResponseError1: ",response.body().toString());
+                    distanceCalculationApiResponseMutableLiveData.setValue(distanceCalculationApiResponse);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DistanceApiResponse> call, Throwable t) {
+                Log.d( "onResponseError: ",t.getLocalizedMessage().toString());
+                DistanceApiResponse failureObject = new DistanceApiResponse();
+                distanceCalculationApiResponseMutableLiveData.setValue(failureObject);
+            }
+        });
+        return distanceCalculationApiResponseMutableLiveData;
+    }
+
+    @Override
+    public Single<DistanceApiResponse> distanceCalculationApis(String location, String annotations) {
+        return retrofitService.distanceCalculationApis(SathiApplication.hashMapAppUrl.get(GlobalConstant.DynamicAppUrl.OSRM_TRACKING)+location,annotations);
     }
 }

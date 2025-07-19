@@ -274,6 +274,14 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </com.google.android.material.card.MaterialCardView>
 
+                <include
+                    android:id="@+id/pickup_remark"
+                    layout="@layout/pickup_remarks_include"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10DP"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@id/imageCaptureCard" />
 
                 <include
                     android:id="@+id/calender"
@@ -283,16 +291,6 @@
                     android:layout_marginTop="@dimen/_10DP"
                     android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@id/imageCaptureCard" />
-
-                <include
-                    android:id="@+id/pickup_remark"
-                    layout="@layout/pickup_remarks_include"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10DP"
-                    android:visibility="gone"
-                    app:layout_constraintTop_toBottomOf="@id/calender" />
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -316,7 +314,7 @@
                 android:background="@drawable/bg_curve_corner"
                 android:backgroundTint="@color/colorAccent"
                 android:fontFamily="@font/muli_bold"
-                android:text="@string/submitButton"
+                android:text="@string/submittxt"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_16SP"
                 app:layout_constraintBottom_toBottomOf="parent"

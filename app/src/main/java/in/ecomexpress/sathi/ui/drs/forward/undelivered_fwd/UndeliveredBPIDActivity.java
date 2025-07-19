@@ -3,6 +3,7 @@ package in.ecomexpress.sathi.ui.drs.forward.undelivered_fwd;
 import static in.ecomexpress.sathi.utils.CommonUtils.logScreenNameInGoogleAnalytics;
 import static in.ecomexpress.sathi.utils.Constants.ConsigneeDirectAlternateMobileNo;
 import static in.ecomexpress.sathi.utils.Constants.forward_call_count;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -27,12 +28,15 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
+
 import com.budiyev.android.codescanner.CodeScanner;
 import com.nlscan.android.scan.ScanManager;
 import com.nlscan.android.scan.ScanSettings;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -40,8 +44,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
+
 import dagger.hilt.android.AndroidEntryPoint;
+import in.ecomexpress.barcodelistner.BarcodeHandler;
+import in.ecomexpress.barcodelistner.BarcodeResult;
 import in.ecomexpress.sathi.BR;
 import in.ecomexpress.sathi.R;
 import in.ecomexpress.sathi.databinding.ActivityUndeliveredBpidactivityBinding;
@@ -73,25 +81,31 @@ import in.ecomexpress.sathi.utils.TimeUtils;
 import io.reactivex.disposables.CompositeDisposable;
 
 @AndroidEntryPoint
-public class UndeliveredBPIDActivity extends BaseActivity<ActivityUndeliveredBpidactivityBinding, UndeliveredViewModel> implements IUndeliveredNavigator, MyDialogCloseListener {
+public class UndeliveredBPIDActivity extends BaseActivity<ActivityUndeliveredBpidactivityBinding, UndeliveredViewModel> implements IUndeliveredNavigator, BarcodeResult, MyDialogCloseListener {
 
     private final String TAG = UndeliveredBPIDActivity.class.getSimpleName();
     @Inject
     UndeliveredViewModel undeliveredViewModel;
     ActivityUndeliveredBpidactivityBinding mActivityUndeliveredBinding;
+
+
     ImageHandler imageHandler;
     ForwardCommit forwardCommit;
+
     String shipmentType;
     String stPickedSpinnerValue = null;
     Boolean isImageCaptured = false;
     Boolean scannedStatus = false;
+
     public static int imageCaptureCount = 0;
     AwbPopupDialog awbPopupDialog;
     MyDialogCloseListener myDialogCloseListener;
+    BarcodeHandler barcodeHandler;
     String getDrsApiKey = "", getDrsPstnKey = "", getCbConfigCallType = "", masterPstnFormat = "", getDrsPin = "", composite_key = "";
     Dialog dialog;
     private ForwardReasonCodeMaster forwardReasonCodeMaster;
     CallbridgeConfiguration callbridgeConfiguration = null;
+
     String groupName = Constants.SELECT;
     int isCall;
     boolean dateFlag = false, call_flag;
@@ -113,6 +127,7 @@ public class UndeliveredBPIDActivity extends BaseActivity<ActivityUndeliveredBpi
     boolean check_call_mandatory_flag = false;
     boolean uD_OTP = false;
     ReshceduleDetailsResponse reshceduleDetailsResponse;
+    private ScanManager mScanMgr;
     private CodeScanner mCodeScanner;
     boolean call_allowed;
     String consignee_mobile, consignee_alternate_mobile = "";
@@ -130,14 +145,19 @@ public class UndeliveredBPIDActivity extends BaseActivity<ActivityUndeliveredBpi
         undeliveredViewModel.setNavigator(this);
         logScreenNameInGoogleAnalytics(TAG, this);
         mActivityUndeliveredBinding = getViewDataBinding();
+        barcodeHandler = new BarcodeHandler(this, "ScannerLM", this);
+        barcodeHandler.enableScanner();
         myDialogCloseListener = this;
         undeliveredViewModel.getDataManager().setLoginPermission(false);
         try {
             mActivityUndeliveredBinding.scrollView.setFillViewport(true);
             undeliveredViewModel.getGlobalConfigurationMaster();
             undeliveredViewModel.getcallConfig();
+
             forwardCommit = getIntent().getParcelableExtra("data");
+
             FWDActivitiesData fwdActivitiesData = getIntent().getParcelableExtra("fwdActivitiesData");
+
             if (fwdActivitiesData != null) {
                 try {
                     awb = String.valueOf(fwdActivitiesData.getAwbNo());
@@ -209,7 +229,7 @@ public class UndeliveredBPIDActivity extends BaseActivity<ActivityUndeliveredBpi
                                 if (NetworkUtils.isNetworkConnected(UndeliveredBPIDActivity.this)) {
                                     undeliveredViewModel.uploadImageServer(forwardCommit.getAwb() + "_" + forwardCommit.getDrs_id() + "_UndeliveredImage.png", imageUri, "UndeliveredImage", Long.parseLong(forwardCommit.getAwb()), Integer.parseInt(forwardCommit.getDrs_id()), "", bitmap, composite_key);
                                 } else {
-                                    showError(getString(R.string.check_internet));
+                                    undeliveredViewModel.uploadAWSImage(imageUri, "UndeliveredImage", forwardCommit.getAwb() + "_" + forwardCommit.getDrs_id() + "_UndeliveredImage.png", false);
                                 }
                             }
                         } catch (Exception e) {
@@ -630,12 +650,17 @@ public class UndeliveredBPIDActivity extends BaseActivity<ActivityUndeliveredBpi
             if (!scannedStatus) {
                 mCodeScanner.startPreview();
             }
+            barcodeHandler = new BarcodeHandler(this, "ScannerLM", this);
+            barcodeHandler.enableScanner();
             undeliveredViewModel.getIsAwbScan();
             if (SignatureViewModel.device.equals(Constants.NEWLAND)) {
-                ScanManager mScanMgr = ScanManager.getInstance();
+                mScanMgr = ScanManager.getInstance();
                 mScanMgr.startScan();
                 mScanMgr.enableBeep();
                 mScanMgr.setOutpuMode(ScanSettings.Global.VALUE_OUT_PUT_MODE_BROADCAST);
+            } else {
+                barcodeHandler = new BarcodeHandler(this, "ScannerLM", this);
+                barcodeHandler.enableScanner();
             }
         } else {
             mActivityUndeliveredBinding.scannerFrame.setVisibility(View.GONE);
@@ -916,15 +941,12 @@ public class UndeliveredBPIDActivity extends BaseActivity<ActivityUndeliveredBpi
 
     @Override
     public void onCaptureImage() {
-        if (!isNetworkConnected()) {
-            showError(getString(R.string.check_internet));
-            return;
-        }
         AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.Base_ThemeOverlay_AppCompat_Dialog_Alert);
         String AlertText1 = "Attention : ";
         builder.setMessage(AlertText1 + getString(R.string.alert)).setCancelable(false).setPositiveButton("OK", (dialog, id) -> imageHandler.captureImage(forwardCommit.getAwb() + "_" + forwardCommit.getDrs_id() + "_UndeliveredImage.png", mActivityUndeliveredBinding.image, "Undelivered.png"));
         AlertDialog alert = builder.create();
         alert.show();
+
     }
 
     @Override
@@ -1480,11 +1502,6 @@ public class UndeliveredBPIDActivity extends BaseActivity<ActivityUndeliveredBpi
         mActivityUndeliveredBinding.flagIsRescheduled.setVisibility(View.GONE);
     }
 
-    @Override
-    public void onCallBridgeCheckStatus() {
-
-    }
-
 
     private void undeliver(boolean failFlag) {
         ForwardReasonCodeMaster forwardReasonCodeMaster = new ForwardReasonCodeMaster();
@@ -1505,21 +1522,15 @@ public class UndeliveredBPIDActivity extends BaseActivity<ActivityUndeliveredBpi
             int mDay = calendar.get(Calendar.DAY_OF_MONTH);
             int mMonth = calendar.get(Calendar.MONTH) + 1;
             if (undeliveredViewModel.loginDate().equalsIgnoreCase(String.valueOf(mDay)) && undeliveredViewModel.getDataManager().getLoginMonth() == mMonth) {
-                if (!failFlag) {
+                if (failFlag == false) {
+
                     String dialog_message = "BP ID is not matching so, Shipment will be mark as Undelivered";
                     String positiveButtonText = getString(R.string.ok);
                     if (Constants.CONSIGNEE_PROFILE && meterRange > undeliveredViewModel.getDataManager().getUndeliverConsigneeRANGE() && undeliveredViewModel.getDataManager().getConsigneeProfileValue().equalsIgnoreCase("W")) {
-                        dialog_message = "⚠️ You are not attempting the shipment at the consignee's location.\n\n"
-                                + "📍 **Your Current Location:** " + undeliveredViewModel.getDataManager().getCurrentLatitude()
-                                + ", " + undeliveredViewModel.getDataManager().getCurrentLongitude() + "\n"
-                                + "**Distance from Consignee:** " + meterRange + " meters away.\n\n"
-                                + "❓ Are you sure you want to commit?";
+                        dialog_message = "You are not attempting the shipment at Consignee’s location. Your current location = " + undeliveredViewModel.getDataManager().getCurrentLatitude() + ", " + undeliveredViewModel.getDataManager().getCurrentLongitude() + " You are " + meterRange + " meter away from consignee location. \nAre you sure you want to commit?";
                         positiveButtonText = getString(R.string.yes);
                     } else if (Constants.CONSIGNEE_PROFILE && meterRange > undeliveredViewModel.getDataManager().getUndeliverConsigneeRANGE() && undeliveredViewModel.getDataManager().getConsigneeProfileValue().equalsIgnoreCase("R")) {
-                        dialog_message = "🚫 You are not allowed to commit this shipment as you are not at the consignee's location.\n\n"
-                                + "📍 **Your Current Location:** " + undeliveredViewModel.getDataManager().getCurrentLatitude()
-                                + ", " + undeliveredViewModel.getDataManager().getCurrentLongitude() + "\n"
-                                + "**Distance from Consignee:** " + meterRange + " meters away.";
+                        dialog_message = "You are not allowed to commit this shipment as you are not attempting at consignee location. your current location = " + undeliveredViewModel.getDataManager().getCurrentLatitude() + ", " + undeliveredViewModel.getDataManager().getCurrentLongitude() + " You are " + meterRange + " meter away from consignee location";
                         positiveButtonText = getString(R.string.ok);
                     } else if (Constants.CONSIGNEE_PROFILE && meterRange > undeliveredViewModel.getDataManager().getUndeliverConsigneeRANGE()) {
                         if (NetworkUtils.isNetworkConnected(UndeliveredBPIDActivity.this)) {
@@ -1626,6 +1637,10 @@ public class UndeliveredBPIDActivity extends BaseActivity<ActivityUndeliveredBpi
     }
 
     @Override
+    public void onResult(String s) {
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         try {
@@ -1634,9 +1649,10 @@ public class UndeliveredBPIDActivity extends BaseActivity<ActivityUndeliveredBpi
         } catch (Exception e) {
             Logger.e(UndeliveredBPIDActivity.class.getName(), e.getMessage());
         }
+
     }
 
-    /**
+
     /**
      * @param isAwbMatch-- this true/false value is used for checking the awb match or not
      */
@@ -1654,6 +1670,7 @@ public class UndeliveredBPIDActivity extends BaseActivity<ActivityUndeliveredBpi
     public void setStatusOfAwb(boolean isAwbMatch, String manualBP) {
 
     }
+
 
     public void showDirectCallDialog() {
         Dialog dialog = new Dialog(this, R.style.RoundedCornersDialog);
@@ -1687,4 +1704,6 @@ public class UndeliveredBPIDActivity extends BaseActivity<ActivityUndeliveredBpi
         dialog.show();
         dialog.getWindow().setAttributes(lp);
     }
+
+
 }

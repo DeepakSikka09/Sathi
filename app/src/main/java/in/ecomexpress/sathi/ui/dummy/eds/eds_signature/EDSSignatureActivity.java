@@ -12,16 +12,20 @@ import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
-import com.google.gson.Gson;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Calendar;
 import java.util.List;
+
 import javax.inject.Inject;
+import javax.inject.Named;
+
 import dagger.hilt.android.AndroidEntryPoint;
 import in.ecomexpress.sathi.BR;
 import in.ecomexpress.sathi.R;
@@ -41,9 +45,12 @@ import in.ecomexpress.sathi.utils.ImageHandler;
 import in.ecomexpress.sathi.utils.NetworkUtils;
 import in.ecomexpress.sathi.utils.PreferenceUtils;
 
+/**
+ * Created by shivangi sharma on 28-08-2018.
+ */
+
 @AndroidEntryPoint
 public class EDSSignatureActivity extends BaseActivity<ActivityEdsSignatureBinding, EDSSignatureViewModel> implements IEDSSignatureNavigator {
-
     String TAG = EDSSignatureActivity.class.getCanonicalName();
     @Inject
     EDSSignatureViewModel signatureViewModel;
@@ -64,7 +71,6 @@ public class EDSSignatureActivity extends BaseActivity<ActivityEdsSignatureBindi
     private boolean consigneeProfiling = false;
     ImageView mImageView;
     Bitmap mBitmap;
-    Gson gson = new Gson();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState){
@@ -81,10 +87,13 @@ public class EDSSignatureActivity extends BaseActivity<ActivityEdsSignatureBindi
             window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.eds));
         }
         Constants.LOCATION_ACCURACY = signatureViewModel.getDataManager().getUndeliverConsigneeRANGE();
+        //get awb number
+        //        activityRvpSignatureBinding.signature.setContext(EDSSignatureActivity.this);
         awb = String.valueOf(getIntent().getExtras().getLong("awb", 0));
         composite_key = String.valueOf(getIntent().getExtras().getString(Constants.COMPOSITE_KEY, ""));
-        edsResponseCommit = gson.fromJson(getIntent().getStringExtra("edsResponse"), EDSResponse.class);
+        edsResponseCommit = getIntent().getParcelableExtra("edsResponse");
         edsActivityResponseWizards = getIntent().getParcelableArrayListExtra(getString(R.string.data));
+        //edsActivityResponseWizards = getIntent().getParcelableExtra(getString(R.string.data));
         signatureViewModel.setedsCommit(edsResponseCommit);
         imageHandler = new ImageHandler(EDSSignatureActivity.this) {
             @Override
@@ -268,7 +277,7 @@ public class EDSSignatureActivity extends BaseActivity<ActivityEdsSignatureBindi
         Constants.SCANNED_DATA = "Not Found";
         Intent intent = EDSSuccessFailActivity.getStartIntent(this);
         intent.putExtra(Constants.INTENT_KEY, edsResponseCommit.getAwbNo());
-        intent.putExtra("edsResponseCommit", gson.toJson(edsResponseCommit));
+        intent.putExtra("edsResponseCommit", edsResponseCommit);
         intent.putExtra(Constants.DECIDENEXT, Constants.SUCCESS);
         startActivity(intent);
     }

@@ -483,9 +483,6 @@ public class LoginViewModel extends BaseViewModel<ILoginNavigator> {
                                             if(globalConfigurationMaster.getConfigGroup().equalsIgnoreCase("ESP_EARNING_VISIBILITY")){
                                                 getDataManager().setESP_EARNING_VISIBILITY(Boolean.parseBoolean(globalConfigurationMaster.getConfigValue()));
                                             }
-                                            if(globalConfigurationMaster.getConfigGroup().equalsIgnoreCase("ODH_VISIBILITY")){
-                                                getDataManager().setODH_VISIBILITY(Boolean.parseBoolean(globalConfigurationMaster.getConfigValue()));
-                                            }
                                             else if(globalConfigurationMaster.getConfigGroup().equalsIgnoreCase("address_quality_score")){
                                             } else if (globalConfigurationMaster.getConfigGroup().equalsIgnoreCase("address_quality_score")) {
                                                 getDataManager().setAddressQualityScore(globalConfigurationMaster.getConfigValue());
@@ -502,6 +499,10 @@ public class LoginViewModel extends BaseViewModel<ILoginNavigator> {
                                                 getDataManager().setIsSignatureImageMandatory(globalConfigurationMaster.getConfigValue());
                                             } else if (globalConfigurationMaster.getConfigGroup().equalsIgnoreCase("IS_EDISPUTE_IMAGE_MANDATORY")) {
                                                 getDataManager().setEDISPUTE(globalConfigurationMaster.getConfigValue());
+                                            }
+                                            // Distance Api Enable:-
+                                            if (globalConfigurationMaster.getConfigGroup().equalsIgnoreCase("IS_DISTANCE_API_ENABLE")) {
+                                                getDataManager().setDistanceAPIEnabled(Boolean.valueOf(globalConfigurationMaster.getConfigValue()));
                                             }
                                         }
                                         for (GlobalConfigurationMaster globalConfigurationMaster : globalConfigurationMasterList) {

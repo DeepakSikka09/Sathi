@@ -466,9 +466,7 @@ public class SignatureViewModel extends BaseViewModel<ISignatureNavigator> {
     @SuppressLint("CheckResult")
     public void uploadAWSImage(String imageUri, String imageCode, String imageKey, int imageId, int imageStatus, Boolean isCommit, String compositeKey, boolean iscommit) {
         try {
-            if (imageUri != null) {
-                saveImageDB(imageUri, imageCode, imageKey, imageId, imageStatus);
-            }
+            if (imageUri != null) saveImageDB(imageUri, imageCode, imageKey, imageId, imageStatus);
             if (isCommit) {
                 forwardCommit.setReceived_by_name(receiverName.get());
                 forwardCommit.setStatus(Constants.DELIVERED);
@@ -476,7 +474,8 @@ public class SignatureViewModel extends BaseViewModel<ISignatureNavigator> {
                 forwardCommit.setReceived_by_relation(receiver.get());
                 forwardCommit.setReschedule_date("");
                 Gson gson = new Gson();
-                Type type = new TypeToken<List<ForwardCommit.Amz_Scan>>() {}.getType();
+                Type type = new TypeToken<List<ForwardCommit.Amz_Scan>>() {
+                }.getType();
                 ArrayList<ForwardCommit.Amz_Scan> amz_scans = gson.fromJson(getDataManager().getAmazonList(), type);
                 forwardCommit.setAmz_scan(amz_scans);
                 if (getDataManager().getDlightSuccessEncrptedOTPType() != null && !getDataManager().getDlightSuccessEncrptedOTPType().equalsIgnoreCase("")) {
@@ -502,9 +501,44 @@ public class SignatureViewModel extends BaseViewModel<ISignatureNavigator> {
                 forwardCommit.setDrs_commit_date_time(String.valueOf(Calendar.getInstance().getTimeInMillis()));
                 forwardCommit.setTrip_id(getDataManager().getTripId());
                 forwardCommit.setFe_emp_code(getDataManager().getCode());
+
                 parentAWBno = forwardCommit.getAwb();
                 isMPSShipment(forwardCommit, compositeKey, iscommit);
+                Log.d("TAG", "uploadAWSImage: " + forwardCommit);
+
             }
+        } catch (Exception e) {
+            Logger.e(SignatureViewModel.class.getName(), e.getMessage());
+            getNavigator().showError(e.getMessage());
+        }
+    }
+
+    @SuppressLint("CheckResult")
+    public void CommitPacket(String imageUri, String imageType, String imageName) {
+        try {
+            forwardCommit.setReceived_by_name(receiverName.get());
+            forwardCommit.setStatus(Constants.DELIVERED);
+            forwardCommit.setReceived_by_relation(receiver.get());
+            forwardCommit.setReschedule_date("");
+            forwardCommit.setAttempt_reason_code("999");
+            try {
+                if (!Constants.CURRENT_LATITUDE.equalsIgnoreCase("0.0") && !Constants.CURRENT_LONGITUDE.equalsIgnoreCase("0.0")) {
+                    forwardCommit.setLocation_lat(Constants.CURRENT_LATITUDE);
+                    forwardCommit.setLocation_long(Constants.CURRENT_LONGITUDE);
+                } else if (!String.valueOf(in.ecomexpress.geolocations.Constants.latitude).equalsIgnoreCase("0.0") && !String.valueOf(in.ecomexpress.geolocations.Constants.longitude).equalsIgnoreCase("0.0")) {
+                    forwardCommit.setLocation_lat(String.valueOf(in.ecomexpress.geolocations.Constants.latitude));
+                    forwardCommit.setLocation_long(String.valueOf(in.ecomexpress.geolocations.Constants.longitude));
+                } else {
+                    forwardCommit.setLocation_lat(String.valueOf(getDataManager().getCurrentLatitude()));
+                    forwardCommit.setLocation_long(String.valueOf(getDataManager().getCurrentLongitude()));
+                }
+            } catch (Exception e) {
+                Logger.e(SignatureViewModel.class.getName(), e.getMessage());
+            }
+            forwardCommit.setAttempt_type("FWD");
+            forwardCommit.setDrs_commit_date_time(String.valueOf(Calendar.getInstance().getTimeInMillis()));
+            forwardCommit.setTrip_id(getDataManager().getTripId());
+            forwardCommit.setFe_emp_code(getDataManager().getCode());
         } catch (Exception e) {
             Logger.e(SignatureViewModel.class.getName(), e.getMessage());
             getNavigator().showError(e.getMessage());
@@ -522,20 +556,25 @@ public class SignatureViewModel extends BaseViewModel<ISignatureNavigator> {
             imageModel.setImageId(imageId);
             imageModel.setImageCurrentSyncStatus(sync_staus);
             imageModel.setImageFutureSyncTime(System.currentTimeMillis());
-            imageModel.setStatus(sync_staus);
+            imageModel.setStatus(Constants.SHIPMENT_ASSIGNED_STATUS);
             imageModel.setImageType(GlobalConstant.ImageTypeConstants.OTHERS);
             imageModel.setDate(System.currentTimeMillis());
             imageModel.setShipmentType(GlobalConstant.ShipmentTypeConstants.FWD);
 
             getCompositeDisposable().add(getDataManager().saveImage(imageModel).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui()).subscribe(aBoolean -> {
-                if (getNavigator() != null) {
-                    getNavigator().saveCommit();
-                } else {
-                    getNavigator().showError("Please Try Again");
-                }
-            },
-            throwable -> getNavigator().showError("Please Try Again")));
+                        if (getNavigator() != null) {
+                            getNavigator().saveCommit();
+                        } else {
+                            Log.e("SignatureViewModel", "signatureNavigator is null");
+                            getNavigator().showError("Please Try Again");
+                        }
+                    },
+                    throwable -> {
+                        Log.e("SignatureViewModel", "Error in RxJava stream", throwable);
+                        getNavigator().showError("Please Try Again");
+                    }));
         } catch (Exception e) {
+            Logger.e(SignatureViewModel.class.getName(), e.getMessage());
             getNavigator().showError(e.getMessage());
         }
     }
@@ -607,6 +646,7 @@ public class SignatureViewModel extends BaseViewModel<ISignatureNavigator> {
     public void uploadImageServer(String imageName, String imageUri, String imageCode, long awbNo, int drsno, String activity_code, Bitmap bitmap, String compositeKey, boolean isSignature) {
         setIsLoading(true);
         try {
+            final long timeStamp = System.currentTimeMillis();
             File image_file = new File(imageUri);
             byte[] bytes = CryptoUtils.decryptFile1(image_file.toString(), Constants.ENC_DEC_KEY);
             RequestBody mFile = RequestBody.create(MediaType.parse("application/octet-stream"), bytes);
@@ -626,10 +666,13 @@ public class SignatureViewModel extends BaseViewModel<ISignatureNavigator> {
             Map<String, String> headers = new HashMap<>();
             headers.put("token", getDataManager().getAuthToken());
             headers.put("Accept", "application/json");
+            Log.e("forward map", map + "");
+
             try {
                 getCompositeDisposable().add(getDataManager().doImageUploadApiCall(getDataManager().getAuthToken(), getDataManager().getEcomRegion(), GlobalConstant.ImageTypeConstants.OTHERS, headers, map, fileToUpload).doOnSuccess(imageQualityResponse -> Log.d(ContentValues.TAG, imageQualityResponse.toString())).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui()).subscribe(imageUploadResponse -> {
                     setIsLoading(false);
                     try {
+
                         if (imageUploadResponse.getStatus().equalsIgnoreCase("Success")) {
                             if (isSignature) {
                                 saveImageDB(imageUri, imageCode, imageName, imageUploadResponse.getImageId(), GlobalConstant.ImageSyncStatus.IMAGE_SYNC_STATUS_COMPLETE);
@@ -641,27 +684,34 @@ public class SignatureViewModel extends BaseViewModel<ISignatureNavigator> {
                         } else {
                             if (isSignature) {
                                 getNavigator().setCommitOffline(imageUri);
+
                             } else {
-                                getNavigator().showError("Image upload Api response failed.");
+                                saveImageDB(imageUri, imageCode, imageName, -1, GlobalConstant.ImageSyncStatus.IMAGE_SYNC_STATUS_NO);
+                                getNavigator().setBitmap();
                             }
                         }
                     } catch (Exception e) {
                         if (isSignature) {
                             getNavigator().setCommitOffline(imageUri);
                         } else {
-                            getNavigator().showError("Exception while uploading image : " + e.getLocalizedMessage());
+                            saveImageDB(imageUri, imageCode, imageName, -1, GlobalConstant.ImageSyncStatus.IMAGE_SYNC_STATUS_NO);
+                            getNavigator().setBitmap();
                         }
                         Logger.e(SignatureViewModel.class.getName(), e.getMessage());
                         setIsLoading(false);
                     }
                 }, throwable -> {
+
+
                     setIsLoading(false);
                     try {
                         if (isSignature) {
                             getNavigator().setCommitOffline(imageUri);
                         } else {
-                            getNavigator().showError("Exception while uploading image : " + throwable.getLocalizedMessage());
+                            saveImageDB(imageUri, imageCode, imageName, -1, GlobalConstant.ImageSyncStatus.IMAGE_SYNC_STATUS_NO);
+                            getNavigator().setBitmap();
                         }
+
                     } catch (Exception e) {
                         Logger.e(SignatureViewModel.class.getName(), e.getMessage());
                     }
@@ -670,18 +720,29 @@ public class SignatureViewModel extends BaseViewModel<ISignatureNavigator> {
                 setIsLoading(false);
                 if (isSignature) {
                     getNavigator().setCommitOffline(imageUri);
+
                 } else {
-                    getNavigator().showError("Exception while uploading image : " + e.getLocalizedMessage());
+                    saveImageDB(imageUri, imageCode, imageName, -1, GlobalConstant.ImageSyncStatus.IMAGE_SYNC_STATUS_NO);
+                    getNavigator().setBitmap();
+                }
+                writeErrors(timeStamp, e);
+                Logger.e(SignatureViewModel.class.getName(), e.getMessage());
+
+                if (e instanceof Throwable) {
+                    getNavigator().onHandleError(new RestApiErrorHandler(e.fillInStackTrace()).getErrorDetails().getEResponse().getDescription());
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception ex) {
             if (isSignature) {
                 getNavigator().setCommitOffline(imageUri);
+
             } else {
-                getNavigator().showError("Exception while uploading image : " + e.getLocalizedMessage());
+                saveImageDB(imageUri, imageCode, imageName, -1, GlobalConstant.ImageSyncStatus.IMAGE_SYNC_STATUS_NO);
+                getNavigator().setBitmap();
             }
+            ex.printStackTrace();
             setIsLoading(false);
-            Log.e("Image Sync exception", e.toString());
+            Log.e("Image Sync exception", ex.toString());
         }
     }
 

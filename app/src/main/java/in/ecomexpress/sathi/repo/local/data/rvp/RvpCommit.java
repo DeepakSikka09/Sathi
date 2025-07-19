@@ -48,8 +48,6 @@ public class RvpCommit implements Parcelable {
     @JsonProperty("techpark")
     private String techpark;
 
-    @JsonProperty("rvp_mps")
-    private boolean rvp_mps;
 
     @JsonProperty("start_qc_lat")
     private String start_qc_lat;
@@ -77,9 +75,6 @@ public class RvpCommit implements Parcelable {
 
     @JsonProperty("drs_commit_date_time")
     private String drsCommitDateTime;
-
-    @JsonProperty("total_item_number")
-    private int total_item_number;
 
     @JsonProperty("packaging_barcode")
     private String packageBarcode;
@@ -112,13 +107,6 @@ public class RvpCommit implements Parcelable {
     @JsonProperty("flag_of_warning")
     private String flag_of_warning;
 
-    public List<QcItem> getQcItem() {
-        return qcItem;
-    }
-
-    public void setQcItem(List<QcItem> qcItem) {
-        this.qcItem = qcItem;
-    }
     public void setFlag_of_warning(String flag_of_warning) {
         this.flag_of_warning = flag_of_warning;
     }
@@ -143,9 +131,6 @@ public class RvpCommit implements Parcelable {
 
     @JsonProperty("qc_wizard")
     private List<QcWizard> qcWizard = new ArrayList<>();
-
-    @JsonProperty("qc_item")
-    private List<QcItem> qcItem = new ArrayList<>();
 
     @JsonProperty("ud_otp_verify_status")
     private String ud_otp_verify_status;
@@ -440,112 +425,13 @@ public class RvpCommit implements Parcelable {
         this.type = type;
     }
 
-    public boolean isRvp_mps() {
-        return rvp_mps;
-    }
-
-    public void setRvp_mps(boolean rvp_mps) {
-        this.rvp_mps = rvp_mps;
-    }
-
-    public int getTotal_item_number() {
-        return total_item_number;
-    }
-
-    public void setTotal_item_number(int total_item_number) {
-        this.total_item_number = total_item_number;
-    }
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonPropertyOrder({"item_number", "qc_wizard", "image_response"})
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static class QcItem implements Parcelable {
-        @JsonProperty("item_number")
-        private String itemNumber;
-        @JsonProperty("status")
-        private String status = "NA";
-
-        public String getStatus() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
-        }
-
-        @JsonProperty("qc_wizard")
-        private List<QcWizard> qcWizard;
-
-        public String getItemNumber() {
-            return itemNumber;
-        }
-
-        public void setItemNumber(String itemNumber) {
-            this.itemNumber = itemNumber;
-        }
-
-        public List<ImageData> getImageData() {
-            return imageData;
-        }
-
-        public void setImageData(List<ImageData> imageData) {
-            this.imageData = imageData;
-        }
-
-        @JsonProperty("image_response")
-        private List<ImageData> imageData;
-
-        public QcItem() {
-
-        }
-
-        public QcItem(Parcel in) {
-            itemNumber = in.readString();
-            status = in.readString();
-            qcWizard = in.createTypedArrayList(QcWizard.CREATOR);
-            imageData = in.createTypedArrayList(ImageData.CREATOR);
-        }
-
-        public static final Creator<QcItem> CREATOR = new Creator<QcItem>() {
-            @Override
-            public QcItem createFromParcel(Parcel in) {
-                return new QcItem(in);
-            }
-
-            @Override
-            public QcItem[] newArray(int size) {
-                return new QcItem[size];
-            }
-        };
-
-        public List<QcWizard> getQcWizard() {
-            return qcWizard;
-        }
-
-        public void setQcWizard(List<QcWizard> qcWizard) {
-            this.qcWizard = qcWizard;
-        }
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        @Override
-        public void writeToParcel(@NonNull Parcel parcel, int i) {
-            parcel.writeString(itemNumber);
-            parcel.writeString(status);
-            parcel.writeTypedList(qcWizard);
-            parcel.writeTypedList(imageData);
-        }
-    }
-
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonPropertyOrder({
             "reschedule_date",
             "reschedule_slot",
             "reschedule_fe_comments"
     })
+
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class RescheduleInfo implements Parcelable {
 
@@ -601,7 +487,7 @@ public class RvpCommit implements Parcelable {
             this.rescheduleFeComments = in.readString();
         }
 
-        public static final Creator<RescheduleInfo> CREATOR = new Creator<>() {
+        public static final Creator<RescheduleInfo> CREATOR = new Creator<RescheduleInfo>() {
             @Override
             public RescheduleInfo createFromParcel(Parcel source) {
                 return new RescheduleInfo(source);
@@ -696,16 +582,6 @@ public class RvpCommit implements Parcelable {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class QcWizard implements Parcelable {
 
-        private String item_number;
-
-        public String getItem_number() {
-            return item_number;
-        }
-
-        public void setItem_number(String item_number) {
-            this.item_number = item_number;
-        }
-
         @JsonProperty("rvp_qc_code")
         private String qccheckcode;
 
@@ -723,15 +599,6 @@ public class RvpCommit implements Parcelable {
 
         @JsonProperty("qc_image_upload")
         private boolean qcImageFlag = false;
-        private String imagePathWithWaterMark = null;
-
-        public String getImagePathWithWaterMark() {
-            return imagePathWithWaterMark;
-        }
-
-        public void setImagePathWithWaterMark(String imagePathWithWaterMark) {
-            this.imagePathWithWaterMark = imagePathWithWaterMark;
-        }
 
         public boolean isQcImageFlag() {
             return qcImageFlag;
@@ -794,8 +661,6 @@ public class RvpCommit implements Parcelable {
                     ", qcValue='" + qcValue + '\'' +
                     ", qcName='" + qcName + '\'' +
                     ", qcImageFlag='" + qcImageFlag + '\'' +
-                    ", imageBitmap='" + imagePathWithWaterMark + '\'' +
-                    ", item_number='" + item_number + '\'' +
                     '}';
         }
 
@@ -812,8 +677,6 @@ public class RvpCommit implements Parcelable {
             dest.writeString(this.qcValue);
             dest.writeString(this.qcName);
             dest.writeValue(this.qcImageFlag);
-            dest.writeString(this.imagePathWithWaterMark);
-            dest.writeString(this.item_number);
         }
 
         protected QcWizard(Parcel in) {
@@ -823,8 +686,6 @@ public class RvpCommit implements Parcelable {
             this.qcValue = in.readString();
             this.qcName = in.readString();
             this.qcImageFlag = (Boolean) in.readValue(Boolean.class.getClassLoader());
-            this.imagePathWithWaterMark = in.readString();
-            this.item_number = in.readString();
         }
 
         public static final Creator<QcWizard> CREATOR = new Creator<QcWizard>() {
@@ -860,7 +721,6 @@ public class RvpCommit implements Parcelable {
         dest.writeString(this.attemptReasonCode);
         dest.writeString(this.drsCommitDateTime);
         dest.writeString(this.packageBarcode);
-        dest.writeString(String.valueOf(this.total_item_number));
         dest.writeString(this.refPackageBarcode);
         dest.writeString(this.feComment);
         dest.writeParcelable(this.rescheduleInfo, flags);

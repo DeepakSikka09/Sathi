@@ -8,7 +8,6 @@ public interface ISignatureNavigator {
     void showHandleError(boolean status);
 
     void onCaptureImage();
-
     void onCaptureImage2();
 
     void saveSignature();

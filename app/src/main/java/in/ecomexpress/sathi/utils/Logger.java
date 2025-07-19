@@ -26,7 +26,6 @@ public class Logger {
             Log.d(TAG, message);
         }
     }
-
     public static String getHiddenDir(String filename) {
         try {
             File fileDir = new File(Environment.getExternalStorageDirectory(), "/." + Constants.EcomExpress);

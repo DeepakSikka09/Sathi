@@ -121,6 +121,7 @@ public class UndeliveredViewModel extends BaseViewModel<IUndeliveredNavigator> {
     String ud_otp_commit_status = "NONE";
     String rd_otp_commit_status = "NONE";
     private ForwardCommit forwardCommit;
+    int meter;
 
     @Inject
     public UndeliveredViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
@@ -265,66 +266,6 @@ public class UndeliveredViewModel extends BaseViewModel<IUndeliveredNavigator> {
             getNavigator().undeliverShipment(failFlag, true);
         }
     }
-    public void callBridgeCheckStatusApi(String nyka,boolean failFlag, String awb_number, String drs_id) {
-
-        if (nyka.equalsIgnoreCase("true")){
-            try {
-                //call bridge
-                request_time = System.currentTimeMillis();
-                UndeliveredViewModel.this.setIsLoading(true);
-                getCompositeDisposable().add(getDataManager().doForwardCallStatusApiCall(
-                                getDataManager().getAuthToken(),
-                                getDataManager().getEcomRegion(),
-                                call_alert_number,
-                                getDataManager().getEmp_code(),
-                                awb_number,
-                                drs_id,
-                                getDataManager().getShipperId())
-                        .observeOn(getSchedulerProvider().ui())
-                        .subscribeOn(getSchedulerProvider().io())
-                        .subscribe(forwardCallResponse -> {
-                            UndeliveredViewModel.this.setIsLoading(false);
-                            if (forwardCallResponse.getStatus().equalsIgnoreCase("true")) {
-                                getNavigator().showError(forwardCallResponse.getResponse());
-                                if (calldialog != null) {
-                                    calldialog.dismiss();
-                                }
-                                getNavigator().undeliverShipment(failFlag, true);
-                            }
-                            else {
-                                getNavigator().onCallBridgeCheckStatus();
-                            }
-
-                        }, throwable ->{
-                            UndeliveredViewModel.this.setIsLoading(false);
-                            if (throwable instanceof HttpException) {
-                                HttpException httpException = (HttpException) throwable;
-                                int statusCode = httpException.code();
-                                if (statusCode == 404) {
-                                    // Handle 404 error
-                                    getNavigator().showError("Resource not found (404)");
-                                } else {
-                                    // Handle other HTTP errors
-                                    getNavigator().showError("HTTP error code: " + statusCode);
-                                }
-                            } else {
-                                // Handle other errors (non-HTTP)
-                                getNavigator().showError(throwable.getMessage());
-                            }
-                            Logger.e(UndeliveredViewModel.class.getName(), throwable.getMessage());
-                        })
-                );
-            } catch (Exception e) {
-                getNavigator().showError(e.getMessage());
-                UndeliveredViewModel.this.setIsLoading(false);
-                Logger.e(UndeliveredViewModel.class.getName(),e.getMessage());
-            }
-        }
-
-        else{
-            getNavigator().undeliverShipment(failFlag, true);
-        }
-    }
 
     public String loginDate() {
         return getDataManager().getLoginDate();
@@ -424,8 +365,9 @@ public class UndeliveredViewModel extends BaseViewModel<IUndeliveredNavigator> {
             getCompositeDisposable().add(getDataManager().getForwardDRS(compositeKey).subscribeOn(getSchedulerProvider().io()).subscribe(drsForwardTypeResponse -> {
                 String mpsShipment = drsForwardTypeResponse.mpsShipment;
                 List<ForwardCommit> fwd = new ArrayList<>();
-                if (mpsShipment != null && !mpsShipment.isEmpty()) {
+                if (mpsShipment != null && mpsShipment.length() > 0) {
                     String awbsNos = drsForwardTypeResponse.mpsAWBs;
+                    Logger.e("forward.undelivered_fwd", "MPS shipment awbNumbers: " + awbsNos);
                     awbsNos = awbsNos.substring(1).trim();
                     awbsNos = awbsNos.substring(0, awbsNos.length() - 1);
                     String[] awbArr = awbsNos.split(",");
@@ -439,12 +381,14 @@ public class UndeliveredViewModel extends BaseViewModel<IUndeliveredNavigator> {
                             } else {
                                 fwdCommit.setFlag_of_warning("N");
                             }
+
                             if (Constants.uD_OTP_API_CHECK && ud_otp_commit_status_field.get().equalsIgnoreCase("VERIFIED")) {
                                 forwardCommit.setUd_otp(ud_otp_commit_status_field.get());
                                 forwardCommit.setRd_otp("NONE");
                             } else if (Constants.rD_OTP_API_CHECK && ud_otp_commit_status_field.get().equalsIgnoreCase("VERIFIED")) {
                                 forwardCommit.setRd_otp("VERIFIED");
                                 forwardCommit.setUd_otp("NONE");
+
                             } else {
                                 forwardCommit.setUd_otp(ud_otp_commit_status_field.get());
                                 forwardCommit.setRd_otp(rd_otp_commit_status_field.get());
@@ -453,22 +397,26 @@ public class UndeliveredViewModel extends BaseViewModel<IUndeliveredNavigator> {
                         } catch (CloneNotSupportedException e) {
                             Logger.e(UndeliveredViewModel.class.getName(),e.getMessage());
                         }
+
                     }
                     uploadForwardShipment(fwd, drsForwardTypeResponse.getAwbNo(), compositeKey);
                     updateMPSShipmentStatus(awbArr);
                 } else {
+                    Logger.e("forward.undelivered_fwd", "Not a mps shipment awbNo: " + compositeKey);
                     forwardCommit.setParent_awb(String.valueOf(drsForwardTypeResponse.getAwbNo()));
                     if (getDataManager().getConsigneeProfileValue().equalsIgnoreCase("W")) {
                         forwardCommit.setFlag_of_warning("W");
                     } else {
                         forwardCommit.setFlag_of_warning("N");
                     }
+
                     if (Constants.uD_OTP_API_CHECK && ud_otp_commit_status_field.get().equalsIgnoreCase("VERIFIED")) {
                         forwardCommit.setUd_otp(ud_otp_commit_status_field.get());
                         forwardCommit.setRd_otp("NONE");
                     } else if (Constants.rD_OTP_API_CHECK && ud_otp_commit_status_field.get().equalsIgnoreCase("VERIFIED")) {
                         forwardCommit.setRd_otp("VERIFIED");
                         forwardCommit.setUd_otp("NONE");
+
                     } else {
                         forwardCommit.setUd_otp(ud_otp_commit_status_field.get());
                         forwardCommit.setRd_otp(rd_otp_commit_status_field.get());
@@ -477,6 +425,7 @@ public class UndeliveredViewModel extends BaseViewModel<IUndeliveredNavigator> {
                     uploadForwardShipment(fwd, drsForwardTypeResponse.getAwbNo(), compositeKey);
                     updateShipmentStatus(compositeKey);
                 }
+            }, throwable -> {
             }));
         } catch (Exception e) {
             Logger.e(UndeliveredViewModel.class.getName(),e.getMessage());
@@ -506,17 +455,23 @@ public class UndeliveredViewModel extends BaseViewModel<IUndeliveredNavigator> {
                         compositeKey = forwardCommitResponse.getResponse().getDrs_no() + forwardCommitResponse.getResponse().getAwb_no();
                     } catch (Exception e) {
                         Logger.e(UndeliveredViewModel.class.getName(),e.getMessage());
+
                     }
                     getDataManager().updateForwardStatus(compositeKey, shipement_status).subscribe(aBoolean -> {
+                        Log.e("ForwardResponse", " Result:-forwardData");
                         updateSyncStatusInDRSFWDTable(forwardCommitResponse.getResponse().getDrs_no() + "" + forwardCommitResponse.getResponse().getAwb_no(), GlobalConstant.CommitStatus.CommitSynced);
                         // Setting call preference after sync:-
                         getDataManager().setCallClicked(forwardCommitResponse.getResponse().getAwb_no() + "ForwardCall", true);
-                        compositeDisposable.add(getDataManager().deleteSyncedImage(forwardCommitResponse.getResponse().getAwb_no()).subscribe(aBoolean1 -> {}));
+                        compositeDisposable.add(getDataManager().deleteSyncedImage(forwardCommitResponse.getResponse().getAwb_no()).subscribe(aBoolean1 -> {
+
+                        }));
+
                         saveCommitUpload(forwardCommits, parentAWB, composite_key);
                     }, throwable -> {
                         throwable.printStackTrace();
                         saveCommit(forwardCommits, parentAWB, composite_key);
                     });
+                } else if ((forwardCommitResponse.getResponse().getCode().equalsIgnoreCase("E107")) || (forwardCommitResponse.getResponse().getCode().equalsIgnoreCase("107"))) {
                 }
             }, throwable -> {
                 saveCommit(forwardCommits, parentAWB, composite_key);
@@ -566,8 +521,7 @@ public class UndeliveredViewModel extends BaseViewModel<IUndeliveredNavigator> {
                             getNavigator().setConsigneeDistance(0);
                             return;
                         }
-                        int meter = (int) getDistaneBetweenLocations(new LatLng(consigneeLatitude, consigneeLongitude));
-                        getNavigator().setConsigneeDistance(meter);
+                     getDistaneBetweenLocations();
                     }
                 } catch (Exception e) {
                     Logger.e(UndeliveredViewModel.class.getName(),e.getMessage());
@@ -682,7 +636,8 @@ public class UndeliveredViewModel extends BaseViewModel<IUndeliveredNavigator> {
             imageModel.setImageType(GlobalConstant.ImageTypeConstants.FWD);
             imageModel.setDate(Calendar.getInstance().getTimeInMillis());
             imageModel.setShipmentType(GlobalConstant.ShipmentTypeConstants.FWD);
-            getCompositeDisposable().add(getDataManager().saveImage(imageModel).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui()).subscribe(aBoolean -> {}));
+            getCompositeDisposable().add(getDataManager().saveImage(imageModel).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui()).subscribe(aBoolean -> {
+            }));
         } catch (Exception e) {
             Logger.e(UndeliveredViewModel.class.getName(),e.getMessage());
             getNavigator().showError(e.getMessage());
@@ -690,13 +645,15 @@ public class UndeliveredViewModel extends BaseViewModel<IUndeliveredNavigator> {
     }
 
     private void saveCommit(List<ForwardCommit> forwardCommit, long parentAWB, String compositeKey) {
+        Log.d("forward.undelivered_fwd", "saveCommit: forward" + forwardCommit.toString());
         PushApi pushApi = new PushApi();
         pushApi.setAwbNo(parentAWB);
         pushApi.setCompositeKey(compositeKey);
         pushApi.setAuthtoken(getDataManager().getAuthToken());
         try {
             ObjectMapper mapper = new ObjectMapper();
-            pushApi.setRequestData(mapper.writeValueAsString(forwardCommit));
+            List<ForwardCommit> forwardcommitList = forwardCommit;
+            pushApi.setRequestData(mapper.writeValueAsString(forwardcommitList));
             pushApi.setShipmentStatus(Constants.SHIPMENT_ASSIGNED_STATUS);
             pushApi.setShipmentDeliveryStatus("3");
             pushApi.setShipmentCaterogy(GlobalConstant.ShipmentTypeConstants.FWD);
@@ -713,13 +670,15 @@ public class UndeliveredViewModel extends BaseViewModel<IUndeliveredNavigator> {
     }
 
     private void saveCommitUpload(List<ForwardCommit> forwardCommit, long parentAWB, String compositeKey) {
+        Log.d("forward.undelivered_fwd", "saveCommit: forward" + forwardCommit.toString());
         PushApi pushApi = new PushApi();
         pushApi.setAwbNo(parentAWB);
         pushApi.setCompositeKey(compositeKey);
         pushApi.setAuthtoken(getDataManager().getAuthToken());
         try {
             ObjectMapper mapper = new ObjectMapper();
-            pushApi.setRequestData(mapper.writeValueAsString(forwardCommit));
+            List<ForwardCommit> forwardcommitList = forwardCommit;
+            pushApi.setRequestData(mapper.writeValueAsString(forwardcommitList));
             pushApi.setShipmentStatus(2);
             pushApi.setShipmentDeliveryStatus("3");
             pushApi.setShipmentCaterogy(GlobalConstant.ShipmentTypeConstants.FWD);
@@ -965,6 +924,7 @@ public class UndeliveredViewModel extends BaseViewModel<IUndeliveredNavigator> {
 
     public void uploadImageServer(String imageName, String imageUri, String imageCode, long awbNo, int drsno, String activity_code, Bitmap bitmap, String compositeKey) {
         setIsLoading(true);
+        HashMap<String, Long> timeStampTagging = new HashMap<>();
         try {
             final long timeStamp = Calendar.getInstance().getTimeInMillis();
             File image_file = new File(imageUri);
@@ -991,37 +951,64 @@ public class UndeliveredViewModel extends BaseViewModel<IUndeliveredNavigator> {
                 getCompositeDisposable().add(getDataManager().doImageUploadApiCall(getDataManager().getAuthToken(), getDataManager().getEcomRegion(), GlobalConstant.ImageTypeConstants.FWD, headers, map, fileToUpload).doOnSuccess(imageQualityResponse -> Log.d(ContentValues.TAG, imageQualityResponse.toString())).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui()).subscribe(imageUploadResponse -> {
                     setIsLoading(false);
                     try {
+                        getNavigator().setBitmap();
                         if (imageUploadResponse.getStatus().equalsIgnoreCase("Success")) {
-                            getNavigator().setBitmap();
                             saveImageDB(imageUri, imageCode, imageName, imageUploadResponse.getImageId(), GlobalConstant.ImageSyncStatus.IMAGE_SYNC_STATUS_COMPLETE);
                         } else {
-                            getNavigator().showError("Image upload Api response failed.");
+                            saveImageDB(imageUri, imageCode, imageName, -1, 0);
                         }
                     } catch (Exception e) {
-                        getNavigator().showError("Exception while uploading image : " + e.getLocalizedMessage());
+                        saveImageDB(imageUri, imageCode, imageName, -1, 0);
+                        Logger.e(UndeliveredViewModel.class.getName(),e.getMessage());
                         setIsLoading(false);
                     }
                 }, throwable -> {
+
+                    String error;
                     setIsLoading(false);
-                    getNavigator().showError("Exception while uploading image : " + throwable.getLocalizedMessage());
+                    try {
+                        saveImageDB(imageUri, imageCode, imageName, -1, 0);
+
+                        writeErrors(timeStamp, new Exception(throwable));
+                        error = new RestApiErrorHandler(throwable).getErrorDetails().getEResponse().getDescription();
+                        getNavigator().showError(error);
+                    } catch (Exception e) {
+                        Logger.e(UndeliveredViewModel.class.getName(),e.getMessage());
+                    }
                 }));
             } catch (Exception e) {
                 setIsLoading(false);
-                getNavigator().showError("Exception while uploading image : " + e.getLocalizedMessage());
+                saveImageDB(imageUri, imageCode, imageName, -1, 0);
+                writeErrors(timeStamp, e);
+                Logger.e(UndeliveredViewModel.class.getName(),e.getMessage());
+
+                if (e instanceof Throwable) {
+                    getNavigator().showError(new RestApiErrorHandler(e.fillInStackTrace()).getErrorDetails().getEResponse().getDescription());
+                }
             }
-        } catch (Exception e) {
+        } catch (Exception ex) {
             setIsLoading(false);
-            getNavigator().showError("Exception while uploading image : " + e.getLocalizedMessage());
+            saveImageDB(imageUri, imageCode, imageName, -1, 0);
+            ex.printStackTrace();
+            Log.e("Image Sync exception", ex.toString());
         }
+    }
+
+    private void saveImageResponse(String image_name, int image_id) {
+        getCompositeDisposable().add(getDataManager().updateImageStatus(image_name, 2).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui()).subscribe(aBoolean -> {
+        }));
+        getCompositeDisposable().add(getDataManager().updateImageID(image_name, 2).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui()).subscribe(aBoolean -> {
+        }));
     }
 
     private List<ImageModel> getImagesList(String awbNo, int code, String reschedule, String compositeKey) {
         CompositeDisposable compositeDisposable = new CompositeDisposable();
         compositeDisposable.add(getDataManager().getImages(awbNo).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().io()).subscribe(imageModels -> {
+            Log.e("getImages", imageModels.size() + "");
             try {
                 mimageModels = imageModels;
                 List<ForwardCommit.Image_response> list_image_responses = new ArrayList<>();
-                if (!mimageModels.isEmpty()) {
+                if (mimageModels.size() > 0) {
                     for (int i = 0; i < mimageModels.size(); i++) {
                         ForwardCommit.Image_response image_response = new ForwardCommit.Image_response();
                         image_response.setImage_id(String.valueOf(mimageModels.get(i).getImageId()));
@@ -1033,7 +1020,8 @@ public class UndeliveredViewModel extends BaseViewModel<IUndeliveredNavigator> {
                     forwardCommit.setImage_response(list_image_responses);
                 }
                 Gson gson = new Gson();
-                Type type = new TypeToken<List<ForwardCommit.Amz_Scan>>() {}.getType();
+                Type type = new TypeToken<List<ForwardCommit.Amz_Scan>>() {
+                }.getType();
                 ArrayList<ForwardCommit.Amz_Scan> amz_scans = gson.fromJson(getDataManager().getAmazonList(), type);
                 forwardCommit.setAmz_scan(amz_scans);
                 forwardCommit.setReceived_by_name("");
@@ -1198,24 +1186,33 @@ public class UndeliveredViewModel extends BaseViewModel<IUndeliveredNavigator> {
         return false;
     }
 
-    public double getDistaneBetweenLocations(LatLng destination) {
-        try {
-            double distance = 0.0;
-            GeoApiContext context = new GeoApiContext().setApiKey(DISTANCE_API_KEY);
-            DirectionsResult result = DirectionsApi.newRequest(context).mode(TravelMode.DRIVING).units(Unit.METRIC).origin(new LatLng(getDataManager().getCurrentLatitude(), getDataManager().getCurrentLongitude())).optimizeWaypoints(true).destination(destination).awaitIgnoreError();
-            String dis = (result.routes[0].legs[0].distance.humanReadable);
-            if (dis.endsWith("km")) {
-                distance = Double.parseDouble(dis.replaceAll("[^\\.0123456789]", "")) * 1000;
-            } else {
-                distance = Double.parseDouble(dis.replaceAll("[^\\.0123456789]", ""));
-            }
-            return distance;
-        } catch (Exception e) {
-            Logger.e(UndeliveredViewModel.class.getName(),e.getMessage());
-        }
-        return 0.0;
-    }
+    public void getDistaneBetweenLocations() {
+        if (getDataManager().getDistanceAPIEnabled()) {
+            meter = getCounterDeliveryRange();
+            getNavigator().setConsigneeDistance(meter);
+        } else {
+            final long timeStamp = System.currentTimeMillis();
+            try {
+                final StringBuilder[] builder = {new StringBuilder()};
+                builder[0].append(getDataManager().getCurrentLongitude());
+                builder[0].append(",");
+                builder[0].append(getDataManager().getCurrentLatitude());
+                builder[0].append(";");
+                builder[0].append(getDataManager().getDCLongitude());
+                builder[0].append(",");
+                builder[0].append(getDataManager().getDCLatitude());
+                getCompositeDisposable().add(getDataManager().distanceCalculationApis(builder[0].toString(), "distance").doOnSuccess(response -> writeRestAPIResponse(timeStamp, response)
+                ).subscribeOn(getSchedulerProvider().ui()).observeOn(getSchedulerProvider().ui()).subscribe(response -> {
 
+                    meter = (int) Math.round(response.getDistances().get(0).get(1));
+                    getNavigator().setConsigneeDistance(meter);
+                }, throwable -> {
+                }));
+            } catch (Exception e) {
+                Logger.e("FwdObdCompleteViewModel", String.valueOf(e));
+            }
+        }
+    }
     public void showCallAPIDelayDialog(String nyka, boolean failFlag, String awb_number, String drs_id) {
         isCallRecursionDailogRunning = false;
         getNavigator().getActivityContext().runOnUiThread(() -> {

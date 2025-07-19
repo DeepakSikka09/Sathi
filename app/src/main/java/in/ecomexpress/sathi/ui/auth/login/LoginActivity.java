@@ -201,16 +201,70 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
             Logger.e(TAG, String.valueOf(e));
         }
         Thread.setDefaultUncaughtExceptionHandler(new DefaultExceptionHandler(this));
-        if (!checkPermission(Constants.permissions))
-        {
-            showSnackbar(getString(R.string.permission_required));
+        try {
+            if (Build.VERSION.SDK_INT >= 23) {
+                mLoginViewModel.decideNextActivity();
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    if (!checkPermission(Constants.permissionsupperN)) {
+                        requestPermission();
+                    } else {
+                        deviceDetails.setDeviceId(CommonUtils.getImei(getApplicationContext()));
+                        SathiLocationService.startLocationUpdates(context, mLoginViewModel.getDataManager());
+                    }
+                } else {
+                    if (!checkPermission(Constants.permissionsbelowN)) {
+                        requestPermissionBelowN();
+                    } else {
+                        deviceDetails.setDeviceId(CommonUtils.getImei(getApplicationContext()));
+                        SathiLocationService.startLocationUpdates(context, mLoginViewModel.getDataManager());
+                    }
+                }
+            } else {
+                deviceDetails.setDeviceId(CommonUtils.getImei(getApplicationContext()));
+                mLoginViewModel.decideNextActivity();
+            }
+        } catch (Exception e) {
+            showSnackbar(e.getMessage());
+            Logger.e(TAG, String.valueOf(e));
         }
-        else
-        {
-            mLoginViewModel.getDataManager().setLoginPermission(true);
-            deviceDetails.setDeviceId(CommonUtils.getImei(getApplicationContext()));
-            SathiLocationService.startLocationUpdates(context, mLoginViewModel.getDataManager());
-            mLoginViewModel.decideNextActivity();
+    }
+
+    private void requestPermission() {
+        requestPermissionsSafely(Constants.permissionsupperN, 100);
+        mLoginViewModel.getDataManager().setLoginPermission(true);
+    }
+
+    private void requestPermissionBelowN() {
+        requestPermissionsSafely(Constants.permissionsbelowN, 100);
+        mLoginViewModel.getDataManager().setLoginPermission(true);
+    }
+
+    @Override
+    public boolean hasPermission(String permission) {
+        return super.hasPermission(permission);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        for (int i = 0, len = permissions.length; i < len; i++) {
+            String permission = permissions[i];
+            if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                // User Rejected The Permission
+                boolean showRationale = shouldShowRequestPermissionRationale(permission);
+                if (!showRationale) {
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                    intent.setData(uri);
+                    startActivityForResult(intent, 1);
+                }
+            } else if (checkPermission(permissions)) {
+                deviceDetails.setDeviceId(CommonUtils.getImei(getApplicationContext()));
+                mLoginViewModel.decideNextActivity();
+            } else {
+                showSnackbar(getString(R.string.permission_required));
+            }
         }
     }
 
@@ -222,13 +276,6 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
         }
         return true;
     }
-
-    @Override
-    public boolean hasPermission(String permission) {
-        return super.hasPermission(permission);
-    }
-
-
 
     @Override
     protected void onDestroy() {

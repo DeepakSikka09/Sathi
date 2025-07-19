@@ -3,26 +3,22 @@ package in.ecomexpress.sathi.ui.drs.todolist;
 import static android.content.Context.TELEPHONY_SERVICE;
 import static in.ecomexpress.sathi.utils.CommonUtils.applyTransitionToOpenActivity;
 import static in.ecomexpress.sathi.utils.Constants.ConsigneeDirectAlternateMobileNo;
+import static in.ecomexpress.sathi.utils.Constants.DISTANCE_API_KEY;
 import static in.ecomexpress.sathi.utils.Constants.eds_call_count;
 import static in.ecomexpress.sathi.utils.Constants.forward_call_count;
 import static in.ecomexpress.sathi.utils.Constants.rts_call_count;
 import static in.ecomexpress.sathi.utils.Constants.rvp_call_count;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.telephony.TelephonyManager;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.TextUtils;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +38,15 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.maps.DirectionsApi;
+import com.google.maps.GeoApiContext;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.LatLng;
+import com.google.maps.model.TravelMode;
+import com.google.maps.model.Unit;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -51,13 +55,13 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+
 import in.ecomexpress.sathi.R;
 import in.ecomexpress.sathi.databinding.ItemEdsListViewBinding;
 import in.ecomexpress.sathi.databinding.ItemEmptyViewBinding;
 import in.ecomexpress.sathi.databinding.ItemForwardListViewBinding;
 import in.ecomexpress.sathi.databinding.ItemNewRtsListViewBinding;
 import in.ecomexpress.sathi.databinding.ItemRvpListViewBinding;
-import in.ecomexpress.sathi.databinding.ItemRvpMpsListViewBinding;
 import in.ecomexpress.sathi.repo.local.data.activitiesdata.RTSActivitiesData;
 import in.ecomexpress.sathi.repo.local.db.model.CommonDRSListItem;
 import in.ecomexpress.sathi.repo.local.db.model.Remark;
@@ -68,13 +72,13 @@ import in.ecomexpress.sathi.repo.remote.model.drs_list.rts.new_rts.IRTSBaseInter
 import in.ecomexpress.sathi.repo.remote.model.masterdata.CallbridgeConfiguration;
 import in.ecomexpress.sathi.ui.base.BaseViewHolder;
 import in.ecomexpress.sathi.ui.dashboard.drs.list.RecyclerItemTouchCallback;
+import in.ecomexpress.sathi.ui.drs.rvp.rvp_qc_list.RvpQcListActivity;
+import in.ecomexpress.sathi.ui.drs.rvp_new.activity.PickupActivity;
+import in.ecomexpress.sathi.ui.dummy.eds.eds_task_list.EdsTaskListActivity;
 import in.ecomexpress.sathi.ui.drs.forward.mps.MPSScanActivity;
 import in.ecomexpress.sathi.ui.drs.forward.obd.activity.FwdOBDProductDetailActivity;
-import in.ecomexpress.sathi.ui.drs.mps.activity.MpsPickupActivity;
 import in.ecomexpress.sathi.ui.drs.rts.rts_main_list.RTSListActivity;
-import in.ecomexpress.sathi.ui.drs.rvp.activity.PickupActivity;
 import in.ecomexpress.sathi.ui.drs.secure_delivery.SecureDeliveryActivity;
-import in.ecomexpress.sathi.ui.dummy.eds.eds_task_list.EdsTaskListActivity;
 import in.ecomexpress.sathi.utils.CommonUtils;
 import in.ecomexpress.sathi.utils.Constants;
 import in.ecomexpress.sathi.utils.GlobalConstant;
@@ -90,14 +94,13 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
     public static final int VIEW_TYPE_RTS = 2;
     public static final int VIEW_TYPE_RVP = 3;
     public static final int VIEW_TYPE_EDS = 4;
-    public static final int VIEW_TYPE_RVP_MPS = 5;
     private static final String TAG = DRSListAdapter.class.getSimpleName();
     private static final int REQUEST_PHONE_CALL = 1;
     public static CommonDRSListItem commonDRSListItemEdsClick, commonDRSListItemFWDClick, commonDRSListItemRVPClick;
     private final ItemFilter mFilter = new ItemFilter();
     public List<CommonDRSListItem> filterShipments = new ArrayList<>();
     SecureDelivery isSecureDelivery;
-    String getDrsApiKey = null, getDrsPstnKey = null, getDrsPin = null, getOrderId = "", getDrsId = "", getCbConfigCallType = null, Masterpstnformat = null;
+    String getDrsApiKey = null, getDrsPstnKey = null, getCbConfigCallType = null, Masterpstnformat = null, getDrsPin = null, getOrderId = "", getDrsId = "";
     String myRemarks;
     boolean isDigital = false;
     ToDoListActivity toDoListActivity;
@@ -121,7 +124,12 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
     private int rts_map_count = 0;
     private DRSCallListener drsCallListener;
 
-    public DRSListAdapter() {}
+    public DRSListAdapter(List<CommonDRSListItem> mCommonDRSListItems) {
+        this.mCommonDRSListItems = mCommonDRSListItems;
+    }
+
+    public DRSListAdapter() {
+    }
 
     public DRSListAdapter(RowClickActionsListener clickSwipeListener) {
         this.clickSwipeListener = clickSwipeListener;
@@ -131,7 +139,7 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
         this.mRecyclerView = recyclerView;
     }
 
-    public boolean startCallIntent(CommonDRSListItem mCommonDRSListItem, String nykaCallBridge, String direct_calling_no, String number, Context context, long awb, int drs) {
+    public boolean startCallIntent(CommonDRSListItem mCommonDRSListItem,String nykaCallBridge, String direct_calling_no, String number, Context context, long awb, int drs) {
         try {
             TelephonyManager tMgr = (TelephonyManager) context.getSystemService(TELEPHONY_SERVICE);
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
@@ -150,46 +158,62 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
 
                 if (nykaCallBridge.equalsIgnoreCase("true")) {
 
-                    if (Constants.shipment_type.equalsIgnoreCase(Constants.FWD) && mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details() != null) {
-                        if (mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().size() > 1) {
+                    if (Constants.shipment_type.equalsIgnoreCase(Constants.FWD) && mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details()!=null)
+                    {
+                        if (mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().size()>1)
+                        {
                             showCallBridgeDialogFWD(mCommonDRSListItem, awb);
-                        } else {
-                            toDoListViewModel.consigneeContactNumber.set(mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(0).getCallbridge_number() + "," + mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(0).getPin().substring(0, 4) + "," + mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(0).getPin().substring(4) + "#");
+                        }
+                        else
+                        {
+                            toDoListViewModel.consigneeContactNumber.set(mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(0).getCallbridge_number()+","+mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(0).getPin()+"#");
                             toDoListViewModel.getDataManager().setForwardCallCount(awb + "FWD", forward_call_count);
                             toDoListViewModel.getDataManager().setRVPCallCount(awb + "RVP", rvp_call_count);
                             toDoListViewModel.getDataManager().setEDSCallCount(awb + "EDS", eds_call_count);
                             toDoListViewModel.getDataManager().setRTSCallCount(awb + "RTS", rts_call_count);
-                            Intent intent1 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(0).getCallbridge_number() + "," + mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(0).getPin().substring(0, 4) + "," + mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(0).getPin().substring(4) + "#"));
+                            Intent intent1 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(0).getCallbridge_number()+","+mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(0).getPin()+"#"));
                             intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             context.startActivity(intent1);
                         }
-                    } else if (Constants.shipment_type.equalsIgnoreCase(Constants.RVP) && mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details() != null) {
-                        if (mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().size() > 1) {
+                    }
+                    else if (Constants.shipment_type.equalsIgnoreCase(Constants.RVP) && mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details()!=null)
+                    {
+                        if (mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().size()>1)
+                        {
                             showCallBridgeDialogRVP(mCommonDRSListItem, awb);
-                        } else {
-                            toDoListViewModel.consigneeContactNumber.set(mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(0).getCallbridge_number() + "," + mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(0).getPin().substring(0, 4) + "," + mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(0).getPin().substring(4) + "#");
+                        }
+                        else
+                        {
+                            toDoListViewModel.consigneeContactNumber.set(mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(0).getCallbridge_number()+","+mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(0).getPin()+"#");
                             toDoListViewModel.getDataManager().setForwardCallCount(awb + "FWD", forward_call_count);
                             toDoListViewModel.getDataManager().setRVPCallCount(awb + "RVP", rvp_call_count);
                             toDoListViewModel.getDataManager().setEDSCallCount(awb + "EDS", eds_call_count);
                             toDoListViewModel.getDataManager().setRTSCallCount(awb + "RTS", rts_call_count);
-                            Intent intent1 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(0).getCallbridge_number() + "," + mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(0).getPin().substring(0, 4) + "," + mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(0).getPin().substring(4) + "#"));
+                            Intent intent1 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(0).getCallbridge_number()+","+mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(0).getPin()+"#"));
                             intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             context.startActivity(intent1);
                         }
-                    } else if (Constants.shipment_type.equalsIgnoreCase(Constants.EDS) && mCommonDRSListItem.getEdsResponse().getCallbridge_details() != null) {
-                        if (mCommonDRSListItem.getEdsResponse().getCallbridge_details().size() > 1) {
+                    }
+                    else if (Constants.shipment_type.equalsIgnoreCase(Constants.EDS) && mCommonDRSListItem.getEdsResponse().getCallbridge_details()!=null)
+                    {
+                        if (mCommonDRSListItem.getEdsResponse().getCallbridge_details().size()>1)
+                        {
                             showCallBridgeDialogEDS(mCommonDRSListItem, awb);
-                        } else {
-                            toDoListViewModel.consigneeContactNumber.set(mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(0).getCallbridge_number() + "," + mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(0).getPin().substring(0, 4) + "," + mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(0).getPin().substring(4) + "#");
+                        }
+                        else
+                        {
+                            toDoListViewModel.consigneeContactNumber.set(mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(0).getCallbridge_number()+","+mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(0).getPin()+"#");
                             toDoListViewModel.getDataManager().setForwardCallCount(awb + "FWD", forward_call_count);
                             toDoListViewModel.getDataManager().setRVPCallCount(awb + "RVP", rvp_call_count);
                             toDoListViewModel.getDataManager().setEDSCallCount(awb + "EDS", eds_call_count);
                             toDoListViewModel.getDataManager().setRTSCallCount(awb + "RTS", rts_call_count);
-                            Intent intent1 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(0).getCallbridge_number() + "," + mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(0).getPin().substring(0, 4) + "," + mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(0).getPin().substring(4) + "#"));
+                            Intent intent1 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(0).getCallbridge_number()+","+mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(0).getPin()+"#"));
                             intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             context.startActivity(intent1);
                         }
-                    } else {
+                    }
+                    else
+                    {
                         if (!TextUtils.isEmpty(ConsigneeDirectAlternateMobileNo) && ConsigneeDirectAlternateMobileNo != null && !ConsigneeDirectAlternateMobileNo.equals("0")) {
                             showDirectCallDialog(direct_calling_no, awb);
                         } else {
@@ -243,23 +267,23 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
         ImageView crossDialog = dialog.findViewById(R.id.crssdialog);
         crossDialog.setOnClickListener(v -> dialog.dismiss());
         call.setOnClickListener(v -> {
-            toDoListViewModel.consigneeContactNumber.set(mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(0).getCallbridge_number() + "," + mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(0).getPin().substring(0, 4) + "," + mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(0).getPin().substring(4) + "#");
+            toDoListViewModel.consigneeContactNumber.set(mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(0).getCallbridge_number()+","+mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(0).getPin()+"#");
             toDoListViewModel.getDataManager().setForwardCallCount(awb + "FWD", forward_call_count);
             toDoListViewModel.getDataManager().setRVPCallCount(awb + "RVP", rvp_call_count);
             toDoListViewModel.getDataManager().setEDSCallCount(awb + "EDS", eds_call_count);
             toDoListViewModel.getDataManager().setRTSCallCount(awb + "RTS", rts_call_count);
-            Intent intent1 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(0).getCallbridge_number() + "," + mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(0).getPin().substring(0, 4) + "," + mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(0).getPin().substring(4) + "#"));
+            Intent intent1 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(0).getCallbridge_number()+","+mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(0).getPin()+"#"));
             intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             toDoListActivity.startActivity(intent1);
             dialog.dismiss();
         });
         altCall.setOnClickListener(v -> {
-            toDoListViewModel.consigneeContactNumber.set(mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(1).getCallbridge_number() + "," + mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(1).getPin() + "#");
+            toDoListViewModel.consigneeContactNumber.set(mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(1).getCallbridge_number()+","+mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(1).getPin()+"#");
             toDoListViewModel.getDataManager().setForwardCallCount(awb + "FWD", forward_call_count);
             toDoListViewModel.getDataManager().setRVPCallCount(awb + "RVP", rvp_call_count);
             toDoListViewModel.getDataManager().setEDSCallCount(awb + "EDS", eds_call_count);
             toDoListViewModel.getDataManager().setRTSCallCount(awb + "RTS", rts_call_count);
-            Intent intent1 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(1).getCallbridge_number() + "," + mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(1).getPin() + "#"));
+            Intent intent1 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(1).getCallbridge_number()+","+mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(1).getPin()+"#"));
             intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             toDoListActivity.startActivity(intent1);
             dialog.dismiss();
@@ -267,7 +291,6 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
         dialog.show();
         dialog.getWindow().setAttributes(lp);
     }
-
     public void showCallBridgeDialogRVP(CommonDRSListItem mCommonDRSListItem, long awb) {
         Dialog dialog = new Dialog(toDoListActivity, R.style.RoundedCornersDialog);
         dialog.setContentView(R.layout.dialog_callbridge);
@@ -282,23 +305,23 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
         ImageView crossDialog = dialog.findViewById(R.id.crssdialog);
         crossDialog.setOnClickListener(v -> dialog.dismiss());
         call.setOnClickListener(v -> {
-            toDoListViewModel.consigneeContactNumber.set(mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(0).getCallbridge_number() + "," + mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(0).getPin().substring(0, 4) + "," + mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(0).getPin().substring(4) + "#");
+            toDoListViewModel.consigneeContactNumber.set(mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(0).getCallbridge_number()+","+mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(0).getPin()+"#");
             toDoListViewModel.getDataManager().setForwardCallCount(awb + "FWD", forward_call_count);
             toDoListViewModel.getDataManager().setRVPCallCount(awb + "RVP", rvp_call_count);
             toDoListViewModel.getDataManager().setEDSCallCount(awb + "EDS", eds_call_count);
             toDoListViewModel.getDataManager().setRTSCallCount(awb + "RTS", rts_call_count);
-            Intent intent1 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(0).getCallbridge_number() + "," + mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(0).getPin().substring(0, 4) + "," + mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(0).getPin().substring(4) + "#"));
+            Intent intent1 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(0).getCallbridge_number()+","+mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(0).getPin()+"#"));
             intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             toDoListActivity.startActivity(intent1);
             dialog.dismiss();
         });
         altCall.setOnClickListener(v -> {
-            toDoListViewModel.consigneeContactNumber.set(mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(1).getCallbridge_number() + "," + mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(1).getPin() + "#");
+            toDoListViewModel.consigneeContactNumber.set(mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(1).getCallbridge_number()+","+mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(1).getPin()+"#");
             toDoListViewModel.getDataManager().setForwardCallCount(awb + "FWD", forward_call_count);
             toDoListViewModel.getDataManager().setRVPCallCount(awb + "RVP", rvp_call_count);
             toDoListViewModel.getDataManager().setEDSCallCount(awb + "EDS", eds_call_count);
             toDoListViewModel.getDataManager().setRTSCallCount(awb + "RTS", rts_call_count);
-            Intent intent1 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(1).getCallbridge_number() + "," + mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(1).getPin() + "#"));
+            Intent intent1 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(1).getCallbridge_number()+","+mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(1).getPin()+"#"));
             intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             toDoListActivity.startActivity(intent1);
             dialog.dismiss();
@@ -306,7 +329,6 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
         dialog.show();
         dialog.getWindow().setAttributes(lp);
     }
-
     public void showCallBridgeDialogEDS(CommonDRSListItem mCommonDRSListItem, long awb) {
         Dialog dialog = new Dialog(toDoListActivity, R.style.RoundedCornersDialog);
         dialog.setContentView(R.layout.dialog_callbridge);
@@ -321,23 +343,23 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
         ImageView crossDialog = dialog.findViewById(R.id.crssdialog);
         crossDialog.setOnClickListener(v -> dialog.dismiss());
         call.setOnClickListener(v -> {
-            toDoListViewModel.consigneeContactNumber.set(mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(0).getCallbridge_number() + "," + mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(0).getPin().substring(0, 4) + "," + mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(0).getPin().substring(4) + "#");
+            toDoListViewModel.consigneeContactNumber.set(mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(0).getCallbridge_number()+","+mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(0).getPin()+"#");
             toDoListViewModel.getDataManager().setForwardCallCount(awb + "FWD", forward_call_count);
             toDoListViewModel.getDataManager().setRVPCallCount(awb + "RVP", rvp_call_count);
             toDoListViewModel.getDataManager().setEDSCallCount(awb + "EDS", eds_call_count);
             toDoListViewModel.getDataManager().setRTSCallCount(awb + "RTS", rts_call_count);
-            Intent intent1 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(0).getCallbridge_number() + "," + mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(0).getPin().substring(0, 4) + "," + mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(0).getPin().substring(4) + "#"));
+            Intent intent1 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(0).getCallbridge_number()+","+mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(0).getPin()+"#"));
             intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             toDoListActivity.startActivity(intent1);
             dialog.dismiss();
         });
         altCall.setOnClickListener(v -> {
-            toDoListViewModel.consigneeContactNumber.set(mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(1).getCallbridge_number() + "," + mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(1).getPin() + "#");
+            toDoListViewModel.consigneeContactNumber.set(mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(1).getCallbridge_number()+","+mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(1).getPin()+"#");
             toDoListViewModel.getDataManager().setForwardCallCount(awb + "FWD", forward_call_count);
             toDoListViewModel.getDataManager().setRVPCallCount(awb + "RVP", rvp_call_count);
             toDoListViewModel.getDataManager().setEDSCallCount(awb + "EDS", eds_call_count);
             toDoListViewModel.getDataManager().setRTSCallCount(awb + "RTS", rts_call_count);
-            Intent intent1 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(1).getCallbridge_number() + "," + mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(1).getPin() + "#"));
+            Intent intent1 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(1).getCallbridge_number()+","+mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(1).getPin()+"#"));
             intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             toDoListActivity.startActivity(intent1);
             dialog.dismiss();
@@ -526,8 +548,7 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
             }
         }
     }
-
-    /// layouts_item
+///layouts_item
     @NonNull
     @Override
     public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -544,9 +565,6 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
             case VIEW_TYPE_EDS:
                 ItemEdsListViewBinding itemEdsListViewBinding = ItemEdsListViewBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
                 return new EDSViewHolder(itemEdsListViewBinding);
-            case VIEW_TYPE_RVP_MPS:
-                ItemRvpMpsListViewBinding itemRvpMpsListViewBinding = ItemRvpMpsListViewBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-                return new RVPMPSViewHolder(itemRvpMpsListViewBinding);
             default:
                 ItemEmptyViewBinding itemEmptyBinding = ItemEmptyViewBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
                 return new EmptyViewHolder(itemEmptyBinding);
@@ -594,8 +612,6 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
                         return VIEW_TYPE_RVP;
                     case GlobalConstant.ShipmentTypeConstants.EDS:
                         return VIEW_TYPE_EDS;
-                    case GlobalConstant.ShipmentTypeConstants.RVP_MPS:
-                        return VIEW_TYPE_RVP_MPS;
                     default:
                         return VIEW_TYPE_EMPTY;
                 }
@@ -606,6 +622,24 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
             Toast.makeText(toDoListActivity, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         }
         return VIEW_TYPE_EMPTY;
+    }
+
+    public double getDistanceBetweenLocations(LatLng destination) {
+        try {
+            double distance;
+            GeoApiContext context = new GeoApiContext().setApiKey(DISTANCE_API_KEY);
+            DirectionsResult result = DirectionsApi.newRequest(context).mode(TravelMode.DRIVING).units(Unit.METRIC).origin(new LatLng(toDoListViewModel.getDataManager().getCurrentLatitude(), toDoListViewModel.getDataManager().getCurrentLongitude())).optimizeWaypoints(false).destination(destination).awaitIgnoreError();
+            String dis = (result.routes[0].legs[0].distance.humanReadable);
+            if (dis.endsWith("km")) {
+                distance = Double.parseDouble(dis.replaceAll("[^\\d.]", "")) * 1000;
+            } else {
+                distance = Double.parseDouble(dis.replaceAll("[^\\d.]", ""));
+            }
+            return distance;
+        } catch (Exception e) {
+            Logger.e(TAG, String.valueOf(e));
+        }
+        return 0.0;
     }
 
     public void resetClickVariables() {
@@ -849,9 +883,8 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
                 mBinding.checkboxCkb.setOnCheckedChangeListener(null);
                 mBinding.checkboxCkb.setFocusable(false);
                 toDoListViewModel.getDataManager().setAmazonList("");
-                setVolumetricWeight(commonDRSListItem.getDrsForwardTypeResponse().getShipmentDetails().getVolumetric_weight());
 
-                // Change border color of the icon call and location
+                //change border color of the icon call and location
                 if (commonDRSListItem.getDrsForwardTypeResponse().getFlags().getFlagMap().getIs_address_updated().equalsIgnoreCase("true")) {
                     mBinding.addressline1.setTextColor(ContextCompat.getColor(toDoListActivity, R.color.highlight_color));
                     mBinding.fullAddressCustomTextBold.setTextColor(ContextCompat.getColor(toDoListActivity, R.color.highlight_color));
@@ -867,12 +900,14 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
                     mBinding.call.setImageResource(R.drawable.ic_action_callbridge);
                 } else {
                     mBinding.call.setImageResource(R.drawable.ic_phone_call_disabled);
+
+
                 }
                 if (commonDRSListItem.getDrsForwardTypeResponse().getShipmentDetails().isIs_obd()) {
                     mBinding.obdIcon.setVisibility(View.VISIBLE);
                 } else {
                     mBinding.obdIcon.setVisibility(View.GONE);
-                }
+               }
                 mBinding.resechdicon.setOnClickListener(v -> showReassignDialog(commonDRSListItem));
                 mBinding.checkboxCkb.setChecked(commonDRSListItem.isSmsCheckFlag());
                 try {
@@ -892,7 +927,7 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
                 }
                 mBinding.viewDivider.setVisibility(!mForwardItemViewmodel.pin().isEmpty() ? View.VISIBLE : View.GONE);
                 if (commonDRSListItem.getDrsForwardTypeResponse().getFlags().getFlagMap().getIs_callbridge_enabled().equalsIgnoreCase("true")
-                        && commonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details() != null) {
+                        && commonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details()!=null) {
                     mBinding.pin.setVisibility(View.VISIBLE);
                     mBinding.viewDivider.setVisibility(View.VISIBLE);
                 } else {
@@ -973,7 +1008,7 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
         }
 
         private void showReassignDialog(CommonDRSListItem commonDRSListItem) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(toDoListActivity, R.style.Theme_MaterialComponents_Light_Dialog_Alert);
+            AlertDialog.Builder builder = new AlertDialog.Builder(toDoListActivity,R.style.Theme_MaterialComponents_Light_Dialog_Alert);
             builder.setMessage("Are you sure you want to reassign/reattempt this shipment");
             builder.setPositiveButton("YES", (dialog, which) -> {
                 dialog.dismiss();
@@ -982,16 +1017,6 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
             builder.setNegativeButton("NO", (dialog, which) -> dialog.dismiss());
             Dialog dialog = builder.create();
             dialog.show();
-        }
-
-        private void setVolumetricWeight(double shipmentWeight) {
-            if (shipmentWeight > 0) {
-                mBinding.shipmentWeightText.setVisibility(View.VISIBLE);
-                String formattedWeight = String.format(Locale.US, "%.2f kg", Math.floor(shipmentWeight * 100) / 100);
-                mBinding.shipmentWeightText.setText(formattedWeight);
-            } else {
-                mBinding.shipmentWeightText.setVisibility(View.GONE);
-            }
         }
 
         private void shouldShowReassignIcon(CommonDRSListItem commonDRSListItem) {
@@ -1139,10 +1164,11 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
                 in.ecomexpress.geolocations.Constants.longitude = toDoListViewModel.getDataManager().getCurrentLongitude();
                 if (mBinding.tick.getVisibility() == View.VISIBLE) {
                     Constants.CONSIGNEE_PROFILE = true;
-                    if (commonDRSListItem.getProfileFound().getDelivery_latitude() == commonDRSListItem.getProfileFound().getDelivery_longitude() || commonDRSListItem.getProfileFound().getDelivery_latitude() == 0 || commonDRSListItem.getProfileFound().getDelivery_longitude() == 0) {
-                        CommonUtils.showCustomSnackbar(mBinding.getRoot(), "Location coordinates either null or not Found", toDoListActivity);
+                    if (commonDRSListItem.getProfileFound().getDelivery_latitude() == 0 || commonDRSListItem.getProfileFound().getDelivery_longitude() == 0) {
+                        CommonUtils.showCustomSnackbar(mBinding.getRoot(), "Location Coordinates Not Found", toDoListActivity);
                         forwardClick(commonDRSListItem, mBinding);
                     } else {
+                        // double distance = getDistanceBetweenLocations(new LatLng(commonDRSListItem.getProfileFound().getDelivery_latitude(), commonDRSListItem.getProfileFound().getDelivery_longitude()));
                         double distance = LocationHelper.getDistanceBetweenPoint(commonDRSListItem.getProfileFound().getDelivery_latitude(), commonDRSListItem.getProfileFound().getDelivery_longitude(), toDoListViewModel.getDataManager().getCurrentLatitude(), toDoListViewModel.getDataManager().getCurrentLongitude());
                         if (distance > toDoListViewModel.getDataManager().getUndeliverConsigneeRANGE()) {
                             toDoListActivity.runOnUiThread(() -> getRestrictionForward(commonDRSListItem, mBinding, distance));
@@ -1162,35 +1188,19 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
         public void getRestrictionForward(CommonDRSListItem commonDRSListItem, ItemForwardListViewBinding mBinding, double distance) {
             try {
                 String dialog_message = ctx.getResources().getString(R.string.commitdialog);
-                String positiveButtonText = ctx.getResources().getString(R.string.proceed);
-                boolean isRestriction = false;
-                String consigneeProfileValue = toDoListViewModel.getDataManager().getConsigneeProfileValue();
-                if (consigneeProfileValue.equalsIgnoreCase("W")) {
+                String positiveButtonText = ctx.getResources().getString(R.string.yes);
+                if (toDoListViewModel.getDataManager().getConsigneeProfileValue().equalsIgnoreCase("W")) {
                     dialog_message = ctx.getResources().getString(R.string.commitdialog_meter_away);
-                    positiveButtonText = ctx.getResources().getString(R.string.proceed_now);
-                } else if (consigneeProfileValue.equalsIgnoreCase("R")) {
-                    isRestriction = true;
-                    dialog_message = "You are not allowed to commit this shipment as you are not at the consignee's location.\n\n"
-                            + "📍 Distance from consignee: " + distance + " meters away\n\n"
-                            + "🔹 Your Coordinates: " + toDoListViewModel.getDataManager().getCurrentLatitude()
-                            + ", " + toDoListViewModel.getDataManager().getCurrentLongitude() + "\n"
-                            + "🔹 Consignee Coordinates: " + commonDRSListItem.getProfileFound().getDelivery_latitude()
-                            + ", " + commonDRSListItem.getProfileFound().getDelivery_longitude();
+                    positiveButtonText = ctx.getResources().getString(R.string.yes);
+                } else if (toDoListViewModel.getDataManager().getConsigneeProfileValue().equalsIgnoreCase("R")) {
+                    dialog_message = "You are not allowed to commit this shipment as you are not attempting at consignee location." + "you are " + distance + " meters away from consignee's location. \n your coordinate is " + toDoListViewModel.getDataManager().getCurrentLatitude() + " , " + toDoListViewModel.getDataManager().getCurrentLongitude() + " and consignee cordinate is " + commonDRSListItem.getProfileFound().getDelivery_latitude() + " ," + commonDRSListItem.getProfileFound().getDelivery_longitude();
                     positiveButtonText = ctx.getResources().getString(R.string.ok);
                 }
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(ctx, R.style.Theme_MaterialComponents_Light_Dialog_Alert);
-                builder.setIcon(isRestriction ? R.drawable.restricted_sign : R.drawable.warning_sign);
-
-                SpannableString title = new SpannableString(isRestriction ? "Restricted!" : "Warning!");
-                title.setSpan(new StyleSpan(Typeface.BOLD), 0, title.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                title.setSpan(new ForegroundColorSpan(ContextCompat.getColor(ctx, android.R.color.black)), 0, title.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                builder.setTitle(title);
-
+                AlertDialog.Builder builder = new AlertDialog.Builder(ctx,R.style.Theme_MaterialComponents_Light_Dialog_Alert);
                 builder.setCancelable(false);
                 builder.setMessage(dialog_message);
                 builder.setPositiveButton(positiveButtonText, (dialog, which) -> {
-                    if (consigneeProfileValue.equalsIgnoreCase("R")) {
+                    if (toDoListViewModel.getDataManager().getConsigneeProfileValue().equalsIgnoreCase("R")) {
                         forward_is_item_clicked = true;
                         dialog.cancel();
                     } else {
@@ -1198,12 +1208,12 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
                         forwardClick(commonDRSListItem, mBinding);
                     }
                 });
-
                 AlertDialog alert = builder.create();
                 alert.show();
             } catch (Exception e) {
                 Logger.e(TAG, String.valueOf(e));
             }
+            toDoListViewModel.getDataManager().getConsigneeProfileValue();
         }
 
         public void forwardClick(CommonDRSListItem commonDRSListItem, ItemForwardListViewBinding mBinding) {
@@ -1528,31 +1538,90 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
                 }
 
 
-                if (mCommonDRSListItem.getDrsForwardTypeResponse().getFlags().getFlagMap().getIs_callbridge_enabled().equalsIgnoreCase("true") && mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details() != null) {
-                    try {
-                        String callingFormat;
-                        callingFormat = mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(0).getCallbridge_number() + "," + mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(0).getPin().substring(0, 4) + "," + mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(0).getPin().substring(4) + "#";
-                        Constants.call_pin = String.valueOf(mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(0).getPin());
-                        Constants.calling_format = callingFormat;
+                if (mCommonDRSListItem.getDrsForwardTypeResponse().getFlags().getFlagMap().getIs_callbridge_enabled().equalsIgnoreCase("true")
+                        && mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details()!=null)
+                {
+/*                    getDrsApiKey = mCommonDRSListItem.getDrsForwardTypeResponse().getShipmentDetails().getCallbridgeApi();
+                    getDrsPstnKey = mCommonDRSListItem.getDrsForwardTypeResponse().getShipmentDetails().getCallbridgePstn();
+                    if (getDrsPstnKey != null) {
+                        Constants.call_awb = String.valueOf(mCommonDRSListItem.getDrsForwardTypeResponse().getAwbNo());
                         Constants.shipment_type = Constants.FWD;
-                        if (callingFormat != null) {
-                            Constants.ConsigneeDirectAlternateMobileNo = mCommonDRSListItem.getDrsForwardTypeResponse().getConsigneeDetails().getAlternate_mobile();
-                            forward_call_count = forward_call_count + 1;
-                            toDoListViewModel.getDataManager().setCallClicked(mCommonDRSListItem.getDrsForwardTypeResponse().getAwbNo() + "ForwardCall", false);
-                            startCallIntent(mCommonDRSListItem, mCommonDRSListItem.getDrsForwardTypeResponse().getFlags().getFlagMap().getIs_callbridge_enabled(), mCommonDRSListItem.getDrsForwardTypeResponse().getConsigneeDetails().getMobile(), callingFormat, mBinding.getRoot().getContext(), mCommonDRSListItem.getDrsForwardTypeResponse().getAwbNo(), mCommonDRSListItem.getDrsForwardTypeResponse().getDrsId());
+                        Constants.ConsigneeDirectAlternateMobileNo = mCommonDRSListItem.getDrsForwardTypeResponse().getConsigneeDetails().getAlternate_mobile();
+                        forward_call_count = forward_call_count + 1;
+                        toDoListViewModel.getDataManager().setCallClicked(mCommonDRSListItem.getDrsForwardTypeResponse().getAwbNo() + "ForwardCall", false);
+                        startCallIntent(mCommonDRSListItem,mCommonDRSListItem.getDrsForwardTypeResponse().getFlags().getFlagMap().getIs_callbridge_enabled(), mCommonDRSListItem.getDrsForwardTypeResponse().getConsigneeDetails().getMobile(), getDrsPstnKey, mBinding.getRoot().getContext(), mCommonDRSListItem.getDrsForwardTypeResponse().getAwbNo(), mCommonDRSListItem.getDrsForwardTypeResponse().getDrsId());
+                    } else if (getDrsApiKey != null) {
+                        callbridgeConfiguration = drsCallListener.getCallbridgeconfiguration();
+                        if (callbridgeConfiguration != null) {
+                            String getApiType = callbridgeConfiguration.getCb_calling_api();
+                            if (getApiType != null) {
+                                drsCallListener.makeCallBridgeApiCall(callbridgeConfiguration.getCb_calling_api(), String.valueOf(mCommonDRSListItem.getDrsForwardTypeResponse().getAwbNo()), mCommonDRSListItem.getDrsForwardTypeResponse().getDrsId(), Constants.FWD);
+                            } else {
+                                Toast.makeText(toDoListActivity, R.string.null_key_api, Toast.LENGTH_SHORT).show();
+                            }
                         } else {
-                            Toast.makeText(mBinding.getRoot().getContext(), "Please switch Number", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mBinding.getRoot().getContext(), "callconfig null", Toast.LENGTH_SHORT).show();
                         }
-                    } catch (Exception e) {
-                        Toast.makeText(toDoListActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
-                        Logger.e(TAG, String.valueOf(e));
-                    }
+                    } else if (getDrsApiKey == null && getDrsPstnKey == null) {*/
+                        try {
+                            /*callbridgeConfiguration = drsCallListener.getCallbridgeconfiguration();
+                            if (callbridgeConfiguration != null) {
+                                getCbConfigCallType = callbridgeConfiguration.getCb_calling_type();
+                            }*/
+                           /* if (getCbConfigCallType != null) {
+                                if (getCbConfigCallType.equalsIgnoreCase("PSTN"))
+                                {*/
+                                    //Masterpstnformat = drsCallListener.getDefaultPstn();
+                                    String callingformat = null;
+                                   /* if (Masterpstnformat.contains(mBinding.getRoot().getContext().getString(R.string.patn_awb))) {
+                                        callingformat = Masterpstnformat.replaceAll(mBinding.getRoot().getContext().getString(R.string.patn_awb), mCommonDRSListItem.getDrsForwardTypeResponse().getAwbNo().toString());
+                                        Constants.call_awb = String.valueOf(mCommonDRSListItem.getDrsForwardTypeResponse().getAwbNo());
+                                        Constants.shipment_type = Constants.FWD;
+                                    } else*/
+                            //if (Masterpstnformat.contains(mBinding.getRoot().getContext().getString(R.string.pstn_pin)))
+                                  //  {
+                                    //    callingformat = Masterpstnformat.replaceAll(mBinding.getRoot().getContext().getString(R.string.pstn_pin), mCommonDRSListItem.getDrsForwardTypeResponse().getShipmentDetails().getPin());
+                                        callingformat = mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(0).getCallbridge_number()+","+mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(0).getPin()+"#";
+                                        Constants.call_pin = String.valueOf(mCommonDRSListItem.getDrsForwardTypeResponse().getCallbridge_details().get(0).getPin());
+                                        //Constants.call_pin = String.valueOf(mCommonDRSListItem.getDrsForwardTypeResponse().getShipmentDetails().getPin());
+                                        Constants.calling_format = callingformat;
+                                        Constants.shipment_type = Constants.FWD;
+                                  //  }
+                                    if (callingformat != null) {
+                                        Constants.ConsigneeDirectAlternateMobileNo = mCommonDRSListItem.getDrsForwardTypeResponse().getConsigneeDetails().getAlternate_mobile();
+                                        forward_call_count = forward_call_count + 1;
+                                        toDoListViewModel.getDataManager().setCallClicked(mCommonDRSListItem.getDrsForwardTypeResponse().getAwbNo() + "ForwardCall", false);
+                                        startCallIntent(mCommonDRSListItem,mCommonDRSListItem.getDrsForwardTypeResponse().getFlags().getFlagMap().getIs_callbridge_enabled(), mCommonDRSListItem.getDrsForwardTypeResponse().getConsigneeDetails().getMobile(), callingformat, mBinding.getRoot().getContext(), mCommonDRSListItem.getDrsForwardTypeResponse().getAwbNo(), mCommonDRSListItem.getDrsForwardTypeResponse().getDrsId());
+                                    } else {
+                                        Toast.makeText(mBinding.getRoot().getContext(), "Please switch Number", Toast.LENGTH_SHORT).show();
+                                    }
+                             //   }
+                           // }
+                            /*if (Objects.requireNonNull(getCbConfigCallType).equalsIgnoreCase("API")) {
+                                callbridgeConfiguration = drsCallListener.getCallbridgeconfiguration();
+                                if (callbridgeConfiguration != null) {
+                                    String getApiType = callbridgeConfiguration.getCb_calling_api();
+                                    if (getApiType != null) {
+                                        drsCallListener.makeCallBridgeApiCall(callbridgeConfiguration.getCb_calling_api(), String.valueOf(mCommonDRSListItem.getDrsForwardTypeResponse().getAwbNo()), mCommonDRSListItem.getDrsForwardTypeResponse().getDrsId(), Constants.FWD);
+                                    } else {
+                                        Toast.makeText(toDoListActivity, R.string.null_key_api, Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    Toast.makeText(mBinding.getRoot().getContext(), "callconfig null", Toast.LENGTH_SHORT).show();
+                                }
+                            }*/
+                        } catch (Exception e) {
+                            Toast.makeText(toDoListActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Logger.e(TAG, String.valueOf(e));
+                        }
+                   // }
                 } else {
                     forward_call_count = forward_call_count + 1;
                     toDoListViewModel.getDataManager().setCallClicked(mCommonDRSListItem.getDrsForwardTypeResponse().getAwbNo() + "ForwardCall", false);
                     Constants.ConsigneeDirectAlternateMobileNo = mCommonDRSListItem.getDrsForwardTypeResponse().getConsigneeDetails().getAlternate_mobile();
-                    startCallIntent(mCommonDRSListItem, mCommonDRSListItem.getDrsForwardTypeResponse().getFlags().getFlagMap().getIs_callbridge_enabled(), mCommonDRSListItem.getDrsForwardTypeResponse().getConsigneeDetails().getMobile(), getDrsPstnKey, mBinding.getRoot().getContext(), mCommonDRSListItem.getDrsForwardTypeResponse().getAwbNo(), mCommonDRSListItem.getDrsForwardTypeResponse().getDrsId());
+                    startCallIntent(mCommonDRSListItem,mCommonDRSListItem.getDrsForwardTypeResponse().getFlags().getFlagMap().getIs_callbridge_enabled(), mCommonDRSListItem.getDrsForwardTypeResponse().getConsigneeDetails().getMobile(), getDrsPstnKey, mBinding.getRoot().getContext(), mCommonDRSListItem.getDrsForwardTypeResponse().getAwbNo(), mCommonDRSListItem.getDrsForwardTypeResponse().getDrsId());
                 }
+
             } catch (Exception e) {
                 Toast.makeText(toDoListActivity, "Forward CallClick():-" + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             }
@@ -1798,7 +1867,7 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
                 }
                 if (!TextUtils.isEmpty(mCommonDRSListItem.getIRTSInterface().getDetails().getSub_shipper_mobile())) {
                     ConsigneeDirectAlternateMobileNo = "0";
-                    startCallIntent(mCommonDRSListItem, "false", mCommonDRSListItem.getIRTSInterface().getDetails().getSub_shipper_mobile(), getDrsPstnKey, mBinding.getRoot().getContext(), mCommonDRSListItem.getIRTSInterface().getDetails().getId(), 0);
+                    startCallIntent(mCommonDRSListItem,"false", mCommonDRSListItem.getIRTSInterface().getDetails().getSub_shipper_mobile(), getDrsPstnKey, mBinding.getRoot().getContext(), mCommonDRSListItem.getIRTSInterface().getDetails().getId(), 0);
                     return;
                 }
                 try {
@@ -1807,7 +1876,7 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
                         rts_call_count = rts_call_count + 1;
                         Constants.call_awb = String.valueOf(mCommonDRSListItem.getIRTSInterface().getDetails().getId());
                         Constants.shipment_type = Constants.RTS;
-                        startCallIntent(mCommonDRSListItem, "false", mCommonDRSListItem.getIRTSInterface().getDetails().getSub_shipper_mobile(), getDrsPstnKey, mBinding.getRoot().getContext(), mCommonDRSListItem.getIRTSInterface().getDetails().getId(), 0);
+                        startCallIntent(mCommonDRSListItem,"false", mCommonDRSListItem.getIRTSInterface().getDetails().getSub_shipper_mobile(), getDrsPstnKey, mBinding.getRoot().getContext(), mCommonDRSListItem.getIRTSInterface().getDetails().getId(), 0);
                         mBinding.call.setVisibility(View.VISIBLE);
                     } else {
                         mBinding.call.setVisibility(View.INVISIBLE);
@@ -1886,7 +1955,7 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
                 mBinding.setViewModel(mRVPItemViewModel);
                 mBinding.viewDivider.setVisibility(!mRVPItemViewModel.getPin().isEmpty() ? View.VISIBLE : View.GONE);
                 if (commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getFlagMap().getIs_callbridge_enabled().equalsIgnoreCase("true")
-                        && commonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details() != null) {
+                        && commonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details()!=null) {
                     mBinding.pin.setVisibility(View.VISIBLE);
                     mBinding.viewDivider.setVisibility(View.VISIBLE);
                 } else {
@@ -2118,13 +2187,14 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
                 in.ecomexpress.geolocations.Constants.longitude = toDoListViewModel.getDataManager().getCurrentLongitude();
                 if (mBinding.tick.getVisibility() == View.VISIBLE) {
                     Constants.CONSIGNEE_PROFILE = true;
-                    if (commonDRSListItem.getProfileFound().getDelivery_latitude() == commonDRSListItem.getProfileFound().getDelivery_longitude() || commonDRSListItem.getProfileFound().getDelivery_latitude() == 0 || commonDRSListItem.getProfileFound().getDelivery_longitude() == 0) {
-                        CommonUtils.showCustomSnackbar(mBinding.getRoot(), "Location coordinates either null or not Found", toDoListActivity);
+                    if (commonDRSListItem.getProfileFound().getDelivery_latitude() == 0 || commonDRSListItem.getProfileFound().getDelivery_longitude() == 0) {
+                        CommonUtils.showCustomSnackbar(mBinding.getRoot(), "Location Coordinates Not Found", toDoListActivity);
                         RVPClick(commonDRSListItem, mBinding, true);
                     } else {
+                        // double distance = getDistanceBetweenLocations(new LatLng(commonDRSListItem.getProfileFound().getDelivery_latitude(), commonDRSListItem.getProfileFound().getDelivery_longitude()));
                         double distance = LocationHelper.getDistanceBetweenPoint(commonDRSListItem.getProfileFound().getDelivery_latitude(), commonDRSListItem.getProfileFound().getDelivery_longitude(), toDoListViewModel.getDataManager().getCurrentLatitude(), toDoListViewModel.getDataManager().getCurrentLongitude());
                         if (distance > toDoListViewModel.getDataManager().getUndeliverConsigneeRANGE()) {
-                            toDoListActivity.runOnUiThread(() -> getRestrictionRVP(commonDRSListItem, mBinding, distance));
+                            toDoListActivity.runOnUiThread(() -> getRestrictionRVP(commonDRSListItem, mBinding));
                         } else {
                             RVPClick(commonDRSListItem, mBinding, true);
                         }
@@ -2139,39 +2209,22 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
             }
         }
 
-        public void getRestrictionRVP(CommonDRSListItem commonDRSListItem, ItemRvpListViewBinding mBinding, double distance) {
+        public void getRestrictionRVP(CommonDRSListItem commonDRSListItem, ItemRvpListViewBinding mBinding) {
             try {
                 String dialog_message = ctx.getResources().getString(R.string.commitdialog);
-                String positiveButtonText = ctx.getResources().getString(R.string.proceed_now);
-                String consigneeProfileValue = toDoListViewModel.getDataManager().getConsigneeProfileValue();
-                boolean isRestriction = false;
-
-                if (consigneeProfileValue.equalsIgnoreCase("W")) {
+                String positiveButtonText = ctx.getResources().getString(R.string.yes);
+                if (toDoListViewModel.getDataManager().getConsigneeProfileValue().equalsIgnoreCase("W")) {
                     dialog_message = ctx.getResources().getString(R.string.commitdialog_meter_away);
-                    positiveButtonText = ctx.getResources().getString(R.string.proceed_now);
-                } else if (consigneeProfileValue.equalsIgnoreCase("R")) {
-                    isRestriction = true;
-                    dialog_message = "You are not allowed to commit this shipment as you are not at the consignee's location.\n\n"
-                            + "📍 Distance from consignee: " + distance + " meters away\n\n"
-                            + "🔹 Your Coordinates: " + toDoListViewModel.getDataManager().getCurrentLatitude()
-                            + ", " + toDoListViewModel.getDataManager().getCurrentLongitude() + "\n"
-                            + "🔹 Consignee Coordinates: " + commonDRSListItem.getProfileFound().getDelivery_latitude()
-                            + ", " + commonDRSListItem.getProfileFound().getDelivery_longitude();
+                    positiveButtonText = ctx.getResources().getString(R.string.yes);
+                } else if (toDoListViewModel.getDataManager().getConsigneeProfileValue().equalsIgnoreCase("R")) {
+                    dialog_message = ctx.getResources().getString(R.string.commitdialog_meter_away_mandatory);
                     positiveButtonText = ctx.getResources().getString(R.string.ok);
                 }
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(ctx, R.style.Theme_MaterialComponents_Light_Dialog_Alert);
-                builder.setIcon(isRestriction ? R.drawable.restricted_sign : R.drawable.warning_sign);
-
-                SpannableString title = new SpannableString(isRestriction ? "Restricted!" : "Warning!");
-                title.setSpan(new StyleSpan(Typeface.BOLD), 0, title.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                title.setSpan(new ForegroundColorSpan(ContextCompat.getColor(ctx, android.R.color.black)), 0, title.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                builder.setTitle(title);
-
+                AlertDialog.Builder builder = new AlertDialog.Builder(ctx,R.style.Theme_MaterialComponents_Light_Dialog_Alert);
                 builder.setCancelable(false);
                 builder.setMessage(dialog_message);
                 builder.setPositiveButton(positiveButtonText, (dialog, which) -> {
-                    if (consigneeProfileValue.equalsIgnoreCase("R")) {
+                    if (toDoListViewModel.getDataManager().getConsigneeProfileValue().equalsIgnoreCase("R")) {
                         rvp_is_item_clicked = true;
                         dialog.cancel();
                     } else {
@@ -2179,12 +2232,12 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
                         RVPClick(commonDRSListItem, mBinding, true);
                     }
                 });
-
                 AlertDialog alert = builder.create();
                 alert.show();
             } catch (Exception e) {
                 Logger.e(TAG, String.valueOf(e));
             }
+            toDoListViewModel.getDataManager().getConsigneeProfileValue();
         }
 
         public void RVPClick(CommonDRSListItem commonDRSListItem, ItemRvpListViewBinding mBinding, boolean isConsigneeLocationVerified) {
@@ -2212,6 +2265,47 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
                 getDrsApiKey = commonDRSListItem.getDrsReverseQCTypeResponse().getShipmentDetails().getCallbridge_Api();
                 getDrsPstnKey = commonDRSListItem.getDrsReverseQCTypeResponse().getShipmentDetails().getCallbridgePstn();
                 Constants.RVP_Sign_Image_Required = commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().isSign_image_required();
+                Intent intent = null;
+                if (Constants.RVPCOMMIT.equalsIgnoreCase("RVP")) {
+                    intent = new Intent(toDoListActivity, SecureDeliveryActivity.class);
+                } else {
+                    intent = new Intent(toDoListActivity, RvpQcListActivity.class);
+                }
+                intent.putExtra("DRSPIN", getDrsPin);
+                intent.putExtra("DRSKEY", getDrsApiKey);
+                intent.putExtra("DRSPSTN", getDrsPstnKey);
+                intent.putExtra(Constants.DRS_ID_NUM, String.valueOf(commonDRSListItem.getDrsReverseQCTypeResponse().getDrs()));
+                intent.putExtra(Constants.SECURE_DELIVERY, commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getSecure_delivery());
+                intent.putExtra(Constants.IS_SECURE_DELIVERY, commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getSecure_delivery().getOTP());
+                intent.putExtra(Constants.SHIPMENT_TYPE, Constants.RVP);
+                intent.putExtra(Constants.DRS_PSTN_KEY, getDrsPstnKey);
+                intent.putExtra(Constants.DRS_API_KEY, getDrsApiKey);
+                intent.putExtra(Constants.OFD_OTP, commonDRSListItem.getDrsReverseQCTypeResponse().getShipmentDetails().getOfd_otp());
+                intent.putExtra("call_allowed", commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getCallAllowed());
+                intent.putExtra(Constants.CONSIGNEE_MOBILE, commonDRSListItem.getDrsReverseQCTypeResponse().getConsigneeDetails().getPhone());
+                intent.putExtra(Constants.AMAZON_ENCRYPTED_OTP, commonDRSListItem.getDrsReverseQCTypeResponse().getAmazonEncryptedOtp());
+                intent.putExtra(Constants.AMAZON, commonDRSListItem.getDrsReverseQCTypeResponse().getAmazon());
+                intent.putExtra(Constants.COMPOSITE_KEY, commonDRSListItem.getDrsReverseQCTypeResponse().getCompositeKey());
+                intent.putExtra(Constants.DRS_PIN, getDrsPin);
+                intent.putExtra(Constants.INTENT_KEY, commonDRSListItem.getDrsReverseQCTypeResponse().getAwbNo());
+                intent.putExtra(Constants.otp_required_for_delivery, commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getOtp_required_for_delivery());
+                intent.putExtra(Constants.RESEND_SECURE_OTP, commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getSecure_delivery().getResend_otp_enable());
+                intent.putExtra(Constants.DLIGHT_ENCRYPTED_OTP1, "");
+                intent.putExtra(Constants.DLIGHT_ENCRYPTED_OTP2, "");
+                intent.putExtra(Constants.CONSIGNEE_ALTERNATE_MOBILE, commonDRSListItem.getDrsReverseQCTypeResponse().getConsigneeDetails().getAlternate_number());
+                intent.putExtra(Constants.ISDELIGHTSHIPMENT, false);
+                toDoListActivity.startActivity(intent);
+                applyTransitionToOpenActivity(toDoListActivity);
+            } catch (Exception e) {
+                Toast.makeText(toDoListActivity, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            }
+            /*try {
+                Constants.RVPCOMMIT = commonDRSListItem.getDrsReverseQCTypeResponse().getShipmentDetails().getType();
+                getDrsPin = commonDRSListItem.getDrsReverseQCTypeResponse().getShipmentDetails().getPin();
+                getDrsId = String.valueOf(commonDRSListItem.getDrsReverseQCTypeResponse().getDrs());
+                getDrsApiKey = commonDRSListItem.getDrsReverseQCTypeResponse().getShipmentDetails().getCallbridge_Api();
+                getDrsPstnKey = commonDRSListItem.getDrsReverseQCTypeResponse().getShipmentDetails().getCallbridgePstn();
+                Constants.RVP_Sign_Image_Required = commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().isSign_image_required();
                 Intent intent = new Intent(toDoListActivity, PickupActivity.class);
                 intent.putExtra(Constants.DRS_ID, String.valueOf(commonDRSListItem.getDrsReverseQCTypeResponse().getDrs()));
                 intent.putExtra(Constants.SECURE_DELIVERY, commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getSecure_delivery());
@@ -2221,8 +2315,8 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
                 intent.putExtra(Constants.DRS_PSTN_KEY, getDrsPstnKey);
                 intent.putExtra(Constants.DRS_API_KEY, getDrsApiKey);
                 intent.putExtra(Constants.ITEM_DESCRIPTION, commonDRSListItem.getDrsReverseQCTypeResponse().getShipmentDetails().getItem() != null
-                        ? commonDRSListItem.getDrsReverseQCTypeResponse().getShipmentDetails().getItem()
-                        : mBinding.getRoot().getContext().getString(R.string.no_item_description_found)
+                    ? commonDRSListItem.getDrsReverseQCTypeResponse().getShipmentDetails().getItem()
+                    : mBinding.getRoot().getContext().getString(R.string.no_item_description_found)
                 );
                 intent.putExtra(Constants.OFD_OTP, commonDRSListItem.getDrsReverseQCTypeResponse().getShipmentDetails().getOfd_otp());
                 intent.putExtra(Constants.CALL_ALLOWED, commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getCallAllowed());
@@ -2231,18 +2325,17 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
                 intent.putExtra(Constants.AMAZON, commonDRSListItem.getDrsReverseQCTypeResponse().getAmazon());
                 intent.putExtra(Constants.COMPOSITE_KEY, commonDRSListItem.getDrsReverseQCTypeResponse().getCompositeKey());
                 intent.putExtra(Constants.DRS_PIN, getDrsPin);
-                intent.putExtra(Constants.AWB_NUMBER, String.valueOf(commonDRSListItem.getDrsReverseQCTypeResponse().getAwbNo()));
+                intent.putExtra(Constants.AWB_NUMBER,  String.valueOf(commonDRSListItem.getDrsReverseQCTypeResponse().getAwbNo()));
+                intent.putExtra(Constants.otp_required_for_delivery, commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getOtp_required_for_delivery());
                 intent.putExtra(Constants.RESEND_SECURE_OTP, commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getSecure_delivery().getResend_otp_enable());
                 intent.putExtra(Constants.CONSIGNEE_ALTERNATE_MOBILE, commonDRSListItem.getDrsReverseQCTypeResponse().getConsigneeDetails().getAlternate_number());
                 intent.putExtra(Constants.CONSIGNEE_NAME, commonDRSListItem.getDrsReverseQCTypeResponse().getConsigneeDetails().getName());
                 intent.putExtra(Constants.CONSIGNEE_LOCATION_VERIFIED, isConsigneeLocationVerified);
-                intent.putExtra(Constants.SMART_QC_ENABLED, commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getFlagMap().getSmart_qc());
-                intent.putExtra(Constants.IS_RVP_PHONEPE_SHIPMENT, commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getFlagMap().getIs_rvp_phone_pe_flow());
                 toDoListActivity.startActivity(intent);
                 applyTransitionToOpenActivity(toDoListActivity);
             } catch (Exception e) {
                 Toast.makeText(toDoListActivity, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-            }
+            }*/
         }
 
         @Override
@@ -2317,32 +2410,87 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
                     Toast.makeText(mBinding.getRoot().getContext(), mBinding.getRoot().getContext().getString(R.string.shipment_status_done), Toast.LENGTH_LONG).show();
                     return;
                 }
-                if (mCommonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getFlagMap().getIs_callbridge_enabled().equalsIgnoreCase("true") && mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details() != null) {
+                if (mCommonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getFlagMap().getIs_callbridge_enabled().equalsIgnoreCase("true")
+                        && mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details()!=null) {
                     try {
-                        String callingformat;
-                        callingformat = mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(0).getCallbridge_number() + "," + mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(0).getPin().substring(0, 4) + "," + mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(0).getPin().substring(4) + "#";
-                        Constants.call_pin = String.valueOf(mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(0).getPin());
-                        Constants.calling_format = callingformat;
-                        Constants.shipment_type = Constants.RVP;
-                        if (callingformat != null) {
+                        /*getDrsPstnKey = mCommonDRSListItem.getDrsReverseQCTypeResponse().getShipmentDetails().getCallbridgePstn();
+                        getDrsApiKey = mCommonDRSListItem.getDrsReverseQCTypeResponse().getShipmentDetails().getCallbridge_Api();
+                        if (getDrsPstnKey != null) {
+                            Constants.call_awb = mCommonDRSListItem.getDrsReverseQCTypeResponse().getAwbNo().toString();
+                            Constants.shipment_type = Constants.RVP;
                             Constants.ConsigneeDirectAlternateMobileNo = mCommonDRSListItem.getDrsReverseQCTypeResponse().getConsigneeDetails().getAlternate_mobile();
                             rvp_call_count = rvp_call_count + 1;
                             toDoListViewModel.getDataManager().setCallClicked(mCommonDRSListItem.getDrsReverseQCTypeResponse().getAwbNo() + "RVPCall", false);
-                            startCallIntent(mCommonDRSListItem, mCommonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getFlagMap().getIs_callbridge_enabled(), mCommonDRSListItem.getDrsReverseQCTypeResponse().getConsigneeDetails().getMobile(), callingformat, mBinding.getRoot().getContext(), mCommonDRSListItem.getDrsReverseQCTypeResponse().getAwbNo(), mCommonDRSListItem.getDrsReverseQCTypeResponse().getDrs());
-                        } else {
-                            Toast.makeText(mBinding.getRoot().getContext(), "Please switch Number", Toast.LENGTH_SHORT).show();
-                        }
+                            startCallIntent(mCommonDRSListItem,mCommonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getFlagMap().getIs_callbridge_enabled(), mCommonDRSListItem.getDrsReverseQCTypeResponse().getConsigneeDetails().getMobile(), getDrsPstnKey, mBinding.getRoot().getContext(), mCommonDRSListItem.getDrsReverseQCTypeResponse().getAwbNo(), mCommonDRSListItem.getDrsReverseQCTypeResponse().getDrs());
+                        } else if (getDrsApiKey != null) {
+                            callbridgeConfiguration = drsCallListener.getCallbridgeconfiguration();
+                            if (callbridgeConfiguration != null) {
+                                String getApiType = callbridgeConfiguration.getCb_calling_api();
+                                if (getApiType != null) {
+                                    drsCallListener.makeCallBridgeApiCall(getDrsApiKey, mCommonDRSListItem.getDrsReverseQCTypeResponse().getAwbNo().toString(), mCommonDRSListItem.getDrsReverseQCTypeResponse().getDrs(), Constants.RVP);
+                                } else {
+                                    Toast.makeText(toDoListActivity, R.string.null_key_api, Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(mBinding.getRoot().getContext(), "callconfig null", Toast.LENGTH_SHORT).show();
+                            }
+                        }*/ /*else if (getDrsApiKey == null && getDrsPstnKey == null) {*/
+                            try {
+                             //   callbridgeConfiguration = drsCallListener.getCallbridgeconfiguration();
+                               // if (callbridgeConfiguration != null) {
+                                 //   getCbConfigCallType = callbridgeConfiguration.getCb_calling_type();
+                                   // if (getCbConfigCallType != null)
+                                      //  if (getCbConfigCallType.equalsIgnoreCase(mBinding.getRoot().getContext().getString(R.string.cb_config_pstn))) {
+                                         //   Masterpstnformat = drsCallListener.getDefaultPstn();
+                                            String callingformat = null;
+                                          /*  if (Masterpstnformat.contains(mBinding.getRoot().getContext().getString(R.string.patn_awb))) {
+                                                callingformat = Masterpstnformat.replaceAll(mBinding.getRoot().getContext().getString(R.string.patn_awb), mCommonDRSListItem.getDrsReverseQCTypeResponse().getAwbNo().toString());
+                                                Constants.call_awb = String.valueOf(mCommonDRSListItem.getDrsReverseQCTypeResponse().getAwbNo());
+                                                Constants.shipment_type = Constants.RVP;
+                                            } else if (Masterpstnformat.contains(mBinding.getRoot().getContext().getString(R.string.pstn_pin))) {*/
+                                               // callingformat = Masterpstnformat.replaceAll(mBinding.getRoot().getContext().getString(R.string.pstn_pin), mCommonDRSListItem.getDrsReverseQCTypeResponse().getShipmentDetails().getPin());
+                                                //Constants.call_pin = String.valueOf(mCommonDRSListItem.getDrsReverseQCTypeResponse().getShipmentDetails().getPin());
+                                                callingformat = mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(0).getCallbridge_number()+","+mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(0).getPin()+"#";
+                                                Constants.call_pin = String.valueOf(mCommonDRSListItem.getDrsReverseQCTypeResponse().getCallbridge_details().get(0).getPin());
+                                                Constants.calling_format = callingformat;
+                                                Constants.shipment_type = Constants.RVP;
+                                           // }
+                                            if (callingformat != null) {
+                                                Constants.ConsigneeDirectAlternateMobileNo = mCommonDRSListItem.getDrsReverseQCTypeResponse().getConsigneeDetails().getAlternate_mobile();
+                                                rvp_call_count = rvp_call_count + 1;
+                                                toDoListViewModel.getDataManager().setCallClicked(mCommonDRSListItem.getDrsReverseQCTypeResponse().getAwbNo() + "RVPCall", false);
+                                                startCallIntent(mCommonDRSListItem,mCommonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getFlagMap().getIs_callbridge_enabled(), mCommonDRSListItem.getDrsReverseQCTypeResponse().getConsigneeDetails().getMobile(), callingformat, mBinding.getRoot().getContext(), mCommonDRSListItem.getDrsReverseQCTypeResponse().getAwbNo(), mCommonDRSListItem.getDrsReverseQCTypeResponse().getDrs());
+                                            } else {
+                                                Toast.makeText(mBinding.getRoot().getContext(), "Please switch Number", Toast.LENGTH_SHORT).show();
+                                            }
+                                      //  }
+                                       /* else if (getCbConfigCallType.equalsIgnoreCase(mBinding.getRoot().getContext().getString(R.string.cb_config_api))) {
+                                            String getApiType = callbridgeConfiguration.getCb_calling_api();
+                                            if (getApiType != null) {
+                                                drsCallListener.makeCallBridgeApiCall(callbridgeConfiguration.getCb_calling_api(), mCommonDRSListItem.getDrsReverseQCTypeResponse().getAwbNo().toString(), mCommonDRSListItem.getDrsReverseQCTypeResponse().getDrs(), Constants.RVP);
+                                            } else {
+                                                Toast.makeText(toDoListActivity, R.string.null_key_api, Toast.LENGTH_SHORT).show();
+                                            }
+                                        }*/
+                             //   }
+                            } catch (Exception e) {
+                                Toast.makeText(toDoListActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Logger.e(TAG, String.valueOf(e));
+                            }
+                      //  }
                     } catch (Exception e) {
                         Toast.makeText(toDoListActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Logger.e(TAG, String.valueOf(e));
                     }
                 } else {
                     rvp_call_count = rvp_call_count + 1;
                     toDoListViewModel.getDataManager().setCallClicked(mCommonDRSListItem.getDrsReverseQCTypeResponse().getAwbNo() + "RVPCall", false);
                     Constants.ConsigneeDirectAlternateMobileNo = mCommonDRSListItem.getDrsReverseQCTypeResponse().getConsigneeDetails().getAlternate_mobile();
-                    startCallIntent(mCommonDRSListItem, mCommonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getFlagMap().getIs_callbridge_enabled(), mCommonDRSListItem.getDrsReverseQCTypeResponse().getConsigneeDetails().getMobile(), getDrsPstnKey, mBinding.getRoot().getContext(), mCommonDRSListItem.getDrsReverseQCTypeResponse().getAwbNo(), mCommonDRSListItem.getDrsReverseQCTypeResponse().getDrs());
+                    startCallIntent(mCommonDRSListItem,mCommonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getFlagMap().getIs_callbridge_enabled(), mCommonDRSListItem.getDrsReverseQCTypeResponse().getConsigneeDetails().getMobile(), getDrsPstnKey, mBinding.getRoot().getContext(), mCommonDRSListItem.getDrsReverseQCTypeResponse().getAwbNo(), mCommonDRSListItem.getDrsReverseQCTypeResponse().getDrs());
                 }
             } catch (Exception e) {
                 Toast.makeText(toDoListActivity, "RVP Call Click():-" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Logger.e(TAG, String.valueOf(e));
             }
         }
 
@@ -2387,557 +2535,6 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
         }
     }
 
-    /*RVP MPS*/
-    public class RVPMPSViewHolder extends BaseViewHolder implements DRSItemViewModelListener {
-        private final ItemRvpMpsListViewBinding mBinding;
-        RVPMPSItemViewModel mRVPMPSItemViewModel;
-
-        public RVPMPSViewHolder(ItemRvpMpsListViewBinding binding) {
-            super(binding.getRoot());
-            this.mBinding = binding;
-        }
-
-        public ItemRvpMpsListViewBinding getmBinding() {
-            return this.mBinding;
-        }
-
-        @Override
-        public void onBind(int position) {
-            try {
-                slide_down = AnimationUtils.loadAnimation(mBinding.getRoot().getContext(), R.anim.bounce_in_down);
-                final CommonDRSListItem commonDRSListItem = filterShipments.get(position);
-                mRVPMPSItemViewModel = new RVPMPSItemViewModel(commonDRSListItem, this);
-                mBinding.setViewModel(mRVPMPSItemViewModel);
-                mBinding.viewDivider.setVisibility(!mRVPMPSItemViewModel.getPin().isEmpty() ? View.VISIBLE : View.GONE);
-                if (toDoListViewModel.getDataManager().getENABLEDIRECTDIAL().equalsIgnoreCase("true")) {
-                    mBinding.pin.setVisibility(View.INVISIBLE);
-                    mBinding.viewDivider.setVisibility(View.INVISIBLE);
-                } else {
-                    mBinding.pin.setVisibility(View.VISIBLE);
-                    mBinding.viewDivider.setVisibility(View.VISIBLE);
-                }
-                try {
-                    toDoListViewModel.checkRVPImageDownloadedORNot(commonDRSListItem.getDrsRvpQcMpsResponse().getAwbNo());
-                } catch (Exception e) {
-                    Logger.e(TAG, String.valueOf(e));
-                }
-                mBinding.checkboxCkb.setOnCheckedChangeListener(null);
-                mBinding.secureDelLock.setTag(position);
-                mBinding.secureDelOpen.setTag(position);
-                mBinding.checkboxCkb.setFocusable(false);
-                mBinding.checkboxCkb.setChecked(commonDRSListItem.isSmsCheckFlag());
-                if (commonDRSListItem.getDrsRvpQcMpsResponse().getFlags().getCallAllowed()) {
-                    mBinding.call.setImageResource(R.drawable.ic_action_callbridge);
-                } else {
-                    mBinding.call.setImageResource(R.drawable.ic_phone_call_disabled);
-                }
-                IsProfileFound(commonDRSListItem);
-                if (commonDRSListItem.getDrsRvpQcMpsResponse().getShipmentStatus() == 0) {
-                    if (isCheckboxVisible) {
-                        mBinding.checkboxCkb.setVisibility(View.VISIBLE);
-                        mBinding.checkboxCkb.setGravity(Gravity.CENTER);
-                        mBinding.color.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0.1f));
-                        mBinding.checkboxCkb.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT, 0.1f));
-                    } else {
-                        mBinding.checkboxCkb.setVisibility(View.GONE);
-                        mBinding.color.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT, 0.1f));
-                        mBinding.checkboxCkb.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0f));
-                    }
-                } else {
-                    mBinding.checkboxCkb.setVisibility(View.GONE);
-                    mBinding.color.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT, 0.1f));
-                    mBinding.checkboxCkb.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0f));
-                }
-                mBinding.checkboxCkb.setOnClickListener(view -> {
-                    commonDRSListItem.setSmsCheckFlag(!commonDRSListItem.isSmsCheckFlag());
-                    checkbox_filter.put(String.valueOf(filterShipments.get(getAdapterPosition()).getDrsRvpQcMpsResponse().getAwbNo()), commonDRSListItem.isSmsCheckFlag());
-                    drsCallListener.getCheckedShipmentlist(checkbox_filter);
-                    notifyDataSetChanged();
-                });
-                if (!commonDRSListItem.getDrsRvpQcMpsResponse().getShipmentDetails().getQcItems().isEmpty()) {
-                    mBinding.qc.setVisibility(View.VISIBLE);
-                } else {
-                    mBinding.qc.setVisibility(View.GONE);
-                }
-                mBinding.imageViewSyncStatus.setVisibility(mRVPMPSItemViewModel.isItemSynced() ? View.VISIBLE : View.GONE);
-                mBinding.awb.setText(commonDRSListItem.getDrsRvpQcMpsResponse().getAwbNo().toString());
-                IsCallAttempted(commonDRSListItem);
-                Remark remark = commonDRSListItem.getRemark();
-                if (remark != null && remark.remark != null && !remark.remark.isEmpty()) {
-                    mBinding.layoutRemarks.setVisibility(View.VISIBLE);
-                    mBinding.remarks.setText(commonDRSListItem.getRemark().remark);
-                } else {
-                    mBinding.layoutRemarks.setVisibility(View.GONE);
-                }
-                toDoListViewModel.getRemarkRVPMPS(commonDRSListItem.getDrsRvpQcMpsResponse().getAwbNo(), mBinding);
-                if (commonDRSListItem.getCommonDrsStatus() == Constants.SHIPMENT_UNDELIVERED_STATUS) {
-                    mBinding.color.setBackgroundResource(R.drawable.undelivered_gradient);
-                    mBinding.moreorless.setText("Pickup Failed");
-                    mBinding.tray.setBackgroundColor(ContextCompat.getColor(mBinding.getRoot().getContext(), R.color.undel4));
-                    try {
-                        if (commonDRSListItem.getDrsRvpQcMpsResponse().getFlags().getSecure_delivery() != null) {
-                            if (!commonDRSListItem.getDrsRvpQcMpsResponse().getFlags().getSecure_delivery().getPinb() && commonDRSListItem.getDrsRvpQcMpsResponse().getFlags().getSecure_delivery().getOTP() == false && commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getSecure_delivery().getSecure_pin() == false) {
-                                mBinding.secureDelLock.setVisibility(View.GONE);
-                                mBinding.secureDelOpen.setVisibility(View.GONE);
-                            } else {
-                                if ((Integer) mBinding.secureDelOpen.getTag() == position) {
-                                    mBinding.secureDelLock.setVisibility(View.VISIBLE);
-                                    mBinding.secureDelOpen.setVisibility(View.GONE);
-                                }
-                            }
-                        }
-                    } catch (Exception e) {
-                        Logger.e(TAG, String.valueOf(e));
-                    }
-                } else if (commonDRSListItem.getCommonDrsStatus() == Constants.SHIPMENT_ASSIGNED_STATUS) {
-                    mBinding.color.setBackgroundResource(R.color.white);
-                    mBinding.moreorless.setText(Constants.MORE);
-                    mBinding.tray.setBackgroundColor(ContextCompat.getColor(mBinding.getRoot().getContext(), R.color.rvplight));
-                    try {
-                        if (commonDRSListItem.getDrsRvpQcMpsResponse().getFlags().getSecure_delivery() != null) {
-                            if (!commonDRSListItem.getDrsRvpQcMpsResponse().getFlags().getSecure_delivery().getPinb() && !commonDRSListItem.getDrsRvpQcMpsResponse().getFlags().getSecure_delivery().getOTP() && !commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getSecure_delivery().getSecure_pin()) {
-                                mBinding.secureDelLock.setVisibility(View.GONE);
-                                mBinding.secureDelOpen.setVisibility(View.GONE);
-                            } else {
-                                if ((Integer) mBinding.secureDelOpen.getTag() == position) {
-                                    mBinding.secureDelLock.setVisibility(View.VISIBLE);
-                                    mBinding.secureDelOpen.setVisibility(View.GONE);
-                                }
-                            }
-                        }
-                    } catch (Exception e) {
-                        Logger.e(TAG, String.valueOf(e));
-                    }
-                } else if (commonDRSListItem.getCommonDrsStatus() == Constants.SHIPMENT_DELIVERED_STATUS) {
-                    mBinding.color.setBackgroundResource(R.drawable.delivered_gradient);
-                    try {
-                        if (commonDRSListItem.getDrsRvpQcMpsResponse().getFlags().getSecure_delivery() != null) {
-                            if (!commonDRSListItem.getDrsRvpQcMpsResponse().getFlags().getSecure_delivery().getPinb() && !commonDRSListItem.getDrsRvpQcMpsResponse().getFlags().getSecure_delivery().getOTP() && !commonDRSListItem.getDrsRvpQcMpsResponse().getFlags().getSecure_delivery().getSecure_pin()) {
-                                mBinding.secureDelLock.setVisibility(View.GONE);
-                                mBinding.secureDelOpen.setVisibility(View.GONE);
-                            } else {
-                                if ((Integer) mBinding.secureDelOpen.getTag() == position) {
-                                    mBinding.secureDelLock.setVisibility(View.GONE);
-                                    mBinding.secureDelOpen.setVisibility(View.VISIBLE);
-                                }
-                            }
-                        }
-                    } catch (Exception e) {
-                        Logger.e(TAG, String.valueOf(e));
-                    }
-                    mBinding.moreorless.setText("Picked Up");
-                    mBinding.tray.setBackgroundColor(ContextCompat.getColor(mBinding.getRoot().getContext(), R.color.del4));
-                }
-                if (commonDRSListItem.isNewDRSAfterSync()) {
-                    mBinding.newFlag.setVisibility(View.VISIBLE);
-                } else {
-                    mBinding.newFlag.setVisibility(View.GONE);
-                }
-                //RVP
-                mBinding.swipeLayout.setSwipeEnabled(filterShipments.get(position).getCommonDrsStatus() == Constants.SHIPMENT_ASSIGNED_STATUS);
-                mBinding.swipeLayout.setOffset(itemsOffset[position]);
-                mBinding.swipeLayout.setOnSwipeListener(new SwipeLayout.OnSwipeListener() {
-                    @Override
-                    public void onBeginSwipe(SwipeLayout swipeLayout, boolean moveToRight) {
-                        Log.d("", "onBeginSwipe: current item position" + position);
-                    }
-
-                    @Override
-                    public void onSwipeClampReached(SwipeLayout swipeLayout, boolean moveToRight) {
-                        resetAllOtherItemSwipe(position);
-                    }
-
-                    @Override
-                    public void onLeftStickyEdge(SwipeLayout swipeLayout, boolean moveToRight) {
-                    }
-
-                    @Override
-                    public void onRightStickyEdge(SwipeLayout swipeLayout, boolean moveToRight) {
-                    }
-                });
-                mBinding.remarksCard.setOnClickListener(v -> {
-                    mBinding.swipeLayout.animateReset();
-                    clickSwipeListener.onRemarksClicked(position);
-                });
-                mBinding.executePendingBindings();
-            } catch (Exception e) {
-                Toast.makeText(toDoListActivity, "RVP onBind():-" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                Logger.e(TAG, String.valueOf(e));
-            }
-        }
-
-        private void IsProfileFound(CommonDRSListItem commonDRSListItem) {
-            try {
-                ProfileFound profileFound = commonDRSListItem.getProfileFound();
-                if (profileFound != null) {
-                    mBinding.tick.setVisibility(View.VISIBLE);
-                    mBinding.map.setVisibility(View.GONE);
-                    mBinding.navView.setBackground(ctx.getResources().getDrawable(R.drawable.ic_action_trip));
-                    if (profileFound.isRed_alert()) {
-                        mBinding.imageRedAlert.setVisibility(View.VISIBLE);
-                    } else {
-                        mBinding.imageRedAlert.setVisibility(View.GONE);
-                    }
-                } else {
-                    mBinding.tick.setVisibility(View.GONE);
-                    mBinding.map.setVisibility(View.VISIBLE);
-                    mBinding.navView.setBackgroundResource(R.drawable.rvp);
-                }
-            } catch (Exception e) {
-                Toast.makeText(toDoListActivity, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        private void changeCheckboxState(CommonDRSListItem commonDRSListItem) {
-            try {
-                commonDRSListItem.setSmsCheckFlag(!commonDRSListItem.isSmsCheckFlag());
-                checkbox_filter.put(String.valueOf(filterShipments.get(getAdapterPosition()).getDrsRvpQcMpsResponse().getAwbNo()), commonDRSListItem.isSmsCheckFlag());
-                drsCallListener.getCheckedShipmentlist(checkbox_filter);
-                notifyDataSetChanged();
-            } catch (Exception e) {
-                Toast.makeText(toDoListActivity, "RVP changeCheckboxState():-" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                Logger.e(TAG, String.valueOf(e));
-            }
-        }
-
-        // RVP-MPS
-        @Override
-        public void onItemClick(CommonDRSListItem commonDRSListItem) {
-            commonDRSListItemRVPClick = commonDRSListItem;
-            Constants.TEMP_OFD_OTP = commonDRSListItem.getDrsRvpQcMpsResponse().getShipmentDetails().getOfd_otp();
-            Constants.Water_Mark_Awb = String.valueOf(commonDRSListItem.getDrsRvpQcMpsResponse().getAwbNo());
-            try {
-                //if(rvp_is_item_clicked){
-                Constants.CancellationEnable = false;
-                Constants.RCHDEnable = false;
-                Constants.Wrong_Mobile_no = false;
-                Constants.ConsigneeDirectMobileNo = commonDRSListItem.getDrsRvpQcMpsResponse().getConsigneeDetails().getMobile();
-                Constants.ConsigneeDirectAlternateMobileNo = commonDRSListItem.getDrsRvpQcMpsResponse().getConsigneeDetails().getAlternate_mobile();
-                if (!commonDRSListItem.getDrsRvpQcMpsResponse().getFlags().getCallAllowed()) {
-                    Constants.Wrong_Mobile_no = true;
-                }
-                rvp_is_item_clicked = false;
-                toDoListViewModel.getDataManager().setOFDOTPVerifiedStatus("NONE");
-                toDoListViewModel.getDataManager().setRVPSecureOTPVerified("false");
-                toDoListViewModel.getDataManager().setDRSTimeStap(commonDRSListItem.getDrsRvpQcMpsResponse().getAssignedDate());
-                toDoListViewModel.getDataManager().setShipperId(commonDRSListItem.getDrsRvpQcMpsResponse().getShipmentDetails().getShipper_id());
-                Constants.CancellationEnable = commonDRSListItem.getDrsRvpQcMpsResponse().getFlags().getSecure_delivery().getCancellation_enabled();
-                Constants.RCHDEnable = commonDRSListItem.getDrsRvpQcMpsResponse().getFlags().getSecure_delivery().getRCHD_enabled();
-                in.ecomexpress.geolocations.Constants.latitude = toDoListViewModel.getDataManager().getCurrentLatitude();
-                in.ecomexpress.geolocations.Constants.longitude = toDoListViewModel.getDataManager().getCurrentLongitude();
-                if (mBinding.tick.getVisibility() == View.VISIBLE) {
-                    Constants.CONSIGNEE_PROFILE = true;
-                    if (commonDRSListItem.getProfileFound().getDelivery_latitude() == commonDRSListItem.getProfileFound().getDelivery_longitude() || commonDRSListItem.getProfileFound().getDelivery_latitude() == 0 || commonDRSListItem.getProfileFound().getDelivery_longitude() == 0) {
-                        CommonUtils.showCustomSnackbar(mBinding.getRoot(), "Location coordinates either null or not Found", toDoListActivity);
-                        RVPMPSClick(commonDRSListItem, mBinding);
-                    } else {
-                        double distance = LocationHelper.getDistanceBetweenPoint(commonDRSListItem.getProfileFound().getDelivery_latitude(), commonDRSListItem.getProfileFound().getDelivery_longitude(), toDoListViewModel.getDataManager().getCurrentLatitude(), toDoListViewModel.getDataManager().getCurrentLongitude());
-                        if (distance > toDoListViewModel.getDataManager().getUndeliverConsigneeRANGE()) {
-                            toDoListActivity.runOnUiThread(() -> getRestrictionRVPMPS(commonDRSListItem, mBinding, distance));
-                        } else {
-                            RVPMPSClick(commonDRSListItem, mBinding);
-                        }
-                    }
-                } else {
-                    Constants.CONSIGNEE_PROFILE = false;
-                    RVPMPSClick(commonDRSListItem, mBinding);
-                }
-                //  }
-            } catch (Exception e) {
-                Toast.makeText(toDoListActivity, "RVP onItemClick():-" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                Logger.e(TAG, String.valueOf(e));
-            }
-        }
-
-        public void getRestrictionRVPMPS(CommonDRSListItem commonDRSListItem, ItemRvpMpsListViewBinding mBinding, double distance) {
-            try {
-                String dialog_message = ctx.getResources().getString(R.string.commitdialog);
-                String positiveButtonText = ctx.getResources().getString(R.string.proceed_now);
-
-                String consigneeProfileValue = toDoListViewModel.getDataManager().getConsigneeProfileValue();
-                boolean isRestriction = false;
-
-                if (consigneeProfileValue.equalsIgnoreCase("W")) {
-                    dialog_message = ctx.getResources().getString(R.string.commitdialog_meter_away);
-                    positiveButtonText = ctx.getResources().getString(R.string.proceed_now);
-                } else if (consigneeProfileValue.equalsIgnoreCase("R")) {
-                    isRestriction = true;
-                    dialog_message = "You are not allowed to commit this shipment as you are not at the consignee's location.\n\n"
-                            + "📍 Distance from consignee: " + distance + " meters away\n\n"
-                            + "🔹 Your Coordinates: " + toDoListViewModel.getDataManager().getCurrentLatitude()
-                            + ", " + toDoListViewModel.getDataManager().getCurrentLongitude() + "\n"
-                            + "🔹 Consignee Coordinates: " + commonDRSListItem.getProfileFound().getDelivery_latitude()
-                            + ", " + commonDRSListItem.getProfileFound().getDelivery_longitude();
-                    positiveButtonText = ctx.getResources().getString(R.string.ok);
-                }
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(ctx, R.style.Theme_MaterialComponents_Light_Dialog_Alert);
-                builder.setIcon(isRestriction ? R.drawable.restricted_sign : R.drawable.warning_sign);
-
-                // Format title as bold and black
-                SpannableString title = new SpannableString(isRestriction ? "Restricted!" : "Warning!");
-                title.setSpan(new StyleSpan(Typeface.BOLD), 0, title.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                title.setSpan(new ForegroundColorSpan(ContextCompat.getColor(ctx, android.R.color.black)), 0, title.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                builder.setTitle(title);
-
-                builder.setCancelable(false);
-                builder.setMessage(dialog_message);
-                builder.setPositiveButton(positiveButtonText, (dialog, which) -> {
-                    if (consigneeProfileValue.equalsIgnoreCase("R")) {
-                        rvp_is_item_clicked = true;
-                        dialog.cancel();
-                    } else {
-                        dialog.cancel();
-                        RVPMPSClick(commonDRSListItem, mBinding);
-                    }
-                });
-
-                AlertDialog alert = builder.create();
-                alert.show();
-            } catch (Exception e) {
-                Logger.e(TAG, String.valueOf(e));
-            }
-        }
-
-        public void RVPMPSClick(CommonDRSListItem commonDRSListItem, ItemRvpMpsListViewBinding mBinding) {
-            if (commonDRSListItem.getDrsRvpQcMpsResponse().getShipmentStatus() > 0) {
-                Toast.makeText(mBinding.getRoot().getContext(), mBinding.getRoot().getContext().getString(R.string.shipment_status_done), Toast.LENGTH_LONG).show();
-                return;
-            } else if (toDoListActivity.activityToDoListBinding.lltFooter.getVisibility() == View.VISIBLE) {
-                changeCheckboxState(commonDRSListItem);
-                return;
-            }
-            try {
-                Constants.TEMP_DRSID = commonDRSListItem.getDrsRvpQcMpsResponse().getDrs();
-                getDrsPin = commonDRSListItem.getDrsRvpQcMpsResponse().getShipmentDetails().getPin();
-                getDrsId = String.valueOf(commonDRSListItem.getDrsRvpQcMpsResponse().getDrs());
-                getDrsApiKey = commonDRSListItem.getDrsRvpQcMpsResponse().getShipmentDetails().getCallbridge_Api();
-                getDrsPstnKey = commonDRSListItem.getDrsRvpQcMpsResponse().getShipmentDetails().getCallbridgePstn();
-                Constants.RVP_Sign_Image_Required = commonDRSListItem.getDrsRvpQcMpsResponse().getFlags().isSign_image_required();
-                Intent intent = new Intent(toDoListActivity, MpsPickupActivity.class);
-                intent.putExtra(Constants.DRS_ID, getDrsId);
-                intent.putExtra(Constants.SECURE_DELIVERY, commonDRSListItem.getDrsRvpQcMpsResponse().getFlags().getSecure_delivery());
-                intent.putExtra(Constants.SECURE_DELIVERY_OTP, commonDRSListItem.getDrsRvpQcMpsResponse().getFlags().getSecure_delivery().getOTP());
-                intent.putExtra(Constants.DRS_PIN, getDrsPin);
-                intent.putExtra(Constants.DRS_PSTN_KEY, getDrsPstnKey);
-                intent.putExtra(Constants.DRS_API_KEY, getDrsApiKey);
-                intent.putExtra(Constants.OFD_OTP, commonDRSListItem.getDrsRvpQcMpsResponse().getShipmentDetails().getOfd_otp());
-                intent.putExtra(Constants.CALL_ALLOWED, commonDRSListItem.getDrsRvpQcMpsResponse().getFlags().getCallAllowed());
-                intent.putExtra(Constants.CONSIGNEE_MOBILE, commonDRSListItem.getDrsRvpQcMpsResponse().getConsigneeDetails().getMobile());
-                intent.putExtra(Constants.AMAZON_ENCRYPTED_OTP, commonDRSListItem.getDrsRvpQcMpsResponse().getAmazonEncryptedOtp());
-                intent.putExtra(Constants.AMAZON, commonDRSListItem.getDrsRvpQcMpsResponse().getAmazon());
-                intent.putExtra(Constants.COMPOSITE_KEY, commonDRSListItem.getDrsRvpQcMpsResponse().getCompositeKey());
-                intent.putExtra(Constants.DRS_PIN, getDrsPin);
-                intent.putExtra(Constants.AWB_NUMBER, String.valueOf(commonDRSListItem.getDrsRvpQcMpsResponse().getAwbNo()));
-                intent.putExtra(Constants.RESEND_SECURE_OTP, commonDRSListItem.getDrsRvpQcMpsResponse().getFlags().getSecure_delivery().getResend_otp_enable());
-                intent.putExtra(Constants.CONSIGNEE_ALTERNATE_MOBILE, commonDRSListItem.getDrsRvpQcMpsResponse().getConsigneeDetails().getAlternate_number());
-                intent.putExtra(Constants.CONSIGNEE_NAME, commonDRSListItem.getDrsRvpQcMpsResponse().getConsigneeDetails().getName());
-                toDoListActivity.startActivity(intent);
-                applyTransitionToOpenActivity(toDoListActivity);
-            } catch (Exception e) {
-                Toast.makeText(toDoListActivity, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        // RVP MPS
-        @Override
-        public void onMapClick(CommonDRSListItem commonDRSListItem) {
-            try {
-                if (commonDRSListItem.getDrsRvpQcMpsResponse().getShipmentStatus() > 0) {
-                    Toast.makeText(mBinding.getRoot().getContext(), mBinding.getRoot().getContext().getString(R.string.shipment_status_done), Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if (!(Build.MANUFACTURER + ":" + Build.MODEL).toUpperCase(Locale.US).equals(Constants.ZEBRA)) {
-                    try {
-                        Uri uri = null;
-                        String getaddress = CommonUtils.nullToEmpty(commonDRSListItem.getDrsRvpQcMpsResponse().getConsigneeDetails().getAddress().getLine1()) + ",\n" + CommonUtils.nullToEmpty(commonDRSListItem.getDrsRvpQcMpsResponse().getConsigneeDetails().getAddress().getLine2()) + ",\n" + CommonUtils.nullToEmpty(commonDRSListItem.getDrsRvpQcMpsResponse().getConsigneeDetails().getAddress().getLine3()) + ",\n" + CommonUtils.nullToEmpty(commonDRSListItem.getDrsRvpQcMpsResponse().getConsigneeDetails().getAddress().getLine4()) + ",\n" + CommonUtils.nullToEmpty(commonDRSListItem.getDrsRvpQcMpsResponse().getConsigneeDetails().getAddress().getCity()) + ",\n" + commonDRSListItem.getDrsRvpQcMpsResponse().getConsigneeDetails().getAddress().getPincode();
-                        String removeBetweenSpaces = getaddress.replaceAll("\\s+", " ").trim();
-                        String finalAddress = removeBetweenSpaces.replaceAll(",", "").trim();
-                        double lat = 0;
-                        double lng = 0;
-                        try {
-                            lat = commonDRSListItem.getDrsRvpQcMpsResponse().getConsigneeDetails().getAddress().getLocation().getLat();
-                            lng = commonDRSListItem.getDrsRvpQcMpsResponse().getConsigneeDetails().getAddress().getLocation().getLng();
-                        } catch (Exception e) {
-                            Logger.e(TAG, String.valueOf(e));
-                        }
-                        if (lng != 0.0 && lat != 0.0) {
-                            uri = Uri.parse(String.format(Locale.ENGLISH, "http://maps.google.com/maps?saddr=%f,%f(%s)&daddr=%f,%f (%s)", toDoListViewModel.getlat(), toDoListViewModel.getlng(), "MyLocation", lat, lng, "Destination"));
-                        } else {
-                            uri = Uri.parse("google.navigation:q=" + finalAddress + "&mode=" + toDoListViewModel.getDataManager().getMAP_DRIVING_MODE() + "&avoid=tf");
-                        }
-                        rvp_map_count = rvp_map_count + 1;
-                        toDoListViewModel.getDataManager().setRVPMapCount(commonDRSListItem.getDrsRvpQcMpsResponse().getAwbNo(), rvp_map_count);
-                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                        if (CommonUtils.isAppInstalled("com.google.android.apps.maps", mBinding.getRoot().getContext())) {
-                            intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            mBinding.getRoot().getContext().startActivity(intent);
-                        } else {
-                            Toast.makeText(mBinding.getRoot().getContext(), "Google Maps not Supported", Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        Logger.e(TAG, String.valueOf(e));
-                    }
-                }
-            } catch (Exception e) {
-                Toast.makeText(toDoListActivity, "RVP MapClick():-" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                Logger.e(TAG, String.valueOf(e));
-            }
-        }
-
-        private void IsCallAttempted(CommonDRSListItem commonDRSListItem) {
-            try {
-                if (commonDRSListItem.getDrsRvpQcMpsResponse().getIsCallattempted() != 0) {
-                    if (commonDRSListItem.getDrsRvpQcMpsResponse().getIsCallattempted() == Constants.callAttempted) {
-                        mBinding.icCallattempted.setVisibility(View.VISIBLE);
-                    } else {
-                        mBinding.icCallattempted.setVisibility(View.GONE);
-                    }
-                }
-            } catch (Exception e) {
-                Toast.makeText(toDoListActivity, "RVP IsCallAttempted():-" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                Logger.e(TAG, String.valueOf(e));
-            }
-        }
-
-        @Override
-        public void onCallClick(CommonDRSListItem mCommonDRSListItem) {
-            try {
-                if (!mCommonDRSListItem.getDrsRvpQcMpsResponse().getFlags().getCallAllowed()) {
-                    Toast.makeText(toDoListActivity, toDoListActivity.getResources().getString(R.string.call_not_allowed), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (mCommonDRSListItem.getDrsRvpQcMpsResponse().getShipmentStatus() > 0) {
-                    Toast.makeText(mBinding.getRoot().getContext(), mBinding.getRoot().getContext().getString(R.string.shipment_status_done), Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if (toDoListViewModel.getDataManager().getENABLEDIRECTDIAL().equalsIgnoreCase("true")) {
-                    rvp_call_count = rvp_call_count + 1;
-                    toDoListViewModel.getDataManager().setCallClicked(mCommonDRSListItem.getDrsRvpQcMpsResponse().getAwbNo() + "RVPCall", false);
-                    Constants.ConsigneeDirectAlternateMobileNo = mCommonDRSListItem.getDrsRvpQcMpsResponse().getConsigneeDetails().getAlternate_mobile();
-                    startCallIntent(mCommonDRSListItem, mCommonDRSListItem.getDrsForwardTypeResponse().getFlags().getFlagMap().getIs_callbridge_enabled(), mCommonDRSListItem.getDrsRvpQcMpsResponse().getConsigneeDetails().getMobile(), getDrsPstnKey, mBinding.getRoot().getContext(), mCommonDRSListItem.getDrsRvpQcMpsResponse().getAwbNo(), mCommonDRSListItem.getDrsRvpQcMpsResponse().getDrs());
-                    return;
-                }
-                try {
-                    getDrsPstnKey = mCommonDRSListItem.getDrsRvpQcMpsResponse().getShipmentDetails().getCallbridgePstn();
-                    getDrsApiKey = mCommonDRSListItem.getDrsRvpQcMpsResponse().getShipmentDetails().getCallbridge_Api();
-                    if (getDrsPstnKey != null) {
-                        Constants.call_awb = mCommonDRSListItem.getDrsRvpQcMpsResponse().getAwbNo().toString();
-                        Constants.shipment_type = Constants.RVP;
-                        Constants.ConsigneeDirectAlternateMobileNo = mCommonDRSListItem.getDrsRvpQcMpsResponse().getConsigneeDetails().getAlternate_mobile();
-                        rvp_call_count = rvp_call_count + 1;
-                        toDoListViewModel.getDataManager().setCallClicked(mCommonDRSListItem.getDrsRvpQcMpsResponse().getAwbNo() + "RVPCall", false);
-                        startCallIntent(mCommonDRSListItem, mCommonDRSListItem.getDrsForwardTypeResponse().getFlags().getFlagMap().getIs_callbridge_enabled(), mCommonDRSListItem.getDrsRvpQcMpsResponse().getConsigneeDetails().getMobile(), getDrsPstnKey, mBinding.getRoot().getContext(), mCommonDRSListItem.getDrsRvpQcMpsResponse().getAwbNo(), mCommonDRSListItem.getDrsRvpQcMpsResponse().getDrs());
-                    } else if (getDrsApiKey != null) {
-                        callbridgeConfiguration = drsCallListener.getCallbridgeconfiguration();
-                        if (callbridgeConfiguration != null) {
-                            String getApiType = callbridgeConfiguration.getCb_calling_api();
-                            if (getApiType != null) {
-                                drsCallListener.makeCallBridgeApiCall(getDrsApiKey, mCommonDRSListItem.getDrsRvpQcMpsResponse().getAwbNo().toString(), mCommonDRSListItem.getDrsRvpQcMpsResponse().getDrs(), Constants.RVP);
-                            } else {
-                                Toast.makeText(toDoListActivity, R.string.null_key_api, Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            Toast.makeText(mBinding.getRoot().getContext(), "callconfig null", Toast.LENGTH_SHORT).show();
-                        }
-                    } else if (getDrsApiKey == null && getDrsPstnKey == null) {
-                        //                    Toast.makeText(mBinding.getRoot().getContext(), "RVP3", Toast.LENGTH_SHORT).show();
-                        try {
-                            callbridgeConfiguration = drsCallListener.getCallbridgeconfiguration();
-                            if (callbridgeConfiguration != null) {
-                                getCbConfigCallType = callbridgeConfiguration.getCb_calling_type();
-                                if (getCbConfigCallType != null)
-                                    if (getCbConfigCallType.equalsIgnoreCase(mBinding.getRoot().getContext().getString(R.string.cb_config_pstn))) {
-                                        Masterpstnformat = drsCallListener.getDefaultPstn();
-                                        String callingformat = null;
-                                        if (Masterpstnformat.contains(mBinding.getRoot().getContext().getString(R.string.patn_awb))) {
-                                            callingformat = Masterpstnformat.replaceAll(mBinding.getRoot().getContext().getString(R.string.patn_awb), mCommonDRSListItem.getDrsRvpQcMpsResponse().getAwbNo().toString());
-                                            Constants.call_awb = String.valueOf(mCommonDRSListItem.getDrsRvpQcMpsResponse().getAwbNo());
-                                            Constants.shipment_type = Constants.RVP;
-                                        } else if (Masterpstnformat.contains(mBinding.getRoot().getContext().getString(R.string.pstn_pin))) {
-                                            callingformat = Masterpstnformat.replaceAll(mBinding.getRoot().getContext().getString(R.string.pstn_pin), mCommonDRSListItem.getDrsRvpQcMpsResponse().getShipmentDetails().getPin());
-                                            Constants.call_pin = String.valueOf(mCommonDRSListItem.getDrsRvpQcMpsResponse().getShipmentDetails().getPin());
-                                            Constants.shipment_type = Constants.RVP;
-                                        }
-                                        if (callingformat != null) {
-                                            Constants.ConsigneeDirectAlternateMobileNo = mCommonDRSListItem.getDrsRvpQcMpsResponse().getConsigneeDetails().getAlternate_mobile();
-                                            rvp_call_count = rvp_call_count + 1;
-                                            toDoListViewModel.getDataManager().setCallClicked(mCommonDRSListItem.getDrsRvpQcMpsResponse().getAwbNo() + "RVPCall", false);
-                                            startCallIntent(mCommonDRSListItem, mCommonDRSListItem.getDrsForwardTypeResponse().getFlags().getFlagMap().getIs_callbridge_enabled(), mCommonDRSListItem.getDrsRvpQcMpsResponse().getConsigneeDetails().getMobile(), getDrsPstnKey, mBinding.getRoot().getContext(), mCommonDRSListItem.getDrsRvpQcMpsResponse().getAwbNo(), mCommonDRSListItem.getDrsRvpQcMpsResponse().getDrs());
-                                        } else {
-                                            Toast.makeText(mBinding.getRoot().getContext(), "Please switch Number", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                    /*Check 2.2 (Check for API)*/
-                                    else if (getCbConfigCallType.equalsIgnoreCase(mBinding.getRoot().getContext().getString(R.string.cb_config_api))) {
-                                        //call api
-                                        String getApiType = callbridgeConfiguration.getCb_calling_api();
-                                        if (getApiType != null) {
-                                            drsCallListener.makeCallBridgeApiCall(callbridgeConfiguration.getCb_calling_api(), mCommonDRSListItem.getDrsRvpQcMpsResponse().getAwbNo().toString(), mCommonDRSListItem.getDrsRvpQcMpsResponse().getDrs(), Constants.RVP);
-                                        } else {
-                                            Toast.makeText(toDoListActivity, R.string.null_key_api, Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                            }
-                        } catch (Exception e) {
-                            Toast.makeText(toDoListActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
-                            Logger.e(TAG, String.valueOf(e));
-                        }
-                    }
-                } catch (Exception e) {
-                    Toast.makeText(toDoListActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    Logger.e(TAG, String.valueOf(e));
-                }
-            } catch (Exception e) {
-                Toast.makeText(toDoListActivity, "RVP Call Click():-" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                Logger.e(TAG, String.valueOf(e));
-            }
-        }
-
-        @Override
-        public void onIndicatorClick(CommonDRSListItem commonDRSListItem) {
-            try {
-                if (commonDRSListItem.getDrsRvpQcMpsResponse().getShipmentStatus() > 0) {
-                    Toast.makeText(mBinding.getRoot().getContext(), mBinding.getRoot().getContext().getString(R.string.shipment_status_done), Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if (mBinding.fullview.getVisibility() == View.VISIBLE) {
-                    mRVPMPSItemViewModel.setImage(true);
-                    mBinding.fullview.setVisibility(View.GONE);
-                    mBinding.moreorless.setText(R.string.more);
-                } else {
-                    mBinding.moreorless.setText(R.string.less);
-                    mBinding.fullview.setVisibility(View.VISIBLE);
-                    mRVPMPSItemViewModel.setImage(false);
-                }
-            } catch (Exception e) {
-                Toast.makeText(toDoListActivity, "RVP onIndicatorClick():-" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                Logger.e(TAG, String.valueOf(e));
-            }
-        }
-
-        @Override
-        public void onRemarksAdded(CommonDRSListItem mCommonDRSListItem) {
-        }
-
-        @Override
-        public void onTrayClick(CommonDRSListItem mCommonDRSListItem) {
-            showIconDetails(mBinding.getRoot().getContext());
-        }
-
-        private void showIconDetails(Context context) {
-            // custom dialog
-            BottomSheetDialog dialog = new BottomSheetDialog(context);
-            dialog.setContentView(R.layout.activity_drs_icons_dialog);
-            ImageView dialogButton = dialog.findViewById(R.id.cross);
-            // if button is clicked, close the custom dialog
-            dialogButton.setOnClickListener(v -> dialog.dismiss());
-            dialog.show();
-        }
-    }
-
-
     public class EDSViewHolder extends BaseViewHolder implements DRSItemViewModelListener {
         private final ItemEdsListViewBinding mBinding;
         EDSItemViewModel mEDSItemViewModel;
@@ -2961,7 +2558,7 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
                 mBinding.setViewModel(mEDSItemViewModel);
                 mBinding.imageViewSyncStatus.setVisibility(mEDSItemViewModel.isItemSynced() ? View.VISIBLE : View.GONE);
                 if (commonDRSListItem.getEdsResponse().getShipmentDetail().getFlag().getFlagMap().getIs_callbridge_enabled().equalsIgnoreCase("true")
-                        && commonDRSListItem.getEdsResponse().getCallbridge_details() != null) {
+                        && commonDRSListItem.getEdsResponse().getCallbridge_details()!=null) {
                     mBinding.pin.setVisibility(View.VISIBLE);
                     mBinding.viewDivider.setVisibility(View.VISIBLE);
 
@@ -3171,9 +2768,10 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
                         CommonUtils.showCustomSnackbar(mBinding.getRoot(), "Location Coordinates Not Found", toDoListActivity);
                         EdsClick(commonDRSListItem, mBinding);
                     } else {
+                        // double distance = getDistanceBetweenLocations(new LatLng(commonDRSListItem.getProfileFound().getDelivery_latitude(), commonDRSListItem.getProfileFound().getDelivery_longitude()));
                         double distance = LocationHelper.getDistanceBetweenPoint(commonDRSListItem.getProfileFound().getDelivery_latitude(), commonDRSListItem.getProfileFound().getDelivery_longitude(), toDoListViewModel.getDataManager().getCurrentLatitude(), toDoListViewModel.getDataManager().getCurrentLongitude());
                         if (distance > toDoListViewModel.getDataManager().getUndeliverConsigneeRANGE()) {
-                            toDoListActivity.runOnUiThread(() -> getRestrictionEds(commonDRSListItem, mBinding, distance));
+                            toDoListActivity.runOnUiThread(() -> getRestrictionEds(commonDRSListItem, mBinding));
                         } else {
                             EdsClick(commonDRSListItem, mBinding);
                         }
@@ -3189,41 +2787,22 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
             }
         }
 
-        public void getRestrictionEds(CommonDRSListItem commonDRSListItem, ItemEdsListViewBinding mBinding, double distance) {
+        public void getRestrictionEds(CommonDRSListItem commonDRSListItem, ItemEdsListViewBinding mBinding) {
             try {
                 String dialog_message = ctx.getResources().getString(R.string.commitdialog);
-                String positiveButtonText = ctx.getResources().getString(R.string.proceed_now);
-
-                String consigneeProfileValue = toDoListViewModel.getDataManager().getConsigneeProfileValue();
-                boolean isRestriction = false;
-
-                if (consigneeProfileValue.equalsIgnoreCase("W")) {
+                String positiveButtonText = ctx.getResources().getString(R.string.yes);
+                if (toDoListViewModel.getDataManager().getConsigneeProfileValue().equalsIgnoreCase("W")) {
                     dialog_message = ctx.getResources().getString(R.string.commitdialog_meter_away);
-                    positiveButtonText = ctx.getResources().getString(R.string.proceed_now);
-                } else if (consigneeProfileValue.equalsIgnoreCase("R")) {
-                    isRestriction = true;
-                    dialog_message = "You are not allowed to commit this shipment as you are not at the consignee's location.\n\n"
-                            + "📍 Distance from consignee: " + distance + " meters away\n\n"
-                            + "🔹 Your Coordinates: " + toDoListViewModel.getDataManager().getCurrentLatitude()
-                            + ", " + toDoListViewModel.getDataManager().getCurrentLongitude() + "\n"
-                            + "🔹 Consignee Coordinates: " + commonDRSListItem.getProfileFound().getDelivery_latitude()
-                            + ", " + commonDRSListItem.getProfileFound().getDelivery_longitude();
+                    positiveButtonText = ctx.getResources().getString(R.string.yes);
+                } else if (toDoListViewModel.getDataManager().getConsigneeProfileValue().equalsIgnoreCase("R")) {
+                    dialog_message = ctx.getResources().getString(R.string.commitdialog_meter_away_mandatory);
                     positiveButtonText = ctx.getResources().getString(R.string.ok);
                 }
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(ctx, R.style.Theme_MaterialComponents_Light_Dialog_Alert);
-                builder.setIcon(isRestriction ? R.drawable.restricted_sign : R.drawable.warning_sign);
-
-                // Format title as bold and black
-                SpannableString title = new SpannableString(isRestriction ? "Restricted!" : "Warning!");
-                title.setSpan(new StyleSpan(Typeface.BOLD), 0, title.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                title.setSpan(new ForegroundColorSpan(ContextCompat.getColor(ctx, android.R.color.black)), 0, title.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                builder.setTitle(title);
-
+                AlertDialog.Builder builder = new AlertDialog.Builder(ctx,R.style.Theme_MaterialComponents_Light_Dialog_Alert);
                 builder.setCancelable(false);
                 builder.setMessage(dialog_message);
                 builder.setPositiveButton(positiveButtonText, (dialog, which) -> {
-                    if (consigneeProfileValue.equalsIgnoreCase("R")) {
+                    if (toDoListViewModel.getDataManager().getConsigneeProfileValue().equalsIgnoreCase("R")) {
                         eds_is_item_clicked = true;
                         dialog.cancel();
                     } else {
@@ -3231,12 +2810,12 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
                         EdsClick(commonDRSListItem, mBinding);
                     }
                 });
-
                 AlertDialog alert = builder.create();
                 alert.show();
             } catch (Exception e) {
                 Logger.e(TAG, String.valueOf(e));
             }
+            toDoListViewModel.getDataManager().getConsigneeProfileValue();
         }
 
         public void EdsClick(CommonDRSListItem commonDRSListItem, ItemEdsListViewBinding mBinding) {
@@ -3247,7 +2826,8 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
                 long awb = commonDRSListItem.getEdsResponse().getAwbNo();
                 try {
                     CompositeDisposable compositeDisposable = new CompositeDisposable();
-                    compositeDisposable.add(toDoListViewModel.getDataManager().insetedOrNotinTable(awb).subscribeOn(toDoListViewModel.getSchedulerProvider().io()).observeOn(toDoListViewModel.getSchedulerProvider().io()).subscribe(pushApis -> {}));
+                    compositeDisposable.add(toDoListViewModel.getDataManager().insetedOrNotinTable(awb).subscribeOn(toDoListViewModel.getSchedulerProvider().io()).observeOn(toDoListViewModel.getSchedulerProvider().io()).subscribe(pushApis -> {
+                    }));
                 } catch (Exception e) {
                     Logger.e(TAG, String.valueOf(e));
                 }
@@ -3435,39 +3015,98 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
                 return;
             }
             if (mCommonDRSListItem.getEdsResponse().getShipmentDetail().getFlag().getFlagMap().getIs_callbridge_enabled().equalsIgnoreCase("true")
-                    && mCommonDRSListItem.getEdsResponse().getCallbridge_details() != null) {
+                    && mCommonDRSListItem.getEdsResponse().getCallbridge_details()!=null) {
                 try {
                     toDoListViewModel.showAlertOfedsAssignment(toDoListActivity, mCommonDRSListItem);
                     Dialog dialog = toDoListViewModel.getEdsAssignmentDialog();
                     Button bt_eds_call = dialog.findViewById(R.id.bt_eds_call);
                     bt_eds_call.setOnClickListener(v -> {
-                        try {
-                            String callingformat;
-                            callingformat = mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(0).getCallbridge_number() + "," + mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(0).getPin().substring(0, 4) + "," + mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(0).getPin().substring(4) + "#";
-                            Constants.call_pin = String.valueOf(mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(0).getPin());
-                            Constants.calling_format = callingformat;
+                       /* getDrsApiKey = mCommonDRSListItem.getEdsResponse().getCallbridge_Api();
+                        getDrsPstnKey = mCommonDRSListItem.getEdsResponse().getCallbridgePstn();
+                        if (getDrsPstnKey != null) {
+                            Constants.call_awb = mCommonDRSListItem.getEdsResponse().getAwbNo().toString();
                             Constants.shipment_type = Constants.EDS;
-                            if (callingformat != null) {
-                                Constants.ConsigneeDirectAlternateMobileNo = mCommonDRSListItem.getEdsResponse().getConsigneeDetail().getAlternate_mobile();
-                                eds_call_count = eds_call_count + 1;
-                                toDoListViewModel.getDataManager().setCallClicked(mCommonDRSListItem.getEdsResponse().getAwbNo() + "EDSCall", false);
-                                startCallIntent(mCommonDRSListItem, mCommonDRSListItem.getEdsResponse().getShipmentDetail().getFlag().getFlagMap().getIs_callbridge_enabled(), mCommonDRSListItem.getEdsResponse().getConsigneeDetail().getMobile(), callingformat, mBinding.getRoot().getContext(), mCommonDRSListItem.getEdsResponse().awbNo, mCommonDRSListItem.getEdsResponse().getDrsNo());
+                            Constants.ConsigneeDirectAlternateMobileNo = mCommonDRSListItem.getEdsResponse().getConsigneeDetail().getAlternate_mobile();
+                            eds_call_count = eds_call_count + 1;
+                            toDoListViewModel.getDataManager().setCallClicked(mCommonDRSListItem.getEdsResponse().getAwbNo() + "EDSCall", false);
+                            startCallIntent(mCommonDRSListItem,mCommonDRSListItem.getEdsResponse().getShipmentDetail().getFlag().getFlagMap().getIs_callbridge_enabled(), mCommonDRSListItem.getEdsResponse().getConsigneeDetail().getMobile(), getDrsPstnKey, mBinding.getRoot().getContext(), mCommonDRSListItem.getEdsResponse().getAwbNo(), mCommonDRSListItem.getEdsResponse().getDrsNo());
+                        } else if (getDrsApiKey != null) {
+                            callbridgeConfiguration = drsCallListener.getCallbridgeconfiguration();
+                            if (callbridgeConfiguration != null) {
+                                String getApiType = callbridgeConfiguration.getCb_calling_api();
+                                if (getApiType != null) {
+                                    drsCallListener.makeCallBridgeApiCall(getDrsApiKey, String.valueOf(mCommonDRSListItem.getEdsResponse().getAwbNo()), mCommonDRSListItem.getEdsResponse().getDrsNo(), Constants.EDS);
+                                } else {
+                                    Toast.makeText(toDoListActivity, R.string.null_key_api, Toast.LENGTH_SHORT).show();
+                                }
                             } else {
-                                Toast.makeText(mBinding.getRoot().getContext(), "Please switch Number", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mBinding.getRoot().getContext(), "callconfig null", Toast.LENGTH_SHORT).show();
                             }
-                        } catch (Exception e) {
-                            Toast.makeText(toDoListActivity, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                            Logger.e(TAG, String.valueOf(e));
-                        }
+                        } */
+                      //  else if (getDrsApiKey == null && getDrsPstnKey == null) {
+                            try {
+                               /* callbridgeConfiguration = drsCallListener.getCallbridgeconfiguration();
+                                if (callbridgeConfiguration != null) {
+                                    getCbConfigCallType = callbridgeConfiguration.getCb_calling_type();
+                                }*/
+                              //  if (getCbConfigCallType != null) {
+                                   // if (getCbConfigCallType.equalsIgnoreCase(mBinding.getRoot().getContext().getString(R.string.cb_config_pstn))) {
+                                     //   Masterpstnformat = drsCallListener.getDefaultPstn();
+                                        String callingformat = null;
+                                       /* if (Masterpstnformat.contains(mBinding.getRoot().getContext().getString(R.string.patn_awb))) {
+                                            callingformat = Masterpstnformat.replaceAll(mBinding.getRoot().getContext().getString(R.string.patn_awb), String.valueOf(mCommonDRSListItem.getEdsResponse().getAwbNo()));
+                                            Constants.call_awb = String.valueOf(mCommonDRSListItem.getEdsResponse().getAwbNo());
+                                            Constants.shipment_type = Constants.EDS;
+                                        } else if (Masterpstnformat.contains(mBinding.getRoot().getContext().getString(R.string.pstn_pin))) {*/
+                                       //     callingformat = Masterpstnformat.replaceAll(mBinding.getRoot().getContext().getString(R.string.pstn_pin), String.valueOf(mCommonDRSListItem.getEdsResponse().getShipmentDetail().getPin()));
+                                        //    Constants.call_pin = String.valueOf(mCommonDRSListItem.getEdsResponse().getShipmentDetail().getPin());
+                                           callingformat = mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(0).getCallbridge_number()+","+mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(0).getPin()+"#";
+                                           Constants.call_pin = String.valueOf(mCommonDRSListItem.getEdsResponse().getCallbridge_details().get(0).getPin());
+                                           Constants.calling_format = callingformat;
+                                           Constants.shipment_type = Constants.EDS;
+                                        //}
+                                        if (callingformat != null) {
+                                            Constants.ConsigneeDirectAlternateMobileNo = mCommonDRSListItem.getEdsResponse().getConsigneeDetail().getAlternate_mobile();
+                                            eds_call_count = eds_call_count + 1;
+                                            toDoListViewModel.getDataManager().setCallClicked(mCommonDRSListItem.getEdsResponse().getAwbNo() + "EDSCall", false);
+                                            startCallIntent(mCommonDRSListItem,mCommonDRSListItem.getEdsResponse().getShipmentDetail().getFlag().getFlagMap().getIs_callbridge_enabled(), mCommonDRSListItem.getEdsResponse().getConsigneeDetail().getMobile(), callingformat, mBinding.getRoot().getContext(), mCommonDRSListItem.getEdsResponse().awbNo, mCommonDRSListItem.getEdsResponse().getDrsNo());
+                                        } else {
+                                            Toast.makeText(mBinding.getRoot().getContext(), "Please switch Number", Toast.LENGTH_SHORT).show();
+                                        }
+                                   // }
+                                    /* else if (getCbConfigCallType.equalsIgnoreCase(mBinding.getRoot().getContext().getString(R.string.cb_config_api))) {
+                                        callbridgeConfiguration = drsCallListener.getCallbridgeconfiguration();
+                                        if (callbridgeConfiguration != null) {
+                                            String getApiType = callbridgeConfiguration.getCb_calling_api();
+                                            if (getApiType != null) {
+                                                drsCallListener.makeCallBridgeApiCall(callbridgeConfiguration.getCb_calling_api(), String.valueOf(mCommonDRSListItem.getEdsResponse().getAwbNo()), mCommonDRSListItem.getEdsResponse().getDrsNo(), Constants.EDS);
+                                            } else {
+                                                Toast.makeText(toDoListActivity, R.string.null_key_api, Toast.LENGTH_SHORT).show();
+                                            }
+                                        } else {
+                                            Toast.makeText(mBinding.getRoot().getContext(), "callconfig null", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }*/
+                               /* }
+                                else {
+                                    Toast.makeText(mBinding.getRoot().getContext(), "All Null", Toast.LENGTH_SHORT).show();
+                                }*/
+                            } catch (Exception e) {
+                                Toast.makeText(toDoListActivity, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                Logger.e(TAG, String.valueOf(e));
+                            }
+                      //  }
                     });
                 } catch (Exception e) {
                     Toast.makeText(toDoListActivity, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    Logger.e(TAG, String.valueOf(e));
                 }
             } else {
                 eds_call_count = eds_call_count + 1;
                 toDoListViewModel.getDataManager().setCallClicked(mCommonDRSListItem.getEdsResponse().getAwbNo() + "EDSCall", false);
                 Constants.ConsigneeDirectAlternateMobileNo = mCommonDRSListItem.getEdsResponse().getConsigneeDetail().getAlternate_mobile();
-                startCallIntent(mCommonDRSListItem, mCommonDRSListItem.getEdsResponse().getShipmentDetail().getFlag().getFlagMap().getIs_callbridge_enabled(), mCommonDRSListItem.getEdsResponse().getConsigneeDetail().getMobile(), getDrsPstnKey, mBinding.getRoot().getContext(), mCommonDRSListItem.getEdsResponse().getAwbNo(), mCommonDRSListItem.getEdsResponse().getDrsNo());
+                startCallIntent(mCommonDRSListItem,mCommonDRSListItem.getEdsResponse().getShipmentDetail().getFlag().getFlagMap().getIs_callbridge_enabled(), mCommonDRSListItem.getEdsResponse().getConsigneeDetail().getMobile(), getDrsPstnKey, mBinding.getRoot().getContext(), mCommonDRSListItem.getEdsResponse().getAwbNo(), mCommonDRSListItem.getEdsResponse().getDrsNo());
+
             }
         }
 
@@ -3504,7 +3143,7 @@ public class DRSListAdapter extends RecyclerView.Adapter<BaseViewHolder> impleme
         private void showIconDetails(Context context) {
             BottomSheetDialog dialog = new BottomSheetDialog(context);
             dialog.setContentView(R.layout.activity_drs_icons_dialog);
-            ImageView dialogButton = dialog.findViewById(R.id.cross);
+            ImageView dialogButton = (ImageView) dialog.findViewById(R.id.cross);
             Objects.requireNonNull(dialogButton).setOnClickListener(v -> dialog.dismiss());
             dialog.show();
         }

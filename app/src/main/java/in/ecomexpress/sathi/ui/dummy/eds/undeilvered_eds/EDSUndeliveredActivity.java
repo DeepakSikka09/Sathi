@@ -4,7 +4,8 @@ import static in.ecomexpress.sathi.utils.Constants.ConsigneeDirectAlternateMobil
 import static in.ecomexpress.sathi.utils.Constants.ConsigneeDirectMobileNo;
 import static in.ecomexpress.sathi.utils.Constants.ContactNO;
 import static in.ecomexpress.sathi.utils.Constants.eds_call_count;
-import android.annotation.SuppressLint;
+import static in.ecomexpress.sathi.utils.Constants.forward_call_count;
+
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -30,12 +31,14 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.gson.Gson;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -44,7 +47,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
+
 import dagger.hilt.android.AndroidEntryPoint;
 import in.ecomexpress.sathi.BR;
 import in.ecomexpress.sathi.R;
@@ -58,6 +63,7 @@ import in.ecomexpress.sathi.repo.remote.model.drs_list.edsnew.EDSResponse;
 import in.ecomexpress.sathi.repo.remote.model.masterdata.EDSReasonCodeMaster;
 import in.ecomexpress.sathi.repo.remote.model.reschedule.ReshceduleDetailsResponse;
 import in.ecomexpress.sathi.ui.base.BaseActivity;
+import in.ecomexpress.sathi.ui.drs.forward.undelivered_fwd.UndeliveredActivity;
 import in.ecomexpress.sathi.ui.dummy.eds.eds_success_fail.EDSSuccessFailActivity;
 import in.ecomexpress.sathi.ui.auth.login.LoginActivity;
 import in.ecomexpress.sathi.utils.CommonUtils;
@@ -70,8 +76,8 @@ import in.ecomexpress.sathi.utils.TimeUtils;
 
 @AndroidEntryPoint
 public class EDSUndeliveredActivity extends BaseActivity<ActivityEdsUndeliveredBinding, UndeliveredViewModel> implements IUndeliveredNavigator {
-
     String TAG = EDSUndeliveredActivity.class.getCanonicalName();
+    //  CallbridgeConfiguration callbridgeConfiguration = null;
     Dialog dialog;
     @Inject
     UndeliveredViewModel undeliveredViewModel;
@@ -90,6 +96,7 @@ public class EDSUndeliveredActivity extends BaseActivity<ActivityEdsUndeliveredB
     private int mYear;
     private int mMonth;
     private int mDay;
+
     // Blur Image Recognition Work:-
     public static int imageCaptureCount = 0;
     public static boolean isrescheduleFlag = false;
@@ -97,9 +104,10 @@ public class EDSUndeliveredActivity extends BaseActivity<ActivityEdsUndeliveredB
     boolean dateFlag = false, slotFlag = false;
     String slotId = "", dateSet = "";
     private EDSReasonCodeMaster edsReasonCodeMaster;
-    String getDrsApiKey = null, getDrsPstnKey = null, getDrsPin = null;
+    String getDrsApiKey = null, getDrsPstnKey = null, getCbConfigCallType = null, Masterpstnformat = null, getDrsPin = null;
     private EDSResponse edsResponse;
     private int meterRange;
+    int drs_id;
     CountDownTimer mCountDownTimer = null;
     Long awbNo = null;
     ProgressDialog progress;
@@ -111,7 +119,8 @@ public class EDSUndeliveredActivity extends BaseActivity<ActivityEdsUndeliveredB
     boolean is_already_kyced_paytm = false;
     boolean uD_OTP = false;
     String OFD_OTP;
-    Gson gson = new Gson();
+    boolean isCallClicked = false;
+    boolean isWhatsappMessaged = false;
 
     public static Intent getStartIntent(Context context){
         return new Intent(context, EDSUndeliveredActivity.class);
@@ -146,7 +155,6 @@ public class EDSUndeliveredActivity extends BaseActivity<ActivityEdsUndeliveredB
         }
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -176,17 +184,20 @@ public class EDSUndeliveredActivity extends BaseActivity<ActivityEdsUndeliveredB
         edsActivityResponseWizards = getIntent().getParcelableArrayListExtra("data");
         navigator = getIntent().getStringExtra("navigator");
         awb = getIntent().getExtras().getLong("awb", 0);
-        edsResponseCommit = gson.fromJson(getIntent().getStringExtra("edsResponse"), EDSResponse.class);
+        edsResponseCommit = getIntent().getParcelableExtra("edsResponse");
         edsResponseCommit.setCompositeKey(composite_key);
+        // undeliveredViewModel.getReschedulestaus(String.valueOf(awb));
         try{
             undeliveredViewModel.setedsCommit(edsResponseCommit);
             getAllTrueEdsAttribures = undeliveredViewModel.getEdsTrueAttributes(is_already_kyced_paytm);
+            // undeliveredViewModel.getListDetail(navigator);
             undeliveredViewModel.getListDetailNew(getAllTrueEdsAttribures);
             undeliveredViewModel.setAwb(awb);
             activityEdsUndeliveredBinding.awbTv.setText(String.valueOf(awb));
             undeliveredViewModel.fetchEDSShipment(edsResponseCommit.getCompositeKey());
+            //activityEdsUndeliveredBinding.aw
             undeliveredViewModel.getCallStatus(edsResponseCommit.getAwbNo(), edsResponseCommit.getDrsNo());
-            activityEdsUndeliveredBinding.tvNumberStatement.setText("We have send OTP on registered mobile number: " + ContactNO);
+            activityEdsUndeliveredBinding.tvNumberStatement.setText("We have send OTP on registered mobile number: " + String.valueOf(ContactNO));
             imageHandler = new ImageHandler(this) {
                 @Override
                 public void onBitmapReceived(final Bitmap bitmap, final String imageUri, ImageView imageview, String imageName, String imageCode, int pos, boolean verifyImage){
@@ -405,7 +416,6 @@ public class EDSUndeliveredActivity extends BaseActivity<ActivityEdsUndeliveredB
                 }
             });
             dialog.show();
-            //undeliveredViewModel.callBridgeCheckStatusApi(edsResponse.getShipmentDetail().getFlag().getFlagMap().getIs_callbridge_enabled() , String.valueOf(awb), composite_key.replaceAll(String.valueOf(awb), ""));
         }
     }
 
@@ -540,7 +550,7 @@ public class EDSUndeliveredActivity extends BaseActivity<ActivityEdsUndeliveredB
                         } else if(Masterpstnformat.contains(this.getString(R.string.pstn_pin))){*/
                             //callingformat = Masterpstnformat.replaceAll(this.getString(R.string.pstn_pin), getDrsPin);
                             //Constants.call_pin = getDrsPin;
-                            callingformat = edsResponse.getCallbridge_details().get(0).getCallbridge_number()+","+edsResponse.getCallbridge_details().get(0).getPin().substring(0, 4)+","+ edsResponse.getCallbridge_details().get(0).getPin().substring(4)+"#";
+                            callingformat = edsResponse.getCallbridge_details().get(0).getCallbridge_number()+","+edsResponse.getCallbridge_details().get(0).getPin()+"#";
                             Constants.call_pin = String.valueOf(edsResponse.getCallbridge_details().get(0).getPin());
                             Constants.calling_format = callingformat;
                             Constants.shipment_type = Constants.EDS;
@@ -653,7 +663,7 @@ public class EDSUndeliveredActivity extends BaseActivity<ActivityEdsUndeliveredB
                 showSnackbar("Please Verify OTP");
                 return;
             }
-            if(!undeliveredViewModel.ud_otp_commit_status.equalsIgnoreCase("VERIFIED") && edsReasonCodeMaster.getEdsMasterDataAttributeResponse().cALLM && undeliveredViewModel.getDataManager().getCallClicked(edsCommit.getAwb()+"EDSCall") && Boolean.FALSE.equals(undeliveredViewModel.ud_otp_verified_status.get())) {
+            if(edsReasonCodeMaster.getEdsMasterDataAttributeResponse().cALLM && undeliveredViewModel.getDataManager().getCallClicked(edsCommit.getAwb()+"EDSCall") && Boolean.FALSE.equals(undeliveredViewModel.ud_otp_verified_status.get())) {
                 makeCallDialog();
                 return;
             }
@@ -723,7 +733,7 @@ public class EDSUndeliveredActivity extends BaseActivity<ActivityEdsUndeliveredB
             if(!undeliveredViewModel.getDataManager().getDirectUndeliver()){
                 undeliver();
             } else{
-                if(call_allowed && !undeliveredViewModel.ud_otp_commit_status.equalsIgnoreCase("VERIFIED")){
+                if(call_allowed){
                     undeliveredViewModel.callApi(edsResponse.getShipmentDetail().getFlag().getFlagMap().getIs_callbridge_enabled() , String.valueOf(awb), composite_key.replaceAll(String.valueOf(awb), ""));
                 } else{
                     undeliver();
@@ -733,7 +743,7 @@ public class EDSUndeliveredActivity extends BaseActivity<ActivityEdsUndeliveredB
             if(!undeliveredViewModel.getDataManager().getDirectUndeliver()){
                 undeliver();
             } else{
-                if(call_allowed && !undeliveredViewModel.ud_otp_commit_status.equalsIgnoreCase("VERIFIED")){
+                if(call_allowed){
                     undeliveredViewModel.callApi(edsResponse.getShipmentDetail().getFlag().getFlagMap().getIs_callbridge_enabled() ,String.valueOf(awb), composite_key.replaceAll(String.valueOf(awb), ""));
                 } else{
                     undeliver();
@@ -743,7 +753,7 @@ public class EDSUndeliveredActivity extends BaseActivity<ActivityEdsUndeliveredB
             if(!undeliveredViewModel.getDataManager().getDirectUndeliver()){
                 undeliver();
             } else{
-                if(call_allowed && !undeliveredViewModel.ud_otp_commit_status.equalsIgnoreCase("VERIFIED")){
+                if(call_allowed){
                     undeliveredViewModel.callApi(edsResponse.getShipmentDetail().getFlag().getFlagMap().getIs_callbridge_enabled() ,String.valueOf(awb), composite_key.replaceAll(String.valueOf(awb), ""));
                 } else{
                     undeliver();
@@ -754,7 +764,7 @@ public class EDSUndeliveredActivity extends BaseActivity<ActivityEdsUndeliveredB
                 if(!undeliveredViewModel.getDataManager().getDirectUndeliver()){
                     undeliver();
                 } else{
-                    if(call_allowed && !undeliveredViewModel.ud_otp_commit_status.equalsIgnoreCase("VERIFIED")){
+                    if(call_allowed){
                         undeliveredViewModel.callApi(edsResponse.getShipmentDetail().getFlag().getFlagMap().getIs_callbridge_enabled() , String.valueOf(awb), composite_key.replaceAll(String.valueOf(awb), ""));
                     } else{
                         undeliver();
@@ -933,7 +943,7 @@ public class EDSUndeliveredActivity extends BaseActivity<ActivityEdsUndeliveredB
         Helper.updateLocationWithData(EDSUndeliveredActivity.this, edsCommit.getAwb(), edsCommit.getStatus());
         Intent intent = EDSSuccessFailActivity.getStartIntent(this);
         intent.putExtra(Constants.INTENT_KEY, awb);
-        intent.putExtra("edsResponseCommit", gson.toJson(edsResponseCommit));
+        intent.putExtra("edsResponseCommit", edsResponseCommit);
         intent.putExtra(Constants.DECIDENEXT, Constants.UNDELIVERED);
         intent.putExtra("Reason", edsReasonCodeMaster.getReasonMessage());
        /* intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -1257,10 +1267,10 @@ public class EDSUndeliveredActivity extends BaseActivity<ActivityEdsUndeliveredB
         ImageView crossDialog = dialog.findViewById(R.id.crssdialog);
         crossDialog.setOnClickListener(v -> dialog.dismiss());
         call.setOnClickListener(v -> {
-            undeliveredViewModel.consigneeContactNumber.set(edsResponse.getCallbridge_details().get(0).getCallbridge_number()+","+edsResponse.getCallbridge_details().get(0).getPin().substring(0, 4)+","+ edsResponse.getCallbridge_details().get(0).getPin().substring(4)+"#");
+            undeliveredViewModel.consigneeContactNumber.set(edsResponse.getCallbridge_details().get(0).getCallbridge_number()+","+edsResponse.getCallbridge_details().get(0).getPin()+"#");
             eds_call_count = eds_call_count + 1;
             undeliveredViewModel.getDataManager().setEDSCallCount(awb+"EDS" ,eds_call_count);
-            Intent intent1 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + edsResponse.getCallbridge_details().get(0).getCallbridge_number()+","+edsResponse.getCallbridge_details().get(0).getPin().substring(0, 4)+","+ edsResponse.getCallbridge_details().get(0).getPin().substring(4)+"#"));
+            Intent intent1 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + edsResponse.getCallbridge_details().get(0).getCallbridge_number()+","+edsResponse.getCallbridge_details().get(0).getPin()+"#"));
             intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent1);
             dialog.dismiss();
@@ -1615,43 +1625,5 @@ public class EDSUndeliveredActivity extends BaseActivity<ActivityEdsUndeliveredB
         } else{
             undeliveredViewModel.doVoiceOTPApi(awb + "", edsResponseCommit.getDrsNo() + "", "OTP");
         }
-    }
-
-    @Override
-    public void onCallBridgeCheckStatus() {
-        dialog = new BottomSheetDialog(EDSUndeliveredActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(true);
-        dialog.setContentView(R.layout.activity_undelivered_call_dialog);
-        TextView name = dialog.findViewById(R.id.name);
-        name.setText("Name : " + edsResponseCommit.getShipmentDetail().getCustomerName());
-        TextView awb = dialog.findViewById(R.id.awb);
-        awb.setText("AWB : " + edsResponseCommit.getAwbNo());
-        ImageView dialogButton = dialog.findViewById(R.id.call);
-        // if button is clicked, close the custom dialog
-        dialogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                undeliveredViewModel.getDataManager().setCallClicked(edsCommit.getAwb()+"EDSCall", false);
-                if(edsResponse.getShipmentDetail().getFlag().getFlagMap().getIs_callbridge_enabled().equalsIgnoreCase("true")
-                        && edsResponse.getCallbridge_details()!=null) {
-
-                    makeCallonClick();
-                }
-                else
-                {
-                    if(!TextUtils.isEmpty(ConsigneeDirectAlternateMobileNo) && ConsigneeDirectAlternateMobileNo != null && ConsigneeDirectAlternateMobileNo != "0"){
-                        showDirectCallDialog();
-                    } else {
-                        undeliveredViewModel.consigneeContactNumber.set(edsResponse.getConsigneeDetail().getMobile());
-                        eds_call_count = eds_call_count + 1;
-                        undeliveredViewModel.getDataManager().setEDSCallCount(awb + "EDS", eds_call_count);
-                        CommonUtils.startCallIntent(edsResponse.getConsigneeDetail().getMobile(), getActivityContext(), EDSUndeliveredActivity.this);
-                    }
-                }
-
-            }
-        });
-        dialog.show();
     }
 }

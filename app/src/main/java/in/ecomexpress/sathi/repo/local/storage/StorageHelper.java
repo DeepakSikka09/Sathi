@@ -57,6 +57,7 @@ import in.ecomexpress.sathi.repo.remote.model.covid.CovidApiResponse;
 import in.ecomexpress.sathi.repo.remote.model.covid.CovidRequest;
 import in.ecomexpress.sathi.repo.remote.model.device_upload.Biometric_requestdata;
 import in.ecomexpress.sathi.repo.remote.model.device_upload.Biometric_response;
+import in.ecomexpress.sathi.repo.remote.model.distancecalculations.DistanceApiResponse;
 import in.ecomexpress.sathi.repo.remote.model.dp_daily_earned.DPDailyEarnedAmount;
 import in.ecomexpress.sathi.repo.remote.model.dp_daily_earned.DPReferenceCodeRequest;
 import in.ecomexpress.sathi.repo.remote.model.dp_daily_earned.DPReferenceCodeResponse;
@@ -868,7 +869,7 @@ public class StorageHelper implements IRestApiHelper {
     }
 
     @Override
-    public Single<CholaResponse> doCholaURLAPI(String authToken, String ecomregion, CholaRequest cholaRequest, boolean isTraining) {
+    public Single<CholaResponse> doCholaURLAPI(String authToken, String ecomregion, CholaRequest cholaRequest) {
         return null;
     }
 
@@ -983,4 +984,13 @@ public class StorageHelper implements IRestApiHelper {
         return null;
     }
 
+    @Override
+    public LiveData<DistanceApiResponse> distanceCalculationApi(String locationRequest,String annotations) {
+        return null;
+    }
+
+    @Override
+    public Single<DistanceApiResponse> distanceCalculationApis(String location, String annotations) {
+        return  null;
+    }
 }

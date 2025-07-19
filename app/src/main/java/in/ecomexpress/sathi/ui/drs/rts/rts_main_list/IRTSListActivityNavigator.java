@@ -21,6 +21,8 @@ public interface IRTSListActivityNavigator {
 
     void showToast();
 
+    void getShipmentDetail(ShipmentsDetail shipmentsDetail);
+
     void showMessage(String description);
 
     void clearStack();

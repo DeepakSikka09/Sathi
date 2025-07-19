@@ -17,7 +17,7 @@ public interface IRTSSignatureNavigator {
 
     void getAlert();
 
-    void showOTPLayout(boolean isLayoutVisible, boolean isOtpVerifiedMandatory);
+    void showOTPLayout(boolean b);
 
     String getOTP();
 

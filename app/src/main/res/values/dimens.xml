@@ -18,7 +18,9 @@
     <dimen name="_16DP">16dp</dimen>
     <dimen name="_18DP">18dp</dimen>
     <dimen name="_20DP">20dp</dimen>
+    <dimen name="_24DP">24dp</dimen>
     <dimen name="_25DP">25dp</dimen>
+    <dimen name="_31DP">31dp</dimen>
     <dimen name="_30DP">30dp</dimen>
     <dimen name="_35DP">35dp</dimen>
     <dimen name="_40DP">40dp</dimen>
@@ -31,12 +33,12 @@
     <dimen name="_110DP">110dp</dimen>
     <dimen name="_120DP">120dp</dimen>
     <dimen name="_150DP">150dp</dimen>
-    <dimen name="_210DP">210dp</dimen>
     <dimen name="_220DP">220dp</dimen>
     <dimen name="_230DP">230dp</dimen>
     <dimen name="_250DP">250dp</dimen>
     <dimen name="_300DP">300dp</dimen>
     <dimen name="_205DP">205dp</dimen>
+    <dimen name="_55DP">55dp</dimen>
     <dimen name="_65DP">65dp</dimen>
 
     <!--SP-->
@@ -58,6 +60,24 @@
     <dimen name="_275DP">275dp</dimen>
     <dimen name="_90DP">90dp</dimen>
     <dimen name="text_size_small">14sp</dimen>
+    <dimen name="shot_counter_size">24dp</dimen>
+    <dimen name="shot_counter_border_width">1dp</dimen>
+    <dimen name="shutter_size">64dp</dimen>
+    <dimen name="shutter_mini_size">48dp</dimen>
+    <dimen name="shutter_border_width">1dp</dimen>
+    <dimen name="camera_overlay_frame_width">5dp</dimen>
+    <dimen name="camera_horizontal_margin">16dp</dimen>
+    <dimen name="camera_vertical_margin">16dp</dimen>
+    <dimen name="camera_button_width">40dp</dimen>
+    <dimen name="camera_button_height">40dp</dimen>
+    <dimen name="crop_edge_width">2dp</dimen>
+    <dimen name="crop_corner_radius">15dp</dimen>
+    <dimen name="crop_thumb_size">75dp</dimen>
+    <dimen name="crop_touch_radius">75dp</dimen>
+    <dimen name="crop_thumb_border_width">1dp</dimen>
+    <dimen name="polygonViewCircleWidth">32dp</dimen>
+    <dimen name="polygonViewStrokeWidth">2dp</dimen>
+    <dimen name="dialog_vertical_margin">16dp</dimen>
     <dimen name="_70DP">35.00dp</dimen>-->
     <dimen name="_200DP">200.00dp</dimen>
     <dimen name="_400DP">400.00dp</dimen>

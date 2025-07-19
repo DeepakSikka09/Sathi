@@ -285,42 +285,6 @@ public class UndeliveredViewModel extends BaseViewModel<IUndeliveredNavigator> {
         }
     }
 
-    public void callBridgeCheckStatusApi(String nyka,String awb_number, String drs_id){
-
-        if (nyka.equalsIgnoreCase("true")){
-            try{
-                request_time = System.currentTimeMillis();
-                UndeliveredViewModel.this.setIsLoading(true);
-                getCompositeDisposable().add(getDataManager().doForwardCallStatusApiCall(getDataManager().getAuthToken(),getDataManager().getEcomRegion(), call_alert_number, getDataManager().getEmp_code(), awb_number, drs_id, getDataManager().getShipperId()).observeOn(getSchedulerProvider().ui()).subscribeOn(getSchedulerProvider().io()).
-                        subscribe(new Consumer<ForwardCallResponse>() {
-                            @Override
-                            public void accept(ForwardCallResponse forwardCallResponse) throws Exception{
-                                UndeliveredViewModel.this.setIsLoading(false);
-                                if(forwardCallResponse.getStatus().equalsIgnoreCase("true")){
-                                    getNavigator().undeliverShipment(true);
-                                    if(calldialog != null){
-                                        calldialog.dismiss();
-                                    }
-                                    getNavigator().showError(forwardCallResponse.getResponse());
-                                } else{
-                                    getNavigator().onCallBridgeCheckStatus();
-                                }
-                            }
-                        }, throwable -> {
-                            UndeliveredViewModel.this.setIsLoading(false);
-                        }));
-            } catch(Exception e){
-                getNavigator().showError(e.getLocalizedMessage());
-                UndeliveredViewModel.this.setIsLoading(false);
-                e.printStackTrace();
-            }
-        }
-        else
-        {
-            getNavigator().undeliverShipment(true);
-        }
-    }
-
     public Map<String, List<EDSReasonCodeMaster>> groupRecord(List<EDSReasonCodeMaster> edsReasonCodeMasters){
         Map<String, List<EDSReasonCodeMaster>> map = new HashMap<String, List<EDSReasonCodeMaster>>();
         //  parentGroup.add(Constants.SELECT);

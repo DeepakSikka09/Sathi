@@ -3,10 +3,14 @@ package in.ecomexpress.sathi.ui.drs.forward.disputeDailog;
 import static android.app.Activity.RESULT_OK;
 import static in.ecomexpress.sathi.utils.CommonUtils.logButtonEventInGoogleAnalytics;
 import static in.ecomexpress.sathi.utils.CommonUtils.logScreenNameInGoogleAnalytics;
+import static in.ecomexpress.sathi.utils.Constants.CAMERA_SCANNER_CODE;
+import static in.ecomexpress.sathi.utils.Constants.IMAGE_SCANNER_CODE;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,16 +18,24 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
+
+import com.intsig.imageprocessdemo.ImageScannerActivity;
+
 import javax.inject.Inject;
+
 import dagger.hilt.android.AndroidEntryPoint;
 import in.ecomexpress.sathi.R;
 import in.ecomexpress.sathi.databinding.DisputeDialogBinding;
 import in.ecomexpress.sathi.ui.base.BaseDialog;
 import in.ecomexpress.sathi.ui.drs.forward.details.ForwardDetailViewModel;
 import in.ecomexpress.sathi.utils.CommonUtils;
+import in.ecomexpress.sathi.utils.Constants;
+import in.ecomexpress.sathi.utils.CryptoUtils;
+import in.ecomexpress.sathi.utils.DigitalCropImageHandler;
 import in.ecomexpress.sathi.utils.ImageHandler;
 import in.ecomexpress.sathi.utils.Logger;
 
@@ -35,6 +47,7 @@ public class DisputeDialog extends BaseDialog implements IDisputeDialogNavigator
     static Activity context;
     static ForwardDetailViewModel mforwardDetailViewModel;
     public ImageHandler imageHandler;
+    public DigitalCropImageHandler digitalCropImageHandler;
     DisputeDialogBinding disputeDialogBinding;
     String mImageUri = "";
     String awb_no, drs_id;
@@ -81,17 +94,14 @@ public class DisputeDialog extends BaseDialog implements IDisputeDialogNavigator
             }
         } catch (Exception e) {
             Logger.e(DisputeDialog.class.getName(), e.getMessage());
+
             getBaseActivity().showSnackbar(e.getMessage());
         }
     }
 
-    // On capture image:-
+    /*on capture image*/
     @Override
     public void captureImage() {
-        if (!isNetworkConnected()) {
-            showerrorMessage(getString(R.string.check_internet));
-            return;
-        }
         logButtonEventInGoogleAnalytics(TAG, "DisputedPaymentCaptureImage", "", context);
         if (!CommonUtils.isAllPermissionAllow(getBaseActivity())) {
             openSettingActivity();
@@ -101,6 +111,7 @@ public class DisputeDialog extends BaseDialog implements IDisputeDialogNavigator
             imageHandler.captureImage("dispute_" + disputeDialogViewModel.getDataManager().getEmp_code() + "_" + disputeDialogViewModel.getDataManager().getLocationCode() + "_" + System.currentTimeMillis() + ".png", disputeDialogBinding.imgDispute, "open1");
         } catch (Exception e) {
             Logger.e(DisputeDialog.class.getName(), e.getMessage());
+
         }
     }
 
@@ -171,8 +182,18 @@ public class DisputeDialog extends BaseDialog implements IDisputeDialogNavigator
             if (resultCode == RESULT_OK) {
                 imageHandler.onActivityResult(requestCode, resultCode, data);
             }
+            if (requestCode == IMAGE_SCANNER_CODE) {
+                final String outputPath = data.getStringExtra(ImageScannerActivity.EXTRA_KEY_RESULT_DATA_PATH);
+                CryptoUtils.encryptFile(outputPath, outputPath, Constants.ENC_DEC_KEY);
+            } else if (requestCode == CAMERA_SCANNER_CODE) {
+                String path = data.getStringExtra("croped_path");
+                Bitmap bitmap = BitmapFactory.decodeFile(path);
+                CryptoUtils.encryptFile(path, path, Constants.ENC_DEC_KEY);
+                digitalCropImageHandler.sendImage(bitmap, path);
+            }
         } catch (Exception e) {
             Logger.e(DisputeDialog.class.getName(), e.getMessage());
+
             Toast.makeText(getBaseActivity(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         }
     }
@@ -181,6 +202,7 @@ public class DisputeDialog extends BaseDialog implements IDisputeDialogNavigator
         disputeDialogBinding = DataBindingUtil.inflate(inflater, R.layout.dispute_dialog, container, false);
         View view = disputeDialogBinding.getRoot();
         try {
+
             disputeDialogBinding.setViewModel(disputeDialogViewModel);
             disputeDialogViewModel.setNavigator(this);
             logScreenNameInGoogleAnalytics(TAG, context);
@@ -200,10 +222,15 @@ public class DisputeDialog extends BaseDialog implements IDisputeDialogNavigator
             imageHandler = new ImageHandler(getBaseActivity()) {
                 @Override
                 public void onBitmapReceived(Bitmap bitmap, String imageUri, ImageView imgView, String imageName, String imageCode, int pos, boolean verifyImage) {
-                    if (!isNetworkConnected()) {
-                        showerrorMessage(getString(R.string.check_internet));
-                        return;
+                    if (imgView != null) {
+                        mImageUri = imageUri;
+                        imgView.setImageBitmap(bitmap);
                     }
+                }
+            };
+            digitalCropImageHandler = new DigitalCropImageHandler(getBaseActivity()) {
+                @Override
+                public void onBitmapReceived(Bitmap bitmap, ImageView imgView, String imageName, String imageCode, String imageUri, boolean verifyImage) {
                     if (imgView != null) {
                         mImageUri = imageUri;
                         imgView.setImageBitmap(bitmap);

@@ -16,7 +16,6 @@ import in.ecomexpress.sathi.repo.remote.model.drs_list.edsnew.EDSResponse;
 import in.ecomexpress.sathi.repo.remote.model.drs_list.forward.DRSForwardTypeResponse;
 import in.ecomexpress.sathi.repo.remote.model.drs_list.rts.new_rts.DRSReturnToShipperTypeNewResponse;
 import in.ecomexpress.sathi.repo.remote.model.drs_list.rvp.DRSReverseQCTypeResponse;
-import in.ecomexpress.sathi.repo.remote.model.mps.DRSRvpQcMpsResponse;
 
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -38,20 +37,6 @@ public class LastMileDRSListNewResponse extends ErrorResponse {
     @Ignore
     @JsonProperty("eds_drs_list")
     private List<EDSResponse> edsList = null;
-
-    @Ignore
-    @JsonProperty("rev_mps_drs_list")
-    private List<DRSRvpQcMpsResponse> revMpsDrsList = null;
-
-    @JsonProperty("rev_mps_drs_list")
-    public List<DRSRvpQcMpsResponse> getRevMpsDrsList() {
-        return revMpsDrsList;
-    }
-
-    @JsonProperty("rev_mps_drs_list")
-    public void setRevMpsDrsList(List<DRSRvpQcMpsResponse> revMpsDrsList) {
-        this.revMpsDrsList = revMpsDrsList;
-    }
 
     public void setRtsDrsList(DRSReturnToShipperTypeNewResponse drsReturnToShipperTypeNewResponse ) {
         this.drsReturnToShipperTypeNewResponse = drsReturnToShipperTypeNewResponse;

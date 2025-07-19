@@ -15,6 +15,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -36,8 +38,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
+import in.ecomexpress.barcodelistner.BarcodeHandler;
+import in.ecomexpress.barcodelistner.BarcodeResult;
 import in.ecomexpress.sathi.BR;
 import in.ecomexpress.sathi.R;
 import in.ecomexpress.sathi.SathiApplication;
@@ -51,13 +56,14 @@ import in.ecomexpress.sathi.ui.drs.rts.rts_scan_and_deliver.RTSScanActivity;
 import in.ecomexpress.sathi.ui.drs.rts.rts_signature.RTSSignatureActivity;
 import in.ecomexpress.sathi.ui.auth.login.LoginActivity;
 import in.ecomexpress.sathi.ui.drs.rts.interfaces.ClickListener;
+import in.ecomexpress.sathi.ui.drs.rvp.awbscan.ScannerActivity;
 import in.ecomexpress.sathi.utils.CommonUtils;
 import in.ecomexpress.sathi.utils.Constants;
 import in.ecomexpress.sathi.utils.ImageHandler;
 import in.ecomexpress.sathi.utils.Logger;
 
 @AndroidEntryPoint
-public class RTSListActivity extends BaseActivity<ActivityRtsMainListBinding, RTSListActivityViewModel> implements IRTSListActivityNavigator, IRTSAdapterInterface, SearchView.OnQueryTextListener, ClickListener {
+public class RTSListActivity extends BaseActivity<ActivityRtsMainListBinding, RTSListActivityViewModel> implements BarcodeResult, IRTSListActivityNavigator, IRTSAdapterInterface, SearchView.OnQueryTextListener, ClickListener {
 
     @Inject
     RTSListActivityViewModel RTSListActivityViewModel;
@@ -72,6 +78,7 @@ public class RTSListActivity extends BaseActivity<ActivityRtsMainListBinding, RT
     int delivered, undelivered;
     String address = null;
     public static int imageCaptureCount = 0;
+    BarcodeHandler barcodeHandler;
     String mobile_number;
     private String select_reason_code_rts = "";
     List<String> checkListAWB = new ArrayList<>();
@@ -119,6 +126,7 @@ public class RTSListActivity extends BaseActivity<ActivityRtsMainListBinding, RT
                 RTSListActivityViewModel.setMode(radiobutton);
                 logButtonEventInGoogleAnalytics(TAG, radiobutton, "", this);
             });
+            barcodeHandler = new BarcodeHandler(this, "ScannerLM", this);
             // Perform task after successfully image uploaded.
             getViewModel().getImageUploadSuccessLiveData().observe(this, isSuccess -> {
                 try{
@@ -127,6 +135,7 @@ public class RTSListActivity extends BaseActivity<ActivityRtsMainListBinding, RT
                         shipmentImageMap.put(shipment_awb_no, capturedImageBitmap);
                         rtsShipmentListAdapter.updateDRS(shipmentImageMap);
                         getViewModel().updateImageCapturedFlag(shipment_awb_no, 1);
+                        getViewModel().damageFlyerImageCaptured.put(shipment_awb_no, true);
                         if(deliveredImagesPosition.equalsIgnoreCase("Image1") && shipment_awb_no > 0){
                             rtsCapturedImage1.put(shipment_awb_no, true);
                         }
@@ -378,16 +387,72 @@ public class RTSListActivity extends BaseActivity<ActivityRtsMainListBinding, RT
         rtsShipmentListAdapter.notifyDataSetChanged();
     }
 
+    /*
+    * This method perform the beep sound when FE scan the awb.
+    * */
+    private void playSound(boolean result) {
+        try {
+            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+            if (result) {
+                tg.startTone(ToneGenerator.TONE_CDMA_SOFT_ERROR_LITE);
+            } else {
+                tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+            }
+        } catch (Exception e) {
+            showSnackbar(e.getMessage());
+        }
+    }
+
+    /*
+    * This method is used to gat back data of shipment which marked Delivered, Undelivered and Disputed.
+    * */
+    private void handleScanResult(Intent data) {
+        try {
+            if (data != null) {
+                String awbNo = data.getStringExtra(ScannerActivity.SCANNED_CODE);
+                if (RTSListActivityViewModel.getFilterOutput(awbNo)) {
+                    RTSListActivityViewModel.getScannedShipment(Long.parseLong(Objects.requireNonNull(awbNo)));
+                } else {
+                    showSnackbar(getString(R.string.no_match_found));
+                    playSound(false);
+                }
+            } else {
+                showSnackbar(getString(R.string.no_data));
+            }
+        } catch (Exception e) {
+            showSnackbar(e.getMessage());
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         try {
+            int REQUEST_CODE_SCAN = 1101;
+            if (requestCode == REQUEST_CODE_SCAN) {
+                handleScanResult(data);
+            }
+            if (data != null) {
+                barcodeHandler.onActivityResult(requestCode, resultCode, data);
+            }
             if (requestCode == PICK_FROM_CAMERA) {
                 imageHandler.onActivityResult(requestCode, resultCode, data);
             }
         } catch (Exception e) {
             Logger.e(TAG, String.valueOf(e));
         }
+    }
+
+    /*
+    * @ShipmentsDetail:- It is the collection of shipments.
+    * This method accept only one shipment at a time and check whether this shipment is in assign mode or not.
+    * */
+    @SuppressLint("NotifyDataSetChanged")
+    @Override
+    public void getShipmentDetail(ShipmentsDetail shipmentsDetail) {
+        RTSListActivityViewModel.updateScannedShipment(shipmentsDetail);
+        rtsShipmentListAdapter.notifyDataSetChanged();
+        playSound(true);
     }
 
     @Override
@@ -458,6 +523,24 @@ public class RTSListActivity extends BaseActivity<ActivityRtsMainListBinding, RT
             RTSListActivityViewModel.getShipments(rtsVWDetailID);
         } catch (Exception e) {
             Logger.e(TAG, String.valueOf(e));
+        }
+    }
+
+    @Override
+    public void onResult(String value) {
+        try {
+            if (value != null) {
+                if (RTSListActivityViewModel.getFilterOutput(value)) {
+                    RTSListActivityViewModel.getScannedShipment(Long.parseLong(value));
+                } else {
+                    showSnackbar(getString(R.string.no_match_found));
+                    playSound(false);
+                }
+            } else {
+                showSnackbar(getString(R.string.no_data));
+            }
+        } catch (Exception e) {
+            showSnackbar(e.getMessage());
         }
     }
 

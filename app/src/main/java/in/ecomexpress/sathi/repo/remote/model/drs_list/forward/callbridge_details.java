@@ -20,7 +20,7 @@ public class callbridge_details implements Parcelable {
 
     @JsonProperty("pin")
    // @ColumnInfo(name = "pin_column")
-    private String pin;
+    private int pin;
 
 
     @JsonProperty("vendor_name")
@@ -31,7 +31,7 @@ public class callbridge_details implements Parcelable {
     }
     public callbridge_details(Parcel in) {
         this.callbridge_number = in.readString();
-        this.pin = in.readString();
+        this.pin = in.readInt();
         this.vendor_name = in.readString();
 
 
@@ -62,7 +62,7 @@ public class callbridge_details implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.callbridge_number);
-        dest.writeString(this.pin);
+        dest.writeInt(this.pin);
         dest.writeString(this.vendor_name);
     }
     @JsonProperty("callbridge_number")
@@ -74,11 +74,11 @@ public class callbridge_details implements Parcelable {
         this.callbridge_number = callbridge_number;
     }
     @JsonProperty("pin")
-    public String getPin() {
+    public int getPin() {
         return pin;
     }
     @JsonProperty("pin")
-    public void setPin(String pin) {
+    public void setPin(int pin) {
         this.pin = pin;
     }
     @JsonProperty("vendor_name")

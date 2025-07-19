@@ -7,6 +7,7 @@ import static in.ecomexpress.sathi.utils.Constants.DISTANCE_API_KEY;
 import static in.ecomexpress.sathi.utils.Constants.failedShipmentStatus;
 import static in.ecomexpress.sathi.utils.Constants.pendingShipmentAssignedStatus;
 import static in.ecomexpress.sathi.utils.Constants.successShipmentStatus;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -24,6 +25,7 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -31,14 +33,10 @@ import androidx.databinding.ObservableField;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
-import com.google.maps.DirectionsApi;
-import com.google.maps.GeoApiContext;
-import com.google.maps.model.DirectionsResult;
-import com.google.maps.model.LatLng;
-import com.google.maps.model.TravelMode;
-import com.google.maps.model.Unit;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -46,7 +44,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+
 import javax.inject.Inject;
+
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import in.ecomexpress.geolocations.LocationService;
 import in.ecomexpress.geolocations.LocationTracker;
@@ -73,6 +73,7 @@ import in.ecomexpress.sathi.repo.remote.model.drs_list.rvp.DRSReverseQCTypeRespo
 import in.ecomexpress.sathi.repo.remote.model.drs_list.rvp.RvpQualityCheck;
 import in.ecomexpress.sathi.repo.remote.model.eds.EdsRescheduleRequest;
 import in.ecomexpress.sathi.repo.remote.model.eds.Reschedule_info_awb_list;
+import in.ecomexpress.sathi.repo.remote.model.login.LogoutRequest;
 import in.ecomexpress.sathi.repo.remote.model.login.MarkAttendanceRequest;
 import in.ecomexpress.sathi.repo.remote.model.masterdata.DashboardBanner;
 import in.ecomexpress.sathi.repo.remote.model.masterdata.Forward;
@@ -80,9 +81,6 @@ import in.ecomexpress.sathi.repo.remote.model.masterdata.GlobalConfigurationMast
 import in.ecomexpress.sathi.repo.remote.model.masterdata.MasterDataConfig;
 import in.ecomexpress.sathi.repo.remote.model.masterdata.Reverse;
 import in.ecomexpress.sathi.repo.remote.model.masterdata.masterRequest;
-import in.ecomexpress.sathi.repo.remote.model.mps.DRSRvpQcMpsResponse;
-import in.ecomexpress.sathi.repo.remote.model.mps.QcItem;
-import in.ecomexpress.sathi.repo.remote.model.mps.RvpMpsQualityCheck;
 import in.ecomexpress.sathi.repo.remote.model.trip.DrsCheckListRequest;
 import in.ecomexpress.sathi.ui.base.BaseViewModel;
 import in.ecomexpress.sathi.ui.dashboard.refer.ReferFriendActivity;
@@ -99,7 +97,6 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 
 @HiltViewModel
@@ -129,6 +126,7 @@ public class DashboardViewModel extends BaseViewModel<IDashboardNavigator> {
     ArrayList<RescheduleEdsD> rescheduleEdsDS = new ArrayList<>();
     ProgressDialog dialog;
     boolean isStopClicked = false;
+    double distance=0.0;
 
     @Inject
     public DashboardViewModel(IDataManager dataManager, ISchedulerProvider schedulerProvider, Application sathiApplication) {
@@ -270,11 +268,13 @@ public class DashboardViewModel extends BaseViewModel<IDashboardNavigator> {
                                             getSyncList(getNavigator().getActivityContext(), true);
                                         }
                                     } else {
-                                        checkRange();
+//                                        checkRange();
+                                        getDistanceBetweenLocations(true);
                                     }
                                 }
                             } else {
-                                doDrsCheckStatus(getNavigator().setContext());
+//                                doDrsCheckStatus(getNavigator().setContext());
+                                getDistanceBetweenLocations(false);
                             }
                         }
                     }
@@ -315,34 +315,24 @@ public class DashboardViewModel extends BaseViewModel<IDashboardNavigator> {
 
     private void checkRange() {
         if (getDataManager().getTripGeofencing().equalsIgnoreCase("R")) {
-            double calculated_distance = getDistanceBetweenLocations(new LatLng(getDataManager().getDCLatitude(), getDataManager().getDCLongitude()));
+//            double calculated_distance = getDistanceBetweenLocations(new LatLng(getDataManager().getDCLatitude(), getDataManager().getDCLongitude()));
+            double calculated_distance = distance;
             double calculated_distance_point = LocationHelper.getDistanceBetweenPoint(getDataManager().getDCLatitude(), getDataManager().getDCLongitude(), getDataManager().getCurrentLatitude(), getDataManager().getCurrentLongitude());
             if (calculated_distance < getDataManager().getDCRANGE() || calculated_distance_point < getDataManager().getDCRANGE()) {
                 getSyncList(getNavigator().getActivityContext(), true);
             } else if (calculated_distance < 2000 || calculated_distance_point < 2000) {
                 getSyncList(getNavigator().getActivityContext(), true);
             } else {
-                getNavigator().showAlertWarning(
-                    "🚫 Please perform this action only after reaching the DC.\n\n" +
-                            "📍 Distance from DC: " + (calculated_distance / 1000) + " km away\n\n" +
-                            "🔹 Your Location: " + getDataManager().getCurrentLatitude() + ", " + getDataManager().getCurrentLongitude() + "\n" +
-                            "🔹 DC Location: " + getDataManager().getDCLatitude() + ", " + getDataManager().getDCLongitude(),
-                    "R"
-                );
+                getNavigator().showAlertWarning("Please Perform This Functionality After Reaching DC. Distance " + calculated_distance / 1000 + " Km away from DC " + "\n\nCurrent Location " + getDataManager().getCurrentLatitude() + " , " + getDataManager().getCurrentLongitude() + "\n\nDC Location " + getDataManager().getDCLatitude() + " , " + getDataManager().getDCLongitude(), "R");
             }
         } else if (getDataManager().getTripGeofencing().equalsIgnoreCase("W")) {
-            double calculated_distance = getDistanceBetweenLocations(new LatLng(getDataManager().getDCLatitude(), getDataManager().getDCLongitude()));
+            double calculated_distance = distance;
+//            double calculated_distance = getDistanceBetweenLocations(new LatLng(getDataManager().getDCLatitude(), getDataManager().getDCLongitude()));
             double calculated_distance_point = LocationHelper.getDistanceBetweenPoint(getDataManager().getDCLatitude(), getDataManager().getDCLongitude(), getDataManager().getCurrentLatitude(), getDataManager().getCurrentLongitude());
             if (calculated_distance < getDataManager().getDCRANGE() || calculated_distance_point < getDataManager().getDCRANGE()) {
                 getSyncList(getNavigator().getActivityContext(), true);
             } else {
-                getNavigator().showAlertWarning(
-                    "⚠️ You are not at the DC location!\n\n" +
-                            "📍 Distance from DC: " + (calculated_distance / 1000) + " km away\n\n" +
-                            "🔹 Your Location: " + getDataManager().getCurrentLatitude() + ", " + getDataManager().getCurrentLongitude() + "\n" +
-                            "🔹 DC Location: " + getDataManager().getDCLatitude() + ", " + getDataManager().getDCLongitude(),
-                    "W"
-                );
+                getNavigator().showAlertWarning("You Are Not In DC Location. You Are " + calculated_distance / 1000 + " Km Away From DC " + "\n\nCurrent Location " + getDataManager().getCurrentLatitude() + " , " + getDataManager().getCurrentLongitude() + "\n\nDC Location " + getDataManager().getDCLatitude() + " , " + getDataManager().getDCLongitude(), "W");
             }
         } else {
             getSyncList(getNavigator().getActivityContext(), true);
@@ -431,10 +421,6 @@ public class DashboardViewModel extends BaseViewModel<IDashboardNavigator> {
         getNavigator().onTrainingClick();
     }
 
-    public void onODHClick() {
-        getNavigator().onODHClick();
-    }
-
     public void setSyncUnfocused() {
         try {
             getDataManager().setCurrentTimeForDelay(System.currentTimeMillis() + 3 * 60 * 1000);
@@ -482,6 +468,43 @@ public class DashboardViewModel extends BaseViewModel<IDashboardNavigator> {
             Logger.e(TAG, String.valueOf(e));
         }
         return 0;
+    }
+
+    public void logout() {
+        final long timeStamp = System.currentTimeMillis();
+        try {
+            LogoutRequest logoutRequest = new LogoutRequest();
+            logoutRequest.setUsername(getDataManager().getCode());
+            logoutRequest.setLogoutLat(getDataManager().getCurrentLatitude());
+            logoutRequest.setLogoutLng(getDataManager().getCurrentLongitude());
+            writeRestAPIRequst(timeStamp, logoutRequest);
+            getCompositeDisposable().add(getDataManager().doLogoutApiCall(getDataManager().getAuthToken(), getDataManager().getEcomRegion(), logoutRequest).doOnSuccess(response -> writeRestAPIResponse(timeStamp, response)).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui()).subscribe(response -> {
+                if (response.isStatus()) {
+                    logoutLocal();
+                } else {
+                    String error;
+                    error = response.getResponse().getDescription();
+                    if (error.contains("HTTP 500 ")) {
+                        getNavigator().showErrorMessage(true);
+                    } else {
+                        if (error.equalsIgnoreCase("Invalid Authentication Token.")) {
+                            logoutLocal();
+                        } else {
+                            getNavigator().showStringError(response.getResponse().getDescription());
+                        }
+                    }
+                }
+            }, throwable -> {
+                setIsLoading(false);
+                logoutLocal();
+                RestApiErrorHandler restApiErrorHandler = new RestApiErrorHandler(throwable.getCause());
+                restApiErrorHandler.writeErrorLogs(timeStamp, throwable.getMessage());
+            }));
+        } catch (Exception e) {
+            getNavigator().showStringError(e.getMessage());
+            logoutLocal();
+            Logger.e(TAG, String.valueOf(e));
+        }
     }
 
     public void logoutLocal() {
@@ -646,9 +669,6 @@ public class DashboardViewModel extends BaseViewModel<IDashboardNavigator> {
                                             }
                                             if (globalConfigurationMaster.getConfigGroup().equalsIgnoreCase("ESP_EARNING_VISIBILITY")) {
                                                 getDataManager().setESP_EARNING_VISIBILITY(Boolean.parseBoolean(globalConfigurationMaster.getConfigValue()));
-                                            }
-                                            if (globalConfigurationMaster.getConfigGroup().equalsIgnoreCase("ODH_VISIBILITY")) {
-                                                getDataManager().setODH_VISIBILITY(Boolean.parseBoolean(globalConfigurationMaster.getConfigValue()));
                                             }
                                             if (globalConfigurationMaster.getConfigGroup().equalsIgnoreCase("SMS_THROUGH_WHATSAPP")) {
                                                 getDataManager().setSMSThroughWhatsapp(Boolean.parseBoolean(globalConfigurationMaster.getConfigValue()));
@@ -863,6 +883,10 @@ public class DashboardViewModel extends BaseViewModel<IDashboardNavigator> {
                                                     LocationTracker.setFakeApplications(getDataManager().getFakeApplications());
                                                 }
                                             }
+                                            // Distance Api Enable:-
+                                            if (globalConfigurationMaster.getConfigGroup().equalsIgnoreCase("IS_DISTANCE_API_ENABLE")) {
+                                                getDataManager().setDistanceAPIEnabled(Boolean.valueOf(globalConfigurationMaster.getConfigValue()));
+                                            }
                                         }
                                         boolean exists = false;
                                         if (masterDataReasonCodeResponse.getResponse().getMaster_data_configurations().getCallbridgeConfiguration().getCb_pstn_options() != null && !masterDataReasonCodeResponse.getResponse().getMaster_data_configurations().getCallbridgeConfiguration().getCb_pstn_options().isEmpty()) {
@@ -954,6 +978,10 @@ public class DashboardViewModel extends BaseViewModel<IDashboardNavigator> {
         return getDataManager().getVehicleType();
     }
 
+    public String getLocationCode() {
+        return getDataManager().getLocationCode();
+    }
+
     public boolean getRootDeviceDisabled() {
         return getDataManager().getRootDeviceDisabled();
     }
@@ -1018,7 +1046,8 @@ public class DashboardViewModel extends BaseViewModel<IDashboardNavigator> {
                                 }
                             } else {
                                 if (gpsIsEnabled) {
-                                    double calculated_distance = getDistanceBetweenLocations(new LatLng(getDataManager().getDCLatitude(), getDataManager().getDCLongitude()));
+                                    double calculated_distance = distance;
+//                                    double calculated_distance = getDistanceBetweenLocations(new LatLng(getDataManager().getDCLatitude(), getDataManager().getDCLongitude()));
                                     double calculated_distance_point = LocationHelper.getDistanceBetweenPoint(dc_latitude, dc_longitude, current_latitude, current_longitude);
                                     if (calculated_distance < getDataManager().getDCRANGE() || calculated_distance_point < getDataManager().getDCRANGE()) {
                                         if (getDataManager().getTripId().equalsIgnoreCase("0")) {
@@ -1039,13 +1068,7 @@ public class DashboardViewModel extends BaseViewModel<IDashboardNavigator> {
                                             getNavigator().openStopTrip();
                                         }
                                     } else if (calculated_distance > getDataManager().getDCRANGE() || calculated_distance_point > getDataManager().getDCRANGE()) {
-                                        getNavigator().showAlertWarning(
-                                            "🚫 Please perform this action only after reaching the DC.\n\n" +
-                                                    "📍 Distance from DC: " + (calculated_distance / 1000) + " km away\n\n" +
-                                                    "🔹 Your Location: " + getDataManager().getCurrentLatitude() + ", " + getDataManager().getCurrentLongitude() + "\n" +
-                                                    "🔹 DC Location: " + getDataManager().getDCLatitude() + ", " + getDataManager().getDCLongitude(),
-                                            "R"
-                                        );
+                                        getNavigator().showAlertWarning("Please perform this functionality after reaching DC. You are " + calculated_distance / 1000 + " Km away from DC " + "\n\nCurrent Location " + getDataManager().getCurrentLatitude() + " , " + getDataManager().getCurrentLongitude() + "\n\nDC Location " + getDataManager().getDCLatitude() + " , " + getDataManager().getDCLongitude(), "R");
                                     }
                                 } else {
                                     try {
@@ -1073,7 +1096,8 @@ public class DashboardViewModel extends BaseViewModel<IDashboardNavigator> {
                             } else {
                                 if (gpsIsEnabled) {
                                     double calculated_distance_point = LocationHelper.getDistanceBetweenPoint(dc_latitude, dc_longitude, current_latitude, current_longitude);
-                                    double calculated_distance = getDistanceBetweenLocations(new LatLng(getDataManager().getDCLatitude(), getDataManager().getDCLongitude()));
+                                    double calculated_distance = distance;
+//                                    double calculated_distance = getDistanceBetweenLocations(new LatLng(getDataManager().getDCLatitude(), getDataManager().getDCLongitude()));
                                     if (calculated_distance < getDataManager().getDCRANGE() || calculated_distance_point < getDataManager().getDCRANGE()) {
                                         if (getDataManager().getTripId().equalsIgnoreCase("0")) {
                                             getNavigator().openStartTrip();
@@ -1087,13 +1111,7 @@ public class DashboardViewModel extends BaseViewModel<IDashboardNavigator> {
                                             getNavigator().openStopTrip();
                                         }
                                     } else if (calculated_distance > getDataManager().getDCRANGE() || calculated_distance_point > getDataManager().getDCRANGE()) {
-                                        getNavigator().showAlertWarning(
-                                            "⚠️ You are not at the DC location!\n\n" +
-                                                    "📍 Distance from DC: " + (calculated_distance / 1000) + " km away\n\n" +
-                                                    "🔹 Your Location: " + getDataManager().getCurrentLatitude() + ", " + getDataManager().getCurrentLongitude() + "\n" +
-                                                    "🔹 DC Location: " + getDataManager().getDCLatitude() + ", " + getDataManager().getDCLongitude(),
-                                            "W"
-                                        );
+                                        getNavigator().showAlertWarning("You Are Not In DC Location. You Are " + calculated_distance / 1000 + " Km Away From DC. " + "\n\nCurrent Location " + getDataManager().getCurrentLatitude() + " , " + getDataManager().getCurrentLongitude() + "\n\nDC Location " + getDataManager().getDCLatitude() + " , " + getDataManager().getDCLongitude(), "W");
                                     }
                                 } else {
                                     try {
@@ -1137,22 +1155,47 @@ public class DashboardViewModel extends BaseViewModel<IDashboardNavigator> {
         }
     }
 
-    public double getDistanceBetweenLocations(LatLng destination) {
-        try {
-            double distance;
-            GeoApiContext context = new GeoApiContext().setApiKey(DISTANCE_API_KEY);
-            DirectionsResult result = DirectionsApi.newRequest(context).mode(TravelMode.DRIVING).units(Unit.METRIC).origin(new LatLng(getDataManager().getCurrentLatitude(), getDataManager().getCurrentLongitude())).optimizeWaypoints(true).destination(destination).awaitIgnoreError();
-            String dis = (result.routes[0].legs[0].distance.humanReadable);
-            if (dis.endsWith("km")) {
-                distance = Double.parseDouble(dis.replaceAll("[^\\d.]", "")) * 1000;
-            } else {
-                distance = Double.parseDouble(dis.replaceAll("[^\\d.]", ""));
-            }
-            return distance;
-        } catch (Exception e) {
-            Logger.e(TAG, String.valueOf(e));
+//    public double getDistanceBetweenLocations(LatLng destination) {
+//        try {
+//            double distance;
+//            GeoApiContext context = new GeoApiContext().setApiKey(DISTANCE_API_KEY);
+//            DirectionsResult result = DirectionsApi.newRequest(context).mode(TravelMode.DRIVING).units(Unit.METRIC).origin(new LatLng(getDataManager().getCurrentLatitude(), getDataManager().getCurrentLongitude())).optimizeWaypoints(true).destination(destination).awaitIgnoreError();
+//            String dis = (result.routes[0].legs[0].distance.humanReadable);
+//            if (dis.endsWith("km")) {
+//                distance = Double.parseDouble(dis.replaceAll("[^\\d.]", "")) * 1000;
+//            } else {
+//                distance = Double.parseDouble(dis.replaceAll("[^\\d.]", ""));
+//            }
+//            return distance;
+//        } catch (Exception e) {
+//            Logger.e(TAG, String.valueOf(e));
+//        }
+//        return 0.0;
+//    }
+    public  void getDistanceBetweenLocations(Boolean isCheckRange) {
+            final long timeStamp = System.currentTimeMillis();
+            try {
+                final StringBuilder[] builder = {new StringBuilder()};
+                builder[0].append(getDataManager().getCurrentLongitude());
+                builder[0].append(",");
+                builder[0].append(getDataManager().getCurrentLatitude());
+                builder[0].append(";");
+                builder[0].append(getDataManager().getDCLongitude());
+                builder[0].append(",");
+                builder[0].append(getDataManager().getDCLatitude());
+                getCompositeDisposable().add(getDataManager().distanceCalculationApis(builder[0].toString(), "distance").doOnSuccess(response -> writeRestAPIResponse(timeStamp, response)
+                ).subscribeOn(getSchedulerProvider().ui()).observeOn(getSchedulerProvider().ui()).subscribe(response -> {
+                    distance = Math.round(response.getDistances().get(0).get(1));
+                    if (isCheckRange) {
+                        checkRange();
+                    } else {
+                        doDrsCheckStatus(getNavigator().setContext());
+                    }
+                }, throwable -> {
+                }));
+            } catch (Exception e) {
+                Logger.e(TAG, String.valueOf(e));
         }
-        return 0.0;
     }
 
     public void DPScanReferenceCode(String ref_code) {
@@ -1187,10 +1230,10 @@ public class DashboardViewModel extends BaseViewModel<IDashboardNavigator> {
     }
 
     public void drsData(Context context) {
-        onDRSListApiCall(context);
+        onDRSListApiCall(context, false);
     }
 
-    public void onDRSListApiCall(final Context context) {
+    public void onDRSListApiCall(final Context context, Boolean flag) {
         this.context = context;
         getSyncList(context, false);
     }
@@ -1238,13 +1281,6 @@ public class DashboardViewModel extends BaseViewModel<IDashboardNavigator> {
                                     saveRVPList(drsResponse.getTodoResponse().getDrs_list_response().getRevDrsList());
                                     getDataManager().setDRSId((long) drsResponse.getTodoResponse().getDrs_list_response().getRevDrsList().get(0).getDrs());
                                 }
-
-                                // RVP MPS
-                                if (drsResponse.getTodoResponse().getDrs_list_response().getRevMpsDrsList() != null && !drsResponse.getTodoResponse().getDrs_list_response().getRevMpsDrsList().isEmpty()) {
-                                    saveRVPMPSList(drsResponse.getTodoResponse().getDrs_list_response().getRevMpsDrsList());
-                                    getDataManager().setDRSId((long) drsResponse.getTodoResponse().getDrs_list_response().getRevMpsDrsList().get(0).getDrs());
-                                }
-
                                 // Saving data to room for EDS
                                 if (drsResponse.getTodoResponse().getDrs_list_response().getEdsList() != null && !drsResponse.getTodoResponse().getDrs_list_response().getEdsList().isEmpty()) {
                                     for (int i = 0; i < drsResponse.getTodoResponse().getDrs_list_response().getEdsList().size(); i++) {
@@ -1382,92 +1418,6 @@ public class DashboardViewModel extends BaseViewModel<IDashboardNavigator> {
         }
     }
 
-    @SuppressLint("CheckResult")
-    private void saveRVPMPSList(List<DRSRvpQcMpsResponse> drsReverseQCTypeResponses) {
-        try {
-            Observable.fromCallable(() -> {
-                for (DRSRvpQcMpsResponse response : drsReverseQCTypeResponses) {
-                    try {
-                        response.setCompositeKey(response.getDrs() + "" + response.getAwbNo());
-                    } catch (Exception e) {
-                        Logger.e(TAG, String.valueOf(e));
-                        RestApiErrorHandler restApiErrorHandler = new RestApiErrorHandler(e.getCause());
-                        restApiErrorHandler.writeErrorLogs(0, e.getMessage());
-                    }
-                }
-                return drsReverseQCTypeResponses;
-            }).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui()).subscribe(this::saveRVPMPSAfterGeoCoding);
-        } catch (Exception e) {
-            Logger.e(TAG, String.valueOf(e));
-            getNavigator().showStringError(e.getMessage());
-        }
-    }
-
-    private void saveRVPMPSAfterGeoCoding(List<DRSRvpQcMpsResponse> drsReverseQCTypeResponses) {
-        HashSet<DRSRvpQcMpsResponse> drsReverseQCTypeResponses_set = new HashSet<>();
-        for (int i = 0; i < drsReverseQCTypeResponses.size(); i++) {
-            if (!String.valueOf(drsReverseQCTypeResponses.get(i).getCompositeKey()).startsWith("null") && !drsReverseQCTypeResponses.get(i).getCompositeKey().equalsIgnoreCase("")) {
-                drsReverseQCTypeResponses_set.add(drsReverseQCTypeResponses.get(i));
-            }
-            RVPQCImageTable rvpqcImageTable = new RVPQCImageTable();
-            rvpqcImageTable.awb_number = drsReverseQCTypeResponses.get(i).getAwbNo();
-            getCompositeDisposable().add(getDataManager().insert(rvpqcImageTable).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui()).subscribe(aBoolean -> {
-            }, throwable -> {
-                Logger.e(TAG, String.valueOf(throwable));
-                RestApiErrorHandler restApiErrorHandler = new RestApiErrorHandler(throwable.getCause());
-                restApiErrorHandler.writeErrorLogs(0, throwable.getMessage());
-            }));
-        }
-        for (DRSRvpQcMpsResponse drsReverseQCTypeResponse : drsReverseQCTypeResponses_set) {
-            try {
-                getCompositeDisposable().add(getDataManager().isRVPDRSExist(drsReverseQCTypeResponse.getCompositeKey()).flatMap(Observable::just).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().io()).subscribe(aBoolean -> {
-                    if (!aBoolean) {
-                        addRVPMPSwithQC(drsReverseQCTypeResponse);
-                    }
-                }, throwable -> {
-                    RestApiErrorHandler restApiErrorHandler = new RestApiErrorHandler(throwable.getCause());
-                    restApiErrorHandler.writeErrorLogs(0, throwable.getMessage());
-                    Log.e(TAG, "throwable: " + throwable.getMessage());
-                }));
-            } catch (Exception e) {
-                Logger.e(TAG, String.valueOf(e));
-                getNavigator().showStringError(e.getMessage());
-            }
-        }
-    }
-
-    private void addRVPMPSwithQC(DRSRvpQcMpsResponse drsReverseQCTypeResponse) {
-        try {
-            List<QcItem> mpsQcItems = drsReverseQCTypeResponse.getShipmentDetails().getQcItems();
-
-            for (int i = 0; i < mpsQcItems.size(); i++) {
-                mpsQcItems.get(i).setAwbNo(drsReverseQCTypeResponse.getAwbNo());
-                mpsQcItems.get(i).setDrs(drsReverseQCTypeResponse.getDrs());
-                List<RvpMpsQualityCheck> qualityCheckList = mpsQcItems.get(i).getQualityChecks();
-                for (int j = 0; j < qualityCheckList.size(); j++) {
-                    qualityCheckList.get(j).setAwbNo(drsReverseQCTypeResponse.getAwbNo());
-                    qualityCheckList.get(j).setDrs(drsReverseQCTypeResponse.getDrs());
-                }
-                mpsQcItems.get(i).setQualityChecks(qualityCheckList);
-            }
-
-            getCompositeDisposable().add(Observable.merge(getDataManager().saveDRSRVPMPSListQualityCheck(mpsQcItems), getDataManager().saveDRSRVPMPS(drsReverseQCTypeResponse)).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui()).subscribe(new Consumer<Boolean>() {
-                @Override
-                public void accept(Boolean aBoolean) {
-                }
-            }, throwable -> {
-                Logger.e(TAG, String.valueOf(throwable));
-                RestApiErrorHandler restApiErrorHandler = new RestApiErrorHandler(throwable.getCause());
-                restApiErrorHandler.writeErrorLogs(0, throwable.getMessage());
-            }));
-
-
-        } catch (Exception e) {
-            Logger.e(TAG, String.valueOf(e));
-            getNavigator().showStringError(e.getMessage());
-        }
-    }
-
     public void updateOTPEDS(long awbNo, String OTP) {
         try {
             CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -1498,7 +1448,7 @@ public class DashboardViewModel extends BaseViewModel<IDashboardNavigator> {
     public void getAllNewDRS(DRSResponse drsResponse, ProgressDialog dialog) {
         try {
             CompositeDisposable compositeDisposable = new CompositeDisposable();
-            compositeDisposable.add(Observable.zip(getDataManager().getDRSListForward(), getDataManager().getDRSListNewRTS(), getDataManager().getDRSListRVP(), getDataManager().getDRSListRVPMPS(), getDataManager().getDrsListNewEds(), getDataManager().getEdsRescheduleFlag(), getDataManager().getAllRemarks(getDataManager().getCode(), TimeUtils.getDateYearMonthMillies()), (drsForwardTypeResponses, drsReturnToShipperTypeNewResponses, drsReverseQCTypeResponses, drsRvpQcMpsResponses, edsResponses, rescheduleEdsDS, remarks) -> {
+            compositeDisposable.add(Observable.zip(getDataManager().getDRSListForward(), getDataManager().getDRSListNewRTS(), getDataManager().getDRSListRVP(), getDataManager().getDrsListNewEds(), getDataManager().getEdsRescheduleFlag(), getDataManager().getAllRemarks(getDataManager().getCode(), TimeUtils.getDateYearMonthMillies()), (drsForwardTypeResponses, drsReturnToShipperTypeNewResponses, drsReverseQCTypeResponses, edsResponses, rescheduleEdsDS, remarks) -> {
                 List<CommonDRSListItem> commonDRSListItems = new ArrayList<>();
                 for (DRSForwardTypeResponse fwd : drsForwardTypeResponses) {
                     CommonDRSListItem item = new CommonDRSListItem(GlobalConstant.ShipmentTypeConstants.FWD, fwd);
@@ -1514,10 +1464,6 @@ public class DashboardViewModel extends BaseViewModel<IDashboardNavigator> {
                 }
                 for (EDSResponse eds : edsResponses) {
                     CommonDRSListItem item = new CommonDRSListItem(GlobalConstant.ShipmentTypeConstants.EDS, eds);
-                    commonDRSListItems.add(item);
-                }
-                for (DRSRvpQcMpsResponse eds : drsRvpQcMpsResponses) {
-                    CommonDRSListItem item = new CommonDRSListItem(GlobalConstant.ShipmentTypeConstants.RVP_MPS, eds);
                     commonDRSListItems.add(item);
                 }
                 getAllConsigneeProfile(drsResponse, dialog);
@@ -1598,63 +1544,59 @@ public class DashboardViewModel extends BaseViewModel<IDashboardNavigator> {
 
     private void getAllConsigneeProfile(DRSResponse drsResponse, ProgressDialog dialog) {
         try {
+            ArrayList<Consignee_profile> awbList = new ArrayList<>();
             profileFoundList = new ArrayList<>();
             ArrayList<Reschedule_info_awb_list> edsRescheduleList = new ArrayList<>();
             if (drsResponse.getTodoResponse().getDrs_list_response().getForwardDrsList() != null && !drsResponse.getTodoResponse().getDrs_list_response().getForwardDrsList().isEmpty()) {
                 for (int i = 0; i < drsResponse.getTodoResponse().getDrs_list_response().getForwardDrsList().size(); i++) {
                     // Creating profile found object by own now:-
+                    ProfileFound profileFound = new ProfileFound();
+                    profileFound.setAwb_number(drsResponse.getTodoResponse().getDrs_list_response().getForwardDrsList().get(i).getAwbNo());
+                    profileFound.setDelivery_latitude(drsResponse.getTodoResponse().getDrs_list_response().getForwardDrsList().get(i).getConsigneeDetails().getAddress().getLocation().getLat());
+                    profileFound.setDelivery_longitude(drsResponse.getTodoResponse().getDrs_list_response().getForwardDrsList().get(i).getConsigneeDetails().getAddress().getLocation().getLng());
                     if (drsResponse.getTodoResponse().getDrs_list_response().getForwardDrsList().get(i).getAddress_profiled() != null && drsResponse.getTodoResponse().getDrs_list_response().getForwardDrsList().get(i).getAddress_profiled().equalsIgnoreCase("Y")) {
-                        ProfileFound profileFound = getFwdProfileFound(drsResponse, i);
                         profileFoundList.add(profileFound);
                     }
                     consigneeProfile = new Consignee_profile();
                     consigneeProfile.setAwb(drsResponse.getTodoResponse().getDrs_list_response().getForwardDrsList().get(i).getAwbNo() + "");
                     consigneeProfile.setShipper_id(drsResponse.getTodoResponse().getDrs_list_response().getForwardDrsList().get(i).getShipmentDetails().getShipper_id() + "");
+                    awbList.add(consigneeProfile);
                 }
             }
-
-            // Saving Data to Room DataBase for RVP_MPS-- Done by Gupta JI
-            if (drsResponse.getTodoResponse().getDrs_list_response().getRevMpsDrsList() != null && !drsResponse.getTodoResponse().getDrs_list_response().getRevMpsDrsList().isEmpty()) {
-                for (int i = 0; i < drsResponse.getTodoResponse().getDrs_list_response().getRevMpsDrsList().size(); i++) {
-                    // creating profile Found object by own now
-                    if (drsResponse.getTodoResponse().getDrs_list_response().getRevMpsDrsList().get(i).getAddress_profiled() != null && drsResponse.getTodoResponse().getDrs_list_response().getRevMpsDrsList().get(i).getAddress_profiled().equalsIgnoreCase("Y")) {
-                        ProfileFound profileFound = getMpsProfileFound(drsResponse, i);
-                        profileFoundList.add(profileFound);
-                    }
-                    consigneeProfile = new Consignee_profile();
-                    consigneeProfile.setAwb(drsResponse.getTodoResponse().getDrs_list_response().getRevMpsDrsList().get(i).getAwbNo() + "");
-                    consigneeProfile.setShipper_id(drsResponse.getTodoResponse().getDrs_list_response().getRevMpsDrsList().get(i).getShipmentDetails().getShipper_id() + "");
-                }
-            }
-
             // Saving data into Room DB for RVP:-
             if (drsResponse.getTodoResponse().getDrs_list_response().getRevDrsList() != null && !drsResponse.getTodoResponse().getDrs_list_response().getRevDrsList().isEmpty()) {
                 for (int i = 0; i < drsResponse.getTodoResponse().getDrs_list_response().getRevDrsList().size(); i++) {
                     // Creating profile found object by own now:-
+                    ProfileFound profileFound = new ProfileFound();
+                    profileFound.setAwb_number(drsResponse.getTodoResponse().getDrs_list_response().getRevDrsList().get(i).getAwbNo());
+                    profileFound.setDelivery_latitude(drsResponse.getTodoResponse().getDrs_list_response().getRevDrsList().get(i).getConsigneeDetails().getAddress().getLocation().getLat());
+                    profileFound.setDelivery_longitude(drsResponse.getTodoResponse().getDrs_list_response().getRevDrsList().get(i).getConsigneeDetails().getAddress().getLocation().getLng());
                     if (drsResponse.getTodoResponse().getDrs_list_response().getRevDrsList().get(i).getAddress_profiled() != null && drsResponse.getTodoResponse().getDrs_list_response().getRevDrsList().get(i).getAddress_profiled().equalsIgnoreCase("Y")) {
-                        ProfileFound profileFound = getRvpQcProfileFound(drsResponse, i);
                         profileFoundList.add(profileFound);
                     }
                     consigneeProfile = new Consignee_profile();
                     consigneeProfile.setAwb(drsResponse.getTodoResponse().getDrs_list_response().getRevDrsList().get(i).getAwbNo() + "");
                     consigneeProfile.setShipper_id(drsResponse.getTodoResponse().getDrs_list_response().getRevDrsList().get(i).getShipmentDetails().getShipper_id() + "");
+                    awbList.add(consigneeProfile);
                 }
             }
-
             // Saving data into Room DB for EDS:-
             if (drsResponse.getTodoResponse().getDrs_list_response().getEdsList() != null && !drsResponse.getTodoResponse().getDrs_list_response().getEdsList().isEmpty()) {
                 for (int i = 0; i < drsResponse.getTodoResponse().getDrs_list_response().getEdsList().size(); i++) {
                     // Creating profile found object by own now
+                    ProfileFound profileFound = new ProfileFound();
+                    profileFound.setAwb_number(drsResponse.getTodoResponse().getDrs_list_response().getEdsList().get(i).getAwbNo());
+                    profileFound.setDelivery_latitude(drsResponse.getTodoResponse().getDrs_list_response().getEdsList().get(i).getConsigneeDetail().getAddress().getLocation().getLat());
+                    profileFound.setDelivery_longitude(drsResponse.getTodoResponse().getDrs_list_response().getEdsList().get(i).getConsigneeDetail().getAddress().getLocation().getLng());
                     if (drsResponse.getTodoResponse().getDrs_list_response().getEdsList().get(i).getAddress_profiled() != null && drsResponse.getTodoResponse().getDrs_list_response().getEdsList().get(i).getAddress_profiled().equalsIgnoreCase("Y")) {
-                        ProfileFound profileFound = getEdsProfileFound(drsResponse, i);
                         profileFoundList.add(profileFound);
                     }
                     consigneeProfile = new Consignee_profile();
                     consigneeProfile.setAwb(drsResponse.getTodoResponse().getDrs_list_response().getEdsList().get(i).getAwbNo() + "");
                     consigneeProfile.setShipper_id(drsResponse.getTodoResponse().getDrs_list_response().getEdsList().get(i).getShipmentDetail().getShipper_id() + "");
+                    awbList.add(consigneeProfile);
                 }
             }
-
             if (drsResponse.getTodoResponse().getDrs_list_response().getEdsList() != null && !drsResponse.getTodoResponse().getDrs_list_response().getEdsList().isEmpty()) {
                 array = new JSONArray();
                 for (int i = 0; i < drsResponse.getTodoResponse().getDrs_list_response().getEdsList().size(); i++) {
@@ -1675,38 +1617,6 @@ public class DashboardViewModel extends BaseViewModel<IDashboardNavigator> {
             dialog.dismiss();
             Logger.e(TAG, String.valueOf(e));
         }
-    }
-
-    private ProfileFound getRvpQcProfileFound(DRSResponse drsResponse, int i) {
-        ProfileFound profileFound = new ProfileFound();
-        profileFound.setAwb_number(drsResponse.getTodoResponse().getDrs_list_response().getRevDrsList().get(i).getAwbNo());
-        profileFound.setDelivery_latitude(drsResponse.getTodoResponse().getDrs_list_response().getRevDrsList().get(i).getConsigneeDetails().getAddress().getLocation().getLat());
-        profileFound.setDelivery_longitude(drsResponse.getTodoResponse().getDrs_list_response().getRevDrsList().get(i).getConsigneeDetails().getAddress().getLocation().getLng());
-        return profileFound;
-    }
-
-    private ProfileFound getMpsProfileFound(DRSResponse drsResponse, int i) {
-        ProfileFound profileFound = new ProfileFound();
-        profileFound.setAwb_number(drsResponse.getTodoResponse().getDrs_list_response().getRevMpsDrsList().get(i).getAwbNo());
-        profileFound.setDelivery_latitude(drsResponse.getTodoResponse().getDrs_list_response().getRevMpsDrsList().get(i).getConsigneeDetails().getAddress().getLocation().getLat());
-        profileFound.setDelivery_longitude(drsResponse.getTodoResponse().getDrs_list_response().getRevMpsDrsList().get(i).getConsigneeDetails().getAddress().getLocation().getLng());
-        return profileFound;
-    }
-
-    private ProfileFound getFwdProfileFound(DRSResponse drsResponse, int i) {
-        ProfileFound profileFound = new ProfileFound();
-        profileFound.setAwb_number(drsResponse.getTodoResponse().getDrs_list_response().getForwardDrsList().get(i).getAwbNo());
-        profileFound.setDelivery_latitude(drsResponse.getTodoResponse().getDrs_list_response().getForwardDrsList().get(i).getConsigneeDetails().getAddress().getLocation().getLat());
-        profileFound.setDelivery_longitude(drsResponse.getTodoResponse().getDrs_list_response().getForwardDrsList().get(i).getConsigneeDetails().getAddress().getLocation().getLng());
-        return profileFound;
-    }
-
-    private ProfileFound getEdsProfileFound(DRSResponse drsResponse, int i) {
-        ProfileFound profileFound = new ProfileFound();
-        profileFound.setAwb_number(drsResponse.getTodoResponse().getDrs_list_response().getEdsList().get(i).getAwbNo());
-        profileFound.setDelivery_latitude(drsResponse.getTodoResponse().getDrs_list_response().getEdsList().get(i).getConsigneeDetail().getAddress().getLocation().getLat());
-        profileFound.setDelivery_longitude(drsResponse.getTodoResponse().getDrs_list_response().getEdsList().get(i).getConsigneeDetail().getAddress().getLocation().getLng());
-        return profileFound;
     }
 
     private void addRVPWithQC(DRSReverseQCTypeResponse drsReverseQCTypeResponse) {
@@ -1798,12 +1708,13 @@ public class DashboardViewModel extends BaseViewModel<IDashboardNavigator> {
         } catch (Exception e) {
             dialog.dismiss();
             getNavigator().showStringError(e.getMessage());
+            Logger.e(TAG, String.valueOf(e));
         }
     }
 
     public void showLocationAlert(Activity context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.Base_ThemeOverlay_AppCompat_Dialog_Alert);
-        builder.setMessage("This app needs background location. \n\nTo run this application in background you need to give location permission all the time. Please permit the permission through location Settings screen. \n\n" + "Select App Permissions-> Location Permission-> Select Allow all the time.");
+        builder.setMessage("This app needs background location. \n\n To run this application in background you need to give location permission all the time. Please permit the permission through location Settings screen. \n\n" + "Select App Permissions-> Location Permission-> Select Allow all the time.");
         builder.setPositiveButton("Settings", (dialog, which) -> {
             dialog.dismiss();
             Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
@@ -1911,7 +1822,15 @@ public class DashboardViewModel extends BaseViewModel<IDashboardNavigator> {
                     .doOnSuccess(loginVerifyOtpResponse -> writeRestAPIResponse(timeStamp, loginVerifyOtpResponse))
                     .subscribeOn(getSchedulerProvider().io())
                     .observeOn(getSchedulerProvider().ui())
-                    .subscribe(response -> DashboardViewModel.this.setIsLoading(false), throwable -> {
+                    .subscribe(response -> {
+                        DashboardViewModel.this.setIsLoading(false);
+                        if (response.isStatus()) {
+                            Log.d("markAttendace", "attendance");
+                            // Need to code.
+                        } else {
+                            // Need to code
+                        }
+                    }, throwable -> {
                         setIsLoading(false);
                         String error;
                         try {

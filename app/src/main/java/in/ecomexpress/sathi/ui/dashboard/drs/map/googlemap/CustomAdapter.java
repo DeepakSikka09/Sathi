@@ -50,6 +50,7 @@ import in.ecomexpress.sathi.ui.drs.todolist.ToDoListActivity;
 import in.ecomexpress.sathi.ui.dummy.eds.eds_task_list.EdsTaskListActivity;
 import in.ecomexpress.sathi.ui.drs.forward.details.ForwardDetailActivity;
 import in.ecomexpress.sathi.ui.drs.forward.mps.MPSScanActivity;
+import in.ecomexpress.sathi.ui.drs.rvp.rvp_qc_list.RvpQcListActivity;
 import in.ecomexpress.sathi.ui.drs.secure_delivery.SecureDeliveryActivity;
 import in.ecomexpress.sathi.utils.CommonUtils;
 import in.ecomexpress.sathi.utils.Constants;
@@ -797,20 +798,40 @@ public class CustomAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             }
             if (commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getSecure_delivery() != null) {
                 Intent intent;
-                intent = SecureDeliveryActivity.getStartIntent(mBinding.getRoot().getContext());
-                intent.putExtra(Constants.SECURE_DELIVERY, commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getSecure_delivery());
-                intent.putExtra(Constants.SHIPMENT_TYPE, Constants.RVP);
+                if (!commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getSecure_delivery().getPinb()
+                        && !commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getSecure_delivery().getOTP()
+                        && !commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getSecure_delivery().getSecure_pin()) {
+                    intent = RvpQcListActivity.getStartIntent(mBinding.getRoot().getContext());
+                    intent.putExtra(Constants.DRS_PSTN_KEY, getDrsPstnKey);
+                    intent.putExtra(Constants.DRS_API_KEY, getDrsApiKey);
+                    intent.putExtra(Constants.DRS_PIN, getDrsPin);
+                    intent.putExtra(Constants.COMPOSITE_KEY, commonDRSListItem.getDrsReverseQCTypeResponse().getCompositeKey());
+                    intent.putExtra(Constants.INTENT_KEY, commonDRSListItem.getDrsReverseQCTypeResponse().getAwbNo());
+                } else {
+                    intent = SecureDeliveryActivity.getStartIntent(mBinding.getRoot().getContext());
+                    intent.putExtra(Constants.SECURE_DELIVERY, commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getSecure_delivery());
+                    intent.putExtra(Constants.SHIPMENT_TYPE, Constants.RVP);
+                    intent.putExtra(Constants.DRS_PSTN_KEY, getDrsPstnKey);
+                    intent.putExtra(Constants.DRS_API_KEY, getDrsApiKey);
+                    intent.putExtra(Constants.AMAZON_ENCRYPTED_OTP, commonDRSListItem.getDrsReverseQCTypeResponse().getAmazonEncryptedOtp());
+                    intent.putExtra(Constants.AMAZON, commonDRSListItem.getDrsReverseQCTypeResponse().getAmazon());
+                    intent.putExtra(Constants.COMPOSITE_KEY, commonDRSListItem.getDrsReverseQCTypeResponse().getCompositeKey());
+                    intent.putExtra(Constants.DRS_PIN, getDrsPin);
+                    intent.putExtra(Constants.INTENT_KEY, commonDRSListItem.getDrsReverseQCTypeResponse().getAwbNo());
+                    intent.putExtra(Constants.RESEND_SECURE_OTP, commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getSecure_delivery().getResend_otp_enable());
+                    intent.putExtra(Constants.DLIGHT_ENCRYPTED_OTP1, "");
+                    intent.putExtra(Constants.DLIGHT_ENCRYPTED_OTP2, "");
+                    intent.putExtra(Constants.ISDELIGHTSHIPMENT, false);
+                }
+                mBinding.getRoot().getContext().startActivity(intent);
+            } else {
+                Intent intent = RvpQcListActivity.getStartIntent(mBinding.getRoot().getContext());
                 intent.putExtra(Constants.DRS_PSTN_KEY, getDrsPstnKey);
                 intent.putExtra(Constants.DRS_API_KEY, getDrsApiKey);
-                intent.putExtra(Constants.AMAZON_ENCRYPTED_OTP, commonDRSListItem.getDrsReverseQCTypeResponse().getAmazonEncryptedOtp());
-                intent.putExtra(Constants.AMAZON, commonDRSListItem.getDrsReverseQCTypeResponse().getAmazon());
-                intent.putExtra(Constants.COMPOSITE_KEY, commonDRSListItem.getDrsReverseQCTypeResponse().getCompositeKey());
                 intent.putExtra(Constants.DRS_PIN, getDrsPin);
+                intent.putExtra(Constants.COMPOSITE_KEY, commonDRSListItem.getDrsReverseQCTypeResponse().getCompositeKey());
+                intent.putExtra(Constants.DRS_ID, commonDRSListItem.getDrsReverseQCTypeResponse().getDrs());
                 intent.putExtra(Constants.INTENT_KEY, commonDRSListItem.getDrsReverseQCTypeResponse().getAwbNo());
-                intent.putExtra(Constants.RESEND_SECURE_OTP, commonDRSListItem.getDrsReverseQCTypeResponse().getFlags().getSecure_delivery().getResend_otp_enable());
-                intent.putExtra(Constants.DLIGHT_ENCRYPTED_OTP1, "");
-                intent.putExtra(Constants.DLIGHT_ENCRYPTED_OTP2, "");
-                intent.putExtra(Constants.ISDELIGHTSHIPMENT, false);
                 mBinding.getRoot().getContext().startActivity(intent);
             }
         }
@@ -834,6 +855,7 @@ public class CustomAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                         String finalAddress = getAddress.replaceAll(",,", ",");
                         double lat = commonDRSListItem.getDrsReverseQCTypeResponse().getConsigneeDetails().getAddress().getLocation().getLat();
                         double lng = commonDRSListItem.getDrsReverseQCTypeResponse().getConsigneeDetails().getAddress().getLocation().getLng();
+
                         if (lng != 0.0 && lat != 0.0) {
                             uri = Uri.parse(String.format(Locale.ENGLISH, "http://maps.google.com/maps?saddr=%f,%f(%s)&daddr=%f,%f (%s)", toDoListViewModel.getlat(), toDoListViewModel.getlng(), "MyLocation", lat, lng, "Destination"));
                         } else {
