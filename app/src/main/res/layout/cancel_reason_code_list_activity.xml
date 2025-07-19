@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".ui.drs.rvp.activity.CancelReasonCodeListActivity">
+
+        <include
+            android:id="@+id/header"
+            layout="@layout/common_header"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txt_quest_undeliver"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_20DP"
+            android:layout_marginVertical="@dimen/_10DP"
+            android:text="@string/why_are_you_making_it_undelivered"
+            android:textColor="@color/black_1A"
+            android:textSize="@dimen/_16SP"
+            android:visibility="visible"
+            app:fontFamily="@font/roboto_bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txt_quest"
+            android:layout_width="@dimen/_0DP"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_20DP"
+            android:layout_marginTop="@dimen/_10DP"
+            android:gravity="center_vertical"
+            android:text="@string/why_are_you_making_it_undelivered"
+            android:textColor="@color/black_1A"
+            android:textSize="@dimen/_20SP"
+            android:visibility="gone"
+            app:fontFamily="@font/roboto_bold"
+            app:layout_constraintEnd_toStartOf="@+id/icon_next"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_quest_undeliver" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/icon_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_20DP"
+            android:src="@drawable/ic_next"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/txt_quest"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/txt_quest" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txt_reason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_20DP"
+            android:layout_marginTop="@dimen/_5DP"
+            android:layout_marginBottom="@dimen/_10DP"
+            android:text="@string/refused_to_accept"
+            android:textColor="@color/black_1A"
+            android:textSize="@dimen/_18SP"
+            android:visibility="gone"
+            app:fontFamily="@font/roboto_regular"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_quest" />
+
+
+        <View
+            android:id="@+id/view_top"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_8DP"
+            android:layout_marginTop="@dimen/_10DP"
+            android:background="@color/green_FF"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_reason" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txt_please_tell"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10DP"
+            android:gravity="center_vertical"
+            android:text="@string/please_tell_us_more"
+            android:textColor="@color/black_1A"
+            android:textSize="@dimen/_24SP"
+            android:visibility="gone"
+            app:fontFamily="@font/roboto_bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_top" />
+
+        <View
+            android:id="@+id/view_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_8DP"
+            android:layout_marginTop="@dimen/_10DP"
+            android:background="@color/green_FF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_please_tell" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/_15DP"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_bottom"
+            tools:listitem="@layout/item_cancel_reason_code" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

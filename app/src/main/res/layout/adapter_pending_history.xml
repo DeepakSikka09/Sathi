@@ -1,0 +1,66 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.ecomexpress.sathi.ui.dashboard.notification.notification_detail.ActivityNotificationDetail">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.side_drawer.pendingHistory.PendingHistoryViewModel" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/parent_cardview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/_10DP"
+        app:cardElevation="@dimen/_10DP"
+        app:cardUseCompatPadding="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="@dimen/_10DP">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_awbno"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:gravity="center"
+                android:text="awbNo."
+                android:textColor="@color/black"
+                android:textSize="@dimen/_15SP" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_shipment_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_awbno"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_gravity="center"
+                android:text=""
+                android:layout_marginTop="@dimen/_10DP"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_15SP" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_shipment_type"
+                android:layout_gravity="end"
+                android:gravity="end"
+                android:text=""
+                android:layout_marginTop="@dimen/_10DP"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_15SP" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>

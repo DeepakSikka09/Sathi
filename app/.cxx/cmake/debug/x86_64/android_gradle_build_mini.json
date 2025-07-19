@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/home/sumitgarg/Android/Sdk/ndk/21.0.6113669/build/cmake/android.toolchain.cmake",
+    "/home/sumitgarg/StudioProjects/sathi_220/app/src/main/cpp/CMakeLists.txt",
+    "/home/sumitgarg/Android/Sdk/ndk/21.0.6113669/build/cmake/platforms.cmake"
+  ],
+  "cleanCommands": [
+    "/home/sumitgarg/Android/Sdk/cmake/3.10.2.4988404/bin/ninja -C \"/home/sumitgarg/StudioProjects/sathi_220/app/.cxx/cmake/debug/x86_64\" clean"
+  ],
+  "buildTargetsCommand": "/home/sumitgarg/Android/Sdk/cmake/3.10.2.4988404/bin/ninja  -C \"/home/sumitgarg/StudioProjects/sathi_220/app/.cxx/cmake/debug/x86_64\" {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "native-lib-Debug-x86_64": {
+      "artifactName": "native-lib",
+      "buildCommand": "/home/sumitgarg/Android/Sdk/cmake/3.10.2.4988404/bin/ninja -C \"/home/sumitgarg/StudioProjects/sathi_220/app/.cxx/cmake/debug/x86_64\" native-lib",
+      "abi": "x86_64",
+      "output": "/home/sumitgarg/StudioProjects/sathi_220/app/build/intermediates/cmake/debug/obj/x86_64/libnative-lib.so",
+      "runtimeFiles": []
+    }
+  }
+}

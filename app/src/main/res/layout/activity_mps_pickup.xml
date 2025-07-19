@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.drs.mps.activity.MpsPickupActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <include
+            android:id="@+id/header"
+            layout="@layout/common_header"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <include
+            android:id="@+id/rqc_awb_header"
+            layout="@layout/rvp_with_awb_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/header" />
+
+        <View
+            android:id="@+id/dividerOne"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_7DP"
+            android:background="@color/green_FF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rqc_awb_header" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/totalMpsQcCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center_vertical|start"
+            android:background="@color/white"
+            android:paddingHorizontal="@dimen/_15DP"
+            android:paddingTop="@dimen/_15DP"
+            android:paddingBottom="@dimen/_5DP"
+            android:textColor="@color/textPrimaryColor"
+            android:textSize="@dimen/_15SP"
+            app:layout_constraintTop_toBottomOf="@id/dividerOne" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mpsQcDetailsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_0DP"
+            app:layout_constraintTop_toBottomOf="@id/totalMpsQcCount"
+            app:layout_constraintBottom_toTopOf="@id/dividerTwo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:listitem="@layout/mps_pickup_items"/>
+
+        <View
+            android:id="@+id/dividerTwo"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_2DP"
+            android:background="@color/grey_1"
+            app:layout_constraintBottom_toTopOf="@id/actionButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <include
+            android:id="@+id/actionButton"
+            layout="@layout/rvp_bottom_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

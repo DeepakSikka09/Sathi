@@ -1,0 +1,2 @@
+configurations.maybeCreate("default")
+artifacts.add("default", file('barcode_handler_v1.0.0.aar'))

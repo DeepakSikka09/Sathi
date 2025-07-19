@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/margin_small"
+    android:layout_marginRight="@dimen/margin_small"
+    android:background="@drawable/ms_round_rect_layout_bg"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/top_bar_REL_content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center_vertical|left"
+        android:minHeight="@dimen/dlg_alert_height"
+        android:orientation="vertical">
+
+        <com.mswipetech.wisepad.sdk.customviews.CustomSDKBoldTextView
+            android:id="@+id/customdlg_sdk_TXT_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_normal"
+            android:background="@android:color/transparent"
+            android:maxLines="6"
+            android:text="@string/loginactivity_login"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/label_topbar_heading"
+            android:visibility="gone" />
+
+        <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextView
+            android:id="@+id/customdlg_sdk_TXT_Info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginRight="@dimen/margin_normal"
+            android:maxLines="8"
+            android:text="hello"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/label_font"
+            android:typeface="sans" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/customdlg_sdk_LIN_details"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/dlg_alert_action_btn_layout_height"
+        android:background="@drawable/ms_semi_round_rect_bottom_gray"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/customdlg_sdk_RLT_yes"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true">
+
+            <Button
+                android:id="@+id/customdlg_sdk_BTN_yes"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:background="@android:color/transparent"
+                android:clickable="false"
+                android:drawableLeft="@drawable/ms_banner_yes"
+                android:focusable="false"
+                android:gravity="center"
+                android:text="@string/yes"
+                android:textColor="@color/dlg_btn_text_color"
+                android:textSize="@dimen/label_font_large" />
+        </RelativeLayout>
+
+
+        <View
+            android:id="@+id/customdlg_sdk_view"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/dlg_border_grey_color" />
+
+        <RelativeLayout
+            android:id="@+id/customdlg_sdk_RLT_no"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true">
+
+            <Button
+                android:id="@+id/customdlg_sdk_BTN_no"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:background="@android:color/transparent"
+                android:clickable="false"
+                android:drawableLeft="@drawable/ms_banner_cancel"
+                android:focusable="false"
+                android:gravity="center"
+                android:text="@string/no"
+                android:textColor="@color/dlg_btn_text_color"
+                android:textSize="@dimen/label_font_large" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

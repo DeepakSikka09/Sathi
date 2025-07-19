@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout android:id="@+id/transparentOverlay"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="20dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginBottom="10dp"
+    android:background="#eeeeee"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/dialog_bg">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:padding="12dp"
+        android:textSize="24dp"
+        android:text="Transaction"
+        android:textAlignment="center"
+        android:textColor="@color/cardview_light_background"
+        android:background="@color/cardview_dark_background"
+        android:textStyle="bold"
+        android:fontFamily="Arial"
+        android:id="@+id/txtTitle" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:padding="8dp"
+        android:orientation="horizontal">
+
+       <!-- <ImageView
+            android:id="@+id/txnStatusImg"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/pchecked" />-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/txnStatus"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="10dp"
+                android:paddingTop="2dp"
+                android:textSize="20dp"
+              android:layout_marginTop="15dp"
+                android:text=""
+                android:textStyle="bold"
+                android:textColor="#488c4f"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <TableLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#f2f2f2"
+        android:gravity="left">
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:gravity="center_horizontal"
+            android:weightSum="1">
+            <View android:layout_height="1dp"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:background="#000000"/>
+        </TableRow>
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:gravity="center_horizontal"
+            android:padding="20dip"
+            android:weightSum="1">
+            <TextView
+                android:layout_width="0dp"
+                android:id="@+id/dateId"
+                android:textColor="#000000"
+                android:layout_weight="0.40"
+                android:text="Date "/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:id="@+id/dateIdValue"
+                android:textColor="#000000"
+                android:layout_weight="0.60"
+                android:text="" />
+        </TableRow>
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:gravity="center_horizontal"
+            android:weightSum="1">
+            <View android:layout_height="1dp"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:background="#000000"/>
+        </TableRow>
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:gravity="center_horizontal"
+            android:padding="20dip"
+            android:weightSum="1">
+            <TextView
+                android:layout_width="0dp"
+                android:id="@+id/ordId"
+                android:textColor="#000000"
+                android:layout_weight="0.40"
+                android:text="Merchant Ref No"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:id="@+id/MerchantRefNoValue"
+                android:textColor="#000000"
+                android:layout_weight="0.60"
+                android:text="" />
+        </TableRow>
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:gravity="center_horizontal"
+            android:weightSum="1">
+            <View android:layout_height="1dp"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:background="#000000"/>
+        </TableRow>
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:gravity="center_horizontal"
+            android:padding="20dip"
+            android:weightSum="1">
+            <TextView
+                android:layout_width="0dp"
+                android:id="@+id/paymentMode"
+                android:textColor="#000000"
+                android:layout_weight="0.40"
+                android:text="Payment Id"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:id="@+id/paymentIdValue"
+                android:textColor="#000000"
+                android:layout_weight="0.60"
+                android:text="" />
+        </TableRow>
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:gravity="center_horizontal"
+            android:weightSum="1">
+            <View android:layout_height="1dp"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:background="#000000"/>
+        </TableRow>
+
+    </TableLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="Ok"
+            android:layout_gravity="center"
+            android:onClick="CloseActivity"
+            android:id="@+id/sucessButon"
+            android:layout_weight="1" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:text="Refund"
+            android:onClick="RefundTransaction"
+            android:id="@+id/refundButon"
+
+            android:layout_weight="1" />
+
+    </LinearLayout>
+</LinearLayout>
+    </RelativeLayout>

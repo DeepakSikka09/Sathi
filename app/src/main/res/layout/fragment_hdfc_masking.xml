@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.dummy.eds.document_list_collection.DocumentListViewModel" />
+    </data>
+
+
+    <LinearLayout
+        android:id="@+id/hdfc_masking"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/_15DP">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5DP"
+            android:onClick="@{()-> viewModel.captureFrontImage()}"
+            android:orientation="horizontal"
+            android:weightSum=".1">
+
+            <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_5DP"
+                android:layout_marginLeft="@dimen/_5DP"
+                android:layout_weight=".05"
+                android:gravity="start|center"
+                android:text="@string/masking_front"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                android:id="@+id/tv_mandate_front"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_5DP"
+                android:layout_marginLeft="@dimen/_5DP"
+                android:layout_weight=".05"
+                android:gravity="start|center"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+
+            <ImageView
+                android:id="@+id/imagecam_front"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end"
+                android:entries="@array/relation"
+                android:gravity="end"
+                android:padding="@dimen/_5DP"
+                app:srcCompat="@drawable/cam" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/flagIsCameraEnabled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5DP"
+            android:orientation="horizontal"
+            android:weightSum=".1">
+
+            <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_5DP"
+                android:layout_marginLeft="@dimen/_5DP"
+                android:layout_weight=".05"
+                android:gravity="start|center"
+                android:text="@string/masking_rear"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                android:id="@+id/tv_mandate_rear"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_5DP"
+                android:layout_marginLeft="@dimen/_5DP"
+                android:layout_weight=".05"
+                android:gravity="start|center"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+
+            <ImageView
+                android:id="@+id/imagecam_rear"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end"
+                android:entries="@array/relation"
+                android:gravity="end"
+                android:onClick="@{() -> viewModel.captureRearImage()}"
+                android:padding="@dimen/_5DP"
+                app:srcCompat="@drawable/cam" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/bt_upload"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20DP"
+                android:layout_weight="1"
+                android:background="@drawable/eds_button"
+                android:gravity="center"
+                android:onClick="@{()->viewModel.uploadAAdharImage()}"
+                android:padding="@dimen/_5DP"
+                android:text="@string/upload_"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/bt_getstatus"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_20DP"
+                android:layout_marginTop="@dimen/_20DP"
+                android:layout_weight="1"
+                android:background="@drawable/eds_button"
+                android:gravity="center"
+                android:onClick="@{()->viewModel.getHDFCMaskingStatus()}"
+                android:padding="@dimen/_5DP"
+                android:text="@string/get_status"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:visibility="visible" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</layout>

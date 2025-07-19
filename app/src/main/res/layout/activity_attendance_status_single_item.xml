@@ -1,0 +1,64 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.dashboard.attendance.activity.MonthStatusItemViewModel" />
+
+    </data>
+
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card"
+            android:layout_width="@dimen/_40DP"
+            android:layout_height="@dimen/_40DP"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/_10DP"
+            app:cardElevation="@dimen/_10DP"
+            android:layout_margin="@dimen/_5DP"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/popup_element"
+                android:background="@android:color/transparent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/month_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/_8DP"
+                    android:text="@{ viewModel.Date}"
+                    android:layout_marginEnd="@dimen/_5DP"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/_12SP"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/attendance_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom"
+                    android:text="@{ viewModel.status}"
+                    android:layout_marginStart="@dimen/_5DP"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12SP"
+                    app:layout_constraintTop_toBottomOf="@+id/month_name"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+
+</layout>

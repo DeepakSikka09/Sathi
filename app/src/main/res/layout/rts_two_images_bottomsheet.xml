@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:background="@drawable/bottom_sheet_bg_rts">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/customCard1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10DP"
+            android:background="@drawable/rounded_background"
+            app:cardElevation="@dimen/_7DP"
+            app:layout_constraintEnd_toStartOf="@+id/customCard2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:elevation="@dimen/_7DP"
+            android:padding="@dimen/_8DP">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imageView1"
+                android:layout_width="@dimen/_30DP"
+                android:layout_height="@dimen/_30DP"
+                android:contentDescription="@string/capture_image_1"
+                android:src="@drawable/cam"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4DP"
+                android:text="@string/capture_image_1"
+                android:textColor="@color/Black"
+                android:textSize="@dimen/_15SP"
+                android:fontFamily="@font/roboto_bold"
+                app:layout_constraintTop_toBottomOf="@id/imageView1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/customCard2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10DP"
+            android:background="@drawable/rounded_background"
+            app:cardElevation="@dimen/_7DP"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/customCard1"
+            app:layout_constraintTop_toTopOf="parent"
+            android:elevation="@dimen/_7DP"
+            android:padding="@dimen/_8DP">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imageView2"
+                android:layout_width="@dimen/_30DP"
+                android:layout_height="@dimen/_30DP"
+                android:contentDescription="@string/capture_image_2"
+                android:src="@drawable/cam"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4DP"
+                android:text="@string/capture_image_2"
+                android:textColor="@color/Black"
+                android:textSize="@dimen/_15SP"
+                android:fontFamily="@font/roboto_bold"
+                app:layout_constraintTop_toBottomOf="@id/imageView2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cancleBottomSheet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5DP"
+            android:layout_marginTop="@dimen/_10DP"
+            android:layout_marginEnd="@dimen/_5DP"
+            android:layout_marginBottom="@dimen/_7DP"
+            android:background="@drawable/rts_button"
+            android:text="@string/rts_done"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_15SP"
+            android:fontFamily="@font/roboto_bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/customCard1"
+            app:layout_constraintVertical_bias="0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

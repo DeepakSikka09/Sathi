@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "384079048410",
+    "project_id": "sathiv2-afea9",
+    "storage_bucket": "sathiv2-afea9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:384079048410:android:8b2d0997fcbd45a0377fe3",
+        "android_client_info": {
+          "package_name": "in.ecomexpress.sathi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "384079048410-g3fm4ea0vd8q3us7dl73tdu5dknhsmvb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGKFc__Y3GolhxIfrXzoJL3a14XC1IZeA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "384079048410-g3fm4ea0vd8q3us7dl73tdu5dknhsmvb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

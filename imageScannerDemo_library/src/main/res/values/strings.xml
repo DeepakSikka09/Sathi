@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ImageCrop&amp;Enhance</string>
+    <string name="a_label_auto">Auto</string>
+    <string name="a_label_none_enhance">No Enhance</string>
+    <string name="a_label_enhance">Enhance</string>
+    <string name="a_label_enhance_sharp">Enhance and Magic</string>
+    <string name="a_label_gray">Gray</string>
+    <string name="a_label_white_black">black-and-white</string>
+    <string name="a_msg_working">Processing...</string>
+    <string name="a_label_save">Save</string>
+    <string name="a_label_cancel">Cancel</string>
+    <string name="a_label_open">Open</string>
+    <string name="a_msg_illegal">Illegal Image!</string>
+    <string name="a_msg_not_available_application">App is not Available</string>
+    <string name="bound_trim_error">Crop area is invalid, pleae try again!</string>
+    <string name="cui_app_title">Image Crop &amp; Enhance recognition</string>
+    <string name="cui_dl_tips_take_photo">Camera</string>
+    <string name="cui_dl_tips_pick_photo">Gallery</string>
+    <string name="cui_a_msg_empty_tips">Please Choose Camera Or Gallery Recognition</string>
+    <string name="intsig_copyright">IntSig Information Co.,Ltd.\n© 2009-2017 Intsig. All Rights Reserved.</string>
+    <string name="cui_welcome_title">IntSig Information Intelligence Systiem</string>
+    <string name="step_trim">step_trim</string>
+    <string name="back">back</string>
+
+        <string name="begin_enhance">begining enhance...</string>
+                <string name="begin_trim">begining trim..</string>
+        
+                    <string name="click_me">click me..</string>
+                                                 <string name="click_me_again">click_me_again,sum:</string>
+    <string name="fail_to_contect_camcard">fail_to_contect_camcard</string>
+</resources>

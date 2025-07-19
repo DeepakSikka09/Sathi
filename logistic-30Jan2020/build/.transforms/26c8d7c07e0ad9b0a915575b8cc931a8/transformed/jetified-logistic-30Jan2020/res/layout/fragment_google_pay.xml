@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="122dp"
+            android:background="#2b2e7a">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                card_view:cardBackgroundColor="#fff"
+                card_view:cardCornerRadius="5dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="107dp"
+                    android:layout_gravity="center_horizontal"
+
+
+                    android:src="@mipmap/googlepay4" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+
+
+        </RelativeLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/connect_help"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_above="@+id/bottomLogoLayout"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:weightSum="1">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:orientation="horizontal"
+                                android:background="#a99999"
+                                android:paddingTop="3dp">
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="232dp"
+                                    android:layout_height="96dp"
+                                    android:layout_margin="5dp"
+                                    android:layout_weight="0.65"
+                                    android:background="#F2F2F2"
+                                    card_view:cardBackgroundColor="#fff">
+
+                                    <TableLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="120dp"
+                                        android:layout_margin="2dp"
+                                        android:background="#F2F2F2">
+
+
+                                        <TableRow
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:background="#fff"
+                                            android:padding="6dp">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:text="Requested Amount"
+                                                android:textColor="#000"
+
+                                                />
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:text="Rs. "
+                                                android:gravity="right"
+                                                android:layout_gravity="right"
+                                                android:textColor="#000"
+
+                                                />
+
+                                            <TextView
+                                                android:id="@+id/transamt"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:text=""
+                                                android:textColor="#000"
+                                                android:gravity="right"
+                                                android:layout_gravity="right"
+
+
+                                                />
+                                        </TableRow>
+
+                                        <TableRow
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:background="#fff"
+                                            android:padding="6dp"
+                                            android:id="@+id/serviceRowId"
+                                            >
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:text="Service Charge (Incl GST)"
+                                                android:textColor="#000"
+
+                                                />
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:text="Rs. "
+                                                android:gravity="right"
+                                                android:layout_gravity="right"
+                                                android:textColor="#000"
+
+                                                />
+
+                                            <TextView
+                                                android:id="@+id/servicechargeamt"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:text=""
+                                                android:textColor="#000"
+                                                android:gravity="right"
+                                                android:layout_gravity="right"
+
+
+                                                />
+                                        </TableRow>
+
+                                        <TableRow
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:background="#f2f2f2"
+                                            android:padding="6dp"
+                                            android:id="@+id/totamountrowId"
+                                            >
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:text="Total Amount to be paid"
+                                                android:textColor="#000"
+
+                                                />
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:text="Rs. "
+                                                android:gravity="right"
+                                                android:layout_gravity="right"
+                                                android:textColor="#000"
+
+                                                />
+
+                                            <TextView
+                                                android:id="@+id/aadhaartotalamt"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:text=""
+                                                android:textColor="#000"
+
+                                                android:gravity="right"
+                                                android:layout_gravity="right"
+
+
+                                                />
+                                        </TableRow>
+
+
+                                    </TableLayout>
+
+
+                                </androidx.cardview.widget.CardView>
+
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:id="@+id/paraLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:paddingTop="20dp">
+
+
+
+                            </LinearLayout>
+
+
+
+
+
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <EditText
+                    android:id="@+id/mobileNumberId"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:hint="Enter mobile number"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="2dp"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:background="@drawable/edittext_bg"
+                    />
+
+                <Button
+                    android:id="@+id/buttonProceed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@color/buttoncolor"
+                    android:padding="12dp"
+
+                     android:layout_centerInParent="true"
+                    android:text="Click to initiate"
+                    android:textColor="@color/textcolorconponent"
+                    android:layout_gravity="center_horizontal" />
+
+                <TextView
+                    android:id="@+id/txtmsg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Consumer must have recieved notification on GooglePay App Please request consumer to make payment.
+
+                    "
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    />
+
+                <Button
+                    android:padding="12dp"
+                    android:textColor="@color/textcolorconponent"
+                    android:background="@color/buttoncolor"
+                    android:text="Check Status    "
+                    android:layout_width="wrap_content"
+                    android:id="@+id/checkStatusUpiQr"
+                    android:layout_height="wrap_content"
+                   android:layout_marginTop="30dp"
+                    android:layout_gravity="center_horizontal" />
+
+                <RelativeLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent">
+
+                </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Powered by PayPhi"
+                    android:textStyle="bold|italic"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="center_horizontal"
+                    />
+
+
+
+
+            </LinearLayout>
+
+
+        </ScrollView>
+
+
+    </LinearLayout>
+</LinearLayout>

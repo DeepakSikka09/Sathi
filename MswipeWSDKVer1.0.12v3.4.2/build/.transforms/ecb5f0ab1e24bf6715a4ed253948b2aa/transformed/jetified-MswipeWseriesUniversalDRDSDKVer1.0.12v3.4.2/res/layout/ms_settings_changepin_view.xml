@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/login_REL_content"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent">
+
+</RelativeLayout>
+
+    <!--
+    <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+
+        <RelativeLayout
+            android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <include
+                android:id="@+id/topbar"
+                layout="@layout/top_bar"/>
+
+            <RelativeLayout
+                android:id="@+id/changepin_REL_content"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="@dimen/margin_normal"
+                android:layout_below="@+id/topbar">
+
+                    &lt;!&ndash; the fragment replce place &ndash;&gt;
+                    <FrameLayout
+                        android:id="@+id/changepin_fragmentcontainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    &lt;!&ndash; the widget for the bluetooth connection &ndash;&gt;
+
+
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+
+
+        <LinearLayout
+            android:id="@+id/drawer"
+            android:layout_width="290dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@android:color/white" >
+
+            <include
+                android:id="@+id/option_list"
+                layout="@layout/drawer_expanablelist_view" />
+        </LinearLayout>
+
+    </androidx.drawerlayout.widget.DrawerLayout>-->

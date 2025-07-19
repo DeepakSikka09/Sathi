@@ -1,0 +1,8 @@
+com.intsig.imageprocessdemo.test.imageScannerDemo_library-androidTest-0 /Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/generated/res/resValues/androidTest/debug
+com.intsig.imageprocessdemo.test.imageScannerDemo_library-androidTest-1 /Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/generated/res/rs/androidTest/debug
+com.intsig.imageprocessdemo.test.imageScannerDemo_library-mergeDebugAndroidTestResources-2 /Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/incremental/debugAndroidTest/mergeDebugAndroidTestResources/merged.dir
+com.intsig.imageprocessdemo.test.imageScannerDemo_library-mergeDebugAndroidTestResources-3 /Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/incremental/debugAndroidTest/mergeDebugAndroidTestResources/stripped.dir
+com.intsig.imageprocessdemo.test.imageScannerDemo_library-merged_res-4 /Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/merged_res/debugAndroidTest
+com.intsig.imageprocessdemo.test.imageScannerDemo_library-packaged_res-5 /Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/packaged_res/debug
+com.intsig.imageprocessdemo.test.imageScannerDemo_library-androidTest-6 /Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/src/androidTest/res
+com.intsig.imageprocessdemo.test.imageScannerDemo_library-androidTestDebug-7 /Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/src/androidTestDebug/res

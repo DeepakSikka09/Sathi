@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ecomRed"
+    android:padding="@dimen/_20DP"
+    tools:context=".ui.dashboard.global_activity.GlobalDialogActivity">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:text=""
+        android:fontFamily="@font/roboto_regular"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_30sp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_msg"
+        android:layout_alignParentRight="true"
+        android:text="OK"
+        android:fontFamily="@font/roboto_regular"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_30DP" />
+
+</RelativeLayout>

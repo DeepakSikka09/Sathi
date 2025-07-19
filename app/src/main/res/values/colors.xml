@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#283593</color>
+    <color name="colorPrimaryDark">#1A237E</color>
+    <color name="dashboarddark">#9FA8DA</color>
+    <color name="dashboardtool">#C5CAE9</color>
+    <color name="dashboardbg">#E8EAF6</color>
+    <color name="button_disable_color">#B8B8B8</color>
+    <color name="button_enable_color">#25408F</color>
+    <color name="colorAccent">#5C6BC0</color>
+    <color name="blue">#E8EAF6</color>
+    <color name="bluelite">#bfc2d4</color>
+    <color name="drsbg">#E8EAF6</color>
+    <color name="colorBackground">#E8EAF6</color>
+    <color name="orange">#FFAB40</color>
+    <color name="white">#ffffff</color>
+    <color name="offwhite">#f5f5f5</color>
+    <color name="black">#000000</color>
+    <color name="blue_ecom">#333E86</color>
+    <color name="red_ecom">#C02222</color>
+    <color name="rtstext">#01579B</color>
+    <color name="gray_ecom">#D4D3D1</color>
+    <color name="primaryColor">#2196F3</color>
+    <color name="drsiconbg">#E8EAF6</color>
+    <color name="dark_gray">#333333</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="shadow">#E8EAF6</color>
+    <color name="green_FF">#F0F6FF</color>
+    <color name="blue_8F">#25408F</color>
+    <color name="green_FE">#DBE7FE</color>
+
+    <color name="light_gray">#ECEFF1</color>
+    <color name="gray">#616161</color>
+    <color name="grey_1">#ddd</color>
+    <color name="grey_border">#F2F1F1</color>
+
+    <color name="bg_color">#f7f7f7</color>
+    <color name="black_effective">#2a2a2a</color>
+
+    <!--Design colors-->
+    <color name="red_dark2">#ea3737</color>
+    <color name="red">#c17778</color>
+
+    <color name="cyan_light">#d3e4e6</color>
+    <color name="cyan">#4cadb6</color>
+    <color name="green">#558B2F</color>
+    <color name="light_blue">#77aec1</color>
+    <!--<color name="blue_grey_light">#cfe6e9</color>-->
+    <color name="blue_grey_light">#283593</color>
+    <color name="yellow">#e1cd35</color>
+    <!--  <color name="fwd">#8ea4cc</color>-->
+    <color name="fwd">#283593</color>
+    <color name="eds">#795548</color>
+    <color name="edstool">#6D4C41</color>
+    <color name="edslight">#EFEBE9</color>
+    <color name="rts">#B71C1C</color>
+    <color name="rtstool">#C62828</color>
+    <color name="rts_light">#faf3f4</color>
+    <color name="rvp">#7CB342</color>
+    <color name="rvptool">#8BC34A</color>
+    <color name="rvplight">#F1F8E9</color>
+
+    <color name="undel1">#FFFDE7</color>
+    <color name="undel2">#FFF9C4</color>
+    <color name="undel3">#FFF59D</color>
+    <color name="undel4">#FFF176</color>
+    <color name="del1">#E8EAF6</color>
+    <color name="del2">#C5CAE9</color>
+    <color name="del3">#9FA8DA</color>
+    <color name="del4">#7986CB</color>
+    <color name="green_text">#2eb82e</color>
+
+    <color name="primary_grey_400">#BDBDBD</color>
+
+    <color name="grey_78">#6E7478</color>
+    <color name="black_1A">#1A1A1A</color>
+    <color name="textPrimaryColor">#1A1A1A</color>
+    <color name="grey_F4">#E4EAF4</color>
+    <color name="grey_CD">#BCC1CD</color>
+    <color name="grey_60">#4C5160</color>
+    <color name="sathi_background_color">#F0F6FF</color>
+    <color name="sathi_text_colour">#1A1A1A</color>
+    <color name="light_blue_new">#DBE7FE</color>
+    <color name="light_grey">#55000000</color>
+    <color name="textHintColor">#8C9296</color>
+
+    <color name="highlight_color">#C0FF0000</color>
+    <color name="grey_fe">#DBE7FE</color>
+    <color name="grey_E5">#D1D9E0E5</color>
+    <color name="rvp_qc_capture_image_button_color">#DBE7FE</color>
+    <color name="black_new">#1A1A1A</color>
+
+</resources>

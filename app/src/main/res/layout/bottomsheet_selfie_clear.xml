@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_curve_corner"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/first_constraint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_20DP"
+            android:background="@color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_headline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/is_your_selfie_image_clear"
+                android:textColor="@color/black_1A"
+                android:textSize="@dimen/_20SP"
+                android:fontFamily="@font/roboto_medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_prdct_clear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20DP"
+                android:text="@string/please_make_sure_the_image_is_clear_and_your_face_is_visible"
+                android:textColor="@color/black_1A"
+                android:fontFamily="@font/roboto_regular"
+                android:textSize="@dimen/_18SP"
+                app:layout_constraintTop_toBottomOf="@id/tv_headline"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraint_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20DP"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_prdct_clear">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_retake"
+                    android:background="@drawable/bg_curve_corner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/green_FF"
+                    android:text="@string/retake"
+                    android:textColor="@color/grey_60"
+                    android:textSize="@dimen/_20SP"
+                    android:fontFamily="@font/roboto_medium"
+                    app:cornerRadius="@dimen/margin_6dp"
+                    android:layout_marginBottom="@dimen/_20DP"
+                    app:layout_constraintEnd_toStartOf="@+id/btn_upload"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_upload"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_20DP"
+                    android:layout_marginBottom="@dimen/_20DP"
+                    android:backgroundTint="@color/blue_ecom"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_20SP"
+                    android:fontFamily="@font/roboto_medium"
+                    android:background="@drawable/bg_curve_corner"
+                    android:text="@string/upload"
+                    app:cornerRadius="@dimen/margin_6dp"
+                    app:layout_constraintStart_toEndOf="@+id/btn_retake"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "in.ecomexpress.sathi",
+  "variantName": "release",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 194,
+      "versionName": "2.3.44",
+      "outputFile": "SATHi-release-2.3.44-Jun-13.apk"
+    }
+  ],
+  "elementType": "File"
+}

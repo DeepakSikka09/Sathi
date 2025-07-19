@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/green_FF"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/back_arrow"
+        android:layout_width="@dimen/_40DP"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_16DP"
+        android:layout_marginVertical="@dimen/_10DP"
+        android:padding="@dimen/_10DP"
+        android:src="@drawable/ic_back_arrow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/headingName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/back_arrow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="@dimen/_12DP"
+        android:textColor="@color/black_1A"
+        android:textSize="@dimen/_16SP"
+        android:textStyle="bold"
+        android:fontFamily="@font/roboto_bold"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/versionName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black_1A"
+        android:textSize="@dimen/_12SP"
+        android:textStyle="bold"
+        android:layout_marginEnd="@dimen/_20DP"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

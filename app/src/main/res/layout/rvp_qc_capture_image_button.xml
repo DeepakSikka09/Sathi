@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.textview.MaterialTextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/captureImageName"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/_18SP"
+    android:paddingVertical="@dimen/_10DP"
+    android:paddingHorizontal="@dimen/_15DP"
+    android:drawablePadding="@dimen/_5DP"
+    android:fontFamily="@font/roboto_medium"
+    android:drawableEnd="@drawable/cam_new"
+    android:gravity="center_vertical|start"
+    android:textColor="@color/textPrimaryColor"
+    android:backgroundTint="@color/rvp_qc_capture_image_button_color"
+    android:background="@drawable/rvp_qc_sms_to_layer"/>

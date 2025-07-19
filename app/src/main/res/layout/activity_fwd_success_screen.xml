@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.ecomexpress.sathi.ui.drs.forward.success.FWDSuccessActivity">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.drs.forward.success.FWDSuccessViewModel" />
+    </data>
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/offwhite">
+
+            <!--Toolbar-->
+
+            <include
+                android:id="@+id/header"
+                layout="@layout/header_obd_fwd"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
+
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/header"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5DP"
+                android:background="@color/offwhite">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_img_shw"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:contentDescription="@string/static_content"
+                    android:layout_width="@dimen/_40DP"
+                    android:layout_height="@dimen/_40DP"
+                    android:layout_margin="@dimen/_5DP"
+                    android:background="@{viewModel.image ? @drawable/success_icon : @drawable/fail_icon}"
+                    android:entries="@array/relation" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:fontFamily="@font/roboto_regular"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_img_shw"
+                    android:id="@+id/decideText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:hint="@string/Success"
+                    android:padding="@dimen/_5DP"
+                    android:textColor="@{viewModel.textColor ? @color/green : @color/red_ecom}"
+                    android:textSize="@dimen/_25sp"
+                    android:textStyle="bold" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cc_parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/decideText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_5DP">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:fontFamily="@font/roboto_regular"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:id="@+id/status_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_5DP"
+                        android:gravity="center"
+                        android:hint="@string/now_you_can_handover_this_shipment_from_customer"
+                        android:textColor="@{viewModel.textColor ? @color/green : @color/red_ecom}"
+                        android:textSize="@dimen/_15SP" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:fontFamily="@font/roboto_regular"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/status_text"
+                        android:id="@+id/reason_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_5DP"
+                        android:gravity="center"
+                        android:hint=""
+                        android:textColor="@color/red_ecom"
+                        android:textSize="@dimen/_15SP" />
+
+
+
+                        <com.google.android.material.card.MaterialCardView
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/reason_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="@dimen/_5DP"
+                            app:cardBackgroundColor="@color/offwhite"
+                            app:cardCornerRadius="@dimen/_7DP"
+                            app:cardElevation="@dimen/_25DP">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_margin="@dimen/_5DP"
+                                android:background="@color/del1"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:padding="@dimen/_20DP">
+
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:fontFamily="@font/roboto_regular"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:id="@+id/consignee_name"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_5DP"
+                                    android:hint="@string/name_txt"
+                                    android:maxLines="2"
+                                    android:scrollbars="vertical"
+                                    android:text="@{viewModel.name}"
+                                    android:textColor="@color/colorPrimaryDark"
+                                    android:textSize="@dimen/_15SP"
+                                    android:textStyle="bold"
+                                    android:visibility="gone" />
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:fontFamily="@font/roboto_regular"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/consignee_name"
+                                    android:id="@+id/consignee_address"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_5DP"
+                                    android:hint="@string/address"
+                                    android:maxLines="4"
+                                    android:scrollbars="vertical"
+                                    android:text="@{viewModel.address}"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_12SP"
+                                    android:visibility="gone" />
+
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:fontFamily="@font/roboto_regular"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/consignee_address"
+                                    android:id="@+id/type"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_5DP"
+                                    android:hint="@string/item"
+                                    android:text="@{viewModel.item_name}"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_12SP"
+                                    android:visibility="gone" />
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:fontFamily="@font/roboto_regular"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/type"
+                                    android:id="@+id/awb"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_5DP"
+                                    android:hint="@string/awb"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_12SP"
+                                    android:textStyle="bold" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <com.google.android.material.button.MaterialButton
+                    app:layout_constraintTop_toBottomOf="@+id/cc_parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_30DP"
+                    android:background="@drawable/fwd_button"
+                    android:gravity="center"
+                    android:onClick="@{() -> viewModel.OnHomeClick()}"
+                    android:text="@string/home"
+                    android:id="@+id/mb_home"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15SP"
+                    android:textStyle="bold" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

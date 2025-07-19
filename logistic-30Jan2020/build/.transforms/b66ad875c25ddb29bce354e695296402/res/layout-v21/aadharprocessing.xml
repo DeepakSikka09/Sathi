@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="122dp"
+            android:background="#2b2e7a">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                card_view:cardBackgroundColor="#fff"
+                card_view:cardCornerRadius="5dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="107dp"
+                    android:layout_gravity="center_horizontal"
+
+
+                    android:src="@drawable/aadhaar1" />
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+
+
+        </RelativeLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/connect_help"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_above="@+id/bottomLogoLayout"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:weightSum="1">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:orientation="horizontal"
+                                android:background="#a99999"
+                                android:paddingTop="3dp">
+
+                                <android.support.v7.widget.CardView
+                                    android:layout_width="232dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="5dp"
+                                    android:layout_weight="0.65"
+                                    android:background="#F2F2F2"
+                                    card_view:cardBackgroundColor="#fff">
+
+                                    <TableLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="2dp"
+                                        android:background="#F2F2F2">
+
+                                        <TableRow
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:background="#fff"
+                                            android:padding="6dp"
+                                            android:visibility="gone"
+                                            android:id="@+id/serviceRowId"
+                                            >
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:text="AWB Number"
+                                                android:textColor="#000"
+                                                />
+
+
+                                            <TextView
+                                                android:id="@+id/awbAadhaar"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:text=""
+                                                android:textColor="#000"
+                                                android:gravity="right"
+                                                android:layout_gravity="right"
+
+
+                                                />
+                                        </TableRow>
+                                        <TableRow
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:background="#fff"
+                                            android:padding="6dp">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:text="Amount"
+                                                android:textColor="#000"
+
+                                                />
+
+                                            <TextView
+                                                android:id="@+id/aadharamt"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:text=""
+                                                android:textColor="#000"
+                                                android:gravity="left"
+                                                android:layout_gravity="right"
+
+
+                                                />
+                                        </TableRow>
+
+
+                                    </TableLayout>
+
+
+                                </android.support.v7.widget.CardView>
+
+
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:id="@+id/paraLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:paddingTop="20dp">
+
+                                <EditText
+
+                                    android:id="@+id/uidId"
+                                    android:layout_width="50dp"
+                                    android:layout_height="47dp"
+                                    android:layout_marginLeft="19dp"
+                                    android:layout_marginRight="19dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/edittext_bg"
+                                    android:paddingLeft="10dp"
+                                    android:hint="Enter Aadhaar Number "
+                                    android:inputType="number"
+                                    android:maxLength="14"
+
+
+                                    android:textColor="#000000"
+                                    android:textSize="18dp"
+                                    android:textStyle="normal" />
+
+                                <!--  <ImageView
+                                      android:id="@+id/openscannerId"
+                                      android:layout_width="48dp"
+                                      android:layout_height="48dp"
+                                      android:layout_marginRight="20dp"
+                                      android:src="@drawable/cameranew1" />-->
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/line2"
+                                style="?android:attr/listSeparatorTextViewStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:background="#a6a3a3"
+                                android:gravity="center_horizontal" />
+
+                            <TextView
+                                android:id="@+id/listOfBanks"
+                                android:layout_width="fill_parent"
+                                android:layout_height="47dp"
+                                android:layout_marginLeft="19dp"
+                                android:layout_marginRight="19dp"
+                                android:layout_marginTop="40dp"
+                                android:background="@drawable/edittext_bg"
+
+                                android:hint="Select Your Bank"
+                                android:paddingBottom="6dp"
+                                android:paddingTop="10dp"
+
+                                android:paddingLeft="10dp"
+                                android:textAllCaps="false"
+                                android:textColor="#000000"
+                                android:textSize="18dp"
+                                android:textStyle="normal" />
+                            <!-- android:drawableRight="@android:drawable/arrow_down_float"-->
+
+
+                            <TextView
+                                android:id="@+id/line"
+                                style="?android:attr/listSeparatorTextViewStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_below="@+id/connect_help"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginRight="10dp"
+                                android:background="#a6a3a3"
+                                android:gravity="center_horizontal" />
+
+
+
+                            <Button
+                                android:id="@+id/buttonProceed"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom"
+                                android:layout_marginLeft="40dp"
+                                android:layout_marginRight="40dp"
+                                android:layout_marginTop="25dp"
+                                android:background="@color/buttoncolor"
+                                android:padding="12dp"
+
+                                android:text="Proceed"
+                                android:textColor="@color/textcolorconponent" />
+
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                </RelativeLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</LinearLayout>

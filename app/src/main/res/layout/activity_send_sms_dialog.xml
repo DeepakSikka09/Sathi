@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.drs.sms.SMSViewModel" />
+    </data>
+
+
+    <LinearLayout
+        android:id="@+id/popup_element"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:elevation="10px"
+            app:cardBackgroundColor="@color/offwhite"
+            app:cardCornerRadius="@dimen/_7DP"
+            app:cardElevation="@dimen/_25DP">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/_5DP"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/dashboardtool"
+                    android:gravity="center_vertical">
+
+                    <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.1"
+                        android:gravity="center"
+                        android:padding="@dimen/_10DP"
+                        android:text="Send SMS"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:id="@+id/cross"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="end|right"
+                        android:layout_weight="0.02"
+                        android:onClick="@{() -> viewModel.onCancelClick()}"
+                        android:padding="@dimen/_10DP"
+                        app:tint="@color/colorPrimaryDark"
+                        app:srcCompat="@drawable/ic_cross" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/red_ecom" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_5DP"
+                        android:weightSum=".1">
+
+                        <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="@dimen/_5DP"
+                            android:layout_weight=".05"
+                            android:gravity="start|center"
+                            android:text="Select Time"
+                            android:textColor="@color/black"
+                            android:textSize="13sp" />
+
+
+                        <Spinner
+                            android:id="@+id/duration"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight=".05"
+                            android:background="@drawable/spinner_custom"
+                            android:divider="@color/gray"
+                            android:entries="@array/time"
+                            android:gravity="end"
+                            android:onItemSelected="@{(parent,view,pos,id)->viewModel.onTime(parent,view,pos,id)}"
+                            android:padding="@dimen/_5DP"
+                            android:showDividers="middle"
+                            android:textSize="13sp"
+                            android:theme="@style/MatchSpinnerTheme" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_5DP"
+                        android:weightSum=".1">
+
+                        <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="@dimen/_5DP"
+                            android:layout_weight=".05"
+                            android:gravity="start|center"
+                            android:text="Select Location"
+                            android:textColor="@color/black"
+                            android:textSize="13sp" />
+
+
+                        <Spinner
+                            android:id="@+id/location"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight=".05"
+                            android:background="@drawable/spinner_custom"
+                            android:divider="@color/gray"
+                            android:entries="@array/remarks"
+                            android:gravity="end"
+                            android:onItemSelected="@{(parent,view,pos,id)->viewModel.onLocation(parent,view,pos,id)}"
+                            android:padding="@dimen/_5DP"
+                            android:showDividers="middle"
+                            android:textSize="13sp"
+                            android:theme="@style/MatchSpinnerTheme" />
+                    </LinearLayout>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/_5DP"
+                        android:paddingRight="@dimen/_5DP"
+                        android:textColorHint="@color/dark_gray"
+                        android:textSize="13sp">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/remarks"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:cursorVisible="true"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 "
+                            android:hint="Enter Location Details"
+                            android:maxLength="20"
+                            android:inputType="textCapCharacters"
+                            android:maxLines="1"
+                            android:background="@color/white"
+                            android:singleLine="true"
+                            android:textColorHint="@color/gray"
+                            android:textSize="13sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+
+                <!--   <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="0dip"
+                   android:layout_margin="@dimen/_20DP"
+                   android:padding="@dimen/_5DP"
+                   android:layout_weight="1"
+                   android:background="@color/shadow"
+                   android:gravity="center|bottom"
+                   android:orientation="vertical">-->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_10DP"
+                    android:weightSum=".10">
+
+                    <Button
+                        android:id="@+id/cancel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="@dimen/_5DP"
+                        android:layout_marginRight="@dimen/_5DP"
+                        android:layout_weight=".05"
+                        android:background="@drawable/fwd_button"
+                        android:gravity="center"
+                        android:onClick="@{() -> viewModel.onCancelClick()}"
+                        android:text="@string/cancel"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                      />
+
+                    <Button
+                        android:id="@+id/send"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginLeft="@dimen/_5DP"
+                        android:layout_marginStart="@dimen/_5DP"
+                        android:layout_weight=".05"
+                        android:background="@drawable/fwd_button"
+                        android:gravity="center"
+                        android:onClick="@{() -> viewModel.onSendClick()}"
+                        android:text="@string/send_button"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</layout>

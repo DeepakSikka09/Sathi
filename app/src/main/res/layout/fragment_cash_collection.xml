@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.ecomexpress.sathi.ui.dummy.eds.eds_activity_detail.EDSDetailActivity">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.dummy.eds.cash_collection.CashCollectionViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/card_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_margin="7dp"
+                card_view:cardBackgroundColor="@color/white"
+                card_view:cardCornerRadius="5dp"
+                card_view:cardElevation="6dp"
+                card_view:cardMaxElevation="15dp">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:padding="@dimen/_10DP">
+
+                        <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                            android:id="@+id/activity_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="@={viewModel.activityName}"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp"
+                        android:background="@color/red_ecom" />
+
+
+                    <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                        android:id="@+id/txt_activity_ques"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/search_hint"
+
+                        android:text="@={viewModel.activityQuestion}"
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:background="@color/white">
+
+                        <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                            android:id="@+id/text_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:text="Have you Collected Money?"
+                            android:textColor="@color/black"
+                            android:textSize="13sp"
+                            android:visibility="gone" />
+
+                        <!--     <LinearLayout
+                                 android:layout_width="250dp"
+                                 android:layout_height="wrap_content"
+                                 android:layout_below="@+id/text_header"
+                                 android:layout_centerHorizontal="true"
+                                 android:layout_marginTop="10dp"
+                                 android:weightSum="2">
+
+                                 <RadioGroup
+                                     android:id="@+id/radiogroup"
+                                     android:layout_width="match_parent"
+                                     android:layout_height="wrap_content"
+
+                                     android:background="@color/white"
+                                     android:orientation="horizontal"
+                                     android:padding="5dp"
+                                     android:weightSum="1">
+
+                                     <RadioButton
+                                         android:id="@+id/radio_kyc_true"
+                                         android:layout_width="wrap_content"
+                                         android:layout_height="wrap_content"
+                                         android:layout_marginLeft="30dp"
+                                         android:layout_weight=".5"
+                                         android:paddingRight="20dp"
+                                         android:text="@string/Y" />
+
+                                     <RadioButton
+                                         android:id="@+id/radio_kyc_false"
+                                         android:layout_width="wrap_content"
+                                         android:layout_height="wrap_content"
+                                         android:layout_weight=".5"
+                                         android:text="@string/N" />
+                                 </RadioGroup>
+                             </LinearLayout>-->
+                        <LinearLayout
+                            android:id="@+id/ll_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:padding="@dimen/_5DP"
+                            android:weightSum="2">
+
+                            <RadioGroup
+                                android:id="@+id/radiogroup"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@color/white"
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                android:weightSum=".10">
+
+                                <RadioButton
+                                    android:id="@+id/radio_kyc_true"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".05"
+                                    android:buttonTint="@color/edstool"
+                                    android:paddingRight="20dp"
+                                    android:text="@string/Y"
+                                    android:textColor="@color/black"
+                                    android:textSize="13sp" />
+
+                                <RadioButton
+                                    android:id="@+id/radio_kyc_false"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".05"
+                                    android:buttonTint="@color/edstool"
+                                    android:text="@string/N"
+                                    android:textColor="@color/black"
+                                    android:textSize="13sp" />
+                            </RadioGroup>
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/cash_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:visibility="@{viewModel.getisVisible ? View.VISIBLE : View.GONE}"
+                        android:weightSum="2">
+
+                        <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                            android:id="@+id/btn_verify"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+
+                            android:text="@string/cash_recive_from_consignee"
+                            android:textColor="@color/black"
+                            android:textSize="13sp" />
+
+                        <EditText
+                            android:id="@+id/etxt_entered_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_5DP"
+                            android:background="@drawable/border_2dp_grey"
+                            android:gravity="start"
+                            android:hint="@string/collected_amount_hint"
+                            android:inputType="number"
+                            android:maxLength="8"
+                            android:padding="@dimen/_10DP"
+                            android:textColor="@color/gray"
+                            android:textSize="13sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                                android:id="@+id/return_amount_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:textSize="13sp" />
+
+
+                            <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                                android:id="@+id/min_amount_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/_10DP"
+                                android:text="@string/min_amount_str"
+                                android:textColor="@color/black"
+                                android:textSize="13sp"
+                                android:visibility="gone" />
+
+
+                            <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                                android:id="@+id/round_off_amount_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                android:text="@string/round_off_amount_str"
+                                android:visibility="gone" />
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/remarks"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/ll_radio_group"
+
+                        android:layout_margin="@dimen/_5DP"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <EditText
+                            android:id="@+id/et_remarks"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/border_2dp_grey"
+                            android:gravity="center_vertical"
+                            android:hint="Enter remarks"
+                            android:inputType="text"
+                            android:maxLength="50"
+                            android:padding="10dp"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:weightSum="2">
+
+                        <Button
+                            android:id="@+id/scanner_btn"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_bg"
+                            android:text="Scan Receipt"
+                            android:textColor="@color/white" />
+
+                        <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                            android:id="@+id/cash_packet_scan_tv"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:text="N/A"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                            android:id="@+id/cust_remark"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:autoLink="all"
+                            android:linksClickable="true"
+                            android:padding="@dimen/_10DP"
+                            android:text="Instructions:-"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/blue" />
+
+                        <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                            android:id="@+id/txt_activity_instruction"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/_10DP"
+
+                            android:textColor="@color/black"
+                            android:textSize="13sp" />
+
+                        <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                            android:id="@+id/txt_activity_remark"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/_10DP"
+
+                            android:textColor="@color/black"
+                            android:textSize="13sp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+</layout>

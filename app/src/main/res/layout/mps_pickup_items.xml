@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/subProductNumbering"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_medium"
+        android:gravity="center_vertical|start"
+        android:background="@color/green_FF"
+        android:paddingHorizontal="@dimen/_15DP"
+        android:paddingVertical="@dimen/_10DP"
+        android:layout_marginTop="@dimen/_10DP"
+        android:textColor="@color/textPrimaryColor"
+        android:textSize="@dimen/_13SP"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/viewPagerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/_20DP"
+        android:paddingTop="@dimen/_15DP"
+        android:paddingBottom="@dimen/_1DP"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/subProductNumbering">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/noQCImageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/rvp_image_placeholder"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/qcImageView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_210DP"
+            app:elevation="@dimen/_10DP"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/qcImageIndicator"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_25DP"
+            app:layout_constraintTop_toBottomOf="@id/qcImageView"
+            app:tabBackground="@drawable/indicator_selector"
+            app:tabGravity="center"
+            android:background="@color/white"
+            app:tabIndicatorHeight="@dimen/_0DP"
+            app:tabPaddingEnd="@dimen/_8DP"
+            app:tabPaddingStart="@dimen/_8DP" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/itemDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_regular"
+        android:gravity="center_horizontal"
+        android:paddingHorizontal="@dimen/_15DP"
+        android:textColor="@color/black_1A"
+        android:textSize="@dimen/_18SP"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewPagerLayout" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

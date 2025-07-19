@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.dashboard.starttrip.StartTripViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".ui.dashboard.starttrip.StartTripActivity">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/top_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/green_FF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <include
+                android:id="@+id/header"
+                layout="@layout/common_header"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_0DP"
+            app:layout_constraintBottom_toTopOf="@id/tv_start"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/top_layout">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tripDetails_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15DP"
+                    android:layout_marginTop="@dimen/_10DP"
+                    android:layout_marginEnd="@dimen/_15DP"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="@string/please_select_destination"
+                    android:textSize="@dimen/_21SP"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/vicleOwner_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_20DP"
+                    android:text="@string/vehicle_owner"
+                    android:textSize="@dimen/_20SP"
+                    app:layout_constraintEnd_toEndOf="@+id/tripDetails_tv"
+                    app:layout_constraintStart_toStartOf="@id/tripDetails_tv"
+                    app:layout_constraintTop_toBottomOf="@id/tripDetails_tv" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/vicleOwner_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50DP"
+                    android:layout_margin="@dimen/_20DP"
+                    android:background="@drawable/spinner_border_starttrip"
+                    android:textSize="@dimen/_20SP"
+                    app:layout_constraintEnd_toEndOf="@+id/tripDetails_tv"
+                    app:layout_constraintStart_toStartOf="@id/tripDetails_tv"
+                    app:layout_constraintTop_toBottomOf="@id/vicleOwner_tv" />
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinner_vehicle_type"
+                    android:layout_width="@dimen/_0DP"
+                    android:layout_height="@dimen/_0DP"
+                    android:entries="@array/veh_type"
+                    android:theme="@style/Theme.AppCompat.Light.Dialog"
+                    android:onItemSelected="@{(parent,view,pos,id)->viewModel.onVehicleType(parent,view,pos,id)}"
+                    app:layout_constraintBottom_toBottomOf="@+id/vicleOwner_spinner"
+                    app:layout_constraintEnd_toEndOf="@id/vicleOwner_spinner"
+                    app:layout_constraintStart_toStartOf="@id/vicleOwner_spinner"
+                    app:layout_constraintTop_toTopOf="@id/vicleOwner_spinner" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/vicleType_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_20DP"
+                    android:layout_marginTop="@dimen/_15DP"
+                    android:text="@string/vehicle_type"
+                    android:textSize="@dimen/_20SP"
+                    app:layout_constraintStart_toStartOf="@id/vicleOwner_tv"
+                    app:layout_constraintTop_toBottomOf="@id/vicleOwner_spinner" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/vicleType_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50DP"
+                    android:layout_margin="@dimen/_20DP"
+                    android:background="@drawable/spinner_border_starttrip"
+                    android:textSize="@dimen/_20SP"
+                    app:layout_constraintEnd_toEndOf="@+id/tripDetails_tv"
+                    app:layout_constraintStart_toStartOf="@id/tripDetails_tv"
+                    app:layout_constraintTop_toBottomOf="@id/vicleType_tv" />
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinner_typeofvehicle"
+                    android:layout_width="@dimen/_0DP"
+                    android:layout_height="@dimen/_0DP"
+                    android:theme="@style/Theme.AppCompat.Light.Dialog"
+                    android:onItemSelected="@{(parent,view,pos,id)->viewModel.onTypeOfVehicle(parent,view,pos,id)}"
+                    app:layout_constraintBottom_toBottomOf="@+id/vicleType_spinner"
+                    app:layout_constraintEnd_toEndOf="@id/vicleType_spinner"
+                    app:layout_constraintStart_toStartOf="@id/vicleType_spinner"
+                    app:layout_constraintTop_toTopOf="@id/vicleType_spinner" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/viclenumber_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_20DP"
+                    android:layout_marginTop="@dimen/_15DP"
+                    android:text="@string/vehicle_number"
+                    android:textSize="@dimen/_20SP"
+                    app:layout_constraintStart_toStartOf="@id/vicleOwner_tv"
+                    app:layout_constraintTop_toBottomOf="@id/spinner_typeofvehicle" />
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_route"
+                    style="@style/TextStyle.Title.Sub"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50DP"
+                    android:layout_margin="@dimen/_20DP"
+                    android:background="@drawable/spinner_border_starttrip"
+                    android:cursorVisible="true"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+                    android:gravity="center_vertical"
+                    android:inputType="textCapCharacters"
+                    android:maxLength="10"
+                    android:maxLines="1"
+                    android:paddingStart="@dimen/_10DP"
+                    android:paddingEnd="@dimen/_10DP"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textAllCaps="true"
+                    android:textColorHint="@color/dark_gray"
+                    app:layout_constraintTop_toBottomOf="@id/viclenumber_tv"
+                    tools:ignore="RtlHardcoded" />
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/viclemternumer_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_20DP"
+                    android:layout_marginTop="@dimen/_15DP"
+                    android:text="@string/start_meter_reading_km"
+                    android:textSize="@dimen/_20SP"
+                    app:layout_constraintStart_toStartOf="@id/vicleOwner_tv"
+                    app:layout_constraintTop_toBottomOf="@id/et_route" />
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_meter"
+                    style="@style/TextStyle.Title.Sub"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50DP"
+                    android:layout_margin="@dimen/_20DP"
+                    android:background="@drawable/spinner_border_starttrip"
+                    android:cursorVisible="true"
+                    android:digits="1234567890"
+                    android:gravity="center_vertical"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:maxLines="1"
+                    android:paddingStart="@dimen/_10DP"
+                    android:paddingEnd="@dimen/_10DP"
+                    android:singleLine="true"
+                    android:textAllCaps="true"
+                    android:textColorHint="@color/dark_gray"
+                    app:layout_constraintTop_toBottomOf="@id/viclemternumer_tv"
+                    tools:ignore="RtlHardcoded" />
+
+
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_8DP"
+                    android:layout_marginTop="@dimen/_10DP"
+                    android:background="@color/green_FF"
+                    app:layout_constraintTop_toBottomOf="@id/et_meter" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/imageCaptureCard"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_60DP"
+                    android:layout_margin="@dimen/_20DP"
+                    android:layout_marginTop="@dimen/_15DP"
+                    android:background="@color/light_blue_new"
+                    android:elevation="@dimen/margin_6dp"
+                    android:visibility="visible"
+                    app:cardCornerRadius="@dimen/_8DP"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view2">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/conMeter"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#DBE7FE"
+                        android:padding="@dimen/_8DP">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/imageViewStart"
+                            android:layout_width="@dimen/_40DP"
+                            android:layout_height="@dimen/_40DP"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/textViewLabel"
+                            app:srcCompat="@drawable/cam_new" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/textViewLabel"
+                            android:layout_width="@dimen/_0DP"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_4DP"
+                            android:layout_marginEnd="@dimen/_8DP"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="@string/capture_vehicle_meter_image"
+                            android:textAlignment="center"
+                            android:textSize="@dimen/_14SP"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/start_img"
+                            app:layout_constraintStart_toEndOf="@+id/imageViewStart"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/start_img"
+                            android:layout_width="@dimen/_40DP"
+                            android:layout_height="@dimen/_40DP"
+                            android:layout_marginEnd="@dimen/_15DP"
+                            android:onClick="@{() -> viewModel.onCameraLaunch()}"
+                            app:layout_constraintStart_toEndOf="@id/textViewLabel"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/cam_new" />
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/imageDelete"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_15DP"
+                            android:visibility="gone"
+                            app:layout_constraintStart_toEndOf="@id/textViewLabel"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_delete" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/imageCaptureCardHelmet"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_60DP"
+                    android:layout_margin="@dimen/_20DP"
+                    android:layout_marginTop="@dimen/_15DP"
+                    android:background="@color/green_FE"
+                    android:elevation="@dimen/margin_6dp"
+                    android:visibility="visible"
+                    app:cardCornerRadius="@dimen/_8DP"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageCaptureCard">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/light_blue_new"
+                        android:padding="@dimen/_8DP">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/imageViewStartHelmet"
+                            android:layout_width="@dimen/_40DP"
+                            android:layout_height="@dimen/_40DP"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/textViewLabel2"
+                            app:srcCompat="@drawable/cam_new" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/textViewLabel2"
+                            android:layout_width="@dimen/_0DP"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_8DP"
+                            android:layout_marginEnd="@dimen/_8DP"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="@string/capture_selfie_with_helmet"
+                            android:textAlignment="center"
+                            android:textSize="@dimen/_15SP"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/imageCamera2"
+                            app:layout_constraintStart_toEndOf="@+id/imageViewStartHelmet"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/imageCamera2"
+                            android:layout_width="@dimen/_40DP"
+                            android:layout_height="@dimen/_40DP"
+                            android:layout_marginEnd="@dimen/_15DP"
+                            android:onClick="@{() -> viewModel.onFrontCameraLaunch()}"
+                            app:layout_constraintStart_toEndOf="@id/textViewLabel2"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/cam_new" />
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/imageDelete2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_15DP"
+                            android:visibility="gone"
+                            app:layout_constraintStart_toEndOf="@id/textViewLabel2"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_delete" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <View
+                    android:id="@+id/view3"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50DP"
+                    android:layout_marginTop="@dimen/_10DP"
+                    android:background="@color/white"
+                    app:layout_constraintTop_toBottomOf="@id/imageCaptureCardHelmet" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/tv_start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_20DP"
+            android:background="@drawable/bg_curve_corner"
+            android:backgroundTint="@color/colorAccent"
+            android:fontFamily="@font/muli_bold"
+            android:onClick="@{() -> viewModel.onStartTrip()}"
+            android:text="@string/submitButton"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_20SP"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/scroll_view" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+
+

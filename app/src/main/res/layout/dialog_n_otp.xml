@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/border_2dp_black"
+    android:orientation="vertical"
+    android:padding="15dp">
+
+    <ImageView
+        android:id="@+id/crssdialog"
+        android:layout_width="@dimen/_300DP"
+        android:layout_height="@dimen/_300DP"
+        android:layout_gravity="center"
+        android:gravity="center" />
+
+    <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+        android:id="@+id/txtnotp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/_15DP"
+        android:layout_marginLeft="@dimen/_15DP"
+        android:layout_marginEnd="@dimen/_15DP"
+        android:layout_marginRight="@dimen/_15DP"
+        android:gravity="center"
+        android:text="@string/app_name"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:visibility="visible" />
+
+
+</LinearLayout>

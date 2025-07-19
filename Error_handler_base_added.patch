@@ -1,0 +1,15 @@
+Index: app/src/main/java/in/ecomexpress/sathi/repo/remote/model/ErrorResponse.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/in/ecomexpress/sathi/repo/remote/model/ErrorResponse.java	(date 1526473000000)
++++ app/src/main/java/in/ecomexpress/sathi/repo/remote/model/ErrorResponse.java	(date 1526473256495)
+@@ -10,7 +10,6 @@
+ private String errorMsg;
+ @JsonProperty("error_detail")
+ private String errorDetail;
+-
+ public String getErrorCode() {
+ return errorCode;
+ }

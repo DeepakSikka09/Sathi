@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lasttxstatus_REL_content"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_small"
+    android:background="@color/white"
+    android:visibility="invisible">
+
+    <include
+        android:id="@+id/topbar"
+        layout="@layout/ms_top_bar" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/topbar"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/lasttxstatus_LNR_mainlayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_normal"
+                android:layout_marginRight="@dimen/margin_normal"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/lasttxstatus_REL_refresh"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_below_small"
+                    android:clickable="true">
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKBoldTextView
+                        android:id="@+id/lasttxstatus_TXT_status"
+                        android:layout_width="@dimen/text_decp_lbl_view_width_medium"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginRight="@dimen/margin_small"
+                        android:text="@string/lasttransaction_view_status"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="@dimen/label_font_medium" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:orientation="vertical"
+                        android:layout_toRightOf="@+id/lasttxstatus_TXT_status">
+
+                        <com.mswipetech.wisepad.sdk.customviews.CustomSDKBoldTextView
+                            android:id="@+id/lasttxstatus_TXT_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:gravity="left"
+                            android:text="@string/lasttransaction_date"
+                            android:textColor="@color/grey"
+                            android:textSize="@dimen/label_font_small" />
+
+                        <ImageView
+                            android:id="@+id/lasttxstatus_IMG_arrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/ms_home_refresh"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_below_small">
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextViewRegular
+                        android:id="@+id/lasttxstatus_LBL_totalamount"
+                        android:layout_width="@dimen/text_decp_lbl_view_width_medium"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="@dimen/margin_small"
+                        android:text="@string/lasttransaction_total_amount"
+                        android:textColor="@color/light_grey"
+                        android:textSize="@dimen/label_font_small" />
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextView
+                        android:id="@+id/lasttxstatus_TXT_totalamount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_toRightOf="@+id/lasttxstatus_LBL_totalamount"
+                        android:gravity="left"
+                        android:text=""
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/label_font_small" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_below_small">
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextViewRegular
+                        android:id="@+id/lasttxstatus_LBL_type"
+                        android:layout_width="@dimen/text_decp_lbl_view_width_medium"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="@dimen/margin_small"
+                        android:text="@string/lasttransaction_type"
+                        android:textColor="@color/light_grey"
+                        android:textSize="@dimen/label_font_small" />
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextView
+                        android:id="@+id/lasttxstatus_TXT_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_toRightOf="@+id/lasttxstatus_LBL_type"
+                        android:gravity="left"
+                        android:text=""
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/label_font_small" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lasttxstatus_LBL_sublayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_normal"
+                android:layout_marginRight="@dimen/margin_normal"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/lasttxstatus_REl_cardholder"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_below_small">
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextViewRegular
+                        android:id="@+id/lasttxstatus_LBL_cardholder"
+                        android:layout_width="@dimen/text_decp_lbl_view_width_medium"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="@dimen/margin_small"
+                        android:text="@string/lasttransaction_card_holder"
+                        android:textColor="@color/light_grey"
+                        android:textSize="@dimen/label_font_small" />
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextView
+                        android:id="@+id/lasttxstatus_TXT_cardholder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_toRightOf="@+id/lasttxstatus_LBL_cardholder"
+                        android:gravity="left"
+                        android:text=""
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/label_font_small" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_below_small">
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextViewRegular
+                        android:id="@+id/lasttxstatus_LBL_last4digits"
+                        android:layout_width="@dimen/text_decp_lbl_view_width_medium"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="@dimen/margin_small"
+                        android:text="@string/lasttransaction_last_4_digits"
+                        android:textColor="@color/light_grey"
+                        android:textSize="@dimen/label_font_small" />
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextView
+                        android:id="@+id/lasttxstatus_TXT_last4digits"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_toRightOf="@+id/lasttxstatus_LBL_last4digits"
+                        android:gravity="left"
+                        android:text=""
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/label_font_small" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_below_small">
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextViewRegular
+                        android:id="@+id/lasttxstatus_LBL_authorisingcode"
+                        android:layout_width="@dimen/text_decp_lbl_view_width_medium"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="@dimen/margin_small"
+                        android:text="@string/lasttransaction_auth_code"
+                        android:textColor="@color/light_grey"
+                        android:textSize="@dimen/label_font_small" />
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextView
+                        android:id="@+id/lasttxstatus_TXT_authorisingcode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_toRightOf="@+id/lasttxstatus_LBL_authorisingcode"
+                        android:gravity="left"
+                        android:text=""
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/label_font_small" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_below_small">
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextViewRegular
+                        android:id="@+id/lasttxstatus_LBL_rrno"
+                        android:layout_width="@dimen/text_decp_lbl_view_width_medium"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="@dimen/margin_small"
+                        android:text="@string/lasttransaction_rr_no"
+                        android:textColor="@color/light_grey"
+                        android:textSize="@dimen/label_font_small" />
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextView
+                        android:id="@+id/lasttxstatus_TXT_rrno"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_toRightOf="@+id/lasttxstatus_LBL_rrno"
+                        android:gravity="left"
+                        android:text=""
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/label_font_small" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_below_small">
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextViewRegular
+                        android:id="@+id/lasttxstatus_LBL_standid"
+
+                        android:layout_width="@dimen/text_decp_lbl_view_width_medium"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="@dimen/margin_small"
+                        android:text="@string/lasttransaction_stan_id"
+                        android:textColor="@color/light_grey"
+                        android:textSize="@dimen/label_font_small" />
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextView
+                        android:id="@+id/lasttxstatus_TXT_standid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_toRightOf="@+id/lasttxstatus_LBL_standid"
+                        android:gravity="left"
+                        android:text=""
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/label_font_small" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_below_small">
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextViewRegular
+                        android:id="@+id/lasttxstatus_LBL_voucher"
+                        android:layout_width="@dimen/text_decp_lbl_view_width_medium"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="@dimen/margin_small"
+                        android:text="@string/lasttransaction_voucher"
+                        android:textColor="@color/light_grey"
+                        android:textSize="@dimen/label_font_small" />
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextView
+                        android:id="@+id/lasttxstatus_TXT_voucher"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_toRightOf="@+id/lasttxstatus_LBL_voucher"
+                        android:gravity="left"
+                        android:text=""
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/label_font_small" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_below_small">
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextViewRegular
+                        android:id="@+id/lasttxstatus_LBL_txmsg"
+                        android:layout_width="@dimen/text_decp_lbl_view_width_medium"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="@dimen/margin_small"
+                        android:text="@string/lasttransaction_transaction_message"
+                        android:textColor="@color/light_grey"
+                        android:textSize="@dimen/label_font_small" />
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextView
+                        android:id="@+id/lasttxstatus_TXT_txmsg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_toRightOf="@+id/lasttxstatus_LBL_txmsg"
+                        android:gravity="left"
+                        android:text=""
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/label_font_small" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_below_small">
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextViewRegular
+                        android:id="@+id/lasttxstatus_LBL_notes"
+                        android:layout_width="@dimen/text_decp_lbl_view_width_medium"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="@dimen/margin_small"
+                        android:text="@string/lasttransaction_notes"
+                        android:textColor="@color/light_grey"
+                        android:textSize="@dimen/label_font_small" />
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextView
+                        android:id="@+id/lasttxstatus_TXT_notes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_toRightOf="@+id/lasttxstatus_LBL_notes"
+                        android:gravity="left"
+                        android:text=""
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/label_font_small" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lasttxstatus_LIN_done"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/lasttxstatus_BTN_done"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/ms_button_arrownext_img_selector"
+                    android:typeface="sans" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

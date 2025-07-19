@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="cui_list_selector_normal">#00000000</color>
+    <color name="cui_list_selector_pressed">#FF4B5D70</color>
+        <color name="cui_background_color">#5D91F4</color>
+            <color name="cui_line_color">#5F95F5</color>
+        
+    
+</resources>

@@ -1,0 +1,1065 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.ecomexpress.sathi.ui.drs.forward.details.ForwardDetailActivity">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.drs.forward.details.ForwardDetailViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/parentView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/offwhite">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+                    <!--Toolbar-->
+
+                    <include
+                        android:id="@+id/header"
+                        layout="@layout/header_obd_fwd"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
+
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/ccawb"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toBottomOf="@+id/header"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent">
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:fontFamily="@font/roboto_bold"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toStartOf="@id/awb"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    style="@style/TextStyle.Title.Sub"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/txtAWB"
+                                    android:text="@string/awb"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_15SP"
+                                    android:textStyle="bold" />
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:fontFamily="@font/roboto_bold"
+                                    app:layout_constraintStart_toEndOf="@id/txtAWB"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    android:id="@+id/awb"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{viewModel.itemAwb}"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_15SP"
+                                    android:textStyle="bold" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/ccawb"
+                                android:id="@+id/popup_element"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/offwhite"
+                                android:paddingStart="@dimen/_5DP"
+                                android:paddingEnd="@dimen/_5DP">
+
+                                <com.google.android.material.card.MaterialCardView
+                                    android:id="@+id/cvline"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="@+id/scview"
+                                    app:layout_constraintBottom_toBottomOf="@+id/scview"
+                                    android:layout_width="@dimen/_10DP"
+                                    android:layout_height="@dimen/_0DP"
+                                    android:layout_marginStart="@dimen/_5DP"
+                                    android:layout_marginLeft="@dimen/_5DP"
+                                    android:layout_marginTop="@dimen/_5DP"
+                                    android:layout_marginBottom="@dimen/_5DP"
+                                    app:cardBackgroundColor="@color/colorPrimaryDark"
+                                    app:cardCornerRadius="@dimen/_7DP"
+                                    app:cardElevation="@dimen/_20DP">
+
+                                </com.google.android.material.card.MaterialCardView>
+
+                                <ScrollView
+                                    android:id="@+id/scview"
+                                    app:layout_constraintStart_toEndOf="@+id/cvline"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:layout_width="@dimen/_0DP"
+                                    android:layout_height="wrap_content">
+
+                                    <com.google.android.material.card.MaterialCardView
+
+                                        android:id="@+id/colors"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="@dimen/_5DP"
+                                        app:cardBackgroundColor="@color/white"
+                                        app:cardCornerRadius="@dimen/_7DP"
+                                        app:cardElevation="@dimen/_20DP">
+
+                                        <!--CHILD ONE-->
+                                        <androidx.constraintlayout.widget.ConstraintLayout
+                                            android:id="@+id/layout_child1"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_margin="@dimen/_5DP"
+                                            android:background="@color/white"
+                                            android:paddingBottom="@dimen/_1DP">
+
+
+                                            <androidx.constraintlayout.widget.ConstraintLayout
+                                                android:id="@+id/ccname"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginBottom="@dimen/_7DP"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toTopOf="parent">
+
+                                                <com.google.android.material.textview.MaterialTextView
+                                                    android:fontFamily="@font/roboto_bold"
+                                                    android:id="@+id/consignee_name"
+                                                    android:layout_width="@dimen/_0DP"
+                                                    android:layout_height="wrap_content"
+                                                    app:layout_constraintStart_toStartOf="parent"
+                                                    app:layout_constraintTop_toTopOf="parent"
+                                                    android:layout_marginBottom="@dimen/_2DP"
+                                                    app:layout_constraintWidth_percent="0.8"
+                                                    android:maxLines="2"
+                                                    android:padding="@dimen/_1DP"
+                                                    android:scrollbars="vertical"
+                                                    android:text="@{viewModel.itemName}"
+                                                    android:textColor="@color/colorPrimaryDark"
+                                                    android:textSize="@dimen/_15SP"
+                                                    android:textStyle="bold" />
+
+                                                <com.google.android.material.textview.MaterialTextView
+                                                    android:fontFamily="@font/roboto_bold"
+                                                    android:id="@+id/type"
+                                                    android:layout_width="@dimen/_0DP"
+                                                    android:layout_height="wrap_content"
+                                                    app:layout_constraintEnd_toEndOf="parent"
+                                                    app:layout_constraintTop_toTopOf="parent"
+                                                    android:layout_marginBottom="@dimen/_2DP"
+                                                    app:layout_constraintWidth_percent="0.2"
+                                                    android:padding="@dimen/_1DP"
+                                                    android:text="@{viewModel.itemType}"
+                                                    android:gravity="end"
+                                                    android:textAllCaps="true"
+                                                    android:textColor="@color/green"
+                                                    android:textSize="@dimen/_15SP"
+                                                    android:textStyle="bold" />
+
+                                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                            <com.google.android.material.textview.MaterialTextView
+                                                android:fontFamily="@font/roboto_regular"
+                                                android:id="@+id/consignee_address"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintEnd_toEndOf="parent"
+                                                app:layout_constraintTop_toBottomOf="@+id/ccname"
+                                                android:maxLines="4"
+                                                android:padding="@dimen/_1DP"
+                                                android:scrollbars="vertical"
+                                                android:text="@{viewModel.itemAddress}"
+                                                android:textColor="@color/black"
+                                                android:textSize="@dimen/_13SP" />
+
+                                            <androidx.constraintlayout.widget.ConstraintLayout
+                                                android:id="@+id/amountll"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toBottomOf="@+id/consignee_address"
+                                                android:padding="@dimen/_1DP">
+
+                                                <com.google.android.material.textview.MaterialTextView
+                                                    android:fontFamily="@font/roboto_bold"
+                                                    android:id="@+id/amounttxt"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginTop="@dimen/_5DP"
+                                                    app:layout_constraintStart_toStartOf="parent"
+                                                    app:layout_constraintTop_toTopOf="parent"
+                                                    android:text="@string/amounttxt"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="@dimen/_13SP"
+                                                    android:textStyle="bold" />
+
+                                                <com.google.android.material.textview.MaterialTextView
+                                                    android:fontFamily="@font/roboto_bold"
+                                                    android:id="@+id/amount"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    app:layout_constraintStart_toEndOf="@+id/amounttxt"
+                                                    app:layout_constraintTop_toTopOf="parent"
+                                                    android:layout_marginTop="@dimen/_5DP"
+                                                    android:text="@{viewModel.itemAmt}"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="@dimen/_13SP"
+                                                    android:textStyle="bold" />
+                                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                        </androidx.constraintlayout.widget.ConstraintLayout>
+                                    </com.google.android.material.card.MaterialCardView>
+                                </ScrollView>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!--MAIN CONTAINER LAYOUT-->
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/card_parent"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_0DP"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/popup_element"
+                                android:layout_margin="@dimen/_2DP"
+                                app:cardBackgroundColor="@color/dashboardtool"
+                                app:cardCornerRadius="@dimen/_7DP"
+                                app:cardElevation="@dimen/_25DP">
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/layout_child2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="@dimen/_5DP"
+                                    android:background="@color/white">
+                                    <!--AMOUNT LAYOUT layout_child2_amount-->
+                                    <androidx.constraintlayout.widget.ConstraintLayout
+                                        android:id="@+id/layout_child2_amount"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content">
+
+
+                                        <androidx.constraintlayout.widget.ConstraintLayout
+                                            android:id="@+id/enter_cash_layout_child2"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toTopOf="parent"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:background="@color/white">
+
+                                            <!-- Verify detail text-->
+                                            <androidx.constraintlayout.widget.ConstraintLayout
+                                                android:id="@+id/ccenteramt"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toTopOf="parent"
+                                                android:background="@color/dashboardtool">
+
+                                                <com.google.android.material.imageview.ShapeableImageView
+                                                    app:layout_constraintStart_toStartOf="parent"
+                                                    app:layout_constraintTop_toTopOf="parent"
+                                                    android:contentDescription="@string/static_content"
+                                                    android:id="@+id/backoption"
+                                                    style="@style/TextStyle.Title.Sub"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:background="@null"
+                                                    android:onClick="@{() -> viewModel.onBackOption()}"
+                                                    android:padding="@dimen/_5DP"
+                                                    android:src="@drawable/back"
+                                                    app:tint="@color/colorPrimaryDark" />
+
+                                                <com.google.android.material.textview.MaterialTextView
+                                                    android:fontFamily="@font/roboto_bold"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="match_parent"
+                                                    app:layout_constraintStart_toEndOf="@+id/backoption"
+                                                    app:layout_constraintTop_toTopOf="@id/backoption"
+                                                    app:layout_constraintBottom_toBottomOf="@id/backoption"
+                                                    android:text="@string/please_enter_the_amount_given_by_consignee"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="@dimen/_15SP" />
+
+
+                                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                            <View
+                                                android:id="@+id/viewenterbelow"
+                                                app:layout_constraintTop_toBottomOf="@id/ccenteramt"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="@dimen/_1DP"
+                                                android:background="@color/red_ecom" />
+
+
+                                            <androidx.constraintlayout.widget.ConstraintLayout
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toBottomOf="@+id/viewenterbelow"
+                                                android:id="@+id/enter_collected_amount"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:background="@color/white">
+
+                                                <com.google.android.material.textfield.TextInputLayout
+                                                    android:id="@+id/til_amt"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    app:layout_constraintStart_toStartOf="parent"
+                                                    app:layout_constraintTop_toTopOf="parent"
+                                                    app:hintEnabled="false">
+                                                <com.google.android.material.textfield.TextInputEditText
+                                                    android:id="@+id/enter_amt"
+                                                    style="@style/TextStyle.Title.Sub"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginStart="@dimen/_20DP"
+                                                    android:layout_marginEnd="@dimen/_20DP"
+                                                    android:layout_marginTop="@dimen/_20DP"
+                                                    android:background="@drawable/border_2dp_grey"
+                                                    android:cursorVisible="true"
+                                                    android:gravity="center"
+                                                    android:hint="@string/enter_the_collected_amount"
+                                                    android:inputType="number"
+                                                    android:maxLength="9"
+                                                    android:maxLines="1"
+                                                    android:padding="@dimen/_15DP"
+                                                    android:singleLine="true"
+                                                    android:text="@={viewModel.edtAmount}"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="@dimen/_13SP"
+                                                    tools:ignore="RtlHardcoded" />
+
+                                                </com.google.android.material.textfield.TextInputLayout>
+
+                                                <androidx.constraintlayout.widget.ConstraintLayout
+                                                    android:id="@+id/layout_return"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    app:layout_constraintTop_toBottomOf="@+id/til_amt"
+                                                    app:layout_constraintStart_toStartOf="parent"
+                                                    android:layout_marginTop="@dimen/_20DP"
+                                                    android:layout_marginStart="@dimen/_5DP">
+
+                                                    <com.google.android.material.textview.MaterialTextView
+                                                        android:fontFamily="@font/roboto_regular"
+                                                        app:layout_constraintStart_toStartOf="parent"
+                                                        app:layout_constraintTop_toTopOf="parent"
+                                                        android:layout_width="wrap_content"
+                                                        android:layout_height="wrap_content"
+                                                        android:text="@string/returning_amount"
+                                                        android:textColor="@color/black"
+                                                        android:textSize="@dimen/_13SP" />
+
+                                                    <com.google.android.material.textview.MaterialTextView
+                                                        android:fontFamily="@font/roboto_regular"
+                                                        app:layout_constraintEnd_toEndOf="parent"
+                                                        app:layout_constraintTop_toTopOf="parent"
+                                                        android:id="@+id/returning_amount"
+                                                        android:layout_width="wrap_content"
+                                                        android:layout_height="wrap_content"
+                                                        android:layout_marginEnd="@dimen/_10DP"
+                                                        android:text="@string/_0_00"
+                                                        android:textColor="@color/black"
+                                                        android:textSize="@dimen/_13SP" />
+                                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                                <androidx.constraintlayout.widget.ConstraintLayout
+                                                    app:layout_constraintStart_toStartOf="parent"
+                                                    app:layout_constraintTop_toBottomOf="@+id/layout_return"
+                                                    android:id="@+id/layout_round_off"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginStart="@dimen/_5DP"
+                                                    android:layout_marginTop="@dimen/_10DP"
+                                                    android:layout_marginBottom="@dimen/_10DP">
+
+                                                    <com.google.android.material.textview.MaterialTextView
+                                                        android:fontFamily="@font/roboto_regular"
+                                                        app:layout_constraintStart_toStartOf="parent"
+                                                        app:layout_constraintTop_toTopOf="parent"
+                                                        android:layout_width="wrap_content"
+                                                        android:layout_height="wrap_content"
+                                                        android:text="@string/round_off"
+                                                        android:textColor="@color/black"
+                                                        android:textSize="@dimen/_13SP" />
+
+                                                    <com.google.android.material.textview.MaterialTextView
+                                                        android:fontFamily="@font/roboto_regular"
+                                                        app:layout_constraintEnd_toEndOf="parent"
+                                                        app:layout_constraintTop_toTopOf="parent"
+                                                        android:id="@+id/round_off_amount"
+                                                        android:layout_width="wrap_content"
+                                                        android:layout_height="wrap_content"
+                                                        android:layout_marginEnd="@dimen/_10DP"
+                                                        android:text="@string/_0_0"
+                                                        android:textColor="@color/black"
+                                                        android:textSize="@dimen/_13SP" />
+
+                                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                                <com.google.android.material.button.MaterialButton
+                                                    app:layout_constraintStart_toStartOf="parent"
+                                                    app:layout_constraintTop_toBottomOf="@+id/layout_round_off"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginTop="@dimen/_10DP"
+                                                    android:layout_marginStart="@dimen/_5DP"
+                                                    android:layout_marginEnd="@dimen/_5DP"
+                                                    android:background="@drawable/fwd_button"
+                                                    android:gravity="center"
+                                                    android:onClick="@{() -> viewModel.onNextAmountClick()}"
+                                                    android:text="@string/next"
+                                                    android:textColor="@color/white"
+                                                    android:textSize="@dimen/_15SP"
+                                                    android:textStyle="bold"
+                                                    app:cardCornerRadius="@dimen/_7DP"
+                                                    app:cardElevation="@dimen/_25DP" />
+                                            </androidx.constraintlayout.widget.ConstraintLayout>
+                                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                                    </androidx.constraintlayout.widget.ConstraintLayout>
+                                    <!--If Amount to be collected is greater than 10k,, ask for otp-->
+                                    <!--OTP LAYOUT layout_child2_otp-->
+                                    <androidx.constraintlayout.widget.ConstraintLayout
+                                        android:layout_marginTop="@dimen/_10DP"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toBottomOf="@+id/layout_child2_amount"
+                                        android:id="@+id/layout_child2_otp"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:background="@color/white"
+                                        android:elevation="@dimen/_10DP"
+                                        android:orientation="vertical">
+
+                                        <!--VERIFY DETAIL TEXT-->
+                                        <androidx.constraintlayout.widget.ConstraintLayout
+                                            android:id="@+id/ccmobile"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toTopOf="parent"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:background="@color/dashboardtool"
+                                            android:padding="@dimen/_10DP">
+
+                                            <com.google.android.material.textview.MaterialTextView
+                                                android:fontFamily="@font/roboto_bold"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toTopOf="parent"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="@{viewModel.itemMobileforOtp}"
+                                                android:textColor="@color/black"
+                                                android:textSize="@dimen/_13SP"
+                                                android:textStyle="bold" />
+
+                                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                        <View
+                                            android:id="@+id/viewmobilebelow"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toBottomOf="@+id/ccmobile"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="@dimen/_1DP"
+                                            android:background="@color/red_ecom" />
+
+
+                                        <!--enter otp edit text-->
+                                        <androidx.constraintlayout.widget.ConstraintLayout
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toBottomOf="@+id/viewmobilebelow"
+                                            android:id="@+id/enter_otp_layout_child2"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:background="@color/white">
+
+                                            <com.google.android.material.textfield.TextInputLayout
+                                                android:id="@+id/til_enter_otp"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toTopOf="parent"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                app:hintEnabled="false">
+                                            <com.google.android.material.textfield.TextInputEditText
+                                                android:id="@+id/enter_otp"
+                                                style="@style/TextStyle.Title.Sub"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginStart="@dimen/_20DP"
+                                                android:layout_marginTop="@dimen/_20DP"
+                                                android:layout_marginEnd="@dimen/_20DP"
+                                                android:background="@drawable/border_2dp_grey"
+                                                android:cursorVisible="true"
+                                                android:gravity="center"
+                                                android:hint="@string/enter_the_otp"
+                                                android:inputType="number"
+                                                android:maxLength="6"
+                                                android:maxLines="1"
+                                                android:padding="@dimen/_15DP"
+                                                android:singleLine="true"
+                                                android:text="@={viewModel.edtOtp}"
+                                                android:textColor="@color/black"
+                                                android:textSize="@dimen/_13SP"
+                                                tools:ignore="RtlHardcoded" />
+                                            </com.google.android.material.textfield.TextInputLayout>
+
+
+                                            <!--Resend/verify buttons-->
+                                            <androidx.constraintlayout.widget.ConstraintLayout
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toBottomOf="@+id/til_enter_otp"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:background="@color/white">
+
+                                                <com.google.android.material.textview.MaterialTextView
+                                                    android:fontFamily="@font/roboto_bold"
+                                                    app:layout_constraintWidth_percent="0.5"
+                                                    app:layout_constraintStart_toStartOf="parent"
+                                                    app:layout_constraintTop_toTopOf="parent"
+                                                    android:id="@+id/resend"
+                                                    style="@style/TextStyle.Title.Sub"
+                                                    android:layout_width="@dimen/_0DP"
+                                                    android:layout_height="wrap_content"
+                                                    android:background="@null"
+                                                    android:gravity="start"
+                                                    android:onClick="@{() -> viewModel.onOtpResendClick()}"
+                                                    android:padding="@dimen/_10DP"
+                                                    android:text="@string/resendtxt"
+                                                    android:textColor="@color/red_ecom"
+                                                    android:textSize="@dimen/_13SP"
+                                                    android:textStyle="bold" />
+
+
+                                                <com.google.android.material.textview.MaterialTextView
+                                                    android:fontFamily="@font/roboto_bold"
+                                                    app:layout_constraintWidth_percent="0.5"
+                                                    app:layout_constraintEnd_toEndOf="parent"
+                                                    app:layout_constraintTop_toTopOf="parent"
+                                                    style="@style/TextStyle.Title.Sub"
+                                                    android:layout_width="@dimen/_0DP"
+                                                    android:layout_height="wrap_content"
+                                                    android:background="@null"
+                                                    android:gravity="end"
+                                                    android:onClick="@{() -> viewModel.onOtpVerifyClick()}"
+                                                    android:padding="@dimen/_10DP"
+                                                    android:text="@string/verify"
+                                                    android:textColor="@color/red_ecom"
+                                                    android:textSize="@dimen/_13SP"
+                                                    android:textStyle="bold" />
+
+                                            </androidx.constraintlayout.widget.ConstraintLayout>
+                                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                                    </androidx.constraintlayout.widget.ConstraintLayout>
+                                    <!--payment/ecod  layout_pay_ecod-->
+                                    <androidx.constraintlayout.widget.ConstraintLayout
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toBottomOf="@+id/layout_child2_otp"
+                                        android:id="@+id/layout_pay_ecod"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:elevation="@dimen/_10DP">
+                                        <!-- Ask for Payment method i.e CASH/CARD-->
+                                        <androidx.constraintlayout.widget.ConstraintLayout
+                                            android:id="@+id/ccpaymentlayout"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toTopOf="parent"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:background="@color/dashboardtool"
+                                            android:elevation="@dimen/_20DP">
+
+                                            <androidx.constraintlayout.widget.ConstraintLayout
+                                                android:id="@+id/ccpaymentoption"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toTopOf="parent"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:background="@color/dashboardtool"
+                                                android:padding="@dimen/_10DP">
+
+                                                <com.google.android.material.textview.MaterialTextView
+                                                    android:fontFamily="@font/roboto_bold"
+                                                    app:layout_constraintStart_toStartOf="parent"
+                                                    app:layout_constraintTop_toTopOf="parent"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="match_parent"
+                                                    android:gravity="center"
+                                                    android:text="@string/payment_option"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="@dimen/_15SP" />
+
+
+                                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                            <View
+                                                android:id="@+id/viewccoptionbelow"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toBottomOf="@+id/ccpaymentoption"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="@dimen/_1DP"
+                                                android:background="@color/red_ecom" />
+
+
+                                            <androidx.constraintlayout.widget.ConstraintLayout
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toBottomOf="@+id/viewccoptionbelow"
+                                                android:id="@+id/ll_payment_option"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:background="@color/white">
+
+                                                <androidx.constraintlayout.widget.ConstraintLayout
+                                                    app:layout_constraintStart_toStartOf="parent"
+                                                    app:layout_constraintEnd_toStartOf="@+id/cashcc"
+                                                    app:layout_constraintTop_toTopOf="parent"
+                                                    app:layout_constraintBottom_toBottomOf="parent"
+                                                    app:layout_constraintWidth_percent="0.33"
+                                                    android:id="@+id/payphi"
+                                                    android:layout_width="0dp"
+                                                    android:layout_height="wrap_content"
+                                                    android:background="@color/colorBackground"
+                                                    android:onClick="@{() -> viewModel.onPaybyCardClick()}"
+                                                    android:padding="@dimen/_5DP">
+
+                                                    <com.google.android.material.imageview.ShapeableImageView
+                                                        app:layout_constraintStart_toStartOf="parent"
+                                                        app:layout_constraintEnd_toEndOf="parent"
+                                                        app:layout_constraintTop_toTopOf="parent"
+                                                        android:contentDescription="@string/static_content"
+                                                        android:id="@+id/card"
+                                                        style="@style/TextStyle.Title.Sub"
+                                                        android:layout_width="@dimen/_60DP"
+                                                        android:layout_height="@dimen/_40DP"
+                                                        android:background="@null"
+                                                        android:onClick="@{() -> viewModel.onPaybyCardClick()}"
+                                                        android:src="@drawable/wallet" />
+
+                                                    <com.google.android.material.textview.MaterialTextView
+                                                        android:fontFamily="@font/roboto_bold"
+                                                        app:layout_constraintStart_toStartOf="parent"
+                                                        app:layout_constraintEnd_toEndOf="parent"
+                                                        app:layout_constraintTop_toBottomOf="@+id/card"
+                                                        android:id="@+id/paytext"
+                                                        android:gravity="center"
+                                                        android:layout_width="wrap_content"
+                                                        android:layout_height="wrap_content"
+                                                        android:onClick="@{() -> viewModel.onPaybyCardClick()}"
+                                                        android:padding="@dimen/_10DP"
+                                                        android:text="@string/pay_by_card"
+                                                        android:textColor="@color/colorPrimaryDark"
+                                                        android:textSize="@dimen/_13SP"
+                                                        android:textStyle="bold" />
+
+                                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                                <androidx.constraintlayout.widget.ConstraintLayout
+                                                    android:id="@+id/cashcc"
+                                                    android:layout_width="@dimen/_0DP"
+                                                    android:layout_height="@dimen/_0DP"
+                                                    app:layout_constraintStart_toEndOf="@+id/payphi"
+                                                    app:layout_constraintEnd_toStartOf="@+id/ll_linkpayment"
+                                                    app:layout_constraintTop_toTopOf="@+id/payphi"
+                                                    app:layout_constraintBottom_toBottomOf="@id/payphi"
+                                                    app:layout_constraintWidth_percent="0.33"
+                                                    android:background="@color/cyan_light"
+                                                    android:onClick="@{() -> viewModel.onPaybyCashClick()}"
+                                                    android:padding="@dimen/_5DP">
+
+                                                    <com.google.android.material.imageview.ShapeableImageView
+                                                        app:layout_constraintStart_toStartOf="parent"
+                                                        app:layout_constraintEnd_toEndOf="parent"
+                                                        app:layout_constraintTop_toTopOf="parent"
+                                                        android:contentDescription="@string/static_content"
+                                                        android:id="@+id/cash"
+                                                        style="@style/TextStyle.Title.Sub"
+                                                        android:layout_width="@dimen/_60DP"
+                                                        android:layout_height="@dimen/_40DP"
+                                                        android:background="@null"
+                                                        android:onClick="@{() -> viewModel.onPaybyCashClick()}"
+                                                        android:src="@drawable/cash" />
+
+                                                    <com.google.android.material.textview.MaterialTextView
+                                                        android:fontFamily="@font/roboto_bold"
+                                                        app:layout_constraintStart_toStartOf="parent"
+                                                        app:layout_constraintEnd_toEndOf="parent"
+                                                        app:layout_constraintTop_toBottomOf="@+id/cash"
+                                                        android:layout_width="wrap_content"
+                                                        android:layout_height="wrap_content"
+                                                        android:background="@null"
+                                                        android:onClick="@{() -> viewModel.onPaybyCashClick()}"
+                                                        android:padding="@dimen/_10DP"
+                                                        android:text="@string/pay_by_cash"
+                                                        android:textColor="@color/colorPrimaryDark"
+                                                        android:textSize="@dimen/_13SP"
+                                                        android:textStyle="bold" />
+
+                                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                                <androidx.constraintlayout.widget.ConstraintLayout
+                                                    app:layout_constraintStart_toEndOf="@+id/cashcc"
+                                                    app:layout_constraintEnd_toEndOf="parent"
+                                                    app:layout_constraintTop_toTopOf="@+id/payphi"
+                                                    app:layout_constraintBottom_toBottomOf="@+id/payphi"
+                                                    android:id="@+id/ll_linkpayment"
+                                                    android:layout_width="@dimen/_0DP"
+                                                    android:layout_height="@dimen/_0DP"
+                                                    app:layout_constraintWidth_percent="0.33"
+                                                    android:background="@color/colorBackground"
+                                                    android:onClick="@{() -> viewModel.onMessageLinkClick()}"
+                                                    android:padding="@dimen/_5DP">
+
+                                                    <com.google.android.material.imageview.ShapeableImageView
+                                                        app:layout_constraintStart_toStartOf="parent"
+                                                        app:layout_constraintEnd_toEndOf="parent"
+                                                        app:layout_constraintTop_toTopOf="parent"
+                                                        android:contentDescription="@string/static_content"
+                                                        android:id="@+id/messg_link"
+                                                        style="@style/TextStyle.Title.Sub"
+                                                        android:layout_width="@dimen/_60DP"
+                                                        android:layout_height="@dimen/_40DP"
+                                                        android:background="@null"
+                                                        android:onClick="@{() -> viewModel.onMessageLinkClick()}"
+                                                        android:src="@drawable/url" />
+
+                                                    <com.google.android.material.textview.MaterialTextView
+                                                        android:fontFamily="@font/roboto_bold"
+                                                        app:layout_constraintStart_toStartOf="parent"
+                                                        app:layout_constraintEnd_toEndOf="parent"
+                                                        app:layout_constraintTop_toBottomOf="@+id/messg_link"
+                                                        android:id="@+id/txtvw_msg_link"
+                                                        android:layout_width="wrap_content"
+                                                        android:layout_height="wrap_content"
+                                                        android:background="@null"
+                                                        android:onClick="@{() -> viewModel.onMessageLinkClick()}"
+                                                        android:padding="@dimen/_10DP"
+                                                        android:text="@string/link_payment"
+                                                        android:textColor="@color/colorPrimaryDark"
+                                                        android:textSize="@dimen/_13SP"
+                                                        android:textStyle="bold" />
+
+                                                </androidx.constraintlayout.widget.ConstraintLayout>
+                                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                        </androidx.constraintlayout.widget.ConstraintLayout>
+                                        <!--CHECK ECOD STATUS-->
+                                        <androidx.constraintlayout.widget.ConstraintLayout
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toBottomOf="@+id/ccpaymentlayout"
+                                            android:id="@+id/layout_ecod"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:elevation="@dimen/_20DP">
+
+
+                                            <androidx.constraintlayout.widget.ConstraintLayout
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toTopOf="parent"
+                                                android:id="@+id/enter_ecod_layout_child2"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:background="@color/white">
+
+
+                                                <androidx.constraintlayout.widget.ConstraintLayout
+                                                    android:id="@+id/ecod_cc_layout"
+                                                    app:layout_constraintStart_toStartOf="parent"
+                                                    app:layout_constraintTop_toTopOf="parent"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:background="@color/colorBackground"
+                                                    android:onClick="@{() -> viewModel.onEcodClick()}"
+                                                    app:cardCornerRadius="@dimen/_7DP"
+                                                    app:cardElevation="@dimen/_25DP">
+
+                                                    <com.google.android.material.button.MaterialButton
+                                                        app:layout_constraintStart_toStartOf="parent"
+                                                        app:layout_constraintTop_toTopOf="parent"
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="wrap_content"
+                                                        android:background="@drawable/rts_button"
+                                                        android:gravity="center"
+                                                        android:onClick="@{() -> viewModel.onEcodClick()}"
+                                                        android:text="@string/check_ecod_status"
+                                                        android:textColor="@color/white"
+                                                        android:textSize="@dimen/_15SP"
+                                                        android:textStyle="bold" />
+
+                                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                                                <androidx.constraintlayout.widget.ConstraintLayout
+                                                    app:layout_constraintStart_toStartOf="parent"
+                                                    app:layout_constraintTop_toBottomOf="@+id/ecod_cc_layout"
+                                                    android:id="@+id/ll_dispute"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginTop="@dimen/_20DP"
+                                                    android:background="@color/colorBackground"
+                                                    android:onClick="@{() -> viewModel.onDisputeClick()}"
+                                                    android:visibility="gone"
+                                                    app:cardCornerRadius="@dimen/_7DP"
+                                                    app:cardElevation="@dimen/_25DP">
+
+                                                    <com.google.android.material.button.MaterialButton
+                                                        app:layout_constraintStart_toStartOf="parent"
+                                                        app:layout_constraintTop_toTopOf="parent"
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="wrap_content"
+                                                        android:background="@drawable/fwd_button"
+                                                        android:gravity="center"
+                                                        android:onClick="@{() -> viewModel.onDisputeClick()}"
+                                                        android:text="@string/raise_dispute"
+                                                        android:textColor="@color/white"
+                                                        android:textSize="@dimen/_15SP"
+                                                        android:textStyle="bold" />
+
+                                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                            </androidx.constraintlayout.widget.ConstraintLayout>
+                                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                    </androidx.constraintlayout.widget.ConstraintLayout>
+                                    <androidx.constraintlayout.widget.ConstraintLayout
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toBottomOf="@+id/layout_pay_ecod"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content">
+                                        <com.google.android.material.button.MaterialButton
+                                            android:id="@+id/nex"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toTopOf="parent"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_margin="@dimen/_5DP"
+                                            android:background="@drawable/fwd_button"
+                                            android:gravity="center"
+                                            android:onClick="@{() -> viewModel.onNextClick()}"
+                                            android:text="@string/next"
+                                            android:textColor="@color/white"
+                                            android:textSize="@dimen/_15SP"
+                                            android:textStyle="bold"
+                                            android:visibility="gone"
+                                            app:cardCornerRadius="@dimen/_7DP"
+                                            app:cardElevation="@dimen/_25DP" />
+                                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </com.google.android.material.card.MaterialCardView>
+
+                    <!--undelivered button-->
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                android:id="@+id/lltFooter"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/_10DP"
+                                android:background="@color/offwhite">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/cc_csat_outer"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/_20DP"
+                                    android:layout_marginRight="@dimen/_20DP"
+                                    android:background="@drawable/csat_outer"
+                                    android:padding="@dimen/_5DP">
+
+                                    <androidx.constraintlayout.widget.ConstraintLayout
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:background="@drawable/csat_border">
+
+                                        <androidx.constraintlayout.widget.ConstraintLayout
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toTopOf="parent"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_margin="@dimen/_5DP"
+                                            android:background="@color/white">
+
+                                            <com.google.android.material.textview.MaterialTextView
+                                                android:id="@+id/message_csat"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toTopOf="parent"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:gravity="center"
+                                                android:text="@string/message_csat"
+                                                android:textColor="@color/orange"
+                                                android:textStyle="bold" />
+
+                                            <com.google.android.material.textview.MaterialTextView
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toBottomOf="@+id/message_csat"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:gravity="center"
+                                                android:maxLines="4"
+                                                android:text="@string/do_not_forget_to_ask_the_customer_to_provide_feedback_on_the_shared_csat_message_and_email_link"
+                                                android:textColor="@color/light_blue"
+                                                android:textStyle="bold" />
+
+                                        </androidx.constraintlayout.widget.ConstraintLayout>
+                                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                <com.google.android.material.button.MaterialButton
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/cc_csat_outer"
+                                    android:id="@+id/bt_undeliver"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/_5DP"
+                                    android:background="@drawable/fwd_button"
+                                    android:backgroundTint="@color/red_dark2"
+                                    android:gravity="center"
+                                    android:onClick="@{() -> viewModel.onUndeliveredClick()}"
+                                    android:text="@string/undelivered_"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/_15SP"
+                                    android:textStyle="bold"
+                                    android:visibility="gone"
+                                    app:cardCornerRadius="@dimen/_7DP"
+                                    app:cardElevation="@dimen/_25DP" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/bt_undeliver"
+                                    android:id="@+id/bt_dispute_next"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/_5DP"
+                                    android:background="@drawable/fwd_button"
+                                    android:gravity="center"
+                                    android:onClick="@{() -> viewModel.onDisputeNext()}"
+                                    android:text="@string/next"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/_15SP"
+                                    android:textStyle="bold"
+                                    android:visibility="gone"
+                                    app:cardCornerRadius="@dimen/_7DP"
+                                    app:cardElevation="@dimen/_25DP" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ll_counter"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:background="@color/white"
+                    android:paddingTop="@dimen/_50DP"
+                    android:paddingBottom="@dimen/_50DP">
+
+                    <ProgressBar
+                        android:id="@+id/progress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginLeft="@dimen/_50DP"
+                        android:layout_marginRight="@dimen/_50DP" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:fontFamily="@font/roboto_regular"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/progress"
+                        android:layout_marginTop="@dimen/_10DP"
+                        android:gravity="center"
+                        android:text="@string/please_wait_for"
+                        android:id="@+id/waittxt"
+                        android:textColor="@color/blue_ecom"
+                        android:textSize="@dimen/_12SP" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:fontFamily="@font/roboto_regular"
+                        android:id="@+id/tv_progress_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/waittxt"
+                        android:layout_marginTop="@dimen/_2DP"
+                        android:gravity="center"
+                        android:text="@string/_00_30"
+                        android:textColor="@color/blue_ecom"
+                        android:textSize="@dimen/_12SP" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </FrameLayout>
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/address_looking_up"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

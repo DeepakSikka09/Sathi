@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.ecomexpress.sathi.ui.dummy.eds.eds_task_list.EdsTaskListActivityModel">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.dummy.eds.eds_task_list.EdsTaskListActivityModel" />
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/offwhite"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/edstool"
+                android:onClick="@{() -> viewModel.onBackClick()}"
+                android:orientation="horizontal"
+                android:padding="@dimen/_10DP"
+                android:weightSum=".1">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".01"
+                    android:onClick="@{() -> viewModel.onBackClick()}">
+
+                    <ImageButton
+                        android:id="@+id/back"
+                        style="@style/TextStyle.Title.Sub"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:gravity="start"
+                        android:onClick="@{() -> viewModel.onBackClick()}"
+                        android:src="@drawable/back"
+                        android:tint="@color/white" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight=".06"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                        style="@style/TextStyle.Title.Sub"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/_90DP"
+                        android:paddingLeft="@dimen/_90DP"
+                        android:text="EDS Task List"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".03"
+                    android:gravity="end">
+
+                    <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                        android:id="@+id/imageViewNext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="center"
+                        android:gravity="end"
+                        android:text="@string/v2_0_0"
+                        android:textColor="@color/yellow"
+                        android:textSize="15sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <!--   <android.support.v7.widget.Toolbar
+                       android:id="@+id/toolbar_details"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:background="@color/edstool"
+                       android:text="@string/app_name"
+                       app:titleTextColor="@android:color/white">
+
+                       <RelativeLayout
+                           android:id="@+id/header"
+                           android:layout_width="match_parent"
+                           android:layout_height="wrap_content"
+                           android:background="@color/edstool">
+
+                           <ImageView
+                               android:id="@+id/imageViewBack"
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:layout_alignParentLeft="true"
+                               android:layout_alignParentStart="true"
+                               android:layout_alignParentTop="true"
+                               android:layout_gravity="center"
+                               android:onClick="@{() -> viewModel.onBackClick()}"
+                               android:gravity="center"
+                               android:src="@drawable/back"
+                               android:tint="@color/white" />
+
+                           <LinearLayout
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:layout_centerHorizontal="true"
+                               android:layout_gravity="center"
+                               android:gravity="center"
+                               android:orientation="horizontal">
+
+                               <in.ecomexpress.sathi.utils.Fonts.CustomTextBold
+                                   style="@style/TextStyle.Title.Sub"
+                                   android:layout_width="wrap_content"
+                                   android:layout_height="wrap_content"
+                                   android:layout_gravity="center"
+                                   android:gravity="center"
+                                   android:text="EDS Task List"
+                                   android:textColor="@color/white"
+                                   android:textSize="15sp"
+                                   android:textStyle="bold" />
+
+                           </LinearLayout>
+
+                           <in.ecomexpress.sathi.utils.Fonts.CustomTextBold
+                               android:id="@+id/imageViewNext"
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:layout_alignParentRight="true"
+                               android:layout_gravity="center"
+                               android:layout_marginEnd="@dimen/_10DP"
+                               android:layout_marginRight="@dimen/_10DP"
+                               android:gravity="center"
+                               android:text="@string/v2_0_0"
+                               android:textColor="@color/yellow"
+                               android:textSize="15sp" />
+                       </RelativeLayout>
+
+                   </android.support.v7.widget.Toolbar>-->
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/red_ecom"
+                    tools:ignore="NotSibling" />
+
+                <RelativeLayout
+                    android:id="@+id/activityMain"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/bottom_layout"
+                    android:layout_below="@+id/view"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/offwhite"
+                    android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/offwhite"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:padding="@dimen/_2DP">
+
+                            <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="AWB:-"
+                                android:textColor="@color/black"
+                                android:textSize="15sp" />
+
+                            <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                                android:id="@+id/awb"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+
+                                android:textColor="@color/black"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/layout_child1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@color/offwhite"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:id="@+id/popup_element"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/_5DP"
+                                android:background="@color/offwhite"
+                                android:orientation="horizontal">
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="@dimen/_10DP"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginStart="@dimen/_5DP"
+                                    android:layout_marginLeft="@dimen/_5DP"
+                                    android:layout_marginTop="@dimen/_5DP"
+                                    android:layout_marginBottom="@dimen/_5DP"
+                                    app:cardBackgroundColor="@color/eds"
+                                    app:cardCornerRadius="@dimen/_7DP"
+                                    app:cardElevation="@dimen/_20DP"></androidx.cardview.widget.CardView>
+
+
+                                <LinearLayout
+                                    android:id="@+id/layout_child2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                    <ScrollView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent">
+
+                                        <androidx.cardview.widget.CardView
+                                            android:id="@+id/cardview"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="@dimen/_80DP"
+                                            android:layout_margin="@dimen/_5DP"
+                                            app:cardBackgroundColor="@color/white"
+                                            app:cardCornerRadius="@dimen/_7DP"
+                                            app:cardElevation="@dimen/_35DP">
+
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+
+                                                android:orientation="vertical"
+                                                android:padding="@dimen/_5DP">
+
+                                                <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                                                    android:id="@+id/consignee_name_tv"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginStart="@dimen/_5DP"
+                                                    android:layout_marginLeft="@dimen/_5DP"
+                                                    android:maxLines="2"
+                                                    android:scrollbars="vertical"
+                                                    android:text="@={viewModel.getConsigneeName}"
+                                                    android:textColor="@color/edstool"
+                                                    android:textSize="15sp" />
+
+                                                <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                                                    android:id="@+id/item_description_tv"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginStart="@dimen/_5DP"
+                                                    android:layout_marginLeft="@dimen/_5DP"
+                                                    android:text="@={viewModel.getItemName}"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="13sp" />
+
+                                                <!--  <ScrollView
+                                                      android:layout_width="match_parent"
+                                                      android:layout_height="match_parent">
+                                                      <LinearLayout
+                                                          android:layout_width="match_parent"
+                                                          android:layout_height="match_parent"
+                                                          android:orientation="vertical">-->
+                                                <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                                                    android:id="@+id/address_tv"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginStart="@dimen/_5DP"
+                                                    android:layout_marginLeft="@dimen/_5DP"
+                                                    android:maxLines="5"
+                                                    android:scrollbars="vertical"
+                                                    android:text="@={viewModel.getAddress}"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="13sp" />
+                                                <!--   </LinearLayout>
+                                               </ScrollView>-->
+                                            </LinearLayout>
+
+
+                                        </androidx.cardview.widget.CardView>
+                                    </ScrollView>
+                                </LinearLayout>
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+
+                        <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:padding="@dimen/_5DP"
+                            android:text="@string/eds_activity_list"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+
+
+                        <!--<LinearLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_10DP"
+                            android:background="@color/offwhite">-->
+
+                        <!-- <android.support.v7.widget.CardView
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             app:cardBackgroundColor="@color/white"
+                             app:cardCornerRadius="@dimen/_7DP"
+                             app:cardElevation="@dimen/_25DP">
+    -->
+
+                        <ExpandableListView
+                            android:id="@+id/drawer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_5DP"
+                            android:backgroundTint="@color/edstool"
+                            android:divider="@color/edstool"
+                            android:dividerHeight="0dp"
+                            android:padding="@dimen/_5DP" />
+
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/bottom_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="bottom"
+                    android:background="@color/offwhite"
+                    android:weightSum="2">
+
+                    <Button
+                        android:visibility="visible"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_10DP"
+                        android:layout_weight="1"
+                        android:background="@drawable/eds_button"
+                        android:gravity="center"
+                        android:onClick="@{() -> viewModel.onCancelClick()}"
+                        android:text="@string/cancel"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_10DP"
+                        android:layout_weight="1"
+                        android:background="@drawable/eds_button"
+                        android:gravity="center"
+                        android:onClick="@{() -> viewModel.onProceedClick()}"
+                        android:text="@string/proceed"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/address_looking_up"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

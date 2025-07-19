@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.ecomexpress.sathi.ui.dummy.eds.eds_scan.CaptureScanActivity">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.dummy.eds.eds_scan.CaptureScanViewModel" />
+
+    </data>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/offwhite"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/edstool"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/imageViewBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:onClick="@{() -> viewModel.onBackClick()}"
+                android:padding="@dimen/_10DP"
+                android:src="@drawable/back"
+                app:tint="@color/white" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                    style="@style/TextStyle.Title.Sub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="Capture And Scan"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                android:id="@+id/imageViewNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="@dimen/_10DP"
+                android:text="@string/v2_0_0"
+                android:textColor="@color/yellow"
+                android:textSize="15sp" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/red_ecom" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                android:id="@+id/textViewAWB"
+                style="@style/TextStyle.Title.Sub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/awb"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                android:id="@+id/awb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="awb no"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:weightSum=".10">
+
+            <LinearLayout
+                android:id="@+id/layout_child1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="start"
+                android:layout_weight=".085"
+                android:background="@color/offwhite"
+                android:gravity="start"
+                android:orientation="vertical">
+
+
+                <!-- <in.ecomexpress.sathi.utils.Fonts.CustomTextRegular
+                     android:id="@+id/consignee_name"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_gravity="start"
+                     android:layout_marginLeft="@dimen/_10DP"
+                     android:layout_marginTop="5dp"
+                     android:gravity="start"
+                     android:text="@{viewModel.itemName}"
+                     android:textColor="@color/colorPrimaryDark"
+                     android:textSize="18sp"
+                     android:textStyle="bold" />
+ -->
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardViewQC"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_5DP"
+                    android:elevation="@dimen/_20DP"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="@dimen/_7DP"
+                    app:cardElevation="@dimen/_25DP">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/_5DP"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="@dimen/_10DP">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight=".03"
+                            android:visibility="gone"
+                            android:background="@drawable/border_2dp_grey"
+                            android:gravity="center_vertical"
+                            android:weightSum=".10">
+
+                            <ImageView
+                                android:id="@+id/imgVwStatusIndicator1"
+                                android:layout_width="@dimen/_60DP"
+                                android:layout_height="@dimen/_60DP"
+                                android:layout_gravity="center"
+                                android:layout_margin="@dimen/_10DP"
+                                android:background="@{viewModel.imageOpen ? @drawable/scan_tick : @drawable/scan_cross}"
+                                android:padding="@dimen/_10DP" />
+
+                            <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                                android:id="@+id/txtbfpck"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/_5DP"
+                                android:layout_weight=".08"
+                                android:background="@color/transparent"
+                                android:padding="@dimen/_10DP"
+                                android:text="@string/capture_image_before_packaging"
+                                android:textColor="@color/black"
+                                android:textSize="13sp" />
+
+                            <ImageView
+                                android:id="@+id/imgCamBfPkg"
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_60DP"
+                                android:layout_margin="@dimen/_5DP"
+                                android:layout_weight=".02"
+                                android:background="@android:color/transparent"
+                                android:onClick="@{() -> viewModel.captureImageBeforePackging()}"
+                                app:srcCompat="@drawable/cam" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="@dimen/_10DP"
+                            android:layout_weight=".03"
+                            android:background="@drawable/border_2dp_grey"
+                            android:gravity="center_vertical"
+                            android:weightSum=".10">
+
+                            <ImageView
+                                android:id="@+id/imgVwStatusIndicator2"
+                                android:layout_width="@dimen/_60DP"
+
+                                android:layout_height="@dimen/_60DP"
+                                android:layout_margin="@dimen/_10DP"
+                                android:background="@{viewModel.scanCodeOpen ? @drawable/scan_tick : @drawable/scan_cross}"
+                                android:padding="@dimen/_10DP" />
+
+                            <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                                android:id="@+id/textViewBarcode1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/_5DP"
+                                android:layout_weight=".08"
+                                android:background="@color/transparent"
+                                android:padding="@dimen/_10DP"
+                                android:text="@string/scan_print_label_barcode"
+                                android:textColor="@color/black"
+                                android:textSize="13sp" />
+
+                            <ImageView
+                                android:id="@+id/imgScanBfPkg"
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_60DP"
+                                android:layout_margin="@dimen/_5DP"
+                                android:layout_weight=".02"
+                                android:background="@android:color/transparent"
+                                android:onClick="@{() -> viewModel.scanCodeBeforePackging()}"
+                                app:srcCompat="@drawable/ic_scan_barcode" />
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:id="@+id/layoutaftersacan"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="@dimen/_10DP"
+                            android:layout_weight=".03"
+                            android:background="@drawable/border_2dp_grey"
+                            android:gravity="center_vertical"
+                            android:weightSum=".1">
+
+                            <ImageView
+                                android:id="@+id/imgVwStatusIndicator4"
+                                android:layout_width="@dimen/_60DP"
+
+                                android:layout_height="@dimen/_60DP"
+                                android:layout_margin="@dimen/_10DP"
+                                android:background="@{viewModel.scanCodeClose ? @drawable/scan_tick : @drawable/scan_cross}"
+                                android:padding="@dimen/_10DP" />
+
+                            <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                                android:id="@+id/textViewBarcode2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/_5DP"
+                                android:layout_weight=".08"
+                                android:background="@color/transparent"
+                                android:padding="@dimen/_10DP"
+                                android:text="@string/final_scan"
+                                android:textColor="@color/black"
+                                android:textSize="13sp" />
+
+                            <ImageView
+                                android:id="@+id/imgScanAfPkg"
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_60DP"
+                                android:layout_margin="@dimen/_5DP"
+                                android:layout_weight=".02"
+                                android:background="@android:color/transparent"
+                                android:onClick="@{() -> viewModel.scanCodeAfterPackging()}"
+                                app:srcCompat="@drawable/ic_scan_barcode" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lltFooter"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="bottom"
+                android:layout_margin="10dp"
+                android:layout_weight=".015"
+                android:gravity="bottom">
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/eds_button"
+                    android:gravity="center"
+                    android:onClick="@{() -> viewModel.OnProceed()}"
+                    android:text="@string/proceed"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

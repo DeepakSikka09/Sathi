@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="demo_allow_additional_payment_fields" type="bool">true</item>
+    <item name="demo_allow_sub_merchant_info" type="bool">true</item>
+    <color name="black_overlay">#66000000</color>
+    <color name="buttoncolor">#0592fa</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="graydark">#817f7f</color>
+    <color name="graylight">#e2e2e4</color>
+    <color name="linecol">#767676</color>
+    <color name="textcolor">#939393</color>
+    <color name="textcolorconponent">#ffffff</color>
+    <color name="transparent">#00000000</color>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <string name="acceptsdk_dialog_cancel_signature_request_confirm">YES</string>
+    <string name="acceptsdk_dialog_cancel_signature_request_message">Do you really want to cancel signature step. Please press YES to cancel.</string>
+    <string name="acceptsdk_dialog_cancel_signature_request_skip">NO</string>
+    <string name="acceptsdk_dialog_cancel_signature_request_title">Signature</string>
+    <string name="acceptsdk_dialog_discovery_error_confirm">OK</string>
+    <string name="acceptsdk_dialog_discovery_error_message">Error occurred during terminals discovery ( %s ).</string>
+    <string name="acceptsdk_dialog_discovery_error_title">Discovery error</string>
+    <string name="acceptsdk_dialog_no_terminals_confirm">OK</string>
+    <string name="acceptsdk_dialog_no_terminals_message">Please pair Posmate terminal with your device and try again later.</string>
+    <string name="acceptsdk_dialog_no_terminals_title">No terminals</string>
+    <string name="acceptsdk_dialog_nothing_drawn_confirm">OK</string>
+    <string name="acceptsdk_dialog_nothing_drawn_message">No signature entered. Please sign transaction and confirm again.</string>
+    <string name="acceptsdk_dialog_nothing_drawn_title">Signature</string>
+    <string name="acceptsdk_dialog_payment_error_confirm">OK</string>
+    <string name="acceptsdk_dialog_payment_error_message">Transaction rejected ( %s ).</string>
+    <string name="acceptsdk_dialog_payment_error_title">Transaction error</string>
+    <string name="acceptsdk_dialog_signature_confirm_cancel">Cancel</string>
+    <string name="acceptsdk_dialog_signature_confirm_confirm">Is OK</string>
+    <string name="acceptsdk_dialog_signature_confirm_message">Please give the device to the merchant for signature confirmation. The merchant must confirm the signature pressing OK at the terminal.</string>
+    <string name="acceptsdk_dialog_signature_confirm_title">Signature check</string>
+    <string name="acceptsdk_dialog_signature_instruction_cancel">Cancel</string>
+    <string name="acceptsdk_dialog_signature_instruction_confirm">OK</string>
+    <string name="acceptsdk_dialog_signature_instruction_message">Please give this device to customer and ask to draw signature on device\'s screen.</string>
+    <string name="acceptsdk_dialog_signature_instruction_title">Signature check</string>
+    <string name="acceptsdk_dialog_terminal_chooser_cancel">Cancel</string>
+    <string name="acceptsdk_dialog_terminal_chooser_title">Select terminal:</string>
+    <string name="acceptsdk_payment_activity_cancel_button">Cancel</string>
+    <string name="acceptsdk_payment_activity_cancel_signature_confirmation_button">Cancel</string>
+    <string name="acceptsdk_payment_activity_confirm_signature_button">Confirm</string>
+    <string name="acceptsdk_payment_activity_retry_button">Retry</string>
+    <string name="acceptsdk_progress__bad_readout">Bad readout</string>
+    <string name="acceptsdk_progress__ca_keys">Install</string>
+    <string name="acceptsdk_progress__confirm_amount">Confirm amount…</string>
+    <string name="acceptsdk_progress__confirm_signature">Confirm signature…</string>
+    <string name="acceptsdk_progress__connecting">Connecting to %s…</string>
+    <string name="acceptsdk_progress__customer_sign_request">Please sign here and confirm signature with CONFIRM button.</string>
+    <string name="acceptsdk_progress__declined">Transaction rejected.</string>
+    <string name="acceptsdk_progress__enter_pin">Enter PIN…</string>
+    <string name="acceptsdk_progress__firmware">Install</string>
+    <string name="acceptsdk_progress__follow">Please follow instructions displayed on terminal</string>
+    <string name="acceptsdk_progress__insert">Insert card…</string>
+    <string name="acceptsdk_progress__insert_or_swipe">Insert or swipe card…</string>
+    <string name="acceptsdk_progress__insert_swipe_or_tap">Insert, swipe or present card…</string>
+    <string name="acceptsdk_progress__loading_pls_wait">Loading, please wait…</string>
+    <string name="acceptsdk_progress__online">Online processing…</string>
+    <string name="acceptsdk_progress__processing">Processing data…</string>
+    <string name="acceptsdk_progress__remove">Pleases remove card…</string>
+    <string name="acceptsdk_progress__restart">Restart</string>
+    <string name="acceptsdk_progress__searching">Searching for devices…</string>
+    <string name="acceptsdk_progress__sucesful">Transaction approved.</string>
+    <string name="acceptsdk_progress__swipe">Swipe card…</string>
+    <string name="acceptsdk_progress__tc_update">Sending transaction confirmation…</string>
+    <string name="acceptsdk_progress__terminal_configuration">Loading terminal configuration…</string>
+    <string name="acceptsdk_progress__terminating">Terminating…</string>
+    <string name="additional_info_function_id_label">Function id (optional)</string>
+    <string name="additional_info_job_id_label">Job id (optional)</string>
+    <string name="amount">Amount</string>
+    <string name="app_name">LogisticSDK</string>
+    <string name="awb_no">AWB No.</string>
+    <string name="btn_set_sub_merchant_info">Set sub merchant info</string>
+    <string name="general_firmware_update_pending">Updating the firmware from %1$s to %2$s ...</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="infoUser">Press OK to get a status of Intiated transaction.</string>
+    <string name="manifest_app_name">Accept Sample App - Thyron BT</string>
+    <string name="orderID"> Awb No.</string>
+    <string name="sub_merchant_city_label">Sub merchant city *</string>
+    <string name="sub_merchant_country_label">Sub merchant country *</string>
+    <string name="sub_merchant_id_label">Sub merchant ID *</string>
+    <string name="sub_merchant_info_required_fields">* Required fields</string>
+    <string name="sub_merchant_name_label">Sub merchant name *</string>
+    <string name="sub_merchant_post_code_label">Sub merchant post code *</string>
+    <string name="sub_merchant_state_label">Sub merchant state *</string>
+    <string name="sub_merchant_street_label">Sub merchant street *</string>
+    <string name="use_usb">use USB</string>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="PauseDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/fadein</item>
+        <item name="android:windowExitAnimation">@anim/fadeout</item>
+    </style>
+    <style name="Theme.Transparent" parent="Theme.AppCompat">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:activityOpenEnterAnimation">@android:anim/slide_in_left</item>
+        <item name="android:activityCloseExitAnimation">@android:anim/slide_in_left</item>
+    </style>
+    <style name="TranslucentWithAnim" parent="@android:style/Theme.Translucent.NoTitleBar">
+        <item name="android:windowAnimationStyle">@style/YourAnimation.Activity</item>
+    </style>
+    <style name="YourAnimation.Activity" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@android:anim/slide_in_left</item>
+        <item name="android:activityOpenExitAnimation">@android:anim/slide_out_right</item>
+    </style>
+</resources>

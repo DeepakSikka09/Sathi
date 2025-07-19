@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/border_2dp_black"
+    android:orientation="vertical"
+    android:padding="15dp">
+
+
+    <TextView
+        android:id="@+id/txtstatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_20DP"
+        android:gravity="center"
+        android:text="@string/select_one_to_send_otp"
+        android:textSize="@dimen/agent_text_size_20sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/closedok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_40DP"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:gravity="center"
+        android:text="OK"
+        android:textColor="@color/white"
+        android:textSize="@dimen/agent_text_size_20sp"
+        android:textStyle="bold" />
+
+
+</LinearLayout>

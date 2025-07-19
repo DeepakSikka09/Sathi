@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.ecomexpress.sathi.ui.dummy.eds.eds_activity_detail.EDSDetailActivity">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.dummy.eds.eds_document_collection.DocumentCollectionListImageViewModel" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/imagelayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/_5DP"
+        android:paddingLeft="@dimen/_5DP">
+
+
+        <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+            android:id="@+id/txt_image_header"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight=".06"
+            android:gravity="start|center"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+        <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+            android:id="@+id/txt_image_option"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight=".03"
+            android:gravity="start|center"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/_10DP"
+            android:layout_marginRight="@dimen/_10DP"
+            android:layout_weight=".01"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/img_kyc_activity_capture"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                app:srcCompat="@drawable/cam" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</layout>

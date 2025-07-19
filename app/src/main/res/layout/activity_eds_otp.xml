@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.ecomexpress.sathi.ui.dummy.eds.eds_otp.EdsOtpActivity">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.dummy.eds.eds_otp.EdsOtpViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/offwhite"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/edstool"
+            android:padding="@dimen/_10DP">
+
+            <ImageView
+                android:id="@+id/imageViewBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignTop="@+id/linearLayout5"
+                android:layout_gravity="start"
+                android:onClick="@{() -> viewModel.onBackClick()}"
+                android:src="@drawable/back"
+                app:tint="@color/white" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                    style="@style/TextStyle.Title.Sub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="OTP Verification"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                android:id="@+id/imageViewNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/v2_0_0"
+                android:textColor="@color/yellow"
+                android:textSize="15sp" />
+
+
+
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/header"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="@color/red_ecom" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/offwhite">
+
+            <androidx.cardview.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/card_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_10DP"
+                card_view:cardBackgroundColor="@color/white"
+                card_view:cardCornerRadius="5dp"
+                card_view:cardElevation="6dp"
+                card_view:cardMaxElevation="15dp"
+                card_view:contentPadding="10dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/otp_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible"
+                        android:orientation="vertical">
+
+
+                        <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center"
+                            android:text="@string/no_verify"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/red_ecom" />
+
+
+                        <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                            android:id="@+id/otp_kyc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="@dimen/_10DP"
+                            android:gravity="center"
+                            android:text="@string/sent_otp_to"
+                            android:textColor="@color/gray"
+                            android:textSize="12sp" />
+
+
+                        <!--   <in.ecomexpress.sathi.utils.Fonts.CustomTextRegular
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:layout_centerInParent="true"
+                               android:layout_gravity="center"
+                               android:gravity="center"
+                               android:text="@string/otp_entry"
+                               android:textSize="13sp" />-->
+
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/eds_button"
+                            android:elevation="@dimen/_10DP">
+
+                            <EditText
+                                android:id="@+id/otp_et_kyc"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:background="@drawable/white_round"
+                                android:cursorVisible="true"
+                                android:gravity="center"
+                                android:hint="@string/enter_otp"
+                                android:inputType="number"
+                                android:maxLength="6"
+                                android:maxLines="1"
+                                android:padding="@dimen/_15DP"
+                                android:textColor="@color/black" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp">
+
+                            <Button
+                                android:id="@+id/btn_verify_kyc"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:layout_gravity="center"
+                                android:background="@drawable/eds_button"
+                                android:cursorVisible="true"
+                                android:gravity="center"
+                                android:onClick="@{() -> viewModel.onVerify()}"
+                                android:text="@string/verify"
+                                android:textColor="@color/white" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/_10DP"
+                            android:layout_marginTop="@dimen/_20DP">
+
+                            <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                                android:id="@+id/resend"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{() -> viewModel.onResend()}"
+                                android:text="@string/resend_otp"
+                                android:textColor="@color/eds"
+                                android:textSize="13sp" />
+
+                            <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                                android:id="@+id/other_no_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:onClick="@{() -> viewModel.onOtherNo()}"
+                                android:text="@string/sent_otp_to_other"
+                                android:textColor="@color/red_ecom"
+                                android:textSize="13sp"
+                                android:visibility="visible" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/change_no_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp">
+
+                            <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:text="@string/change_mobile_no"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp">
+
+                            <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_centerHorizontal="true"
+                                android:gravity="center"
+                                android:text="@string/change_no_stmt"
+                                android:textSize="13sp" />
+                        </RelativeLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@color/red_ecom" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp">
+
+                            <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:gravity="center"
+                                android:text="@string/enter_mobile_no"
+                                android:textSize="13sp" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="10dp">
+
+                            <EditText
+                                android:id="@+id/mobile_edt"
+                                android:layout_width="match_parent"
+                                android:padding="@dimen/_20DP"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:background="@drawable/white_round"
+                                android:cursorVisible="true"
+                                android:gravity="center"
+                                android:hint="Enter Mobile No."
+                                android:inputType="number"
+                                android:maxLength="10"
+                                android:maxLines="1" />
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:weightSum="2">
+
+                            <Button
+
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+
+                                android:layout_weight=".9"
+                                android:background="@drawable/eds_button"
+                                android:cursorVisible="true"
+                                android:gravity="center"
+                                android:onClick="@{() -> viewModel.onCancel()}"
+                                android:text="@string/cancel"
+                                android:textColor="@color/white" />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_weight=".2" />
+
+                            <Button
+                                android:id="@+id/send_btn"
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+
+                                android:layout_weight=".9"
+                                android:background="@drawable/eds_button"
+                                android:cursorVisible="true"
+                                android:gravity="center"
+                                android:onClick="@{() -> viewModel.onMobileNoChange()}"
+                                android:text="@string/send_button"
+                                android:textColor="@color/white" />
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <androidx.core.widget.ContentLoadingProgressBar
+                        android:id="@+id/address_looking_up"
+                        style="?android:attr/progressBarStyleLarge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}" />
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true">
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="@dimen/_20DP"
+                    android:background="@drawable/eds_button"
+                    android:onClick="@{() -> viewModel.onCancelActivity()}"
+                    android:text="@string/cancel"
+                    android:textColor="@color/white" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+</layout>

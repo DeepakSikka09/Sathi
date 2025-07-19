@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/obd_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txt_fwd_obd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="@dimen/_20DP"
+            android:layout_marginTop="@dimen/_15DP"
+            android:layout_marginEnd="@dimen/_20DP"
+            android:layout_marginBottom="@dimen/_15DP"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/fwd_obd"
+            android:textColor="@color/grey_78"
+            android:textSize="@dimen/_20SP" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_cod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginStart="@dimen/_20DP"
+            android:layout_marginTop="@dimen/_15DP"
+            android:layout_marginEnd="@dimen/_20DP"
+            android:layout_marginBottom="@dimen/_15DP"
+            app:cardBackgroundColor="@color/green_FE"
+            app:cardCornerRadius="@dimen/_20DP">
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txt_cod"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/_20DP"
+                android:layout_marginEnd="@dimen/_20DP"
+                android:fontFamily="@font/roboto_medium"
+                android:paddingStart="@dimen/_4DP"
+                android:paddingTop="@dimen/_4DP"
+                android:paddingEnd="@dimen/_4DP"
+                android:paddingBottom="@dimen/_4DP"
+                android:text="@string/ppd"
+                android:textColor="@color/black_1A"
+                android:textSize="@dimen/_14SP" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

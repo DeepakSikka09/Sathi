@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    android:clickable="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#edeff2">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="0dp"
+            android:gravity="center"
+            android:background="#FFFFFF"
+            >
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="#ffffff"
+                card_view:cardCornerRadius="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="96dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/upi1" />
+            </android.support.v7.widget.CardView>
+
+
+        </LinearLayout>
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/connect_help"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:layout_above="@+id/bottomLogoLayout"
+                android:background="#ffffff">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:id="@+id/linearLayout">
+                        <TextView
+                            android:id="@+id/expiremsgId"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="20dp"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="QR code has expired please click verify payment if payment has been done or click close and reinitate transaction"
+                            />
+
+                        <android.support.v7.widget.CardView
+                            android:id="@+id/cardId"
+                            android:layout_width="156dp"
+                            android:layout_height="156dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="5dp"
+                            app:cardBackgroundColor="#ffffff"
+                            android:layout_gravity="center_horizontal">
+
+                            <ImageView
+                                android:id="@+id/qrImage"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal" />
+
+
+                        </android.support.v7.widget.CardView>
+
+                    </LinearLayout>
+
+
+
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tableLayout"
+                    android:layout_below="@+id/linearLayout"
+                    android:layout_centerHorizontal="true">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#a99999"
+                        android:padding="5dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="#FFFFFF"
+                            android:text="Amount"
+
+                            />
+
+                        <TextView
+                            android:id="@+id/amt1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text=""
+                            android:textColor="#FFFFFF"
+
+
+                            />
+                    </TableRow>
+                    <!-- <View
+                         android:layout_width="fill_parent"
+                         android:layout_height="2dp"
+                         android:background="#c0c0c0"/>-->
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#f7f2f2"
+                        android:padding="5dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="AWB No."
+
+                            />
+
+                        <TextView
+                            android:id="@+id/qrservicechanrgeIdAWB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text=""
+
+                            />
+                    </TableRow>
+
+                </TableLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_centerInParent="true"
+                    android:layout_below="@+id/tableLayout"
+
+                    android:id="@+id/relativeLayout2">
+
+
+
+                    <ProgressBar
+                        android:id="@+id/progressbar_timerview"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:indeterminate="false"
+                        android:rotation="-90"
+                        android:progressDrawable="@drawable/circular"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true" />
+
+                    <TextView
+                        android:id="@+id/textView_timerview_time"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:alpha="0.4"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:layout_marginBottom="15dp"
+                        android:text="00:00"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true" />
+
+                    <Button
+                        android:id="@+id/closeButtonId"
+                        android:layout_height="wrap_content"
+                        android:text="Close"
+                        android:layout_width="150dp"
+                        android:background="@color/buttoncolor"
+                        android:textColor="#fff"
+
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true" />
+
+
+
+                </RelativeLayout>
+                <Button
+                    android:id="@+id/upiverifyPaymentId"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="Verify Payment"
+                    android:textColor="#fff"
+                    android:gravity="center"
+                    android:layout_centerInParent="true"
+                    android:background="@color/buttoncolor"
+                   />
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/line"
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:paddingTop="5dip"
+                android:gravity="center_horizontal"
+                android:layout_above="@+id/bottomLogoLayout"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#9f9b9b" />
+            <LinearLayout
+                android:id="@+id/bottomLogoLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="60dp"
+                android:orientation="vertical"
+
+                android:background="#ffffff"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/logosCardView"
+                    android:layout_width="240dp"
+                    android:layout_height="63dp"
+                    android:layout_gravity="center"
+                    android:elevation="0dp"
+                    app:cardBackgroundColor="#ffffff">
+
+                    <ImageView
+                        android:id="@+id/imgMC"
+                        android:layout_width="64dp"
+                        android:layout_height="57dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="5dp"
+                        android:src="@drawable/npci" />
+
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</LinearLayout>

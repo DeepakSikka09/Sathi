@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-sdk tools:overrideLibrary="esper.library" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission
+        android:name="android.permission.WRITE_SECURE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- Tell the system this app requires OpenGL ES 2.0. -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.WRITE_CALL_LOG" />
+
+    <uses-feature android:name="android.hardware.camera.flash" />
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" /> <!-- Features for Google Play -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
+    <queries>
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent>
+    </queries>
+    <queries>
+        <package android:name="io.shoonya.shoonyadpc" />
+    </queries>
+
+    <application
+        android:name=".SathiApplication"
+        android:allowBackup="false"
+        android:hardwareAccelerated="true"
+        android:icon="@drawable/sathi_logo"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:manageSpaceActivity=".ui.auth.login.LoginActivity"
+        android:preserveLegacyExternalStorage="true"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@drawable/sathi_logo"
+        android:supportsRtl="true"
+        android:testOnly="false"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:replace="android:allowBackup">
+        <activity
+            android:name=".ui.drs.mps.activity.MPSListActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ui.drs.rvp.activity.RQCScannerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.drs.mps.activity.MpsSuccessFailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.drs.mps.activity.MpsScanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.drs.mps.activity.MpsCaptureScanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.drs.mps.activity.MpsPickupOtpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.drs.mps.activity.MpsPickupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.drs.rvp.activity.RvpSuccessFailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.drs.rvp.activity.UndeliveredOtpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.drs.rvp.activity.RvpQCDetailActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.drs.rvp.activity.RvpQcScanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.drs.rvp.activity.CaptureScanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.drs.rvp.activity.RvpQcSuccessFailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.drs.rvp.activity.CancelPickupRemarksActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.drs.rvp.activity.CancelReasonCodeListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.drs.rvp.activity.CancelSubReasonCodeListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.drs.rvp.activity.PickupOtpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.drs.rvp.activity.PickupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.side_drawer.drawer_main.SideDrawerActivity"
+            android:exported="false"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.dashboard.unattempted_shipments.UnattemptedShipmentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".utils.cameraView.CameraXActivity"
+            android:exported="false"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.dashboard.starttrip.StartTripActivity"
+            android:exported="false"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.dashboard.stoptrip.StopTripActivity"
+            android:exported="false"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.drs.rts.rts_scan_and_deliver.RTSScanActivity"
+            android:exported="false"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.auth.login.LoginActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize|stateHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.drs.forward.mps.MPSScanActivity"
+            android:exported="false"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.dashboard.performance.PerformanceActivity"
+            android:exported="false"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.dashboard.attendance.activity.AttendanceActivity"
+            android:exported="false"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.drs.forward.bpid.ScanBPIDActivity"
+            android:exported="false"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.drs.forward.undelivered_fwd.UndeliveredBPIDActivity"
+            android:exported="false"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.dashboard.attendance.activity.AttendanceActivity1"
+            android:exported="false"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.side_drawer.dc_location_updation.DCLocationActivity"
+            android:exported="false"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.auth.verifyOtpLoginScreen.LoginVerifyOtpActivity"
+            android:configChanges="keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.dummy.eds.undeilvered_eds.EDSUndeliveredActivity"
+            android:configChanges="keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.dummy.eds.eds_otp.EdsOtpActivity"
+            android:configChanges="keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.dashboard.landing.DashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.side_drawer.profile.ProfileActivity"
+            android:exported="false"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.drs.todolist.ToDoListActivity"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" /> <!-- FORWARD DETAIL -->
+        <activity
+            android:name=".ui.drs.forward.details.ForwardDetailActivity"
+            android:configChanges="keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.drs.secure_delivery.SecureDeliveryActivity"
+            android:configChanges="keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.drs.forward.signature.SignatureActivity"
+            android:configChanges="keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.drs.forward.undelivered_fwd.UndeliveredActivity"
+            android:configChanges="keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.dashboard.fuel.FuelReimburseActivity"
+            android:configChanges="keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.drs.rts.rts_main_list.RTSListActivity"
+            android:configChanges="keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.drs.rts.rts_signature.RTSSignatureActivity"
+            android:configChanges="keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.drs.rts.rts_success.RTSSuccessActivity"
+            android:configChanges="keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.drs.forward.success.FWDSuccessActivity"
+            android:configChanges="keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.dummy.eds.eds_task_list.EdsTaskListActivity"
+            android:configChanges="keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.dummy.eds.eds_activity_detail.EDSDetailActivity"
+            android:configChanges="keyboardHidden"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.dummy.eds.eds_success_fail.EDSSuccessFailActivity"
+            android:configChanges="keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.dummy.eds.eds_signature.EDSSignatureActivity"
+            android:configChanges="keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.dummy.eds.eds_scan.CaptureScanActivity"
+            android:configChanges="keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".utils.cameraView.CameraActivity"
+            android:exported="false"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".ui.side_drawer.pendingHistory.PendingHistoryActivity"
+            android:exported="false"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".ui.dashboard.fe_earned.Earned_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.side_drawer.adm.ADMActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.dashboard.global_activity.GlobalDialogActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity
+            android:name=".ui.dashboard.global_activity.MultiSpaceDialogActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity
+            android:name=".ui.dashboard.training.TrainingActivity"
+            android:configChanges="orientation|screenSize"
+            android:exported="true" />
+        <activity
+            android:name=".ui.side_drawer.pendingHistory.PendingHistoryDetailActivity"
+            android:configChanges="orientation|screenSize"
+            android:exported="false" />
+        <activity
+            android:name=".ui.dashboard.fullscreen.FullScreenViewActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity
+            android:name=".utils.cameraView.CameraSelfieActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:stateNotNeeded="true"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            tools:replace="android:screenOrientation" />
+        <activity
+            android:name=".ui.drs.forward.obd.activity.FwdOBDProductDetailActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.drs.forward.obd.activity.FwdOBDStartOTPActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.drs.forward.obd.activity.FwdOBDQcPassActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.drs.forward.obd.activity.FwdOBDStopOTPActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.drs.forward.obd.activity.FwdOBDSucessActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.drs.forward.obd.activity.FwdOBDScannerActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.drs.forward.details.ScannerActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.drs.forward.obd.activity.FwdOBDCompleteActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.drs.forward.obd.activity.FwdOBDFlyerSuccessActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.drs.forward.obd.activity.FwdOBDQcFailActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.dashboard.mapview.MapActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.dashboard.campaign.CampaignActivity"
+            android:configChanges="orientation|screenSize"
+            android:exported="true" />
+        <activity
+            android:name=".ui.dashboard.refer.ReferFriendActivity"
+            android:configChanges="orientation|screenSize"
+            android:exported="true" />
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Base.Theme.AppCompat" /> <!-- Providers -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_paths" />
+        </provider>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <provider
+            android:name=".utils.SathiContentProvider"
+            android:authorities="${applicationId}.provider"
+            android:enabled="true"
+            android:exported="true" />
+
+        <service
+            android:name=".backgroundServices.SyncServicesV2"
+            android:enabled="true"
+            android:exported="false" />
+        <service android:name=".backgroundServices.DRSRemarkService" />
+
+        <receiver
+            android:name=".utils.VodafoneReceiver"
+            tools:ignore="ExportedReceiver">
+            <intent-filter android:priority="9">
+                <action android:name="com.mobicule.vodafoneconnect.action.ORDER_STATUS" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".utils.PaytmReceiver"
+            tools:ignore="ExportedReceiver">
+            <intent-filter android:priority="9">
+                <action android:name="net.one97.paytm.bcapp.action.ORDER_STATUS" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".utils.receivers.SmsReceiver"
+            android:exported="true"
+            android:permission="android.permission.BROADCAST_SMS">
+            <intent-filter android:priority="99999">
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".utils.CallReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".utils.receivers.CallCompleteReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".utils.receivers.BootReceiver"
+            android:enabled="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".backgroundServices.RestartBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:label="RestartServiceWhenStopped" />
+        <receiver android:name=".utils.receivers.NotificationUpdate" />
+    </application>
+
+</manifest>

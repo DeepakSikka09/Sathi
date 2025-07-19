@@ -1,0 +1,575 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.ecomexpress.sathi.ui.drs.forward.undelivered_fwd.UndeliveredBPIDActivity">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.drs.forward.undelivered_fwd.UndeliveredViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/offwhite"
+                    android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:visibility="gone"
+                        android:id="@+id/header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/blue_grey_light"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_10DP"
+                        android:weightSum=".1">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".01">
+
+                            <ImageButton
+                                android:id="@+id/back"
+                                style="@style/TextStyle.Title.Sub"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@null"
+                                android:gravity="start"
+                                android:src="@drawable/back"
+                                app:tint="@color/white" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight=".06"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                                style="@style/TextStyle.Title.Sub"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start"
+                                android:gravity="start"
+                                android:paddingLeft="40dp"
+                                android:text="FWD Undelivered"
+                                android:textColor="@color/white"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                            android:id="@+id/imageViewNext"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_gravity="center"
+                            android:layout_weight=".03"
+                            android:gravity="end"
+                            android:text="@string/v2_0_0"
+                            android:textColor="@color/yellow"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+
+                    <View
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/red_ecom" />
+
+
+                    <FrameLayout
+                        android:id="@+id/scanner_frame"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:visibility="gone">
+
+                        <com.budiyev.android.codescanner.CodeScannerView
+                            android:id="@+id/scanner_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            app:autoFocusButtonColor="@android:color/white"
+                            app:autoFocusButtonVisible="true"
+                            app:flashButtonColor="@android:color/white"
+                            app:flashButtonVisible="true"
+                            app:frameAspectRatioHeight="1"
+                            app:frameAspectRatioWidth="1"
+                            app:frameColor="@android:color/white"
+                            app:frameCornersRadius="0dp"
+                            app:frameCornersSize="50dp"
+                            app:frameSize="0.75"
+                            app:frameThickness="2dp"
+                            app:maskColor="#77000000" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                            style="@style/TextStyle.Title.Sub"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/awb"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:visibility="invisible" />
+
+                        <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                            android:id="@+id/awb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@{viewModel.awbNo}"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            android:visibility="invisible" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/_5DP"
+                        android:background="@color/offwhite"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:weightSum=".1">
+
+                        <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="@dimen/_5DP"
+                            android:gravity="center"
+                            android:padding="@dimen/_5DP"
+                            android:text="@string/please_fill_undelivered_details_below"
+                            android:textColor="@color/red_ecom"
+                            android:textSize="15sp"
+                            android:visibility="invisible" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:id="@+id/layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="@dimen/_5DP"
+                                android:visibility="gone">
+
+                                <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="start"
+                                    android:gravity="start|center"
+                                    android:text="@string/choose_reason"
+                                    android:textColor="@color/black"
+                                    android:textSize="15sp" />
+
+
+                                <Spinner
+                                    android:id="@+id/spinner_vehicle_type"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="@dimen/_10DP"
+                                    android:layout_marginBottom="@dimen/_5DP"
+                                    android:background="@color/gray_ecom"
+                                    android:divider="@color/colorPrimaryDark"
+                                    android:padding="@dimen/_10DP"
+                                    android:showDividers="middle"
+                                    android:textSize="13sp"
+                                    android:theme="@style/MatchSpinnerTheme" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/group_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/offwhite"
+                                android:orientation="vertical"
+                                android:padding="@dimen/_5DP"
+                                android:visibility="gone">
+
+                                <LinearLayout
+                                    android:id="@+id/parent_group_layout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/offwhite"
+                                    android:orientation="vertical">
+
+                                    <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="start"
+                                        android:gravity="start|center"
+                                        android:text="@string/choose_group"
+                                        android:textColor="@color/black"
+                                        android:textSize="15sp" />
+
+                                    <Spinner
+                                        android:id="@+id/spinner_group_type"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="@dimen/_10DP"
+                                        android:layout_marginBottom="@dimen/_5DP"
+                                        android:background="@color/gray_ecom"
+                                        android:divider="@color/colorPrimaryDark"
+                                        android:gravity="end"
+                                        android:onItemSelected="@{(parent,view,pos,id)->viewModel.onChooseGroupSpinner(parent,view,pos,id)}"
+                                        android:padding="@dimen/_10DP"
+                                        android:showDividers="middle"
+                                        android:textSize="13sp"
+                                        android:theme="@style/MatchSpinnerTheme" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/child_group_layout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/offwhite"
+                                    android:orientation="vertical">
+
+                                    <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="start"
+                                        android:gravity="start|center"
+                                        android:text="@string/choose_reason"
+                                        android:textColor="@color/black"
+                                        android:textSize="15sp" />
+
+                                    <Spinner
+                                        android:id="@+id/spinner_child_type"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="@dimen/_10DP"
+                                        android:layout_marginBottom="@dimen/_5DP"
+                                        android:background="@color/gray_ecom"
+                                        android:onItemSelected="@{(parent,view,pos,id)->viewModel.onChooseChildSpinner(parent,view,pos,id)}"
+                                        android:padding="@dimen/_10DP"
+                                        android:singleLine="false"
+                                        android:theme="@style/MatchSpinnerTheme" />
+
+                                </LinearLayout>
+                            </LinearLayout>
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_ud_otp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_4DP"
+                            android:background="@drawable/border_1dp_light_grey"
+                            android:orientation="vertical"
+                            android:padding="4dp"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:id="@+id/tv_number_statement"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:textSize="6pt" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                android:weightSum=".10">
+
+                                <EditText
+                                    android:id="@+id/edt_ud_otp"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight=".04"
+                                    android:gravity="center"
+                                    android:hint="Enter OTP"
+                                    android:inputType="number"
+                                    android:maxLength="6"
+                                    android:maxLines="1"
+                                    android:textSize="13sp" />
+
+                                <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                                    android:id="@+id/generate_otp_tv"
+                                    style="@style/TextStyle.Title.Sub"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/_10DP"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight=".05"
+                                    android:background="@drawable/fwd_button"
+                                    android:gravity="center"
+                                    android:onClick="@{() -> viewModel.onGenerateOTPClick()}"
+                                    android:padding="@dimen/_5DP"
+                                    android:text="@string/generate_Otp"
+                                    android:textColor="@color/white"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold"
+                                    android:visibility="visible" />
+
+
+                                <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                                    android:id="@+id/resend_otp_tv"
+                                    style="@style/TextStyle.Title.Sub"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/_10DP"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight=".03"
+                                    android:background="@drawable/fwd_button"
+                                    android:gravity="center"
+                                    android:onClick="@{()->viewModel.onResendClick()}"
+                                    android:padding="@dimen/_5DP"
+                                    android:text="@string/resend"
+                                    android:textColor="@color/white"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold"
+                                    android:visibility="gone" />
+
+                                <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                                    android:id="@+id/verify_tv"
+                                    style="@style/TextStyle.Title.Sub"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight=".03"
+                                    android:background="@drawable/fwd_button"
+                                    android:gravity="center"
+                                    android:onClick="@{()->viewModel.onVerifyClick()}"
+                                    android:padding="@dimen/_5DP"
+                                    android:text="@string/verify"
+                                    android:textColor="@color/white"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold"
+                                    android:visibility="gone" />
+
+                            </LinearLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <CheckBox
+                                    android:id="@+id/otp_skip"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:enabled="false"
+                                    android:onClick="@{(view)->viewModel.onSkip(view)}"
+                                    android:text="Skip OTP Verification"
+                                    android:textSize="13sp" />
+
+                                <ImageView
+                                    android:id="@+id/img_verified_tick"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:src="@drawable/scan_tick"
+                                    android:visibility="@{viewModel.ud_otp_verified_status? View.VISIBLE : View.GONE}" />
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/flagIsCameraEnabled"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_20DP"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/_5DP"
+                            android:visibility="gone"
+                            android:weightSum=".1">
+
+                            <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_weight=".05"
+                                android:gravity="start|center"
+                                android:text="@string/capture_image"
+                                android:textColor="@color/black"
+                                android:textSize="15sp" />
+
+                            <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                                android:id="@+id/img_mandat_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_weight=".05"
+                                android:gravity="start|center"
+                                android:text=""
+                                android:textColor="@color/black"
+                                android:textSize="15sp" />
+
+                            <ImageView
+                                android:id="@+id/image"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="end"
+                                android:entries="@array/relation"
+                                android:gravity="end"
+                                android:onClick="@{() -> viewModel.onCaptureImageClick()}"
+                                android:padding="@dimen/_5DP"
+                                app:srcCompat="@drawable/cam" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/flagIsRescheduled"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/_5DP"
+                            android:visibility="gone"
+                            android:weightSum=".1">
+
+                            <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_weight=".1"
+                                android:gravity="start|center"
+                                android:text="@string/reschedule"
+                                android:textColor="@color/black"
+                                android:textSize="15sp" />
+
+
+                            <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                                android:id="@+id/date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:background="@drawable/fwd_button"
+                                android:gravity="end"
+                                android:onClick="@{() -> viewModel.onDatePickerClick()}"
+                                android:padding="@dimen/_10DP"
+                                android:text="@string/pick_dates"
+                                android:textColor="@color/white"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <Spinner
+                            android:id="@+id/spinner_dates"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_10DP"
+                            android:layout_marginBottom="@dimen/_5DP"
+                            android:background="@color/gray_ecom"
+                            android:divider="@color/colorPrimaryDark"
+                            android:onItemSelected="@{(parent,view,pos,id)->viewModel.onChooseDateSpinner(parent,view,pos,id)}"
+                            android:padding="@dimen/_10DP"
+                            android:showDividers="middle"
+                            android:textSize="13sp"
+                            android:theme="@style/MatchSpinnerTheme"
+                            android:visibility="gone" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_20DP"
+                            android:orientation="vertical">
+
+                            <EditText
+                                android:id="@+id/remarks"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:hint="@string/enter_remarks"
+                                android:maxHeight="@dimen/_600DP"
+                                android:maxLength="50"
+                                android:maxLines="6"
+                                android:textColorHint="@color/gray"
+                                android:textSize="13sp"
+                                android:visibility="invisible" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lltFooter"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_gravity="bottom"
+                        android:layout_margin="@dimen/_10DP"
+                        android:layout_weight=".2"
+                        android:background="@color/offwhite"
+                        android:gravity="bottom"
+                        android:orientation="vertical"
+                        android:weightSum=".10">
+
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:layout_margin="@dimen/_10DP"
+                            android:background="@drawable/fwd_button"
+                            android:gravity="center"
+                            android:onClick="@{() -> viewModel.onSubmitClick()}"
+                            android:text="@string/submit_"
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:visibility="invisible"
+                            app:cardCornerRadius="@dimen/_7DP"
+                            app:cardElevation="@dimen/_25DP" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </FrameLayout>
+        </ScrollView>
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/address_looking_up"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

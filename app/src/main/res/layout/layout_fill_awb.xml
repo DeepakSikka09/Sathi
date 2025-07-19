@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.ecomexpress.sathi.ui.drs.forward.fill_awb.AwbPopupDialog">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.drs.forward.fill_awb.AwbPopupDialogViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/popup_element"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.card.MaterialCardView
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_10DP"
+                app:cardBackgroundColor="@color/offwhite"
+                app:cardCornerRadius="@dimen/_7DP"
+                app:cardElevation="@dimen/_25DP">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_10DP"
+                    android:background="@color/offwhite">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cc_header_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/dashboardtool">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:fontFamily="@font/roboto_bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/cross"
+                            app:layout_constraintBottom_toBottomOf="@+id/cross"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/_10DP"
+                            android:text="@string/please_provide_awb_no"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="@dimen/_15SP" />
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:contentDescription="@string/static_content"
+                            android:id="@+id/cross"
+                            android:layout_width="@dimen/_50DP"
+                            android:layout_height="@dimen/_50DP"
+                            android:onClick="@{() -> viewModel.onCancelClick()}"
+                            android:padding="@dimen/_10DP"
+                            android:visibility="invisible"
+                            app:srcCompat="@drawable/ic_cross"
+                            app:tint="@color/colorPrimaryDark" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <View
+                        android:id="@+id/view_below_header"
+                        app:layout_constraintTop_toBottomOf="@+id/cc_header_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1DP"
+                        android:background="@color/red_ecom" />
+
+
+                    <AutoCompleteTextView
+                        app:layout_constraintTop_toBottomOf="@+id/view_below_header"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:id="@+id/edt_num"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_20DP"
+                        android:hint="@string/enter_awb_number"
+                        android:textColorHint="@color/grey"
+                        android:inputType="number"
+                        android:maxLength="20"
+                        android:maxLines="1" />
+
+                    <com.google.android.material.button.MaterialButton
+                        app:layout_constraintTop_toBottomOf="@+id/edt_num"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:id="@+id/btn_submit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_20DP"
+                        android:background="@drawable/fwd_button"
+                        android:onClick="@{() -> viewModel.onSubmitClick()}"
+                        android:text="@string/submitButton"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_15SP"
+                        android:textStyle="bold" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

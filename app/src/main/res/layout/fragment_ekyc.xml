@@ -1,0 +1,339 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.dummy.eds.eds_ekyc_XML.EdsEkycXMLFragment">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.dummy.eds.eds_ekyc_XML.EdsEkycXMLViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                android:orientation="vertical"
+                android:scrollbars="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:padding="@dimen/_10DP">
+
+                    <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                        android:id="@+id/activity_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@color/red_ecom" />
+
+                <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                    android:id="@+id/txt_activity_ques"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+                <LinearLayout
+                    android:id="@+id/radio_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_5DP">
+
+
+                    <LinearLayout
+                        android:id="@+id/ll_urn_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txt_activity_ques"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center"
+                        android:background="@drawable/border_2dp_grey"
+                        android:gravity="center"
+                        android:padding="@dimen/_5DP"
+                        android:weightSum="2">
+
+
+
+                        <LinearLayout
+                            android:id="@+id/ll_Urn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/txt_activity_ques"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:padding="@dimen/_5DP"
+                            android:visibility="visible"
+                            android:weightSum="2">
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/input"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.5"
+                                android:layout_marginTop="4dp">
+
+                                <EditText
+                                    android:id="@+id/edit_urn"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="Enter URN No."/>
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <Button
+                                android:id="@+id/radio_kyc_false"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{() -> viewModel.validateurn()}"
+                                android:background="@drawable/eds_button"
+                                android:buttonTint="@color/edstool"
+
+                                android:text="VAlIDATE"
+                                android:textColor="@color/white"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/ll_adhar_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:layout_below="@+id/txt_activity_ques"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/border_2dp_grey"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:padding="@dimen/_5DP"
+                        android:weightSum="2">
+
+
+                        <LinearLayout
+                            android:id="@+id/ll_Adhar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/txt_activity_ques"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:padding="@dimen/_5DP"
+
+                            android:weightSum="2">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/input1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:layout_weight="1.5">
+
+                                <EditText
+                                    android:id="@+id/input_adhar"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:maxLength="12"
+
+                                    android:hint="Enter Adhaar Number"
+                                    android:inputType="numberPassword" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <Button
+                                android:id="@+id/verify_adhaar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/_2DP"
+                                android:background="@drawable/eds_button"
+                                android:onClick="@{() -> viewModel.validateAdhaar()}"
+                                android:buttonTint="@color/edstool"
+                                android:text="VAlIDATE"
+                                android:visibility="gone"
+                                android:textColor="@color/white"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:id="@+id/layout_scan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10DP"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/_5DP"
+                        android:layout_marginRight="@dimen/_5DP"
+                        android:visibility="visible">
+
+                        <Button
+                            android:id="@+id/btn_scan"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_gravity="right"
+                            android:background="@drawable/eds_button"
+                            android:onClick="@{() -> viewModel.ongetPid()}"
+                            android:text="ACTIVATE SENSOR"
+                            android:textColor="@color/white" />
+                    </FrameLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:id="@+id/icici_error_response"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_5DP"
+                            android:visibility="gone"
+                            android:background="@color/colorBackground"
+                            android:orientation="vertical">
+
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/fingure_img_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_5DP"
+                            android:visibility="gone"
+                            android:background="@color/colorBackground"
+                            android:orientation="vertical">
+
+                            <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                                android:id="@+id/icici_success_text"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableLeft="@drawable/ic_check_circle_black_24dp"
+                                android:drawablePadding="20dp"
+                                android:drawableTint="@color/colorPrimary"
+                                android:visibility="gone"
+                                android:gravity="center_vertical|left|start"
+                                android:padding="@dimen/_10DP"
+                                android:text=""
+                                android:textColor="@color/black"
+
+                                />
+                            <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                                android:id="@+id/icici_error_text"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableLeft="@drawable/ic_clear_black_24dp"
+                                android:drawablePadding="20dp"
+
+                                android:gravity="center_vertical|left|start"
+                                android:padding="@dimen/_10DP"
+                                android:text=""
+                                android:visibility="gone"
+                                android:textColor="@color/black"
+
+                                />
+
+
+                        </LinearLayout>
+                    </RelativeLayout>
+
+
+
+                </LinearLayout>
+
+                <!--<RelativeLayout-->
+                <!--android:id="@+id/icici_layout"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="@dimen/_10DP"-->
+                <!--android:layout_marginRight="@dimen/_10DP"-->
+                <!--android:layout_marginTop="@dimen/_10DP"-->
+                <!--android:visibility="visible">-->
+
+
+                <!--<LinearLayout-->
+                <!--android:id="@+id/fingure_img_layout"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_margin="5dp"-->
+                <!--android:gravity="center|left"-->
+                <!--android:orientation="vertical"-->
+                <!--android:visibility="visible">-->
+
+                <!--<TextView-->
+                <!--android:id="@+id/img_bkyc_status"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="center"-->
+                <!--android:text="santosh"-->
+                <!--android:textColor="@color/_greenlight"-->
+                <!--android:textSize="@dimen/_40DP" />-->
+
+                <!--<TextView-->
+                <!--android:id="@+id/txt_bkyc_status"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="20dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:text="Biometric KYC Successfull."-->
+                <!--android:textStyle="bold" />-->
+                <!--</LinearLayout>-->
+                <!--</RelativeLayout>-->
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:layout_marginTop="@dimen/_20DP"
+                    android:background="@color/gray_ecom" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20DP"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Instruction:-"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/instruction_detail_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </ScrollView>
+
+
+    </RelativeLayout>
+</layout>

@@ -1,0 +1,51 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.ecomexpress.sathi.ui.dashboard.notification.notification_detail.ActivityNotificationDetail">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/parent_cardview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/_10DP"
+        app:cardElevation="@dimen/_10DP"
+        android:layout_marginTop="@dimen/_10DP">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="@dimen/_10DP">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/imageName"
+                android:layout_width="@dimen/_0DP"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="@dimen/_15SP"
+                app:layout_constraintWidth_percent="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/uploadImage"
+                android:layout_width="@dimen/_0DP"
+                android:layout_height="@dimen/_35DP"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/white"
+                android:background="@drawable/fwd_button"
+                android:textSize="@dimen/_11sp"
+                android:textStyle="bold"
+                app:layout_constraintWidth_percent="0.35"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

@@ -1,0 +1,762 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.ecomexpress.sathi.ui.todolist.ToDoListActivity">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.drs.todolist.ToDoListViewModel" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/offwhite">
+
+        <androidx.drawerlayout.widget.DrawerLayout
+            android:id="@+id/drawerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/offwhite"
+            android:fitsSystemWindows="true">
+
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:id="@+id/clRootView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/offwhite"
+                android:clipChildren="false">
+
+                <LinearLayout
+                    android:id="@+id/activityMain"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/offwhite"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@color/dashboardtool"
+                        android:gravity="center">
+
+                        <LinearLayout
+                            android:id="@+id/toolbar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@color/dashboardtool"
+                            android:gravity="start"
+                            android:orientation="horizontal"
+                            android:weightSum=".10">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start"
+                                android:layout_weight=".1"
+                                android:background="@color/dashboardtool"
+                                android:gravity="start"
+                                android:orientation="horizontal"
+                                android:padding="@dimen/_5DP"
+                                android:weightSum=".10">
+
+                                <ImageButton
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="start"
+                                    android:layout_weight=".015"
+                                    android:background="@null"
+                                    android:clickable="true"
+                                    android:focusable="true"
+                                    android:gravity="start"
+                                    android:onClick="@{() -> viewModel.onBackClick()}"
+                                    android:padding="@dimen/_10DP"
+                                    android:src="@drawable/back"
+                                    android:tint="@color/colorPrimaryDark" />
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:layout_weight=".035"
+                                    android:gravity="start"
+                                    android:orientation="vertical">
+
+                                    <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="start"
+                                        android:gravity="center"
+                                        android:text="@string/drs_lis"
+                                        android:textColor="@color/colorPrimaryDark"
+                                        android:textSize="15sp" />
+
+                                    <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="0dp"
+                                        android:layout_gravity="start"
+                                        android:layout_weight=".01"
+                                        android:gravity="center"
+                                        android:text="@string/v2_0_0"
+                                        android:textColor="@color/red_ecom"
+                                        android:textSize="10sp" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/tools"
+                                    android:layout_width="173dp"
+                                    android:layout_height="41dp"
+                                    android:layout_gravity="center"
+                                    android:layout_weight=".05"
+                                    android:gravity="end"
+                                    android:orientation="horizontal"
+                                    android:visibility="visible">
+
+                                    <ImageView
+                                        android:visibility="gone"
+                                        android:id="@+id/switch_callbridge"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_margin="@dimen/_10DP"
+                                        android:background="@null"
+                                        android:gravity="end"
+                                        android:onClick="@{()-> viewModel.onSwitchCallBridgeClick()}"
+                                        app:srcCompat="@drawable/call2"
+                                        app:tint="@color/rts" />
+
+                                    <ImageView
+                                        android:id="@+id/check_all_iv"
+                                        android:layout_width="30dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:layout_margin="@dimen/_10DP"
+                                        android:background="@null"
+                                        android:gravity="end"
+                                        android:onClick="@{()-> viewModel.checkAll()}"
+                                        app:srcCompat="@drawable/whatsapp_rback" />
+
+                                    <CheckBox
+                                        android:id="@+id/checkbox_tk_prk"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center|end"
+                                        android:buttonTint="@color/fwd"
+                                        android:checked="false"
+                                        android:gravity="center"
+                                        android:onClick="@{()-> viewModel.onCheckBoxClick()}"
+                                        android:visibility="gone" />
+
+                                    <ImageButton
+                                        android:id="@+id/info"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:layout_margin="@dimen/_10DP"
+                                        android:background="@null"
+                                        android:gravity="end"
+                                        android:visibility="gone"
+                                        app:srcCompat="@drawable/ic_info" />
+
+                                    <ImageButton
+                                        android:id="@+id/locationSort"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:layout_margin="@dimen/_10DP"
+                                        android:background="@null"
+                                        android:gravity="end"
+                                        android:visibility="gone"
+                                        app:srcCompat="@drawable/ic_sortby" />
+
+                                    <ImageButton
+                                        android:id="@+id/resetSort"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_margin="@dimen/_10DP"
+                                        android:background="@null"
+                                        android:gravity="end"
+                                        android:onClick="@{() -> viewModel.onResetSequenceClick()}"
+                                        android:visibility="gone"
+                                        app:srcCompat="@drawable/ic_re_arrange" />
+
+                                    <ToggleButton
+                                        android:id="@+id/toggleButton"
+                                        style="@style/toggleButton"
+                                        android:layout_width="27dp"
+                                        android:layout_height="31dp"
+                                        android:layout_gravity="center"
+                                        android:layout_margin="@dimen/_10DP"
+                                        android:background="@drawable/ic_toggle_bg"
+                                        android:gravity="end"
+                                        android:onClick="@{()-> viewModel.mapListtoogle()}"
+                                        android:visibility="gone" />
+
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <FrameLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="0"
+                                android:visibility="gone">
+
+                                <ImageButton
+                                    android:id="@+id/filter"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:background="@color/dashboardtool"
+                                    android:drawableTop="@drawable/shape_notificaiton"
+                                    android:gravity="center"
+                                    android:onClick="@{() -> viewModel.onFilterClick()}"
+                                    app:srcCompat="@drawable/ic_filter" />
+
+                                <TextView
+                                    android:id="@+id/tv_filter_count"
+                                    android:layout_width="20dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="right|end"
+                                    android:background="@drawable/shape_notificaiton"
+                                    android:gravity="center"
+                                    android:text="0"
+                                    android:textColor="@color/white"
+                                    android:textSize="5pt"
+                                    android:visibility="gone" />
+                            </FrameLayout>
+                        </LinearLayout>
+
+                        <View
+                            android:id="@+id/view"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_below="@+id/toolbar"
+                            android:layout_gravity="center"
+                            android:background="@color/red_ecom"
+                            android:gravity="center" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@color/offwhite"
+                        android:gravity="center">
+
+                        <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                            android:id="@+id/no_ship"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="start"
+                            android:gravity="center"
+                            android:text="No Shipment Found."
+                            android:textColor="@color/red_ecom"
+                            android:textSize="15sp"
+                            android:visibility="gone" />
+
+                        <LinearLayout
+                            android:id="@+id/main_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/offwhite"
+                            android:orientation="vertical"
+                            android:visibility="visible">
+
+                            <LinearLayout
+                                android:id="@+id/shipment_status"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/offwhite"
+                                android:orientation="vertical">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/view"
+                                    android:layout_gravity="center"
+                                    android:background="@color/offwhite"
+                                    android:gravity="center">
+
+
+                                    <!--search-->
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="@dimen/_10DP"
+                                        app:cardBackgroundColor="@color/white"
+                                        app:cardCornerRadius="@dimen/_8DP"
+                                        app:cardElevation="@dimen/_20DP">
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="horizontal"
+                                            android:weightSum=".10">
+
+                                            <androidx.appcompat.widget.SearchView
+                                                android:id="@+id/searchview"
+                                                android:layout_width="0dp"
+                                                android:layout_height="match_parent"
+                                                android:layout_weight=".085"
+                                                android:focusable="false"
+                                                android:focusableInTouchMode="false"
+                                                android:textColor="@color/colorPrimaryDark"
+                                                android:theme="@style/SearchViewStyle"
+                                                android:tint="@color/colorPrimaryDark">
+
+                                            </androidx.appcompat.widget.SearchView>
+
+                                            <ImageButton
+                                                android:id="@+id/scansearch"
+                                                android:layout_width="0dp"
+                                                android:layout_height="match_parent"
+                                                android:layout_gravity="end"
+                                                android:layout_weight=".015"
+                                                android:background="@null"
+                                                android:gravity="end"
+                                                android:onClick="@{() -> viewModel.onScanClick()}"
+                                                app:srcCompat="@drawable/scan" />
+
+                                        </LinearLayout>
+                                    </androidx.cardview.widget.CardView>
+                                </RelativeLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/offwhite"
+                                    android:orientation="vertical">
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginStart="@dimen/_10DP"
+                                        android:layout_marginEnd="@dimen/_10DP"
+                                        android:background="@color/offwhite"
+                                        android:gravity="center"
+                                        android:orientation="horizontal"
+                                        android:weightSum=".08">
+
+                                        <LinearLayout
+                                            android:id="@+id/ll_fwd_color"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center"
+                                            android:orientation="horizontal">
+
+                                            <androidx.cardview.widget.CardView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="center"
+                                                android:layout_margin="@dimen/_2DP"
+                                                app:cardBackgroundColor="@color/fwd"
+                                                app:cardCornerRadius="@dimen/_7DP"
+                                                app:cardElevation="@dimen/_10DP">
+
+                                                <LinearLayout
+                                                    android:layout_width="@dimen/_15DP"
+                                                    android:layout_height="@dimen/_15DP"
+                                                    android:orientation="vertical">
+
+                                                </LinearLayout>
+                                            </androidx.cardview.widget.CardView>
+
+                                            <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="center"
+                                                android:layout_weight=".02"
+                                                android:gravity="center"
+                                                android:text="@string/fwd"
+                                                android:textColor="@color/gray"
+                                                android:textSize="10sp" />
+
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:id="@+id/ll_rts_color"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center"
+                                            android:orientation="horizontal">
+
+                                            <androidx.cardview.widget.CardView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="center"
+                                                android:layout_margin="@dimen/_2DP"
+                                                app:cardBackgroundColor="@color/rts"
+                                                app:cardCornerRadius="@dimen/_7DP"
+                                                app:cardElevation="@dimen/_10DP">
+
+                                                <LinearLayout
+                                                    android:layout_width="@dimen/_15DP"
+                                                    android:layout_height="@dimen/_15DP"
+                                                    android:orientation="vertical">
+
+                                                </LinearLayout>
+                                            </androidx.cardview.widget.CardView>
+
+                                            <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="center"
+                                                android:layout_weight=".02"
+                                                android:gravity="center"
+                                                android:text="@string/rts"
+                                                android:textColor="@color/gray"
+                                                android:textSize="10sp" />
+
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:id="@+id/ll_rvp_color"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center"
+                                            android:orientation="horizontal">
+
+                                            <androidx.cardview.widget.CardView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="center"
+                                                android:layout_margin="@dimen/_2DP"
+                                                app:cardBackgroundColor="@color/rvp"
+                                                app:cardCornerRadius="@dimen/_7DP"
+                                                app:cardElevation="@dimen/_10DP">
+
+                                                <LinearLayout
+                                                    android:layout_width="@dimen/_15DP"
+                                                    android:layout_height="@dimen/_15DP"
+                                                    android:orientation="vertical">
+
+                                                </LinearLayout>
+                                            </androidx.cardview.widget.CardView>
+
+                                            <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="center"
+                                                android:layout_weight=".02"
+                                                android:gravity="center"
+                                                android:text="@string/rvp"
+                                                android:textColor="@color/gray"
+                                                android:textSize="10sp" />
+
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:id="@+id/ll_eds_color"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center"
+                                            android:orientation="horizontal">
+
+                                            <androidx.cardview.widget.CardView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="center"
+                                                android:layout_margin="@dimen/_2DP"
+                                                app:cardBackgroundColor="@color/eds"
+                                                app:cardCornerRadius="@dimen/_7DP"
+                                                app:cardElevation="@dimen/_10DP">
+
+                                                <LinearLayout
+                                                    android:layout_width="@dimen/_15DP"
+                                                    android:layout_height="@dimen/_15DP"
+                                                    android:orientation="vertical">
+
+                                                </LinearLayout>
+                                            </androidx.cardview.widget.CardView>
+
+                                            <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="center"
+                                                android:layout_weight=".02"
+                                                android:gravity="center"
+                                                android:text="@string/eds"
+                                                android:textColor="@color/gray"
+                                                android:textSize="10sp" />
+
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center"
+                                            android:orientation="horizontal"
+                                            android:visibility="gone">
+
+                                            <androidx.cardview.widget.CardView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="center"
+                                                android:layout_margin="@dimen/_2DP"
+                                                app:cardBackgroundColor="@color/yellow"
+                                                app:cardCornerRadius="@dimen/_7DP"
+                                                app:cardElevation="@dimen/_10DP">
+
+                                                <LinearLayout
+                                                    android:layout_width="@dimen/_15DP"
+                                                    android:layout_height="@dimen/_15DP"
+                                                    android:orientation="vertical">
+
+                                                </LinearLayout>
+                                            </androidx.cardview.widget.CardView>
+
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center"
+                                            android:orientation="horizontal"
+                                            android:visibility="gone">
+
+                                            <androidx.cardview.widget.CardView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="center"
+                                                android:layout_margin="@dimen/_2DP"
+                                                app:cardBackgroundColor="@color/gray_ecom"
+                                                app:cardCornerRadius="@dimen/_7DP"
+                                                app:cardElevation="@dimen/_10DP">
+
+                                                <LinearLayout
+                                                    android:layout_width="@dimen/_15DP"
+                                                    android:layout_height="@dimen/_15DP"
+                                                    android:orientation="vertical" />
+
+                                            </androidx.cardview.widget.CardView>
+
+                                        </LinearLayout>
+                                    </LinearLayout>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/_5DP"
+                                    android:layout_marginEnd="@dimen/_5DP"
+                                    android:background="@color/offwhite"
+                                    android:orientation="horizontal"
+                                    android:weightSum=".09">
+
+                                    <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_weight=".03"
+                                        android:gravity="start"
+                                        android:hint="cod"
+                                        android:text="@{viewModel.codCashCount}"
+                                        android:textColor="@color/green"
+                                        android:textSize="13sp" />
+
+                                    <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                                        android:id="@+id/isfilter"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_weight=".03"
+                                        android:gravity="center"
+                                        android:hint="filter applied"
+                                        android:textColor="@color/red_ecom"
+                                        android:textSize="13sp"
+                                        android:visibility="invisible" />
+
+                                    <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_weight=".03"
+                                        android:gravity="end"
+                                        android:hint="ecod"
+                                        android:text="@{viewModel.ecodCashCount}"
+                                        android:textColor="@color/green"
+                                        android:textSize="13sp" />
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@color/offwhite"
+                                android:orientation="vertical">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/offwhite">
+
+                                    <LinearLayout
+                                        android:id="@+id/fragmentContainer"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:background="@color/offwhite"
+                                        android:orientation="vertical" />
+
+                                    <LinearLayout
+                                        android:id="@+id/lltFooter"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="bottom"
+                                        android:layout_margin="@dimen/_2DP"
+                                        android:layout_marginTop="@dimen/_70DP"
+                                        android:background="@null"
+                                        android:gravity="bottom"
+                                        android:visibility="gone"
+                                        android:weightSum="2">
+
+                                        <Button
+                                            android:id="@+id/cancel"
+                                            style="@style/Button.Primary"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginLeft="@dimen/_5DP"
+                                            android:layout_marginRight="@dimen/_5DP"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/fwd_button"
+                                            android:onClick="@{() -> viewModel.onCancelClick()}"
+                                            android:text="CANCEL" />
+
+
+                                        <Button
+                                            android:id="@+id/send"
+                                            style="@style/Button.Primary"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginLeft="@dimen/_5DP"
+                                            android:layout_marginRight="@dimen/_5DP"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/fwd_button"
+                                            android:onClick="@{() -> viewModel.onSendClick()}"
+                                            android:text="@string/send_button" />
+
+                                    </LinearLayout>
+                                </RelativeLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                    android:id="@+id/txt_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+            <com.google.android.material.navigation.NavigationView
+                android:id="@+id/navigationView"
+                style="@style/Widget.Design.NavigationView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:background="@color/offwhite"
+                android:textSize="13sp"
+                app:itemIconTint="@color/white"
+                app:itemTextColor="@color/white">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/offwhite"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/todo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:orientation="vertical"
+                        tools:ignore="IncludeLayoutParam">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_100DP"
+                            android:layout_gravity="bottom"
+                            android:background="@color/dashboarddark"
+                            android:gravity="bottom"
+                            android:orientation="horizontal"
+                            android:paddingBottom="@dimen/_5DP">
+
+                            <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_margin="@dimen/_5DP"
+                                android:layout_weight=".09"
+                                android:gravity="bottom"
+                                android:text="@string/drsfilter"
+                                android:textColor="@color/white"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="bottom"
+                                android:layout_weight=".0"
+                                android:gravity="bottom"
+                                android:orientation="horizontal" />
+
+                            <ImageButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end|bottom"
+                                android:background="@null"
+                                android:gravity="end|bottom"
+                                android:onClick="@{() -> viewModel.onClearFilterClick()}"
+                                android:padding="@dimen/_10DP"
+                                android:src="@drawable/clearfilter"
+                                android:tint="@color/white" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/colorPrimaryDark" />
+                    </LinearLayout>
+
+                    <ExpandableListView
+                        android:id="@+id/left_drawer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/todo"
+                        android:backgroundTint="@color/red_ecom"
+                        android:dividerHeight="0dp"
+                        android:paddingBottom="@dimen/_100DP" />
+
+                    <LinearLayout
+                        android:id="@+id/scanbtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="bottom"
+                        android:gravity="bottom">
+
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/red_ecom"
+                            android:onClick="@{() -> viewModel.onApplyClick()}"
+                            android:text="@string/Apply"
+                            android:textColor="@color/white"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                </RelativeLayout>
+            </com.google.android.material.navigation.NavigationView>
+        </androidx.drawerlayout.widget.DrawerLayout>
+    </FrameLayout>
+</layout>

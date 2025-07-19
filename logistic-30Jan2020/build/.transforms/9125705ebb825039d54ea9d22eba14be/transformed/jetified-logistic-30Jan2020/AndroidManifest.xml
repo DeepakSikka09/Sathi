@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.payphi.logisticsdk"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="15"
+        android:targetSdkVersion="24" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        tools:replace="android:allowBackup" >
+        <activity
+            android:name="com.payphi.logisticsdk.PaymentOptionIntent"
+            android:configChanges="keyboard|keyboardHidden|screenSize|touchscreen|orientation|screenLayout|layoutDirection|smallestScreenSize"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.AppCompat.Light" >
+            <intent-filter>
+                <data android:scheme="interapp" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.payphi.logisticsdk.Mswipe.MswipeCardSaleActivity"
+            android:configChanges="keyboard|keyboardHidden|screenSize|touchscreen|orientation|screenLayout|layoutDirection|smallestScreenSize"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.AppCompat.Light" >
+            <intent-filter>
+                <data android:scheme="interapp" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <!-- <activity android:name=".QRCodeActivity"></activity> -->
+        <!-- <activity android:name=".AadharCardScanner"></activity> -->
+        <activity android:name="com.payphi.logisticsdk.BijliPay.ConfigurationAndFirmwareUpdateActivity" />
+        <activity android:name="com.payphi.logisticsdk.ScannerActivity" />
+        <!-- <activity android:name=".Mswipe.MswipeCardSaleActivity" /> -->
+        <activity
+            android:name="com.payphi.logisticsdk.NoticationPopUp"
+            android:launchMode="singleTop"
+            android:theme="@style/TranslucentWithAnim" />
+    </application>
+
+</manifest>

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.drs.mps.activity.MpsPickupOtpActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <include
+            android:id="@+id/header"
+            layout="@layout/common_header"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <include
+            android:id="@+id/rqc_awb_header"
+            layout="@layout/rvp_with_awb_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/header" />
+
+        <View
+            android:id="@+id/dividerOne"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_7DP"
+            android:background="@color/green_FF"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rqc_awb_header"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/otpLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/_15DP"
+            android:paddingHorizontal="@dimen/_20DP"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dividerOne">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/otpCodeVerificationText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/otp_code_verification"
+                android:textSize="@dimen/_16SP"
+                android:textColor="@color/textPrimaryColor"
+                android:fontFamily="@font/roboto_medium"
+                android:drawableStart="@drawable/ic_otp_icon"
+                android:drawablePadding="@dimen/_15DP"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/otpInstruction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_14SP"
+                android:layout_marginTop="@dimen/_15DP"
+                android:textColor="@color/textPrimaryColor"
+                android:fontFamily="@font/roboto_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/otpCodeVerificationText"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/otpInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/otpInstruction"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/_15DP">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/otpBoxOne"
+                    android:layout_width="@dimen/_65DP"
+                    android:layout_height="@dimen/_65DP"
+                    android:backgroundTint="@color/grey_F4"
+                    android:background="@drawable/curved_rectangle_otp"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:maxLines="1"
+                    android:cursorVisible="true"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/otpBoxTwo"
+                    android:layout_width="@dimen/_65DP"
+                    android:layout_height="@dimen/_65DP"
+                    android:backgroundTint="@color/grey_F4"
+                    android:background="@drawable/curved_rectangle_otp"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:maxLines="1"
+                    android:cursorVisible="true"
+                    app:layout_constraintEnd_toStartOf="@id/otpBoxThree"
+                    app:layout_constraintStart_toEndOf="@id/otpBoxOne"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/otpBoxThree"
+                    android:layout_width="@dimen/_65DP"
+                    android:layout_height="@dimen/_65DP"
+                    android:backgroundTint="@color/grey_F4"
+                    android:background="@drawable/curved_rectangle_otp"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:maxLines="1"
+                    android:cursorVisible="true"
+                    app:layout_constraintEnd_toStartOf="@id/otpBoxFour"
+                    app:layout_constraintStart_toEndOf="@id/otpBoxTwo"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/otpBoxFour"
+                    android:layout_width="@dimen/_65DP"
+                    android:layout_height="@dimen/_65DP"
+                    android:background="@drawable/curved_rectangle_otp"
+                    android:backgroundTint="@color/grey_F4"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:maxLines="1"
+                    android:cursorVisible="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/otpResentText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rvp_qc_resend_otp"
+                android:textSize="@dimen/_14SP"
+                android:layout_marginTop="@dimen/_15DP"
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="@color/textPrimaryColor"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/otpInputLayout"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/otpTimerText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:textSize="@dimen/_16SP"
+                android:layout_marginTop="@dimen/_15DP"
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="@color/textPrimaryColor"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/otpInputLayout"/>
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/consigneeCallButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_call"
+                android:layout_marginTop="@dimen/_10DP"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/otpInputLayout"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/dividerThree"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_7DP"
+            android:background="@color/green_FF"
+            android:layout_marginTop="@dimen/_10DP"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/otpLayout"/>
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="@dimen/_15DP"
+            android:layout_marginTop="@dimen/_15DP"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dividerThree"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txt_checkbox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/customer_not_sharing_the_otp_ncode"
+            android:textSize="@dimen/_16SP"
+            android:textColor="@color/grey_78"
+            android:fontFamily="@font/roboto_regular"
+            android:layout_marginVertical="@dimen/_15DP"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/checkbox"
+            app:layout_constraintTop_toTopOf="@id/checkbox"
+            app:layout_constraintBottom_toBottomOf="@id/checkbox"/>
+
+        <include
+            android:id="@+id/bottomSubmitButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/rvp_bottom_button_single"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_radio_group"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/_20DP"
+    android:paddingVertical="@dimen/_3DP"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
+
+    <RadioGroup
+        android:id="@+id/rg_quality_check"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/radioYes"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_40DP"
+            android:layout_weight=".04"
+            android:buttonTint="@color/black"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/pass"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_17SP" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/radioNo"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_40DP"
+            android:layout_weight=".04"
+            android:buttonTint="@color/black"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/fail"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_17SP" />
+
+    </RadioGroup>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

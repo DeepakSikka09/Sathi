@@ -1,0 +1,323 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+      xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        >
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:orientation="vertical">
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFFFFF"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="122dp"
+            android:background="#2b2e7a">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                card_view:cardBackgroundColor="#fff"
+                card_view:cardCornerRadius="5dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/cardnew" />
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+
+
+        </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="72dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text=""
+            android:id="@+id/textView3"
+            android:layout_weight="0.85" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <FrameLayout
+                android:id="@+id/progress_section"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ProgressBar
+                    android:id="@+id/progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="invisible"
+                    />
+
+            </FrameLayout>
+
+            <RelativeLayout
+                android:id="@+id/signature_section"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="140dp"
+                    android:background="#F2F2F2">
+
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#f2f2f2"
+                        android:padding="6dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Requested Amount"
+                            android:textColor="#000"
+
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Rs. "
+                            android:gravity="right"
+                            android:layout_gravity="right"
+                            android:textColor="#000"
+
+                            />
+
+                        <TextView
+                            android:id="@+id/transamt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text=""
+                            android:textColor="#000"
+                            android:gravity="left"
+                            android:layout_gravity="left"
+
+
+                            />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#fff"
+                        android:padding="6dp"
+
+                        android:id="@+id/msserviceRowId"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Service Charge (Incl GST)"
+                            android:textColor="#000"
+
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Rs. "
+                            android:gravity="right"
+                            android:layout_gravity="right"
+                            android:textColor="#000"
+
+                            />
+
+                        <TextView
+                            android:id="@+id/msservicechargeamt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text=""
+                            android:textColor="#000"
+                            android:gravity="left"
+                            android:layout_gravity="left"
+
+
+                            />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#f2f2f2"
+                        android:padding="6dp"
+                        android:id="@+id/mstotamountrowId"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+
+                            android:text="Total amount to be paid"
+                            android:textColor="#000"
+
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Rs. "
+                            android:gravity="right"
+                            android:layout_gravity="right"
+                            android:textColor="#000"
+
+                            />
+
+                        <TextView
+                            android:id="@+id/mstotalamt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text=""
+                            android:textColor="#000"
+
+                            android:gravity="left"
+                            android:layout_gravity="left"
+
+
+                            />
+                    </TableRow>
+
+
+                </TableLayout>
+
+
+
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:padding="10dp"
+
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="250dp"
+                    android:layout_marginRight="5dp"
+                    android:background="#fff"
+                    android:elevation="5dp"
+                    android:id="@+id/view">
+                    <TextView
+                        android:id="@+id/status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textColor="@color/black_overlay"
+                        android:padding="10dp"
+                        android:textAllCaps="true"
+                        android:textStyle="bold|italic"
+                        android:textSize="16dp" />
+                </android.support.v7.widget.CardView>
+
+                <Button
+                    android:id="@+id/msinitransId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/buttoncolor"
+                    android:padding="10dp"
+                    android:text="Initiate Transaction"
+                    android:onClick="onbuttonProceedClick"
+                    android:textColor="@color/textcolorconponent"
+                    android:layout_gravity="bottom"
+
+                    android:layout_marginBottom="36dp"
+                    android:layout_marginTop="400dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Note:Please make sure device is switched ON and in range before initiating transaction "
+
+                    android:gravity="center"
+                    android:textStyle="italic"
+                    android:textColor="@color/black_overlay"
+
+                    android:layout_marginTop="460dp"
+                    android:id="@+id/textView2" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Powered by PayPhi"
+                    android:layout_alignParentBottom="true"
+                    android:gravity="center"
+
+                    android:textColor="@color/black_overlay"
+                    android:layout_marginLeft="140dp"
+                    android:layout_marginTop="490dp"
+                    android:id="@+id/textView4" />
+
+
+
+
+            </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/buttons_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/cancel_signature_confirmation"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Cancel" />
+
+                <Button
+                    android:id="@+id/confirm_signature"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Confirm" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+
+

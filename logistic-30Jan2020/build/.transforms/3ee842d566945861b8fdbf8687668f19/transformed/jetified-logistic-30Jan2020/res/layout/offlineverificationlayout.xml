@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#FFFFFF">
+    <TextView
+        android:id="@+id/vheading"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Offline Verification"
+        android:gravity="center"
+        android:background="@color/graylight"
+        />
+    <TextView
+        android:layout_below="@+id/vheading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enter Code "
+        android:textColor="@color/textcolor"
+        android:paddingLeft="24dp"
+        android:layout_marginTop="28dp"
+        android:id="@+id/textView"
+        android:layout_centerHorizontal="true" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/verifyCode"
+        android:layout_margin="24dp"
+        android:inputType="number"
+        android:layout_alignTop="@+id/textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="26dp" />
+    <TextView
+        android:layout_below="@+id/verifyCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="#fff"
+        android:id="@+id/vmsgId"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:layout_centerInParent="true"
+        />
+
+    <Button
+        android:id="@+id/vconfButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=" Submit "
+        android:padding="13dp"
+        android:background="@color/buttoncolor"
+        android:textColor="#FFF"
+        android:layout_below="@+id/vmsgId"
+        android:layout_marginTop="8dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Close"
+        android:padding="13dp"
+        android:background="@color/buttoncolor"
+        android:textColor="#FFF"
+        android:layout_below="@+id/vconfButton"
+        android:layout_marginTop="8dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+</RelativeLayout>
