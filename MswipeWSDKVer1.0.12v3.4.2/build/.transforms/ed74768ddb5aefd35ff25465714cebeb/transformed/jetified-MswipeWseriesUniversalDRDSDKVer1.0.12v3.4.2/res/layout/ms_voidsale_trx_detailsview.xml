@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/login_REL_content"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/topbar"
+        layout="@layout/ms_top_bar" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="100dp"
+                android:gravity="center_horizontal">
+
+                <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextView
+                    android:id="@+id/voidsaletxtdetails_LBL_TxStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/voidsale_transactiondetailsview_confirm_void_transaction"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/label_font_large"
+                    android:typeface="sans" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height_normal"
+                android:layout_marginBottom="@dimen/margin_normal"
+                android:layout_marginLeft="@dimen/margin_normal"
+                android:layout_marginRight="@dimen/margin_normal"
+                android:background="@color/light_grey" />
+
+
+            <LinearLayout
+                android:id="@+id/voidsaletxtdetails_LNR_content"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_normal"
+                android:layout_marginRight="@dimen/margin_normal"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="7dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextView
+                        style="@style/StyleTxtView_grey"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/voidsale_transactiondetailsview_status"
+                        android:textSize="17sp"
+                        android:typeface="sans" />
+
+                    <TextView
+                        android:id="@+id/voidsaletxtdetails_LBL_TxStatus1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="25sp"
+                        android:typeface="sans" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:orientation="horizontal">
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/voidsale_transactiondetailsview_tx_date"
+                        android:textColor="@color/light_grey"
+                        android:textSize="@dimen/label_font_small"
+                        android:typeface="sans" />
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextView
+                        android:id="@+id/voidsaletxtdetails_LBL_TxDateTime"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/label_font_small"
+                        android:typeface="sans" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:orientation="horizontal">
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextView
+                        android:id="@+id/voidsaletxtdetails_LBL_lbllast4digits"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/voidsale_transactiondetailsview_last_4_digits"
+                        android:textColor="@color/light_grey"
+                        android:textSize="@dimen/label_font_small"
+                        android:typeface="sans" />
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextView
+                        android:id="@+id/voidsaletxtdetails_LBL_last4digits"
+                        style="@style/StyleTxtView_white"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/label_font_small" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:orientation="horizontal">
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextView
+                        android:id="@+id/voidsaletxtdetails_LBL_lblAmtRs"
+                        style="@style/StyleTxtView_grey"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/voidsale_transactiondetailsview_total_amount"
+                        android:textColor="@color/light_grey"
+                        android:textSize="@dimen/label_font_small"
+                        android:typeface="sans" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextView
+                            android:id="@+id/creditsale_LBL_Amtprefix"
+                            style="@style/StyleTxtView_white"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="2dp"
+                            android:text=""
+                            android:textColor="@color/grey"
+                            android:textSize="@dimen/label_font_small"
+                            android:typeface="sans" />
+
+                        <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextView
+                            android:id="@+id/voidsaletxtdetails_LBL_AmtRs"
+                            style="@style/StyleTxtView_white"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textColor="@color/grey"
+                            android:textSize="@dimen/label_font_small" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:orientation="horizontal">
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextView
+                        android:id="@+id/voidsaletxtdetails_LBL_lblAuthNo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/voidsale_transactiondetailsview_auth_code"
+                        android:textColor="@color/light_grey"
+                        android:textSize="@dimen/label_font_small"
+                        android:typeface="sans" />
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextView
+                        android:id="@+id/voidsaletxtdetails_LBL_AuthNo"
+                        style="@style/StyleTxtView_white"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/label_font_small" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:orientation="horizontal">
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextView
+                        android:id="@+id/voidsaletxtdetails_LBL_lblRRNo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/voidsale_transactiondetailsview_receipt_retrieval_no"
+                        android:textColor="@color/light_grey"
+                        android:textSize="@dimen/label_font_small"
+                        android:typeface="sans" />
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextView
+                        android:id="@+id/voidsaletxtdetails_LBL_RRNo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/label_font_small" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/voidsaletxtdetails_BTN_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ms_button_next_active" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

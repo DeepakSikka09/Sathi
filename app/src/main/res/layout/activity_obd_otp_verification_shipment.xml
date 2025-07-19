@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".ui.drs.forward.obd.activity.FwdOBDStopOTPActivity">
+
+
+        <include
+            android:id="@+id/awb_header"
+            layout="@layout/header_obd_fwd" />
+
+        <ScrollView
+            android:id="@+id/scroll"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_0DP"
+            android:fillViewport="true"
+            app:layout_constraintTop_toBottomOf="@id/awb_header"
+            app:layout_constraintBottom_toTopOf="@id/btn_card">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/const_parent"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_0DP"
+                android:backgroundTint="@color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/scroll">
+
+
+                <include
+                    android:id="@+id/cod_header"
+                    layout="@layout/header_fwd_obd_cod"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_8DP"
+                    android:background="@color/green_FF"
+                    app:layout_constraintTop_toBottomOf="@id/cod_header" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/const_mark_shipment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/view"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/detail_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="@color/white"
+                        android:background="@drawable/bg_curve_corner"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/txt_mark_shipment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mark_shipment"
+                            android:textSize="@dimen/_20SP"
+                            android:fontFamily="@font/roboto_bold"
+                            android:textColor="@color/black_1A"
+                            android:layout_marginTop="@dimen/_10DP"
+                            android:layout_marginStart="@dimen/_20DP"
+                            android:layout_marginEnd="@dimen/_20DP" />
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/const_child"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/txt_mark_shipment"
+                            android:layout_marginTop="@dimen/_20DP">
+
+
+                            <RadioGroup
+                                android:id="@+id/radioGroupOptions"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                android:layout_marginTop="@dimen/_20DP"
+                                android:layout_marginStart="@dimen/_10DP"
+                                android:layout_marginEnd="@dimen/_10DP"
+                                android:layout_marginBottom="@dimen/_10DP">
+
+                                <androidx.appcompat.widget.AppCompatRadioButton
+                                    android:id="@+id/btn_deliver"
+                                    android:layout_width="@dimen/_0DP"
+                                    android:layout_height="@dimen/_50DP"
+                                    android:layout_weight="1"
+                                    android:buttonTint="@color/black_1A"
+                                    android:layout_margin="@dimen/_20DP"
+                                    android:textColor="@color/black"
+                                    android:background="@drawable/bg_curve_corner"
+                                    android:text="@string/deliver" />
+
+                                <androidx.appcompat.widget.AppCompatRadioButton
+                                    android:id="@+id/btn_undeliver"
+                                    android:layout_width="@dimen/_0DP"
+                                    android:layout_height="@dimen/_50DP"
+                                    android:layout_weight="1"
+                                    android:layout_margin="@dimen/_20DP"
+                                    android:textColor="@color/black"
+                                    android:background="@drawable/bg_curve_corner"
+                                    android:buttonTint="@color/black_1A"
+                                    android:text="@string/undeliver" />
+                            </RadioGroup>
+
+                            <androidx.constraintlayout.widget.Guideline
+                                android:id="@+id/guideline1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                app:layout_constraintGuide_percent="0.5" />
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/otp_sent_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="@color/white"
+                        android:visibility="gone"
+                        android:background="@drawable/bg_curve_corner"
+                        android:backgroundTint="@color/green_FF"
+                        android:layout_margin="@dimen/_20DP"
+                        android:padding="@dimen/_10DP"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/txt_pr_details"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/otp_code_has_been_sent_to_the_central_team"
+                            android:textSize="@dimen/_18SP"
+                            android:textColor="@color/black_1A"
+                            android:drawableStart="@drawable/ic_triangle"
+                            android:drawablePadding="@dimen/_20DP"
+                            android:fontFamily="@font/roboto_medium"
+                            android:layout_marginStart="@dimen/_20DP"
+                            android:layout_marginEnd="@dimen/_10DP"
+                            android:layout_marginBottom="@dimen/_10DP"
+                            android:layout_marginTop="@dimen/_10DP"/>
+
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <View
+                    android:id="@+id/view_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_8DP"
+                    android:background="@color/green_FF"
+                    android:visibility="visible"
+                    app:layout_constraintTop_toBottomOf="@id/const_mark_shipment"/>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/deliver_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:background="@drawable/bg_curve_corner"
+                    app:cardBackgroundColor="@color/white"
+                    app:layout_constraintTop_toBottomOf="@+id/view_2">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/const_otp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/txt_code_veri"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/otp_code_verification"
+                            android:textSize="@dimen/_20SP"
+                            android:fontFamily="@font/roboto_medium"
+                            android:drawableStart="@drawable/ic_otp_icon"
+                            android:drawablePadding="@dimen/_20DP"
+                            android:textColor="@color/black_1A"
+                            android:paddingTop="@dimen/_10DP"
+                            android:paddingBottom="@dimen/_10DP"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginStart="@dimen/_20DP" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/txt_please_ask"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/please_ask_the_consignee_to_share_the_otp_code_sent_on_mobile_number_789xxxx999"
+                            android:textSize="@dimen/_20SP"
+                            android:fontFamily="@font/roboto_regular"
+                            android:textColor="@color/black_1A"
+                            android:paddingBottom="@dimen/_10DP"
+                            app:layout_constraintTop_toBottomOf="@+id/txt_code_veri"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginTop="@dimen/_20DP"
+                            android:layout_marginStart="@dimen/_20DP"
+                            android:layout_marginEnd="@dimen/_20DP" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constrnt_otp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            app:layout_constraintTop_toBottomOf="@id/txt_please_ask"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginStart="@dimen/_20DP"
+                            android:layout_marginEnd="@dimen/_20DP"
+                            android:layout_marginTop="@dimen/_30DP">
+
+                            <androidx.appcompat.widget.AppCompatEditText
+                                android:id="@+id/ed_1"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="@dimen/_65dp"
+                                android:backgroundTint="@color/grey_F4"
+                                android:background="@drawable/curved_rectangle_otp"
+                                android:cursorVisible="false"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:maxLength="1"
+                                android:maxLines="1"
+                                app:layout_constraintEnd_toStartOf="@id/ed_2"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:layout_marginEnd="@dimen/margin_14dp"/>
+
+                            <androidx.appcompat.widget.AppCompatEditText
+                                android:id="@+id/ed_2"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="@dimen/_65dp"
+                                android:backgroundTint="@color/grey_F4"
+                                android:background="@drawable/curved_rectangle_otp"
+                                android:cursorVisible="false"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:maxLength="1"
+                                android:maxLines="1"
+                                app:layout_constraintEnd_toStartOf="@id/ed_3"
+                                app:layout_constraintStart_toEndOf="@id/ed_1"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:layout_marginStart="@dimen/_1DP"
+                                android:layout_marginEnd="@dimen/margin_14dp" />
+
+                            <androidx.appcompat.widget.AppCompatEditText
+                                android:id="@+id/ed_3"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="@dimen/_65dp"
+                                android:backgroundTint="@color/grey_F4"
+                                android:background="@drawable/curved_rectangle_otp"
+                                android:cursorVisible="false"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:maxLength="1"
+                                android:maxLines="1"
+                                app:layout_constraintEnd_toStartOf="@id/ed_4"
+                                app:layout_constraintStart_toEndOf="@id/ed_2"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:layout_marginStart="@dimen/_1DP"
+                                android:layout_marginEnd="@dimen/margin_14dp" />
+
+                            <androidx.appcompat.widget.AppCompatEditText
+                                android:id="@+id/ed_4"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="@dimen/_65dp"
+                                android:backgroundTint="@color/grey_F4"
+                                android:background="@drawable/curved_rectangle_otp"
+                                android:cursorVisible="false"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:maxLength="1"
+                                android:maxLines="1"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/ed_3"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:layout_marginStart="@dimen/_1DP"
+                                android:layout_marginEnd="@dimen/margin_14dp" />
+
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/txt_recieve_code"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/didn_t_receive_a_code_resend_code"
+                            android:textSize="@dimen/_18SP"
+                            android:fontFamily="@font/roboto_regular"
+                            android:textColor="@color/black_1A"
+                            android:paddingBottom="@dimen/_10DP"
+                            app:layout_constraintTop_toBottomOf="@id/constrnt_otp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginStart="@dimen/_20DP"
+                            android:layout_marginTop="@dimen/_20DP"
+                            android:layout_marginEnd="@dimen/_20DP" />
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/tvResendTimer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/did_not_received_code"
+                            android:visibility="gone"
+                            android:textSize="@dimen/_18SP"
+                            android:fontFamily="@font/roboto_regular"
+                            android:textColor="@color/black_1A"
+                            android:paddingBottom="@dimen/_10DP"
+                            app:layout_constraintTop_toBottomOf="@id/constrnt_otp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginStart="@dimen/_20DP"
+                            android:layout_marginTop="@dimen/_20DP"
+                            android:layout_marginEnd="@dimen/_20DP" />
+
+
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/ic_call_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_call"
+                            android:layout_gravity="end"
+                            android:paddingTop="@dimen/_15DP"
+                            android:paddingBottom="@dimen/_15DP"
+                            app:layout_constraintTop_toBottomOf="@id/constrnt_otp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginStart="@dimen/_20DP"
+                            android:layout_marginEnd="@dimen/_20DP" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+
+                <View
+                    android:id="@+id/view_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_8DP"
+                    android:visibility="gone"
+                    android:background="@color/green_FF"
+                    app:layout_constraintTop_toBottomOf="@id/deliver_card" />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/customer_not_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="@color/white"
+                    android:visibility="gone"
+                    android:background="@drawable/bg_curve_corner"
+                    app:layout_constraintTop_toBottomOf="@+id/view_3"
+                    android:layout_marginTop="@dimen/_10DP">
+
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginStart="@dimen/_20DP"
+                        android:layout_marginTop="@dimen/_15DP"
+                        android:scaleX="1.5"
+                        android:scaleY="1.5"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/txt_checkbox"
+                        android:layout_width="@dimen/_0DP"
+                        android:layout_height="wrap_content"
+                        android:text="@string/customer_not_sharing_the_otp_ncode"
+                        android:textSize="@dimen/_18SP"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/grey_78"
+                        android:paddingBottom="@dimen/_10DP"
+                        android:layout_marginStart="@dimen/_10DP"
+                        android:layout_marginEnd="@dimen/_10DP"
+                        android:layout_marginTop="@dimen/_10DP"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/checkbox"
+                        app:layout_constraintBottom_toBottomOf="@id/checkbox"
+                        app:layout_constraintStart_toEndOf="@id/checkbox"/>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <View
+                    android:id="@+id/view_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_8DP"
+                    android:background="@color/green_FF"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@id/customer_not_card" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/imageCard"
+                    android:layout_width="@dimen/_0DP"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="@dimen/_8DP"
+                    android:elevation="@dimen/margin_6dp"
+                    android:paddingTop="@dimen/_10DP"
+                    android:paddingBottom="@dimen/_10DP"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_margin="@dimen/_20DP"
+                    app:layout_constraintTop_toBottomOf="@+id/view_4">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/const_card_img"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:padding="@dimen/_16DP">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/icFlyerImg"
+                            android:layout_width="@dimen/_50DP"
+                            android:layout_height="@dimen/_40DP"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/tx_image_capture"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/_20SP"
+                            android:fontFamily="@font/roboto_bold"
+                            android:text="@string/captured_image_"
+                            android:gravity="center"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"/>
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/icDelete"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_delete" />
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/ic_camera"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_10DP"
+                            android:src="@drawable/cam_new"
+                            android:visibility="visible"
+                            android:padding="@dimen/_5DP"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
+                <View
+                    android:id="@+id/viewBottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_80DP"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/imageCard"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/btn_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="@dimen/_20DP">
+
+            <View
+                android:id="@+id/view_5"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1DP"
+                android:background="@color/grey_1"
+                app:layout_constraintTop_toBottomOf="@+id/customer_not_card" />
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_verify"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/verify_code"
+                android:textColor="@color/white"
+                android:fontFamily="@font/roboto_medium"
+                android:backgroundTint="@color/blue_8F"
+                android:background="@drawable/bg_curve_corner"
+                android:layout_margin="@dimen/_20DP" />
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

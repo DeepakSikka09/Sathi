@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.ecomexpress.sathi.ui.auth.login.LoginActivity">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.auth.login.LoginViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/offwhite"
+        android:fitsSystemWindows="true">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/login_img"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_200DP"
+            android:background="@drawable/login_new"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_0DP"
+            android:layout_margin="@dimen/_5DP"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/_7DP"
+            app:cardElevation="@dimen/_25DP"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/login_img">
+
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <androidx.core.widget.NestedScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:fillViewport="true"
+                        android:isScrollContainer="true"
+                        app:layout_constraintBottom_toTopOf="@+id/tvCopyright"
+                        app:layout_constraintTop_toTopOf="parent">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/main_cl"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_0DP"
+                        android:layout_marginStart="@dimen/_5DP"
+                        android:layout_marginTop="@dimen/_5DP"
+                        android:layout_marginEnd="@dimen/_5DP"
+                        android:layout_marginBottom="@dimen/_5DP">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/version"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/_0DP"
+                            android:layout_marginTop="@dimen/_20DP"
+                            android:text="@string/v2_0_0"
+                            app:fontFamily="@font/roboto_regular"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="@dimen/_15SP"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilEmail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/dark_gray"
+                            app:hintTextColor="@color/dark_gray"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            app:boxStrokeColor="@color/black_1A"
+                            android:theme="@style/ThemeOverlay.AppTheme.TextInputEditText.Outlined"
+                            android:layout_marginStart="@dimen/_20DP"
+                            android:layout_marginEnd="@dimen/_20DP"
+                            app:layout_constraintTop_toBottomOf="@id/version">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etEmail"
+                                style="@style/TextStyle.Title.Sub"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:cursorVisible="true"
+                                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+                                android:hint="@string/hint_employee_code"
+                                android:inputType="textCapCharacters"
+                                android:maxLength="10"
+                                android:maxLines="1"
+                                android:paddingBottom="@dimen/_10DP"
+                                android:singleLine="true"
+                                android:text=""
+                                android:textAllCaps="true"
+                                tools:ignore="RtlHardcoded" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilPassword"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/dark_gray"
+                            app:hintTextColor="@color/dark_gray"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            app:boxStrokeColor="@color/black_1A"
+                            android:theme="@style/ThemeOverlay.AppTheme.TextInputEditText.Outlined"
+                            app:layout_constraintTop_toBottomOf="@id/tilEmail"
+                            android:layout_marginHorizontal="@dimen/_20DP"
+                            android:layout_marginTop="@dimen/_20DP"
+                            app:passwordToggleTint="@color/black_1A"
+                            app:passwordToggleDrawable="@drawable/password_toggle"
+                            app:passwordToggleEnabled="true">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etPassword"
+                                style="@style/TextStyle.Title.Sub"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:cursorVisible="true"
+                                android:hint="@string/hint_password"
+                                android:inputType="textPassword"
+                                android:maxLength="25"
+                                android:paddingBottom="@dimen/_10DP"
+                                android:text=""
+                                tools:ignore="RtlHardcoded" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnServerLogin"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_15DP"
+                            android:layout_marginTop="@dimen/_20DP"
+                            android:layout_marginRight="@dimen/_15DP"
+                            android:background="@drawable/login_button"
+                            android:onClick="@{() -> viewModel.onServerLoginClick()}"
+                            android:text="@string/text_login"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_15SP"
+                            android:textStyle="bold"
+                            app:cardCornerRadius="@dimen/_7DP"
+                            app:cardElevation="@dimen/_25DP"
+                            app:layout_constraintTop_toBottomOf="@id/tilPassword"
+                            tools:ignore="RtlHardcoded" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/timer_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_15DP"
+                            android:layout_marginTop="@dimen/_10DP"
+                            android:background="@color/white"
+                            android:text="@string/_00_10"
+                            android:textSize="@dimen/agent_text_size_20sp"
+                            android:visibility="gone"
+                            app:layout_constraintStart_toStartOf="@id/btnServerLogin"
+                            app:layout_constraintTop_toBottomOf="@id/btnServerLogin" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnForgetPassword"
+                            style="@style/TextStyle.Title.Sub"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:background="@color/transparent"
+                            android:gravity="center"
+                            android:onClick="@{() -> viewModel.onForgetPasswordClick()}"
+                            android:text="@string/forget_password"
+                            android:textSize="@dimen/_13SP"
+                            app:layout_constraintTop_toBottomOf="@id/timer_tv"
+                            app:layout_constraintEnd_toEndOf="parent" />
+
+                        <com.google.android.material.progressindicator.CircularProgressIndicator
+                            android:id="@+id/address_looking_up"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:indeterminate="true"
+                            app:indicatorSize="@dimen/_40DP"
+                            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toTopOf="@id/btnServerLogin"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.core.widget.NestedScrollView>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tvCopyright"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/copyright_txt"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12SP"
+                        app:fontFamily="@font/roboto_regular"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/main_cl"
+                        app:layout_constraintStart_toStartOf="@id/main_cl" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

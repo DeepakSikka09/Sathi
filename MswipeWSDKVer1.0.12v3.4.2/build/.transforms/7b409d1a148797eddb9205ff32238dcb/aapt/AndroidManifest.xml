@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.mswipetech.wisepad.sdk"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="10"
+        android:targetSdkVersion="15" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.BBPOS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <application android:allowBackup="false" >
+        <activity
+            android:name="com.mswipetech.wisepad.sdk.view.MSAPKHandlerActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/MswipeThemeDialog"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="mswipe.wisepad.sdk.LoginAction" />
+                <action android:name="mswipe.wisepad.sdk.LoginActionUI" />
+                <action android:name="mswipe.wisepad.sdk.ChangePassword" />
+                <action android:name="mswipe.wisepad.sdk.CardSaleAction" />
+                <action android:name="mswipe.wisepad.sdk.CashAtPosAction" />
+                <action android:name="mswipe.wisepad.sdk.EmiAction" />
+                <action android:name="mswipe.wisepad.sdk.LastTrx" />
+                <action android:name="mswipe.wisepad.sdk.CashSaleAction" />
+                <action android:name="mswipe.wisepad.sdk.BankSaleAction" />
+                <action android:name="mswipe.wisepad.sdk.VoidSaleAction" />
+                <action android:name="mswipe.wisepad.sdk.LogOut" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- APKKIT Activities -->
+
+        <activity
+            android:name="com.mswipetech.wisepad.sdk.view.login.MSLoginActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/MswipeThemeDialog"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.mswipetech.wisepad.sdk.view.cardsale.MSCardSaleActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.mswipetech.wisepad.sdk.view.lasttransaction.MSLastTransactionActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.mswipetech.wisepad.sdk.view.cardsale.MSCardSaleSignatureActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="com.mswipetech.wisepad.sdk.view.voidsale.MSVoidSaleActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.mswipetech.wisepad.sdk.view.voidsale.MSVoidSaleTxtDetailsActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="com.mswipetech.wisepad.sdk.view.cashorbanksale.MSCashSaleActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="com.mswipetech.wisepad.sdk.view.cashorbanksale.MSCashSaleSignatureView"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="com.mswipetech.wisepad.sdk.view.changepin.MSChangePinActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <service android:name="com.mswipetech.wisepad.sdk.device.MSWisepadDeviceController" />
+        <service android:name="com.mswipetech.wisepad.sdk.manager.services.MSPrinterService" />
+    </application>
+
+</manifest>

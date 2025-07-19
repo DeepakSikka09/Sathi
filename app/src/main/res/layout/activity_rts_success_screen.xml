@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.ecomexpress.sathi.ui.drs.rts.rts_success.RTSSuccessActivity">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.drs.rts.rts_success.RTSSuccessViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/offwhite">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/screenHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/green_FF"
+            android:padding="@dimen/_15DP"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/titleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rts_success"
+                    android:textColor="@color/black_1A"
+                    android:textSize="@dimen/_20SP"
+                    android:textStyle="bold"
+                    android:layout_marginStart="@dimen/_15DP"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/versionName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/v2_0_0"
+                    android:textColor="@color/black_1A"
+                    android:textSize="@dimen/_15SP"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="@dimen/_10DP"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/offwhite"
+            app:layout_constraintTop_toBottomOf="@id/screenHeader"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/statusImage"
+                android:layout_width="@dimen/_40DP"
+                android:layout_height="@dimen/_40DP"
+                android:background="@{viewModel.image ? @drawable/success_icon : @drawable/fail_icon}"
+                android:entries="@array/relation"
+                android:gravity="center"
+                app:tint="@color/green"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/decideText"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/decideText"
+                android:layout_width="@dimen/_0DP"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10DP"
+                android:gravity="center"
+                android:hint="@string/Success"
+                android:textColor="@{viewModel.textColor ? @color/green : @color/red_ecom}"
+                android:textSize="@dimen/_25SP"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/statusImage"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/status_text"
+                android:layout_width="@dimen/_0DP"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:hint="@string/now_you_can_handover_this_shipment_from_customer"
+                android:textColor="@{viewModel.textColor ? @color/green : @color/red_ecom}"
+                android:textSize="@dimen/_15SP"
+                app:layout_constraintTop_toBottomOf="@id/decideText"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/deatailLayout"
+                android:layout_width="@dimen/_0DP"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_10DP"
+                android:background="@drawable/rounded_background"
+                android:backgroundTint="@color/rts_light"
+                android:padding="@dimen/_15DP"
+                android:elevation="@dimen/_10DP"
+                app:layout_constraintTop_toBottomOf="@id/status_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/consignee_name_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/Name"
+                    android:text="@string/consignee_name"
+                    android:textColor="@color/rtstool"
+                    android:textSize="@dimen/_15SP"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/consignee_address_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5DP"
+                    android:hint="@string/address"
+                    android:textColor="@color/black_1A"
+                    android:textSize="@dimen/_12SP"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/consignee_name_tv"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Button
+                android:id="@+id/goToHomeButton"
+                android:layout_width="@dimen/_0DP"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_30DP"
+                android:background="@drawable/rts_button"
+                android:gravity="center"
+                app:backgroundTint="@null"
+                android:text="@string/home"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_15SP"
+                android:textStyle="bold"
+                app:cardCornerRadius="@dimen/_7DP"
+                app:cardElevation="@dimen/_25DP"
+                app:layout_constraintTop_toBottomOf="@id/deatailLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -1,0 +1,3386 @@
+{
+  "status": true,
+  "response": {
+    "code": 0,
+    "description": "Data processed successfully.",
+    "master_data_configurations": {
+      "reason_code_master": {
+        "forward": [
+          {
+            "reason_code": 23401,
+            "reason_msg": "Address & Pincode Mismatch",
+            "attribute": {
+              "CALLM": true,
+              "COD": true,
+              "CPROFILE": true,
+              "PPD": true
+            },
+            "sub_group": "Address Not Located"
+          },
+          {
+            "reason_code": 22301,
+            "reason_msg": "Wrong / Incomplete Address",
+            "attribute": {
+              "CALLM": true,
+              "COD": true,
+              "CPROFILE": true,
+              "PPD": true
+            },
+            "sub_group": "Address Not Located"
+          },
+          {
+            "reason_code": 21003,
+            "reason_msg": "COD Amount Mismatch",
+            "attribute": {
+              "COD": true,
+              "RCHD": true
+            },
+            "sub_group": "Cod Not Ready"
+          },
+          {
+            "reason_code": 21001,
+            "reason_msg": "COD Amount Not Ready",
+            "attribute": {
+              "COD": true,
+              "RCHD": true
+            },
+            "sub_group": "Cod Not Ready"
+          },
+          {
+            "reason_code": 22703,
+            "reason_msg": "Could Not Delivered - Rain / Vehicle Break Down / Accident",
+            "attribute": {
+              "COD": true,
+              "PPD": true
+            },
+            "sub_group": "Could Not Delivered - Rain / Vehicle Break Down / Accident"
+          },
+          {
+            "reason_code": 23101,
+            "reason_msg": "Customer Out Of Station",
+            "attribute": {
+              "COD": true,
+              "PPD": true,
+              "RCHD": true
+            },
+            "sub_group": "Customer Not Available"
+          },
+          {
+            "reason_code": 23102,
+            "reason_msg": "Customer Not In Office",
+            "attribute": {
+              "CALLM": true,
+              "COD": true,
+              "PPD": true,
+              "RCHD": true
+            },
+            "sub_group": "Customer Not Available"
+          },
+          {
+            "reason_code": 22303,
+            "reason_msg": "No Such Consignee At Given Address",
+            "attribute": {
+              "CALLM": true,
+              "COD": true,
+              "PPD": true
+            },
+            "sub_group": "Customer Not Available"
+          },
+          {
+            "reason_code": 23103,
+            "reason_msg": "Customer Not In Residence",
+            "attribute": {
+              "CALLM": true,
+              "COD": true,
+              "PPD": true,
+              "RCHD": true
+            },
+            "sub_group": "Customer Not Available"
+          },
+          {
+            "reason_code": 331,
+            "reason_msg": "Request For Future Delivery",
+            "attribute": {
+              "CALLM": true,
+              "COD": true,
+              "PPD": true,
+              "RCHD": true
+            },
+            "sub_group": "Customer Not Available"
+          },
+          {
+            "reason_code": 21005,
+            "reason_msg": "Delivery Attempted - Incorrect/Missing OTP",
+            "attribute": {
+              "COD": true,
+              "IMAGEM": true,
+              "PPD": true,
+              "SECURED": true
+            },
+            "sub_group": "Delivery Attempted - Incorrect/Missing OTP"
+          },
+          {
+            "reason_code": 21701,
+            "reason_msg": "Entry Restricted Area / Cant",
+            "attribute": {
+              "CALLM": true,
+              "COD": true,
+              "PPD": true
+            },
+            "sub_group": "Entry Restricted Area / Cant"
+          },
+          {
+            "reason_code": 24201,
+            "reason_msg": "Complete Order undelivered",
+            "attribute": {
+              "MPS": true
+            },
+            "sub_group": "Multi Packet Shipment"
+          },
+          {
+            "reason_code": 21002,
+            "reason_msg": "Order Already Canceled",
+            "attribute": {
+              "COD": true,
+              "PPD": true
+            },
+            "sub_group": "Refused To Accept"
+          },
+          {
+            "reason_code": 21004,
+            "reason_msg": "Customer Wants Open Delivery",
+            "attribute": {
+              "COD": true,
+              "PPD": true
+            },
+            "sub_group": "Refused To Accept"
+          },
+          {
+            "reason_code": 30201,
+            "reason_msg": "Shipment Damage",
+            "attribute": {
+              "COD": true,
+              "PPD": true
+            },
+            "sub_group": "Refused To Accept"
+          },
+          {
+            "reason_code": 241,
+            "reason_msg": "Secure Package Delivery Validation Failed",
+            "attribute": {
+              "COD": true,
+              "IMAGEM": true,
+              "PPD": true,
+              "SECURED": true
+            },
+            "sub_group": "Secure Package Delivery Validation Failed"
+          }
+        ],
+        "rvp": [
+          {
+            "reason_code": 417,
+            "reason_msg": "Phone number not answering/address not locatable",
+            "sub_group": "Customer non contactable",
+            "attribute": {
+              "CALLM": true,
+              "RCHD": true
+            }
+          },
+          {
+            "reason_code": 418,
+            "reason_msg": "Consignee shifted, phone num wrong",
+            "sub_group": "Customer non contactable",
+            "attribute": {
+              "CALLM": true
+            }
+          },
+          {
+            "reason_code": 421,
+            "reason_msg": "Customer number not reachable/switched off",
+            "sub_group": "Customer non contactable",
+            "attribute": {
+              "CALLM": true,
+              "RCHD": true
+            }
+          },
+          {
+            "reason_code": 401,
+            "reason_msg": "Customer res/off closed",
+            "sub_group": "Customer Not Available",
+            "attribute": {
+              "CALLM": true,
+              "RCHD": true
+            }
+          },
+          {
+            "reason_code": 407,
+            "reason_msg": "Customer/contact person not available",
+            "sub_group": "Customer Not Available",
+            "attribute": {
+              "CALLM": true,
+              "RCHD": true
+            }
+          },
+          {
+            "reason_code": 402,
+            "reason_msg": "Customer requested to reschedule pickup",
+            "sub_group": "Customer Not Available",
+            "attribute": {
+              "CALLM": true,
+              "RCHD": true
+            }
+          },
+          {
+            "reason_code": 408,
+            "reason_msg": "Pickup Missed-Staff Reached Late",
+            "sub_group": "Pickup late attempt",
+            "attribute": {
+              "CALLM": true,
+              "RCHD": true
+            }
+          },
+          {
+            "reason_code": 405,
+            "reason_msg": "Pickup Not Done-Pickup Location Not Served",
+            "sub_group": "Pickup Not Done-Pickup Location Not Served",
+            "attribute": {
+              "CALLM": true
+            }
+          },
+          {
+            "reason_code": 425,
+            "reason_msg": "Customer refused to handover",
+            "sub_group": "Refused To Pickup",
+            "attribute": {
+              "CALLM": true
+            }
+          },
+          {
+            "reason_code": 414,
+            "reason_msg": "Customer wants confirmation from shipper",
+            "sub_group": "Refused To Pickup",
+            "attribute": {
+              "CALLM": true
+            }
+          },
+          {
+            "reason_code": 415,
+            "reason_msg": "Customer wants hand to hand replacement/refund",
+            "sub_group": "Refused To Pickup",
+            "attribute": {
+              "CALLM": true
+            }
+          },
+          {
+            "reason_code": 422,
+            "reason_msg": "Customer does not want to return the product",
+            "sub_group": "Refused To Pickup",
+            "attribute": {
+              "CALLM": true
+            }
+          },
+          {
+            "reason_code": 412,
+            "reason_msg": "Customer giving different item/contents",
+            "sub_group": "Refused To Pickup",
+            "attribute": {
+              "CALLM": true
+            }
+          },
+          {
+            "reason_code": 409,
+            "reason_msg": "Shipment without packing",
+            "sub_group": "Refused To Pickup",
+            "attribute": {
+              "CALLM": true
+            }
+          },
+          {
+            "reason_code": 410,
+            "reason_msg": "Shipment not packed properly",
+            "sub_group": "Refused To Pickup",
+            "attribute": {
+              "CALLM": true
+            }
+          },
+          {
+            "reason_code": 403,
+            "reason_msg": "No Shipment Today",
+            "sub_group": "Refused To Pickup",
+            "attribute": {
+              "CALLM": true
+            }
+          },
+          {
+            "reason_code": 411,
+            "reason_msg": "Customer not aware about the pickup",
+            "sub_group": "Refused To Pickup",
+            "attribute": {
+              "CALLM": true
+            }
+          },
+          {
+            "reason_code": 405,
+            "reason_msg": "Pickup Wrongly Registered By Shipper",
+            "sub_group": "Shipper dependency",
+            "attribute": {
+              "IMAGEM": true,
+              "SECURED": true
+            }
+          },
+          {
+            "reason_code": 413,
+            "reason_msg": "Pickup already done through other courier",
+            "sub_group": "Shipper dependency"
+          },
+          {
+            "reason_code": 427,
+            "reason_msg": "Pickup cancelled due to larger product size",
+            "sub_group": "Shipper dependency"
+          }
+        ],
+        "rts": [
+          {
+            "reason_code": 331,
+            "reason_msg": "Consignee requested for future delivery",
+            "sub_group": "Return to Shipper"
+          },
+          {
+            "reason_code": 22701,
+            "reason_msg": "Shipment attempted - Residence closed",
+            "sub_group": "Return to Shipper"
+          },
+          {
+            "reason_code": 21701,
+            "reason_msg": "Entry restricted area / cantonment / university",
+            "sub_group": "Return to Shipper"
+          },
+          {
+            "reason_code": 22101,
+            "reason_msg": "Seller refused to accept - Want open delivery",
+            "sub_group": "Return to Shipper"
+          },
+          {
+            "reason_code": 22102,
+            "reason_msg": "Seller refused to accept - Capacity constraint of customer",
+            "sub_group": "Return to Shipper"
+          },
+          {
+            "reason_code": 22301,
+            "reason_msg": "Wrong / incomplete address",
+            "sub_group": "Return to Shipper"
+          },
+          {
+            "reason_code": 22303,
+            "reason_msg": "No Such Consignee At Given Address",
+            "sub_group": "Return to Shipper"
+          },
+          {
+            "reason_code": 22702,
+            "reason_msg": "Shipment attempted - Office closed",
+            "sub_group": "Return to Shipper"
+          },
+          {
+            "reason_code": 23101,
+            "reason_msg": "Customer out of station",
+            "sub_group": "Return to Shipper"
+          },
+          {
+            "reason_code": 23102,
+            "reason_msg": "Customer not in office",
+            "sub_group": "Return to Shipper"
+          },
+          {
+            "reason_code": 23103,
+            "reason_msg": "Customer not in residence",
+            "sub_group": "Return to Shipper"
+          },
+          {
+            "reason_code": 22703,
+            "reason_msg": "Shipment out for delivery - could not be delivered due to Heavy Rains / Natural Calamity",
+            "sub_group": "Return to Shipper"
+          }
+        ],
+        "eds": [
+          {
+            "reason_code": 2401,
+            "reason_msg": "Addressee not aware about the activity (Field Update)",
+            "sub_group": "Ecom Digital Services",
+            "attribute": {
+              "CASH_COLLECTION": true,
+              "CPV": true
+
+            }
+          },
+          {
+            "reason_code": 2402,
+            "reason_msg": "Residence / office closed",
+            "sub_group": "Ecom Digital Services",
+            "attribute": {
+              "EDS_ACTIVITY_LIST": true,
+              "EDS_OTP": true
+            }
+          },
+          {
+            "reason_code": 2403,
+            "reason_msg": "Addressee not available at location",
+            "sub_group": "Ecom Digital Services",
+            "attribute": {
+              "EDS_ACTIVITY_LIST": true,
+              "EDS_OTP": true
+            }
+          },
+          {
+            "reason_code": 2404,
+            "reason_msg": "Addressee refused activity on field, hence cancelled by Ecom",
+            "sub_group": "Ecom Digital Services",
+            "attribute": {
+              "EDS_ACTIVITY_LIST": true,
+              "EDS_OTP": true
+            }
+          },
+          {
+            "reason_code": 2405,
+            "reason_msg": "Address not locatable and Addressee not contactable",
+            "sub_group": "Ecom Digital Services",
+            "attribute": {
+              "EDS_ACTIVITY_LIST": true,
+              "EDS_OTP": true
+            }
+          },
+          {
+            "reason_code": 2406,
+            "reason_msg": "Addressee shifted, phone not reachable",
+            "sub_group": "Ecom Digital Services",
+            "attribute": {
+              "EDS_ACTIVITY_LIST": true,
+              "EDS_OTP": true
+            }
+          },
+          {
+            "reason_code": 2407,
+            "reason_msg": "Number not reachable / phone switched off on field",
+            "sub_group": "Ecom Digital Services",
+            "attribute": {
+              "EDS_ACTIVITY_LIST": true,
+              "EDS_OTP": true
+            }
+          },
+          {
+            "reason_code": 2408,
+            "reason_msg": "Wrong address, Pincode/Address MisMatch",
+            "sub_group": "Ecom Digital Services",
+            "attribute": {
+              "EDS_ACTIVITY_LIST": true,
+              "EDS_OTP": true
+            }
+          },
+          {
+            "reason_code": 2420,
+            "reason_msg": "OTP Verification Failed",
+            "sub_group": "Ecom Digital Services",
+            "attribute": {
+              "EDS_ACTIVITY": true,
+              "IMAGEM": true,
+              "SECURED": true
+            }
+          },
+          {
+            "reason_code": 2421,
+            "reason_msg": "Addressee requested to reschedule pickup",
+            "sub_group": "Ecom Digital Services",
+            "attribute": {
+              "CALLM": true,
+              "EDS_ACTIVITY": true,
+              "EDS_ACTIVITY_LIST": true,
+              "EDS_OTP": true,
+              "RCHD": true
+            }
+          },
+          {
+            "reason_code": 2422,
+            "reason_msg": "Field data validation failed",
+            "sub_group": "Ecom Digital Services",
+            "attribute": {
+              "EDS_ACTIVITY": true
+            }
+          },
+          {
+            "reason_code": 2423,
+            "reason_msg": "Required documents not available",
+            "sub_group": "Ecom Digital Services",
+            "attribute": {
+              "EDS_ACTIVITY": true
+            }
+          },
+          {
+            "reason_code": 2425,
+            "reason_msg": "Cash not ready",
+            "sub_group": "Ecom Digital Services",
+            "attribute": {
+              "EDS_ACTIVITY": true,
+              "EDS_ACTIVITY_LIST": true,
+              "EDS_OTP": true
+            }
+          },
+          {
+            "reason_code": 2442,
+            "reason_msg": "Aadhaar server authentication/ data validation failed",
+            "sub_group": "Ecom Digital Services",
+            "attribute": {
+              "EDS_ACTIVITY": true
+            }
+          },
+          {
+            "reason_code": 2426,
+            "reason_msg": "Activity already done as per the Addressee",
+            "sub_group": "Ecom Digital Services",
+            "attribute": {
+              "EDS_ACTIVITY": true
+            }
+          }
+        ]
+      },
+      "general_activity_question_master": {
+        "doc_list": [
+          {
+            "activity_code": "DC_LIST_ID",
+            "json_data": "[{ \"name\": \"Passport\", \"code\": \"Passport\", \"dis\": \"A passport is a travel document, usually issued by a country's government, that certifies the identity and nationality of its holder primarily for the purpose of international travel.\" }, { \"name\": \"Driving License\", \"code\": \"Driving_License\", \"dis\": \"The Indian voter ID card is an identity document issued by the Election Commission of India which primarily serves as an identity proof for Indian citizens while casting votes in the country's municipal, state, and national elections.\" }, { \"name\": \"PAN Card\", \"code\": \"PAN\", \"dis\": \"Permanent Account Number is a code that acts as an identification for individuals, families and corporates, especially those who pay Income Tax.\" }, { \"name\": \"Voter ID Card\", \"code\": \"Voter_ID\", \"dis\": \"Voter’s Identity Card issued by Election Commission of India.\" }, { \"name\": \"NREGA Job Card\", \"code\": \"NREGA\", \"dis\": \"Job card issued by NREGA duly signed by an officer of the State Government.\" }, { \"name\": \"Aadhar Card\", \"code\": \"Aadhar\", \"dis\": \"UIDAI is mandated to issue an easily verifiable 12 digit random number as Unique Identity - Aadhaar to all Residents of India.\" }]",
+            "shipper": "32012",
+            "list_type": "DOC_ID"
+          },
+          {
+            "activity_code": "DC_LIST_ADD",
+            "json_data": "[{ \"name\": \"Passport\", \"code\": \"Passport\", \"dis\": \"A passport is a travel document, usually issued by a country's government, that certifies the identity and nationality of its holder primarily for the purpose of international travel.\" }, { \"name\": \"Driving License\", \"code\": \"Driving_License\", \"dis\": \"The Indian voter ID card is an identity document issued by the Election Commission of India which primarily serves as an identity proof for Indian citizens while casting votes in the country's municipal, state, and national elections.\" }, { \"name\": \"PAN Card\", \"code\": \"PAN\", \"dis\": \"Permanent Account Number is a code that acts as an identification for individuals, families and corporates, especially those who pay Income Tax.\" }, { \"name\": \"Voter ID Card\", \"code\": \"Voter_ID\", \"dis\": \"Voter’s Identity Card issued by Election Commission of India.\" }, { \"name\": \"NREGA Job Card\", \"code\": \"NREGA\", \"dis\": \"Job card issued by NREGA duly signed by an officer of the State Government.\" }, { \"name\": \"Aadhar Card\", \"code\": \"Aadhar\", \"dis\": \"UIDAI is mandated to issue an easily verifiable 12 digit random number as Unique Identity - Aadhaar to all Residents of India.\" }, { \"name\": \"Utility bill\", \"code\": \"Utility_bill\", \"dis\": \"Physical Utility bill which is not more than two months old of any service provider (electricity, telephone, postpaid mobile phone, piped gas, water bill)\" }, { \"name\": \"Property/Municipal Tax receipt\", \"code\": \"Tax_receipt\", \"dis\": \"Property or Municipal Tax receipt\" }, { \"name\": \"Bank Account Statement\", \"code\": \"Account_Statement\", \"dis\": \"Bank Passbook, Bank account statement signed and stamped by the bank on Bank Letter Head or Post Office savings bank account statement; not more than 3 months old\" }, { \"name\": \"PPOs\", \"code\": \"PPO\", \"dis\": \"Pension or family pension payment orders (PPOs) issued to retired employees by Government Departments or Public Sector Undertakings, if they contain the address\" }]",
+            "shipper": "32012",
+            "list_type": "DOC_ADD"
+          },
+          {
+            "activity_code": "DC_TVSLIST_POA",
+            "json_data": "[{ \"name\": \"Telephone Bill\", \"code\": \"Telephone_Bill\", \"dis\": \"Collect Self attested Landline /Post paid Mobile Bill) \" }, { \"name\": \"Electricity Bill\", \"code\": \"Electricity_Bill\", \"dis\": \"Collect Self Attested Photocopy of the document.\" }, { \"name\": \"Driving License\", \"code\": \"Driving_License\", \"dis\": \"Collect Self Attested Photocopy of the document.\" }, { \"name\": \"Municipal Water Bill\", \"code\": \"Municipal_Bill\", \"dis\": \"Collect Self Attested Photocopy of the document.\" }, { \"name\": \"Passport\", \"code\": \"Passport\", \"dis\": \"Collect Self Attested Photocopy of the first and last page\" }, { \"name\": \"Ownership DEED\", \"code\": \"Ownership_DEED\", \"dis\": \"Collect Self Attested Photocopy of the document.\" }, { \"name\": \"Ration Card\", \"code\": \"Ration_Card\", \"dis\": \"Collect Self Attested Photocopy of the first and last page\" }, { \"name\": \"Life Insurance Policy\", \"code\": \"Life_Insurance\", \"dis\": \"Collect self attested last Three Months Latest Printed copy\" }, { \"name\": \"Property Tax Bill/Property Ownership record\", \"code\": \"Property Tax\", \"dis\": \"Collect Self Attested Photocopy of the document.\" }, { \"name\": \"Rental Lease Deed\", \"code\": \"Rental_Deed\", \"dis\": \"Collect Three months Old Rental Lease Deed to be printed on stamp Paper\" }]",
+            "shipper": "86449",
+            "list_type": "DOC_TVSADD"
+          },
+          {
+            "activity_code": "DC_TVSLIST_POA",
+            "json_data": "[{ \"name\": \"Telephone Bill\", \"code\": \"Telephone_Bill\", \"dis\": \"Collect Self attested Landline /Post paid Mobile Bill) \" }, { \"name\": \"Electricity Bill\", \"code\": \"Electricity_Bill\", \"dis\": \"Collect Self Attested Photocopy of the document.\" }, { \"name\": \"Driving License\", \"code\": \"Driving_License\", \"dis\": \"Collect Self Attested Photocopy of the document.\" }, { \"name\": \"Municipal Water Bill\", \"code\": \"Municipal_Bill\", \"dis\": \"Collect Self Attested Photocopy of the document.\" }, { \"name\": \"Passport\", \"code\": \"Passport\", \"dis\": \"Collect Self Attested Photocopy of the first and last page\" }, { \"name\": \"Ownership DEED\", \"code\": \"Ownership_DEED\", \"dis\": \"Collect Self Attested Photocopy of the document.\" }, { \"name\": \"Ration Card\", \"code\": \"Ration_Card\", \"dis\": \"Collect Self Attested Photocopy of the first and last page\" }, { \"name\": \"Life Insurance Policy\", \"code\": \"Life_Insurance\", \"dis\": \"Collect self attested last Three Months Latest Printed copy\" }, { \"name\": \"Property Tax Bill/Property Ownership record\", \"code\": \"Property Tax\", \"dis\": \"Collect Self Attested Photocopy of the document.\" }, { \"name\": \"Rental Lease Deed\", \"code\": \"Rental_Deed\", \"dis\": \"Collect Three months Old Rental Lease Deed to be printed on stamp Paper\" }]",
+            "shipper": "32012",
+            "list_type": "DOC_ECOMADD"
+          },
+          {
+            "activity_code": "DC_TVSLIST_POI",
+            "json_data": "[{ \"name\": \"ID Card (Public /Government)\", \"code\": \"ID_Card\", \"dis\": \"Collect Self Attested Photocopy of the document.\" }, { \"name\": \"Pan Card\", \"code\": \"Pan_Card\", \"dis\": \"Collect Self Attested Photocopy of the document.\" },{ \"name\": \"Passport\", \"code\": \"Passport\", \"dis\": \"Collect Self Attested Photocopy of the first and last page\" }]",
+            "shipper": "32012",
+            "list_type": "DOC_TVSPOI"
+          },
+          {
+            "activity_code": "DC_TVSLIST_POI",
+            "json_data": "[{ \"name\": \"ID Card (Public /Government)\", \"code\": \"ID_Card\", \"dis\": \"Collect Self Attested Photocopy of the document.\" }, { \"name\": \"Pan Card\", \"code\": \"Pan_Card\", \"dis\": \"Collect Self Attested Photocopy of the document.\" },{ \"name\": \"Passport\", \"code\": \"Passport\", \"dis\": \"Collect Self Attested Photocopy of the first and last page\" }]",
+            "shipper": "86449",
+            "list_type": "DOC_TVSPOI"
+          },
+          {
+            "activity_code": "DC_TVSLIST_POI1",
+            "json_data": "[{ \"name\": \"Ration Card\", \"code\": \"Ration_Card \", \"dis\": \"Collect Self Attested Photocopy of the first and last page.\" }, { \"name\": \"Bank Passbook\", \"code\": \"Bank_Passbook\", \"dis\": \"Collect Self Attested Photocopy of the document (from 1st page entry till last Entry ) .\" }, { \"name\": \"Post Office ID Card\", \"code\": \"Post_Office_ID\", \"dis\": \"Collect Voter ID / Election card Copy, check original and ensure same self attested (Signature).\" }, { \"name\": \"Pension Book\", \"code\": \"Pension_Book\", \"dis\": \"Collect Pension Book from the customer (from 1st page entry till last Entry )and ensure same self attested (Signature)\" }, { \"name\": \"Voter ID Card\", \"code\": \"Voter_ID\", \"dis\": \"Collect Voter ID / Election card Copy, check original and ensure same self attested (Signature)\" }]",
+            "shipper": "86449",
+            "list_type": "DOC_TVSPOI1"
+          },
+          {
+            "activity_code": "DC_TVSLIST_POI1",
+            "json_data": "[{ \"name\": \"Ration Card\", \"code\": \"Ration_Card \", \"dis\": \"Collect Self Attested Photocopy of the first and last page.\" }, { \"name\": \"Bank Passbook\", \"code\": \"Bank_Passbook\", \"dis\": \"Collect Self Attested Photocopy of the document (from 1st page entry till last Entry ) .\" }, { \"name\": \"Post Office ID Card\", \"code\": \"Post_Office_ID\", \"dis\": \"Collect Voter ID / Election card Copy, check original and ensure same self attested (Signature).\" }, { \"name\": \"Pension Book\", \"code\": \"Pension_Book\", \"dis\": \"Collect Pension Book from the customer (from 1st page entry till last Entry )and ensure same self attested (Signature)\" }, { \"name\": \"Voter ID Card\", \"code\": \"Voter_ID\", \"dis\": \"Collect Voter ID / Election card Copy, check original and ensure same self attested (Signature)\" }]",
+            "shipper": "32012",
+            "list_type": "DC_TVSLIST_POI1"
+          },
+          {
+            "activity_code": "DC_LIST_IDAIR",
+            "json_data": "[{ \"name\": \"PAN Card\", \"code\": \"PAN\", \"dis\": \"Need to take the Original Picture of the Pancard Copy\" }]",
+            "shipper": "77495",
+            "list_type": "Airtel_POI"
+          },
+          {
+            "activity_code": "DC_LIST_ADDAIR",
+            "json_data": "[{ \"name\": \"Passport\", \"code\": \"Passport\", \"dis\": \"Need to take the Original Picture of first and last page of Passport which has Customer Name and Address information.\" }, { \"name\": \"Driving License\", \"code\": \"Driving_License\", \"dis\": \"Need to take the Original Picture of front and back of Driving License.\" }, { \"name\": \"Voter ID Card\", \"code\": \"Voter_ID\", \"dis\": \"Need to take the Original Picture of front and back of Voter ID Card.\" }, { \"name\": \"Aadhar Card\", \"code\": \"Aadhar\", \"dis\": \"Need to take the Original Picture of front and back of Aadhar Card.\" }]",
+            "shipper": "77495",
+            "list_type": "Airtel_POA"
+          },
+          {
+            "activity_code": "DC_LIST_ADDAIR",
+            "json_data": "[{ \"name\": \"Passport\", \"code\": \"Passport\", \"dis\": \"Need to take the Original Picture of first and last page of Passport which has Customer Name and Address information.\" }, { \"name\": \"Driving License\", \"code\": \"Driving_License\", \"dis\": \"Need to take the Original Picture of front and back of Driving License.\" }, { \"name\": \"Voter ID Card\", \"code\": \"Voter_ID\", \"dis\": \"Need to take the Original Picture of front and back of Voter ID Card.\" }, { \"name\": \"Aadhar Card\", \"code\": \"Aadhar\", \"dis\": \"Need to take the Original Picture of front and back of Aadhar Card.\" }]",
+            "shipper": "32012",
+            "list_type": "Airtel_POA"
+          },
+          {
+            "activity_code": "DC_LIST_IDAIR",
+            "json_data": "[{ \"name\": \"PAN Card\", \"code\": \"PAN\", \"dis\": \"Need to take the Original Picture of the Pancard Copy\" }]",
+            "shipper": "32012",
+            "list_type": "Airtel_POI"
+          },
+          {
+            "activity_code": "DC_LIST_ADDCITI1",
+            "json_data": "[{ \"name\": \"Passport\", \"code\": \"Passport\", \"dis\": \"Need to take Original Picture of first and last page of Passport which has Customer Name and Address information.\" }, { \"name\": \"Driving License\", \"code\": \"Driving_License\", \"dis\": \"Need to take the Original Picture of front and back of Driving License.\" }, { \"name\": \"Voter ID Card\", \"code\": \"Voter_ID\", \"dis\": \"Need to take the Original Picture of front and back of Voter ID Card.\" }, { \"name\": \"NREGA JOB Card\", \"code\": \"NREGA\", \"dis\": \"Need to take the Original Picture of NREGA JOB Card duly signed by office of State Govt .\" }, { \"name\": \"Aadhar Card\", \"code\": \"Aadhar\", \"dis\": \"Need to take the Original Picture of front and back of Aadhar Card.\" }]",
+            "shipper": "32447",
+            "list_type": "CITI_POA"
+          },
+          {
+            "activity_code": "DC_LIST_ADDCITI2",
+            "json_data": "[{ \"name\": \"Passport\", \"code\": \"Passport\", \"dis\": \"Need to take Original Picture of first and last page of Passport which has Customer Name and Address information.\" }, { \"name\": \"Driving License\", \"code\": \"Driving_License\", \"dis\": \"Need to take the Original Picture of front and back of Driving License.\" }, { \"name\": \"Voter ID Card\", \"code\": \"Voter_ID\", \"dis\": \"Need to take the Original Picture of front and back of Voter ID Card.\" }, { \"name\": \"NREGA JOB Card\", \"code\": \"NREGA\", \"dis\": \"Need to take the Original Picture of NREGA JOB Card duly signed by office of State Govt .\" }, { \"name\": \"Aadhar Card\", \"code\": \"Aadhar\", \"dis\": \"Need to take the Original Picture of front and back of Aadhar Card.\" }]",
+            "shipper": "32447",
+            "list_type": "CITI_POA2"
+          },
+          {
+            "activity_code": "DC_LIST_IDCITI1",
+            "json_data": "[{ \"name\": \"Passport\", \"code\": \"Passport\", \"dis\": \"Need to take Original Picture of first and last page of Passport which has Customer Name and Address information.\" }, { \"name\": \"Driving License\", \"code\": \"Driving_License\", \"dis\": \"Need to take the Original Picture of front and back of Driving License.\" }, { \"name\": \"Voter ID Card\", \"code\": \"Voter_ID\", \"dis\": \"Need to take the Original Picture of front and back of Voter ID Card.\" }, { \"name\": \"NREGA JOB Card\", \"code\": \"NREGA\", \"dis\": \"Need to take the Original Picture of NREGA JOB Card duly signed by office of State Govt .\" }, { \"name\": \"Aadhar Card\", \"code\": \"Aadhar\", \"dis\": \"Need to take the Original Picture of front and back of Aadhar Card.\" }]",
+            "shipper": "32447",
+            "list_type": "Airtel_POI"
+          },
+          {
+            "activity_code": "DC_LIST_IDCITI2",
+            "json_data": "[{ \"name\": \"Passport\", \"code\": \"Passport\", \"dis\": \"Need to take Original Picture of first and last page of Passport which has Customer Name and Address information.\" }, { \"name\": \"Driving License\", \"code\": \"Driving_License\", \"dis\": \"Need to take the Original Picture of front and back of Driving License.\" }, { \"name\": \"Voter ID Card\", \"code\": \"Voter_ID\", \"dis\": \"Need to take the Original Picture of front and back of Voter ID Card.\" }, { \"name\": \"NREGA JOB Card\", \"code\": \"NREGA\", \"dis\": \"Need to take the Original Picture of NREGA JOB Card duly signed by office of State Govt .\" }, { \"name\": \"Aadhar Card\", \"code\": \"Aadhar\", \"dis\": \"Need to take the Original Picture of front and back of Aadhar Card.\" }]",
+            "shipper": "32447",
+            "list_type": "Airtel_POI2"
+          },
+          {
+            "activity_code": "DC_LIST_RBLPOA",
+            "json_data": "[{ \"name\": \"Passport\", \"code\": \"Passport\", \"dis\": \"Need to take the Original Picture of first and last page of Passport which has Customer Name and Address information.\" }, { \"name\": \"Driving License\", \"code\": \"Driving_License\", \"dis\": \"Need to take the Original Picture of front and back of Driving License.\" }, { \"name\": \"Voter ID Card\", \"code\": \"Voter_ID\", \"dis\": \"Need to take the Original Picture of front and back of Voter ID Card.\" }, { \"name\": \"Aadhar Card\", \"code\": \"Aadhar\", \"dis\": \"Need to take the Original Picture of front and back of Aadhar Card.\" }]",
+            "shipper": "64491",
+            "list_type": "RBL_POA"
+          },
+          {
+            "activity_code": "DC_LIST_RBLPOI",
+            "json_data": "[{ \"name\": \"PAN Card\", \"code\": \"PAN\", \"dis\": \"Need to take the Original Picture of the Pancard Copy\" }]",
+            "shipper": "64491",
+            "list_type": "RBL_POI"
+          },
+          {
+            "activity_code": "DC_LIST_ADDAIR",
+            "json_data": "[{ \"name\": \"Passport\", \"code\": \"Passport\", \"dis\": \"Need to take the Original Picture of first and last page of Passport which has Customer Name and Address information.\" }, { \"name\": \"Driving License\", \"code\": \"Driving_License\", \"dis\": \"Need to take the Original Picture of front and back of Driving License.\" }, { \"name\": \"Voter ID Card\", \"code\": \"Voter_ID\", \"dis\": \"Need to take the Original Picture of front and back of Voter ID Card.\" }, { \"name\": \"Aadhar Card\", \"code\": \"Aadhar\", \"dis\": \"Need to take the Original Picture of front and back of Aadhar Card.\" }]",
+            "shipper": "43553",
+            "list_type": "Seynse_POA"
+          },
+          {
+            "activity_code": "DC_LIST_IDAIR",
+            "json_data": "[{ \"name\": \"PAN Card\", \"code\": \"PAN\", \"dis\": \"Need to take the Original Picture of the Pancard Copy\" }]",
+            "shipper": "43553",
+            "list_type": "Seynse_POI"
+          },
+          {
+            "activity_code": "DC_LIST_FINPOA",
+            "json_data": "[{ \"name\": \"Passport\", \"code\": \"Passport\", \"dis\": \"Need to take the Original Picture of first and last page of Passport which has Customer Name and Address information.\" }, { \"name\": \"Driving License\", \"code\": \"Driving_License\", \"dis\": \"Need to take the Original Picture of front and back of Driving License.\" }, { \"name\": \"Voter ID Card\", \"code\": \"Voter_ID\", \"dis\": \"Need to take the Original Picture of front and back of Voter ID Card.\" }]",
+            "shipper": "70456",
+            "list_type": "FIN_POA"
+          },
+          {
+            "activity_code": "DC_LIST_FINPOA",
+            "json_data": "[{ \"name\": \"Passport\", \"code\": \"Passport\", \"dis\": \"Need to take the Original Picture of first and last page of Passport which has Customer Name and Address information.\" }, { \"name\": \"Driving License\", \"code\": \"Driving_License\", \"dis\": \"Need to take the Original Picture of front and back of Driving License.\" }, { \"name\": \"Voter ID Card\", \"code\": \"Voter_ID\", \"dis\": \"Need to take the Original Picture of front and back of Voter ID Card.\" }]",
+            "shipper": "32012",
+            "list_type": "FIN_POA_TEST"
+          },
+          {
+            "activity_code": "AC_LIST_IMAGE",
+            "json_data": "[{ \"name\": \"PAN Card\", \"code\": \"PAN\", \"dis\": \"Need to take the Original Picture of the Pancard Copy\" }]",
+            "shipper": "32012",
+            "list_type": "TEST_POA"
+          }
+        ],
+        "acitvity": [
+          {
+            "code": "DC_PAN_CARD_SELF_ATTESTED",
+            "verification_mode": "CHECK",
+            "instruction": "<a href=\"http://www.ecomexpress.in\">Ecom Express</a>",
+            "image_settings": {
+              "min": 5,
+              "max": 5,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": true,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you received the copy of Pan card?",
+            "activity_name": "Self-Attested photo copy of Pan card"
+          },
+          {
+            "code": "AC_AMAZON_EKYC",
+            "verification_mode": "CHECK",
+            "instruction": "<a href=\"http://www.ecomexpress.in\">Ecom Express</a>",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": true,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Need to scan generated QR Code?",
+            "activity_name": "QR Code Genration"
+          },
+          {
+            "code": "AC_KYC_FORM",
+            "verification_mode": "CHECK",
+            "instruction": "Please ensure to complete the activity on PAYTM app, before marking the lead as completed.",
+            "activity_question": "Have you completed the activity on PAYTM App?",
+            "activity_name": "PAYTM KYC"
+          },
+          {
+            "code": "AC_CASH_COLLECTION1",
+            "verification_mode": "CHECK",
+            "image_settings": {
+              "min": 4,
+              "max": 4,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you got the filled KYC form duly signed by customer?",
+            "activity_name": "e-KYC Process"
+          },
+          {
+            "code": "AC_CASH_COLLECTION",
+            "verification_mode": "CASH",
+            "instruction": "<a href=\"http://falm.ecomexpress.in/ecom_data/AuthorityLetters/\">Click Here</a> to view Authority Letters.",
+            "image_settings": {
+              "min": 0,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "HAVE YOU COLLECTED CASH?",
+            "activity_name": "CASH COLLECTION"
+          },
+          {
+            "code": "AC_ITEM_DELIVERY_AIRTEL_SIM",
+            "verification_mode": "DELIVERY",
+            "activity_question": "HAVE YOU  DELIVER SIM SERIAL NUMBER #VALUE# ?",
+            "activity_name": "AIRTEL SIM DELIVERY"
+          },
+          {
+            "code": "AC_ITEM_DELIVERY_AIRTEL_DATA_CARD",
+            "verification_mode": "DELIVERY",
+            "image_settings": {
+              "min": 0,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "HAVE YOU SCAN DATA CARD SERIAL NUMBER?",
+            "activity_name": "AIRTL DATA CARD DELIVERY"
+          },
+          {
+            "code": "AC_ITEM_DELIVERY_AIRTEL_SIM_VALUE",
+            "verification_mode": "DELIVERY",
+            "activity_question": "Have You delivered Sim number #VALUE#?",
+            "activity_name": "AIRTEL SIM CARD DELIVERY"
+          },
+          {
+            "code": "DC_CHEQUE_COLLECTION",
+            "verification_mode": "CHECK",
+            "image_settings": {
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have You Collected Cheque?",
+            "activity_name": "CHEQUE COLLECTION"
+          },
+          {
+            "code": "AC_ICICI_POCKETS_EKYC",
+            "verification_mode": "CHECK",
+            "image_settings": {
+              "min": 0,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you  complete the Task?",
+            "activity_name": "ICICI EKYC PROCESS"
+          },
+          {
+            "code": "AC_AIRTEL_EKYC",
+            "verification_mode": "CHECK",
+            "image_settings": {
+              "min": 0,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you  complete the Task?",
+            "activity_name": "Airtel EKYC"
+          },
+          {
+            "code": "AC_KYC_ICICI_XML",
+            "verification_mode": "CHECK",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "emp_name": "shivangi",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "date": "21/02/2019",
+                "ecom_text": "Ecom Express Pvt. Ltd.",
+                "osv_text": "OSV"
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected signed NACH Form?",
+            "activity_name": "Collect NACH FORM"
+          },
+          {
+            "code": "AC_KOTAK_EKYC",
+            "verification_mode": "CHECK",
+            "instruction": "Please Open Kotak app, Complete eKYC",
+            "image_settings": {
+              "min": 0,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you completed e-KYC process using 811 App successfully?",
+            "activity_name": "Kotak Mahindra e-KYC using 811 App"
+          },
+          {
+            "code": "DV_AADHAR_VALIDATION",
+            "verification_mode": "INPUT",
+            "instruction": "Validate aadhar Number",
+            "image_settings": {
+              "min": 0,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": true,
+              "verify_image_on_server": false
+            },
+            "activity_question": "VERIFY AADHAR NUMBER?",
+            "activity_name": "AADHAR NUMBER VALIDATION"
+          },
+          {
+            "code": "DV_DL_VALIDATION",
+            "verification_mode": "INPUT_HEAD_6",
+            "instruction": "Validate first 6 Digits of Driving license",
+            "image_settings": {
+              "min": 0,
+              "max": 2,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": true,
+              "verify_image_on_server": true
+            },
+            "activity_question": "Have you verified Driving license?",
+            "activity_name": "Driving License validation"
+          },
+          {
+            "code": "AC_ICICI_BKYC",
+            "verification_mode": "CHECK",
+            "instruction": "Carry on E-KYC process in SAATHi app.",
+            "image_settings": {
+              "min": 0,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you completed e-KYC process Successfully?",
+            "activity_name": "ICICI Bank E-KYC process"
+          },
+          {
+            "code": "AC_AIRTEL_SIM_DELIVERY",
+            "verification_mode": "CHECK",
+            "instruction": "Scan Sim Barcode once sim given to Consignee",
+            "image_settings": {
+              "min": 0,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you handed over Sim?",
+            "activity_name": "Airtel Sim Delivery"
+          },
+          {
+            "code": "AC_AIRTEL_DEVICE_DELIVERY",
+            "verification_mode": "CHECK",
+            "instruction": "Handover device after Snaning Barcode",
+            "image_settings": {
+              "min": 0,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you handed over Airtel Device?",
+            "activity_name": "Airtel Device Delivery"
+          },
+          {
+            "code": "DC_LIST_ID",
+            "verification_mode": "CHECK",
+            "instruction": "Please Capture Image of any one document",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": true,
+              "verify_image_on_server": true
+            },
+            "activity_question": "Have you collected the copy of Identity Proof.",
+            "activity_name": "Proof of Identity Documents"
+          },
+          {
+            "code": "DC_LIST_ADD",
+            "verification_mode": "CHECK",
+            "instruction": "Please Capture proper image",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": true,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the copy of Address Proof",
+            "activity_name": "Proof of Address Document"
+          },
+          {
+            "code": "AC_NEO_EKYC",
+            "verification_mode": "CHECK",
+            "instruction": "--",
+            "image_settings": {
+              "min": 0,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you complete eKYC on Vodafone app ?",
+            "activity_name": "Vodafone eKYC"
+          },
+          {
+            "code": "AC_OP_RES_CPV",
+            "verification_mode": "CHECK",
+            "instruction": "NA",
+            "image_settings": {
+              "min": 0,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Optacredit Residence Verification",
+            "activity_name": "Optacredit Residence Verification"
+          },
+          {
+            "code": "AC_OP_COM_CPV",
+            "verification_mode": "CHECK",
+            "instruction": "NA",
+            "image_settings": {
+              "min": 2,
+              "max": 2,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Optacredit Office Verification",
+            "activity_name": "Optacredit Office Verification"
+          },
+          {
+            "code": "AC_KYC_XML",
+            "verification_mode": "CHECK",
+            "instruction": "N/A",
+            "image_settings": {
+              "min": 0,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you completed Ekyc",
+            "activity_name": "KYC VERIFICATION"
+          },
+          {
+            "code": "AC_RBL_BKYC",
+            "verification_mode": "CHECK",
+            "image_settings": {
+              "min": 0,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you completed Biometric KYC process Successfully?",
+            "activity_name": "RBL Biometric KYC Process"
+          },
+          {
+            "code": "AC_JSON_BKYC",
+            "verification_mode": "CHECK",
+            "activity_question": "Perform the KYC",
+            "activity_name": "KYC Verification"
+          },
+          {
+            "code": "AC_OAP_EKYC",
+            "verification_mode": "CHECK",
+            "activity_question": "Launch ICICI KYC",
+            "activity_name": "ICICI KYC"
+          },
+          {
+            "code": "AC_Passport",
+            "verification_mode": "CHECK",
+            "activity_question": "Click on Next",
+            "activity_name": "Take photo of Document Photocopy (Self Attested)"
+          },
+          {
+            "code": "DC_TVS_APP",
+            "verification_mode": "CHECK",
+            "instruction": "Take Signature on the application form. In case of any doubt click here.",
+            "image_settings": {
+              "min": 3,
+              "max": 3,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the Application Form?",
+            "activity_name": "Collect the Application form"
+          },
+          {
+            "code": "DC_TVS_AGG",
+            "verification_mode": "CHECK",
+            "instruction": "Take Signature on the Agreement form. In case of any doubt click here.",
+            "image_settings": {
+              "min": 4,
+              "max": 4,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the Agreement Form?",
+            "activity_name": "Collect the Agreement Form"
+          },
+          {
+            "code": "DC_TVS_ENACH",
+            "verification_mode": "CHECK",
+            "instruction": "Get the Signature of account holder in the NACH form",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the NACH Form?",
+            "activity_name": "Collect Nach Form"
+          },
+          {
+            "code": "DC_TVS_Aadhar",
+            "verification_mode": "CHECK",
+            "instruction": "Aadhar Card Copy & Ensure self attested with Signature",
+            "activity_question": "Have you collected the copy of Aadhar Card?",
+            "activity_name": "Collect the Aadhar Card Copy"
+          },
+          {
+            "code": "DC_TVS_CHEQUE",
+            "verification_mode": "CHECK",
+            "instruction": "Need to check the signature & Acc Payee mentioned in the cheque",
+            "image_settings": {
+              "min": 2,
+              "max": 2,
+              "capture_scanned_image": true,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the Cheque?",
+            "activity_name": "Collect the Cheque"
+          },
+          {
+            "code": "DC_TVS_BS",
+            "verification_mode": "CHECK",
+            "instruction": "Collect the Bank Statement & Ensure same is self attested with Signature ",
+            "image_settings": {
+              "min": 4,
+              "max": 4,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the Bank statement?",
+            "activity_name": "Collect the Bank statement"
+          },
+          {
+            "code": "DC_TVSLIST_POA",
+            "verification_mode": "CHECK",
+            "instruction": "Please Capture proper image",
+            "image_settings": {
+              "min": 2,
+              "max": 2,
+              "watermark": {
+                "emp_code": "45398",
+                "emp_name": "shivangi",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "date": "21/02/2019",
+                "ecom_text": "Ecom Express Pvt. Ltd.",
+                "osv_text": "OSV"
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the copy of Address Proof",
+            "activity_name": "Proof of Address Document"
+          },
+          {
+            "code": "DC_TVSLIST_POI",
+            "verification_mode": "CHECK",
+            "instruction": "Please Capture proper image",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the copy of Identity Proof",
+            "activity_name": "Proof of Identity Document"
+          },
+          {
+            "code": "DC_TVSLIST_POI1",
+            "verification_mode": "CHECK",
+            "instruction": "Please Capture proper image",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "emp_name": "shivangi",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "date": "21/02/2019",
+                "ecom_text": "Ecom Express Pvt. Ltd.",
+                "osv_text": "OSV"
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the copy of Identity Proof",
+            "activity_name": "Proof of Identity Document"
+          },
+          {
+            "code": "AC_CUSTOMER_IMAGE",
+            "verification_mode": "CHECK",
+            "instruction": "Customer photo needs to be clicked & it must contain shoulder and full face",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": true
+            },
+            "activity_question": "Have you taken Customer Photo?",
+            "activity_name": "Take Customer Photo"
+          },
+          {
+            "code": "DC_LIST_IDAIR",
+            "verification_mode": "CHECK",
+            "instruction": "Please Capture image of any one Original document",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": true,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the copy of Identity Proof?",
+            "activity_name": "Collect Proof of Identity"
+          },
+          {
+            "code": "DC_LIST_ADDAIR",
+            "verification_mode": "CHECK",
+            "instruction": "Please Capture image of any one Original document",
+            "image_settings": {
+              "min": 2,
+              "max": 2,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": true,
+              "verify_image_on_server": true
+            },
+            "activity_question": "Have you collected the copy of Address Proof?",
+            "activity_name": "Collect Proof of Address"
+          },
+          {
+            "code": "DC_AIRTEL_NACH",
+            "verification_mode": "CHECK",
+            "instruction": "Collect NACH Form after two (02) signatures done  - One Page Form, Two Signatures to be checked",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the copy of NACH Form?",
+            "activity_name": "Collect NACH Form"
+          },
+          {
+            "code": "DC_AIRTEL_MITC",
+            "verification_mode": "CHECK",
+            "instruction": "Collect MITC Form after one (01) signature done  - One Page Form, one Signature to be checked",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the copy of MITC Form?",
+            "activity_name": "Collect MITC Form"
+          },
+          {
+            "code": "DC_TEST_SANTOSH",
+            "verification_mode": "CHECK",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "emp_name": "shivangi",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "date": "21/02/2019",
+                "ecom_text": "Ecom Express Pvt. Ltd.",
+                "osv_text": "OSV"
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "This is a test activity",
+            "activity_name": "Test Activity"
+          },
+          {
+            "code": "DC_TVS_PAN",
+            "verification_mode": "CHECK",
+            "instruction": "Collect Pan Card Copy and ensure same is self attested (Signature)",
+            "image_settings": {
+              "min": 2,
+              "max": 2,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the self attested copy of PAN Card??",
+            "activity_name": "Collect PAN Card Copy"
+          },
+          {
+            "code": "DC_TVS_INS",
+            "verification_mode": "CHECK",
+            "instruction": "Collect Self Attested Life Insurance policy for last 3 months",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected self attested copy of last 3 months Insurance policy?",
+            "activity_name": "Collect copy of Last 3 Months Insurance Policy"
+          },
+          {
+            "code": "DC_TVS_Passport",
+            "verification_mode": "CHECK",
+            "instruction": "Collect passport copy - first and last page and ensure same self attested with Signature",
+            "image_settings": {
+              "min": 2,
+              "max": 2,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the self attested copy of 1st and Last page of passport?",
+            "activity_name": "Collect copy of First and Last page of Passport"
+          },
+          {
+            "code": "DC_TVS_DL",
+            "verification_mode": "CHECK",
+            "instruction": "Collect self attested copy of Driving Liscense Copy and take image of front and back of driving license",
+            "image_settings": {
+              "min": 2,
+              "max": 2,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the self attested copy of Driving License?",
+            "activity_name": "Collect self attested copy of Driving License"
+          },
+          {
+            "code": "DC_TVS_VID",
+            "verification_mode": "CHECK",
+            "instruction": "Collect self attested copy of Voter ID/Election Card and take front and back image",
+            "image_settings": {
+              "min": 2,
+              "max": 2,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected self attested copy of Voter ID/Election Card?",
+            "activity_name": "Collect Copy of Voter ID / Eclection Card"
+          },
+          {
+            "code": "DC_TVS_BPBK",
+            "verification_mode": "CHECK",
+            "instruction": "Collect self attested Bank Passbook copy (from 1st page entry till last Entry )",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected self attested Bank Passbook copy of all pages having entry",
+            "activity_name": "Collect Self attested Bank Passbook copy"
+          },
+          {
+            "code": "DC_TVS_RCRD",
+            "verification_mode": "CHECK",
+            "instruction": "Collect self attested copy of First and Last page of Ration Card and take its image",
+            "image_settings": {
+              "min": 2,
+              "max": 2,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected self attested copy of first and Last page of Ration Card? ",
+            "activity_name": "Collect self attested copy of First and Last page ofRation Card"
+          },
+          {
+            "code": "DC_TVS_EBILL",
+            "verification_mode": "CHECK",
+            "instruction": "Collect Electricity bill copy and ensure same self attested with Signature",
+            "image_settings": {
+              "min": 0,
+              "max": 2,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": true,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected self attested copy of Electricity Bill?",
+            "activity_name": "Collect self attested copy of electricity bill"
+          },
+          {
+            "code": "DC_TVS_LPG",
+            "verification_mode": "CHECK",
+            "instruction": "Collect self attested copy of LPG Document",
+            "image_settings": {
+              "min": 2,
+              "max": 2,
+              "capture_scanned_image": true,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the self attested copy of LPG document?",
+            "activity_name": "Collect Copy of Self attested LPG Document"
+          },
+          {
+            "code": "DC_TVS_RLD",
+            "verification_mode": "CHECK",
+            "instruction": "Collect Three months Old Rental Lease Deed and should be printed on the stamp Paper",
+            "image_settings": {
+              "min": 2,
+              "max": 2,
+              "watermark": {
+                "emp_code": "45398",
+                "emp_name": "shivangi",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "date": "21/02/2019",
+                "ecom_text": "Ecom Express Pvt. Ltd.",
+                "osv_text": "OSV"
+              },
+              "capture_scanned_image": true,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected self attested copy of 3 months old Rental Lease Deed?",
+            "activity_name": "Collect Copy of3 months old Rental Lease Deed on stamp paper"
+          },
+          {
+            "code": "DC_TVS_PTAXB",
+            "verification_mode": "CHECK",
+            "instruction": "Collect copy of self attested (Property Tax bill/Property Ownership Record)",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected copy of self attested Property Tax Bill/Property Ownership Record?",
+            "activity_name": "Collect copy of Property Tax bill/Property Ownership Record"
+          },
+          {
+            "code": "DC_TVS_ODF",
+            "verification_mode": "CHECK",
+            "instruction": "Collect the Ownership Deed  Photocopy ensure same self attested with Signature",
+            "image_settings": {
+              "min": 2,
+              "max": 2,
+              "watermark": {
+                "emp_code": "45398",
+                "emp_name": "shivangi",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "date": "21/02/2019",
+                "ecom_text": "Ecom Express Pvt. Ltd.",
+                "osv_text": "OSV"
+              },
+              "capture_scanned_image": true,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected copy of self attested Ownership Deed?",
+            "activity_name": "Collect Copy of Ownership Deed"
+          },
+          {
+            "code": "DC_TVS_TEL",
+            "verification_mode": "CHECK",
+            "instruction": "Collect self attested copy of Telephone bill (Landline /Post paid Mobile Bill) ",
+            "image_settings": {
+              "min": 2,
+              "max": 2,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": true,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected self attested copy of Telephone bill",
+            "activity_name": "Collect self attested copy of Telephone Bill"
+          },
+          {
+            "code": "DC_LIST_ADDCITI1",
+            "verification_mode": "CHECK",
+            "instruction": "See Original ID and write OSR, Agent Name, Agent code, Company Name ie Ecom Express & sign on each page",
+            "image_settings": {
+              "min": 2,
+              "max": 2,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the copy of Address Proof?",
+            "activity_name": "Collect self attested Proof of Address"
+          },
+          {
+            "code": "DC_LIST_ADDCITI2",
+            "verification_mode": "CHECK",
+            "instruction": "See Original ID and write OSR, Agent Name, Agent code, Company Name ie Ecom Express & sign on each page",
+            "image_settings": {
+              "min": 2,
+              "max": 2,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the copy of Address Proof?",
+            "activity_name": "Collect Proof of Address"
+          },
+          {
+            "code": "DC_LIST_IDCITI1",
+            "verification_mode": "CHECK",
+            "instruction": "See Original ID and write OSR, Agent Name, Agent code, Company Name ie Ecom Express & sign on each page",
+            "image_settings": {
+              "min": 2,
+              "max": 2,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the copy of Identity Proof?",
+            "activity_name": "Collect Proof of Identity"
+          },
+          {
+            "code": "DC_LIST_IDCITI2",
+            "verification_mode": "CHECK",
+            "instruction": "See Original ID and write OSR, Agent Name, Agent code, Company Name ie Ecom Express & sign on each page",
+            "image_settings": {
+              "min": 2,
+              "max": 2,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the copy of Identity Proof?",
+            "activity_name": "Collect Proof of Identity"
+          },
+          {
+            "code": "DC_CITI_CFORM",
+            "verification_mode": "CHECK",
+            "instruction": "1 signature should be taken from customer  in the place of Customer Signature (Required fields – Application number, Applicant’s name, customer signature and date. ",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the consent Form?",
+            "activity_name": "Collect Consent Form"
+          },
+          {
+            "code": "DC_CITI_PS",
+            "verification_mode": "CHECK",
+            "instruction": "Collect Self Attested last 2 months pay slip and write Print from portal (PFP)  Agent Name, Agent code, Company Name ie Ecom Express & Staff need to do the signature - Against Each page.",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected Last 2 Months Pay Slip?",
+            "activity_name": "Collect Last two Months self attested Pay Slip"
+          },
+          {
+            "code": "DC_RBL_SPDC",
+            "verification_mode": "CHECK",
+            "instruction": "Two Signed cheques needs to be collected. ",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the Post Dated Cheques?",
+            "activity_name": "Collect Post Dated Cheques"
+          },
+          {
+            "code": "DC_RBL_NACH",
+            "verification_mode": "CHECK",
+            "instruction": "Check the signature and collect the Form.",
+            "image_settings": {
+              "min": 2,
+              "max": 2,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the NACH Form?",
+            "activity_name": "Collect Nach Form"
+          },
+          {
+            "code": "AC_RBL_IMAGE",
+            "verification_mode": "CHECK",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": true,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you taken Customer Photo?",
+            "activity_name": "Take Customer Photo"
+          },
+          {
+            "code": "DC_RBL_AGREEMENT",
+            "verification_mode": "CHECK",
+            "image_settings": {
+              "min": 3,
+              "max": 3,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the Agreement?",
+            "activity_name": "Collect Agreement"
+          },
+          {
+            "code": "DC_RBL_SI",
+            "verification_mode": "CHECK",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the SI Form?",
+            "activity_name": "Collect the SI (Standing Instructions)"
+          },
+          {
+            "code": "DC_LIST_RBLPOI",
+            "verification_mode": "CHECK",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the copy of Identity Proof?",
+            "activity_name": "Proof Of Identity"
+          },
+          {
+            "code": "DC_LIST_RBLPOA",
+            "verification_mode": "CHECK",
+            "image_settings": {
+              "min": 2,
+              "max": 2,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the copy of Address Proof?",
+            "activity_name": "Proof of Address"
+          },
+          {
+            "code": "DC_AIRTEL_PDC",
+            "verification_mode": "CHECK",
+            "instruction": "One Cheque to be collected in favour of \"The Federal Bank Limited\" and ensure signature done and Account Pay mentioned (Top Left of the cheque) and amount column is not blank. <a href=\"https://falm.ecomexpress.in/ecom_data/Airtel_PDC/PDC_Airtel.html\">Click Here</a> to view sample document.",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": true,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the PDC?",
+            "activity_name": "Collect Post Dated Cheques"
+          },
+          {
+            "code": "AC_AADHAR_IMAGE",
+            "verification_mode": "CHECK",
+            "instruction": "Need to take the Picture of Original Aadhar Card (Front and Back)",
+            "image_settings": {
+              "min": 2,
+              "max": 2,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you taken picture of Original Aadhar Card?",
+            "activity_name": "Take Picture of Original Aadhar Card"
+          },
+          {
+            "code": "AC_PAN_IMAGE",
+            "verification_mode": "CHECK",
+            "instruction": "Need to take the Picture of Original PAN Card.",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "emp_name": "shivangi",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "date": "21/02/2019",
+                "ecom_text": "Ecom Express Pvt. Ltd.",
+                "osv_text": "OSV"
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you taken picture of Original PAN Card?",
+            "activity_name": "Take Picture of Original PAN Card"
+          },
+          {
+            "code": "DC_LIST_FINPOA",
+            "verification_mode": "CHECK",
+            "instruction": "Need to take the Original Picture (Image) of any of the below and collect the copy of the same document which is self attested",
+            "image_settings": {
+              "min": 2,
+              "max": 2,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": true,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the copy of Address Proof",
+            "activity_name": "Proof of Address Document"
+          },
+          {
+            "code": "DC_AADHAR_FINTC",
+            "verification_mode": "CHECK",
+            "instruction": "Need to ensure that customer fills  : Aadhar Number, Date, Name & Signature. <a href=\"https://falm.ecomexpress.in/ecom_data/Fincare/TNC.html\">Click Here</a> to view sample document.",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected the Terms and Collections Form?",
+            "activity_name": "Collect Terms and Collections Form"
+          },
+          {
+            "code": "AC_FINCS_IMAGE",
+            "verification_mode": "CHECK",
+            "instruction": "Click the picture of the signature ONLY taken on T&C form. <a href=\"https://falm.ecomexpress.in/ecom_data/Fincare/Signature.html\">Click Here</a> to view sample document.",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you taken photo of Signature taken on Terms and Conditions Page?",
+            "activity_name": "Take Signature image only taken on Terms and Conditions"
+          },
+          {
+            "code": "DC_FIN_DBT",
+            "verification_mode": "CHECK",
+            "instruction": "Ensure customer to put signatures at the required fields and ensure Tick any one option from first Two Option given and accordingly fills the relevant detail. <a href=\"https://falm.ecomexpress.in/ecom_data/Fincare/DBT.html\">Click Here</a> to view sample document.",
+            "image_settings": {
+              "min": 2,
+              "max": 2,
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you taken the DBT form?",
+            "activity_name": "DBT Form"
+          },
+          {
+            "code": "DC_TVS_ICICI",
+            "verification_mode": "CHECK",
+            "instruction": "Collect ICICI Lombard copy and ensure 2 Pages - 3 Signatures to be checked",
+            "image_settings": {
+              "min": 2,
+              "max": 2,
+              "watermark": {
+                "emp_code": "45398",
+                "emp_name": "shivangi",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "date": "21/02/2019",
+                "ecom_text": "Ecom Express Pvt. Ltd.",
+                "osv_text": "OSV"
+              },
+              "capture_scanned_image": true,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collect ICICI Lombard copy?",
+            "activity_name": "Collect ICICI Lombard Copy"
+          },
+          {
+            "code": "DC_TVS_KOTAK",
+            "verification_mode": "CHECK",
+            "instruction": "Collect Kotak Life copy and ensure 1 Page - 1 Signature to be checked",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": true,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected Kotak Life Copy?",
+            "activity_name": "Collect Kotak Life insurance Copy"
+          },
+          {
+            "code": "DV_UD_Left_Photo",
+            "verification_mode": "INPUT",
+            "instruction": "Please take photo from Front of the shop / plot/ office on the left hand side of given address",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": true
+            },
+            "activity_question": "Click on Verify below and take Shop/ Office Photo situated on Left side of Address?",
+            "activity_name": "Left hand side Photo"
+          },
+          {
+            "code": "DV_UD_Right_Photo",
+            "verification_mode": "INPUT",
+            "instruction": "Please take photo from Front of the shop / plot/ office on the right hand side of given address",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": true
+            },
+            "activity_question": "Click on Verify below and take Shop/ Office Photo situated on Right side of Address?",
+            "activity_name": "Right hand side Photo"
+          },
+          {
+            "code": "DV_UD_Front_Photo",
+            "verification_mode": "INPUT",
+            "instruction": "Please take photo from Front (Showing board / address)of the shop / office as per address mentioned on SAATHI app",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": true
+            },
+            "activity_question": "Click of Verify and take the Addressee Shop/ Office Photo from Front",
+            "activity_name": "Addressee Shop/ Office Photo"
+          },
+          {
+            "code": "AC_DL_IMAGE",
+            "verification_mode": "CHECK",
+            "instruction": "Need to take the Picture of Original Driving License.",
+            "image_settings": {
+              "min": 2,
+              "max": 2,
+              "watermark": {
+                "emp_code": "45398",
+                "emp_name": "shivangi",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "date": "21/02/2019",
+                "ecom_text": "Ecom Express Pvt. Ltd.",
+                "osv_text": "OSV"
+              },
+              "capture_scanned_image": true,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you taken Original Driving License Photo?",
+            "activity_name": "Take Picture of Original Driving License"
+          },
+          {
+            "code": "AC_VOTERID_IMAGE",
+            "verification_mode": "CHECK",
+            "instruction": "Need to take the Picture of Original VoterID.",
+            "image_settings": {
+              "min": 2,
+              "max": 2,
+              "watermark": {
+                "emp_code": "45398",
+                "emp_name": "shivangi",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "date": "21/02/2019",
+                "ecom_text": "Ecom Express Pvt. Ltd.",
+                "osv_text": "OSV"
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you taken picture of Original VoterID?",
+            "activity_name": "Take Picture of Original VoterID (Front and Back)"
+          },
+          {
+            "code": "AC_PASSPORT_IMAGE",
+            "verification_mode": "CHECK",
+            "instruction": "Need to take the Picture of Original Original Passport.",
+            "image_settings": {
+              "min": 2,
+              "max": 2,
+              "watermark": {
+                "emp_code": "45398",
+                "emp_name": "shivangi",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "date": "21/02/2019",
+                "ecom_text": "Ecom Express Pvt. Ltd.",
+                "osv_text": "OSV"
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you taken Picture of Original Passport?",
+            "activity_name": "Take Picture of Original Passport (Front and Back Page)"
+          },
+          {
+            "code": "AC_NREGA_IMAGE",
+            "verification_mode": "CHECK",
+            "instruction": "Need to take the Picture of Original NREGA Card.",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "emp_name": "shivangi",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "date": "21/02/2019",
+                "ecom_text": "Ecom Express Pvt. Ltd.",
+                "osv_text": "OSV"
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you taken Picture of Original NREGA Card?",
+            "activity_name": "Take Picture of Original NREGA Card\t"
+          },
+          {
+            "code": "AC_STFORM1_IMAGE",
+            "verification_mode": "CHECK",
+            "instruction": "Need to take Picture of Form with Customer's Signature.",
+            "image_settings": {
+              "min": 5,
+              "max": 5,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": true,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you taken the Picture of Form with Customer's Signature?",
+            "activity_name": "Take the Picture of Form with Customer's Signature"
+          },
+          {
+            "code": "AC_STFORM2_IMAGE",
+            "verification_mode": "CHECK",
+            "instruction": "Need to take Picture of Form with Customer's Signature.",
+            "image_settings": {
+              "min": 3,
+              "max": 3,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": true,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you taken the Picture of Form with Customer's Signature?",
+            "activity_name": "Take the Picture of Form with Customer's Signature"
+          },
+          {
+            "code": "AC_LIST_IMAGE",
+            "verification_mode": "CHECK",
+            "instruction": "Need to take the Original Picture (Image) of any of the below ",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": true,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you taken picture of Address Proof",
+            "activity_name": "Proof of Address Document"
+          },
+          {
+            "code": "AC_UDLSHOP_IMAGE",
+            "verification_mode": "CHECK",
+            "instruction": "Please take photo from Front of the shop / plot/ office on the left hand side of given address",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": true
+            },
+            "activity_question": "Take Shop/ Office Photo situated on Left side of Address?",
+            "activity_name": "Left hand side Photo"
+          },
+          {
+            "code": "AC_UDRSHOP_IMAGE",
+            "verification_mode": "CHECK",
+            "instruction": "Please take photo from Front of the shop / plot/ office on the right hand side of given address",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": true
+            },
+            "activity_question": "Take Shop/ Office Photo situated on Right side of Address?",
+            "activity_name": "Right hand side Photo"
+          },
+          {
+            "code": "AC_UDSHOP_IMAGE",
+            "verification_mode": "CHECK",
+            "instruction": "Please take photo from Front (Showing board / address)of the shop / office as per address mentioned on SAATHI app",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": true
+            },
+            "activity_question": "Take the Addressee Shop/ Office Photo from Front",
+            "activity_name": "Addressee Shop/ Office Photo"
+          },
+          {
+            "code": "AC_PAYTM_IMAGE",
+            "verification_mode": "CHECK",
+            "instruction": "Please ensure to complete the activity on PAYTM app, before marking the lead as completed.",
+            "activity_question": "Have you completed the activity on PAYTM App?",
+            "activity_name": "PAYTM KYC"
+          },
+          {
+            "code": "DC_LT_SPDC",
+            "verification_mode": "CHECK",
+            "instruction": "Collect one cheque from the customer in Favour of L&T Finance Ltd and ensure Signature",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": true,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected Security PDC (SPDC) Cheque?",
+            "activity_name": "Security PDC (SPDC)"
+          },
+          {
+            "code": "DC_LT_PDC",
+            "verification_mode": "CHECK",
+            "instruction": "Collect one cheque from the customer in Favour of L&T Finance Ltd and ensure Signature",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": true,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected Post Dated Cheque (PDC)?",
+            "activity_name": "Post Dated Cheque (PDC)"
+          },
+          {
+            "code": "DC_LT_NACH",
+            "verification_mode": "CHECK",
+            "instruction": "1 Page - 03 Signatures to be checked",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected NACH Form?",
+            "activity_name": "Collect NACH Form"
+          },
+          {
+            "code": "DC_NACH_FORM",
+            "verification_mode": "CHECK",
+            "instruction": "Collect One copy of NACH form and check one SIgnature",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you collected NACH Form?",
+            "activity_name": "Collect NACH Form"
+          },
+          {
+            "code": "DC_RESIDENCE_PROOF_SELF_ATTESTED",
+            "verification_mode": "CHECK",
+            "image_settings": {
+              "min": 2,
+              "max": 2,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": true,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Have you received the copy of address proof?",
+            "activity_name": "Self-Attested copy of Residence proof with current address mentioned"
+          },
+          {
+            "code": "DV_PAN_CARD_VERIFICATION",
+            "verification_mode": "INPUT_TAIL_4",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Enter last 5 characters of original pan card",
+            "activity_name": "Original Pan Card Verification"
+          },
+          {
+            "code": "AC_GENERAL_INFORMATION",
+            "verification_mode": "CHECK",
+            "image_settings": {
+              "min": 1,
+              "max": 1,
+              "watermark": {
+                "emp_code": "45398",
+                "lat": "28.7041",
+                "lng": "77.1025",
+                "ecom_text": "Ecom Express Pvt. Ltd."
+              },
+              "capture_scanned_image": false,
+              "verify_image_on_server": false
+            },
+            "activity_question": "Confirm Customer Details",
+            "activity_name": "General Questionnaire"
+          }
+        ],
+        "Opv_Master": {
+          "general_question": [
+            {
+              "value_array": "[         \"Dipendra Sharma\"       ]",
+              "ans_type": "STRING",
+              "option": "O",
+              "type": "FIX",
+              "id": 1,
+              "qtag": "Customer Name ?"
+            },
+            {
+              "value_array": "[]",
+              "ans_type": "STRING",
+              "option": "O",
+              "type": "INPUT",
+              "id": 2,
+              "qtag": "Designation of Customer ?"
+            },
+            {
+              "value_array": "[]",
+              "ans_type": "STRING",
+              "option": "O",
+              "type": "INPUT",
+              "id": 3,
+              "qtag": "Name of Person Met?"
+            },
+            {
+              "value_array": "[]",
+              "ans_type": "INTEGER",
+              "option": "O",
+              "type": "INPUT",
+              "id": 4,
+              "qtag": "Contact number of Person Met"
+            },
+            {
+              "value_array": "[]",
+              "ans_type": "STRING",
+              "option": "O",
+              "type": "AUTO",
+              "id": 5,
+              "qtag": "Time of Visit ?"
+            },
+            {
+              "value_array": "[         \"---SELECT---\", \"Yes\",         \"No\"       ]",
+              "ans_type": "STRING",
+              "option": "O",
+              "type": "SELECTION",
+              "id": 6,
+              "qtag": "Address Visited Verified ?"
+            },
+            {
+              "value_array": "[         \"---SELECT---\", \"1\",         \"2\",         \"3\",         \"4\",         \"5\",         \"6+\"       ]",
+              "ans_type": "STRING",
+              "option": "M",
+              "type": "SELECTION",
+              "id": 7,
+              "qtag": "Residence stability?"
+            },
+            {
+              "value_array": "[]",
+              "ans_type": "BOOLEAN",
+              "option": "O",
+              "type": "IMG",
+              "id": 8,
+              "qtag": "Interior Condition/Assets seen at residence ?"
+            },
+            {
+              "value_array": "[]",
+              "ans_type": "BOOLEAN",
+              "option": "M",
+              "type": "IMG",
+              "id": 9,
+              "qtag": "Take Photo of Passport Copy (1st Page)"
+            },
+            {
+              "value_array": "[]",
+              "ans_type": "BOOLEAN",
+              "option": "M",
+              "type": "IMG",
+              "id": 10,
+              "qtag": "Take Photo of Passport Copy (Last Page)"
+            }
+          ]
+        },
+        "rvp_qc_master": {
+          "sample_question": [
+            {
+              "code": "GEN_ITEM_DESC_CHECK",
+              "verification_mode": "CHECK",
+              "name": "Returned item is #COLOR#?",
+              "image_capture_settings": "M",
+              "id": 6,
+              "instructions": "Check if the item consignee is returning is the same what has been mentioned in the item description"
+            },
+            {
+              "code": "GEN_ITEM_COUNT_CHECK",
+              "verification_mode": "CHECK",
+              "name": "Count of items is: #COLOR#?",
+              "image_capture_settings": "O",
+              "id": 7,
+              "instructions": "Check if the count of items consignee is returning is the same."
+            },
+            {
+              "code": "GEN_ITEM_COUNT_INPUT",
+              "verification_mode": "INPUT",
+              "name": "Enter Qty handed over by customer",
+              "image_capture_settings": "O",
+              "id": 8,
+              "instructions": "Input no. of items consignee is returning"
+            },
+            {
+              "code": "GEN_ITEM_ACCESSORIES_CHECK",
+              "verification_mode": "CHECK",
+              "name": "Accessories mentioned in the brand box are there?",
+              "image_capture_settings": "M",
+              "id": 9,
+              "instructions": "Check if all the accessories mentioned in the brand box are available."
+            },
+            {
+              "code": "GEN_ITEM_NEW_CONDITION_CHECK",
+              "verification_mode": "CHECK",
+              "name": "Is item in new condition?",
+              "image_capture_settings": "O",
+              "id": 10,
+              "instructions": "Check if item being returned is new. IT SHOULD NOT BE USED."
+            },
+            {
+              "code": "GEN_ITEM_DAMAGE_CHECK",
+              "verification_mode": "CHECK",
+              "name": "Is Item intact? i.e. NOT DAMAGED",
+              "image_capture_settings": "O",
+              "id": 11,
+              "instructions": "Check if item being returned is intact. IT SHOULD NOT BE DAMAGED."
+            },
+            {
+              "code": "GEN_RETURNED_REASON_CODE_CHECK",
+              "verification_mode": "CHECK",
+              "name": "Is Returned (#COLOR#) reason valid?",
+              "image_capture_settings": "O",
+              "id": 12,
+              "instructions": "Check if the returned reason mentioned above is valid."
+            },
+            {
+              "code": "OP_ITEM_DESC_CHECK",
+              "verification_mode": "CHECK",
+              "name": "(OP)Returned item is #COLOR#?",
+              "image_capture_settings": "M",
+              "id": 17,
+              "instructions": "Check if the item consignee is returning is the same what has been mentioned in the item description"
+            },
+            {
+              "code": "OP_ITEM_COUNT_CHECK",
+              "verification_mode": "CHECK",
+              "name": "(OP)Count of items is: #COLOR#?",
+              "image_capture_settings": "O",
+              "id": 18,
+              "instructions": "Check if the count of items consignee is returning is the same."
+            },
+            {
+              "code": "OP_ITEM_COUNT_INPUT",
+              "verification_mode": "INPUT",
+              "name": "(OP)Enter Qty handed over by customer",
+              "image_capture_settings": "O",
+              "id": 19,
+              "instructions": "Input no. of items consignee is returning"
+            },
+            {
+              "code": "OP_ITEM_ACCESSORIES_CHECK",
+              "verification_mode": "CHECK",
+              "name": "(OP)Accessories mentioned in the brand box are there?",
+              "image_capture_settings": "M",
+              "id": 20,
+              "instructions": "Check if all the accessories mentioned in the brand box are available."
+            },
+            {
+              "code": "OP_ITEM_NEW_CONDITION_CHECK",
+              "verification_mode": "CHECK",
+              "name": "(OP)Is item in new condition?",
+              "image_capture_settings": "O",
+              "id": 21,
+              "instructions": "Check if item being returned is new. IT SHOULD NOT BE USED."
+            },
+            {
+              "code": "OP_ITEM_DAMAGE_CHECK",
+              "verification_mode": "CHECK",
+              "name": "(OP)Is Item intact? i.e. NOT DAMAGED",
+              "image_capture_settings": "O",
+              "id": 22,
+              "instructions": "Check if item being returned is intact. IT SHOULD NOT BE DAMAGED."
+            },
+            {
+              "code": "OP_RETURNED_REASON_CODE_CHECK",
+              "verification_mode": "CHECK",
+              "name": "(OP)Is Returned (#COLOR#) reason valid?",
+              "image_capture_settings": "O",
+              "id": 23,
+              "instructions": "Check if the returned reason mentioned above is valid."
+            },
+            {
+              "code": "GEN_MOBILE_IMEI_LAST4_INPUT",
+              "verification_mode": "INPUT_TAIL_4",
+              "name": "Enter last 4 digit of IMEI Number",
+              "image_capture_settings": "M",
+              "id": 24,
+              "instructions": "Enter last 4 digit of IMEI Number. "
+            },
+            {
+              "code": "GEN_ITEM_WORKING_CHECK",
+              "verification_mode": "CHECK",
+              "name": "Is the Item in working condition?",
+              "image_capture_settings": "M",
+              "id": 25,
+              "instructions": "Check if the electronic item/mobile phone is in working condition or not."
+            },
+            {
+              "code": "DEVICE_SWITCH_ON",
+              "verification_mode": "CHECK",
+              "name": "Device is switching ON",
+              "image_capture_settings": "O",
+              "id": 26,
+              "instructions": "Check if the device is switching ON."
+            },
+            {
+              "code": "BROKEN_DISPLAY",
+              "verification_mode": "CHECK",
+              "name": "Display not Broken",
+              "image_capture_settings": "M",
+              "id": 27,
+              "instructions": "Confirm that the Display is not Broken"
+            },
+            {
+              "code": "BRAND_BOX_AVAILABLE",
+              "verification_mode": "CHECK",
+              "name": "BRAND Box Available",
+              "image_capture_settings": "M",
+              "id": 28,
+              "instructions": "Check if item being returned have Brand Box. Otherwise item should not be picked up"
+            },
+            {
+              "code": "PHONE_CHARGER_COLLECTED",
+              "verification_mode": "CHECK",
+              "name": "PHONE Charger Collected",
+              "image_capture_settings": "M",
+              "id": 29,
+              "instructions": "Collect the Phone Charger"
+            },
+            {
+              "code": "DM_NACH_PRINT_HANDOVER_CHECK",
+              "verification_mode": "CHECK",
+              "name": "Have you given the printout of NACH form to Consignee?",
+              "image_capture_settings": "N",
+              "id": 30,
+              "instructions": "Take a Print of the form using link in Item Description"
+            },
+            {
+              "code": "DM_NACH_FORM_SIGNED_CHECK",
+              "verification_mode": "CHECK",
+              "name": "Ensure form is signed by the consignee.",
+              "image_capture_settings": "O",
+              "id": 31,
+              "instructions": "Ensure form is signed"
+            },
+            {
+              "code": "DM_NACH_FORM_CUTTING_CHECK",
+              "verification_mode": "CHECK",
+              "name": "Ensure there is no cutting on the form.",
+              "image_capture_settings": "N",
+              "id": 32,
+              "instructions": "Ensure form is completely filled by customer and there is no overwriting"
+            },
+            {
+              "code": "DM_CANCELLED_CHQ_RECD_CHECK",
+              "verification_mode": "CHECK",
+              "name": "Have you received the cancelled cheque?",
+              "image_capture_settings": "O",
+              "id": 33,
+              "instructions": "Collect Cancelled Cheque/Bank Statement Copy/Passbook copy"
+            },
+            {
+              "code": "DM_NACH_FORM_RECEIVED_CHECK",
+              "verification_mode": "CHECK",
+              "name": "Have you received signed copy of the form?",
+              "image_capture_settings": "N",
+              "id": 34,
+              "instructions": "Ensure form is completely filled by customer and there is no overwriting"
+            },
+            {
+              "code": "DM_SIGNED_CHQ_RECVD_CHECK",
+              "verification_mode": "CHECK",
+              "name": "Have you received the signed check?",
+              "image_capture_settings": "O",
+              "id": 35,
+              "instructions": "Collect signed check from the customer"
+            },
+            {
+              "code": "GEN_MOBILE_SIM_REMOVE_CHECK",
+              "verification_mode": "CHECK",
+              "name": "Has consignee removed SIM and Memory card from the phone?",
+              "image_capture_settings": "O",
+              "id": 36,
+              "instructions": "Ask consignee to remove SIM and Memory card from the phone before handing it over to you."
+            },
+            {
+              "code": "GEN_SIM_TRAY_CHECK",
+              "verification_mode": "CHECK",
+              "name": "Have you collect the SIM Tray?",
+              "image_capture_settings": "M",
+              "id": 37,
+              "instructions": "Collect the SIM Tray (in case of External SIM Tray)"
+            },
+            {
+              "code": "GEN_ITEM_BRAND_CHECK",
+              "verification_mode": "CHECK",
+              "name": "Brand Name of Item",
+              "image_capture_settings": "M",
+              "id": 38,
+              "instructions": "Does returning item have the same Brand Name mentioned in Brand? Otherwise item should Not be picked up."
+            },
+            {
+              "code": "GEN_ITEM_PRICE_TAG",
+              "verification_mode": "CHECK",
+              "name": "Check Price Tag",
+              "image_capture_settings": "M",
+              "id": 39,
+              "instructions": "Does returning item have the Price Tag? Otherwise item should Not be picked up."
+            },
+            {
+              "code": "GEN_ITEM_USAGE_AND_DAMAGE_CHEC",
+              "verification_mode": "CHECK",
+              "name": "Check Usage or damage",
+              "image_capture_settings": "M",
+              "id": 40,
+              "instructions": "Does returning item is used or Damaged? Otherwise item should not be pickedup."
+            },
+            {
+              "code": "GEN_ITEM_CATEGORY_CHECK",
+              "verification_mode": "CHECK",
+              "name": "Check Category",
+              "image_capture_settings": "M",
+              "id": 41,
+              "instructions": "Does returning item is Matching? Otherwise item should Not be picked up."
+            },
+            {
+              "code": "GEN_SERIAL_NO_CHECK",
+              "name": "Check Serial Number",
+              "image_capture_settings": "M",
+              "id": 42,
+              "instructions": "Does returning item Serial Number is Matching? Otherwise item should Not be picked up."
+            },
+            {
+              "code": "Check_Image",
+              "verification_mode": "CHECK_IMAGE",
+              "name": "Check Image",
+              "image_capture_settings": "M",
+              "id": 43,
+              "instructions": "Is the Image Matching?"
+            },
+            {
+              "code": "GEN_CUST_ID_LAST4_INPUT",
+              "verification_mode": "INPUT_TAIL_4",
+              "name": "Enter last 4 digit of Customer Number",
+              "id": 44,
+              "instructions": "Enter last 4 digit of Customer Number"
+            },
+            {
+              "code": "DM_CUSTOMER_DOC_RECD_CHECK",
+              "verification_mode": "INPUT_LAST_4",
+              "name": "Collect and enter the customer document Identification Number",
+              "image_capture_settings": "M",
+              "id": 45,
+              "instructions": "Please collect and enter the customer document Identification Number."
+            },
+            {
+              "code": "df9e2339-4d70-4561-ba8d-14e5c12e5ab5",
+              "verification_mode": "CHECK",
+              "name": "Is the price tag attached to the item?",
+              "id": 46,
+              "instructions": "Verify the Price Tag"
+            },
+            {
+              "code": "e3322b4e-204e-42d4-826f-4234d7135620",
+              "verification_mode": "INPUT_TAIL_5",
+              "name": "Dial *#06# to find the IMEI number. Enter the last 5 digits of the IMEI number here:",
+              "image_capture_settings": "M",
+              "id": 47,
+              "instructions": "Enter last 5 digit of IMEI Number"
+            },
+            {
+              "code": "094e8854-128f-4dc0-82cc-7b06295d5f28",
+              "verification_mode": "INPUT_TAIL_5",
+              "name": "Dial *#06# to find the IMEI number. Enter the last 5 digits of the IMEI number here",
+              "image_capture_settings": "M",
+              "id": 48,
+              "instructions": "Enter last 5 digit of IMEI Number."
+            },
+            {
+              "code": "88864b10-9a45-4985-8ec2-e4d6cd89bfa4",
+              "verification_mode": "CHECK",
+              "name": "Is the packaging and item of #COLOR# brand ?",
+              "id": 49,
+              "instructions": "Is the packaging and item is of brand ?"
+            },
+            {
+              "code": "04bfaf30-5a68-11e8-9c2d-fa7ae01bbebc",
+              "verification_mode": "CHECK_IMAGE",
+              "name": "Does the return item match with image ?",
+              "id": 50,
+              "instructions": "The return item should match with the image"
+            },
+            {
+              "code": "7E87A48F-A679-4945-953E-3F24E41B2DAC",
+              "verification_mode": "CHECK",
+              "name": "Is the packaging & item of #COLOR# brand.",
+              "id": 51,
+              "instructions": "Is the packaging and item of #COLOR# brand ?"
+            },
+            {
+              "code": "CHECK_TAGS",
+              "verification_mode": "CHECK",
+              "name": "Check the count is #COLOR# and all items have tag ?",
+              "image_capture_settings": "M",
+              "id": 52,
+              "instructions": "Check if the count of items consignee is returning is the same and all Tags are intact, attached to items?"
+            },
+            {
+              "code": "CHECK_EAN1",
+              "verification_mode": "INPUT_TAIL_4",
+              "name": "Enter last 4 digit of EAN number of item1",
+              "id": 53,
+              "instructions": "Enter the last 4 digits of EAN number mentioned on the tag of item 1."
+            },
+            {
+              "code": "CHECK_EAN2",
+              "verification_mode": "INPUT_TAIL_4",
+              "name": "Enter last 4 digit of EAN number of item2",
+              "id": 54,
+              "instructions": "Enter the last 4 digits of EAN number mentioned on the tag of item 2."
+            },
+            {
+              "code": "CHECK_EAN3",
+              "verification_mode": "INPUT_TAIL_4",
+              "name": "Enter last 4 digit of EAN number of item3",
+              "id": 55,
+              "instructions": "Enter the last 4 digits of EAN number mentioned on the tag of item 3."
+            },
+            {
+              "code": "CHECK_EAN4",
+              "verification_mode": "INPUT_TAIL_4",
+              "name": "Enter last 4 digit of EAN number of item4",
+              "id": 56,
+              "instructions": "Enter the last 4 digits of EAN number mentioned on the tag of item 4."
+            },
+            {
+              "code": "CHECK_EAN5",
+              "verification_mode": "INPUT_TAIL_4",
+              "name": "Enter last 4 digit of EAN number of item5",
+              "id": 57,
+              "instructions": "Enter the last 4 digits of EAN number mentioned on the tag of item 5."
+            },
+            {
+              "code": "CHECK_TAGS_ATTACHED1",
+              "verification_mode": "CHECK",
+              "name": "Item 1 is \"#COLOR#\". Is the tag intact and attached to item \"#COLOR#\"?",
+              "image_capture_settings": "M",
+              "id": 58,
+              "instructions": "Match the item description with the item consignee giving. The tag should be attached and not damaged with the item."
+            },
+            {
+              "code": "GEN_ITEM_COUNT_CHECK",
+              "verification_mode": "CHECK",
+              "name": "Count of items is: #COLOR#?",
+              "image_capture_settings": "M",
+              "id": 59,
+              "instructions": "Check if the count of items consignee returning is the same."
+            },
+            {
+              "code": "CHECK_PACKAGING",
+              "verification_mode": "CHECK",
+              "name": "Is item fits into the packaging?",
+              "image_capture_settings": "M",
+              "id": 60,
+              "instructions": "All Items should fit into Ecom's packaging material."
+            },
+            {
+              "code": "CHECK_TAGS_ATTACHED2",
+              "verification_mode": "CHECK",
+              "name": "Item 2 is \"#COLOR#\". Is the tag intact and attached to item \"#COLOR#\"?",
+              "image_capture_settings": "M",
+              "id": 61,
+              "instructions": "Match the item description with the item consignee giving. The tag should be attached and not damaged with the item."
+            },
+            {
+              "code": "CHECK_TAGS_ATTACHED3",
+              "verification_mode": "CHECK",
+              "name": "Item 3 is \"#COLOR#\". Is the tag intact and attached to item \"#COLOR#\"?",
+              "image_capture_settings": "M",
+              "id": 62,
+              "instructions": "Match the item description with the item consignee giving. The tag should be attached and not damaged with the item."
+            },
+            {
+              "code": "CHECK_TAGS_ATTACHED4",
+              "verification_mode": "CHECK",
+              "name": "Item 4 is \"#COLOR#\". Is the tag intact and attached to item \"#COLOR#\"?",
+              "image_capture_settings": "M",
+              "id": 63,
+              "instructions": "Match the item description with the item consignee giving. The tag should be attached and not damaged with the item."
+            },
+            {
+              "code": "CHECK_TAGS_ATTACHED5",
+              "verification_mode": "CHECK",
+              "name": "Item 5 is \"#COLOR#\". Is the tag intact and attached to item \"#COLOR#\"?",
+              "image_capture_settings": "M",
+              "id": 64,
+              "instructions": "Match the item description with the item consignee giving. The tag should be attached and not damaged with the item."
+            },
+            {
+              "code": "CHECK_TAGS_ATTACHED6",
+              "verification_mode": "CHECK",
+              "name": "Item 6 is \"#COLOR#\". Is the tag intact and attached to item \"#COLOR#\"?",
+              "image_capture_settings": "M",
+              "id": 65,
+              "instructions": "Match the item description with the item consignee giving. The tag should be attached and not damaged with the item."
+            },
+            {
+              "code": "CHECK_TAGS_ATTACHED7",
+              "verification_mode": "CHECK",
+              "name": "Item 7 is \"#COLOR#\". Is the tag intact and attached to item \"#COLOR#\"?",
+              "image_capture_settings": "M",
+              "id": 66,
+              "instructions": "Match the item description with the item consignee giving. The tag should be attached and not damaged with the item."
+            },
+            {
+              "code": "CHECK_TAGS_ATTACHED8",
+              "verification_mode": "CHECK",
+              "name": "Item 8 is \"#COLOR#\". Is the tag intact and attached to item \"#COLOR#\"?",
+              "image_capture_settings": "M",
+              "id": 67,
+              "instructions": "Match the item description with the item consignee giving. The tag should be attached and not damaged with the item."
+            },
+            {
+              "code": "CHECK_TAGS_ATTACHED9",
+              "verification_mode": "CHECK",
+              "name": "Item 9 is \"#COLOR#\". Is the tag intact and attached to item \"#COLOR#\"?",
+              "image_capture_settings": "M",
+              "id": 68,
+              "instructions": "Match the item description with the item consignee giving. The tag should be attached and not damaged with the item."
+            },
+            {
+              "code": "CHECK_TAGS_ATTACHED10",
+              "verification_mode": "CHECK",
+              "name": "Item 10 is \"#COLOR#\". Is the tag intact and attached to item \"#COLOR#\"?",
+              "image_capture_settings": "M",
+              "id": 69,
+              "instructions": "Match the item description with the item consignee giving. The tag should be attached and not damaged with the item."
+            },
+            {
+              "code": "CHECK_EAN6",
+              "verification_mode": "INPUT_TAIL_4",
+              "name": "Enter last 4 digit of EAN number of item6",
+              "id": 70,
+              "instructions": "Enter the last 4 digits of EAN number mentioned on the tag of item 6."
+            },
+            {
+              "code": "CHECK_EAN7",
+              "verification_mode": "INPUT_TAIL_4",
+              "name": "Enter last 4 digit of EAN number of item7",
+              "id": 71,
+              "instructions": "Enter the last 4 digits of EAN number mentioned on the tag of item 7."
+            },
+            {
+              "code": "CHECK_EAN8",
+              "verification_mode": "INPUT_TAIL_4",
+              "name": "Enter last 4 digit of EAN number of item8",
+              "id": 72,
+              "instructions": "Enter the last 4 digits of EAN number mentioned on the tag of item 8."
+            },
+            {
+              "code": "CHECK_EAN9",
+              "verification_mode": "INPUT_TAIL_4",
+              "name": "Enter last 4 digit of EAN number of item9",
+              "id": 73,
+              "instructions": "Enter the last 4 digits of EAN number mentioned on the tag of item 9."
+            },
+            {
+              "code": "CHECK_EAN10",
+              "verification_mode": "INPUT_TAIL_4",
+              "name": "Enter last 4 digit of EAN number of item10",
+              "id": 74,
+              "instructions": "Enter the last 4 digits of EAN number mentioned on the tag of item 10."
+            },
+            {
+              "code": "0001533630829774fa163ec8ffff91fa0002",
+              "verification_mode": "CHECK",
+              "name": "Check the Price Tag is available ?",
+              "image_capture_settings": "M",
+              "id": 75,
+              "instructions": "Does returning item have the Price Tag? Otherwise item should Not be picked up."
+            },
+            {
+              "code": "0001533630787611fa163e566ea60002",
+              "verification_mode": "CHECK",
+              "name": "Is the item of #COLOR# brand ?",
+              "id": 76,
+              "instructions": "Is the item of #COLOR# brand ?"
+            },
+            {
+              "code": "0001533630843586fa163e566ea60001",
+              "verification_mode": "CHECK",
+              "name": "Check Brand Box is available?",
+              "image_capture_settings": "M",
+              "id": 77,
+              "instructions": "Does returning item have the Brand Box? Otherwise item should Not be picked up."
+            },
+            {
+              "code": "GEN_ITEM_MODEL_CHECK",
+              "verification_mode": "CHECK",
+              "name": "Check Model Number",
+              "image_capture_settings": "M",
+              "id": 78,
+              "instructions": "Does returning item Model Number is Matching? Otherwise item should Not be picked up."
+            },
+            {
+              "code": "CHECK_SCREEN_DAMAGE",
+              "verification_mode": "CHECK_IMAGE",
+              "name": "Screen Check with Image",
+              "image_capture_settings": "M",
+              "id": 79,
+              "instructions": "Is screen have any lines or spot like this image ? Do not pick if yes otherwise pick."
+            },
+            {
+              "code": "GEN_ITEM_DESC_CHECK_IMAGE",
+              "verification_mode": "CHECK",
+              "name": "Returned item is #DEVICE#? Click tag image.",
+              "image_capture_settings": "M",
+              "id": 80,
+              "instructions": "Check if the item consignee is returning is the same what has been mentioned in the item description and take picture."
+            },
+            {
+              "code": "0001533630800606fa163e566ea60002",
+              "verification_mode": "CHECK",
+              "name": "Check the product size is [#COLOR#] ?",
+              "image_capture_settings": "M",
+              "id": 81,
+              "instructions": "Check & verify the size of the product. Take a picture of the label as well."
+            },
+            {
+              "code": "0001533721263620fa163ec8ffff91fa0001",
+              "verification_mode": "CHECK",
+              "name": "Check the product is of Color #COLOR# ?",
+              "id": 82,
+              "instructions": "Check & verify the color of the product."
+            },
+            {
+              "code": "0001533630640714fa163ec8ffff91fa0002",
+              "verification_mode": "CHECK",
+              "name": "Is the Item intact? i.e. NOT DAMAGED",
+              "image_capture_settings": "M",
+              "id": 83,
+              "instructions": "Check if item being returned is intact & not damaged."
+            },
+            {
+              "code": "0001533630857757fa163e566ea60002",
+              "verification_mode": "INPUT_TAIL_4",
+              "name": " Enter last 4 digit of IMEI Number.",
+              "image_capture_settings": "M",
+              "id": 84,
+              "instructions": "Switch on the phone and dial *#06# to see the IMEI. Enter last 4 digit of the PRIMARY IMEI number."
+            },
+            {
+              "code": "0001533630666796fa163e566ea60002",
+              "verification_mode": "CHECK",
+              "name": "Check if all the accessories mentioned on the brand box are available ?",
+              "image_capture_settings": "M",
+              "id": 86,
+              "instructions": "Check if all the accessories mentioned on the brand box are available."
+            },
+            {
+              "code": "0001533630701591fa163ec8ffff91fa0002",
+              "verification_mode": "CHECK_IMAGE",
+              "name": "Does the return item match with image?",
+              "image_capture_settings": "M",
+              "id": 87,
+              "instructions": "The return item should match with the image."
+            },
+            {
+              "code": "0001555495566125fa163ec6ffffe8170002",
+              "verification_mode": "CHECK",
+              "name": "Is the Item intact? it is NOT DAMAGED",
+              "image_capture_settings": "M",
+              "id": 88,
+              "instructions": "Check if item being returned is intact and Not Damaged?Otherwise item should Not be picked up."
+            },
+            {
+              "code": "0001533630747725fa163e566ea60001",
+              "verification_mode": "CHECK",
+              "name": "Check if consignee has received Partial order?",
+              "id": 89,
+              "instructions": "Check if consignee has received Partial order?"
+            },
+            {
+              "code": "0001533630686160fa163e566ea60002",
+              "verification_mode": "CHECK",
+              "name": "Check if the item is not used ?",
+              "id": 90,
+              "instructions": "Check if consignee has not used the item."
+            },
+            {
+              "code": "0001533630758718fa163ec8ffff91fa0002",
+              "verification_mode": "CHECK",
+              "name": "Check the item consignee received is used ?",
+              "id": 91,
+              "instructions": "Check the item consignee received is used."
+            },
+            {
+              "code": "0001533630729510fa163e566ea60001",
+              "verification_mode": "CHECK",
+              "name": "Check if consignee hasn't received the Freebies?",
+              "id": 92,
+              "instructions": "Check if consignee hasn't received the Freebies?"
+            },
+            {
+              "code": "0001555495265768fa163ec6ffffe8170001",
+              "verification_mode": "CHECK",
+              "name": "Check the product is of COLOR as mentioned ?",
+              "image_capture_settings": "M",
+              "id": 93,
+              "instructions": "Check and verify the Color of the product."
+            },
+            {
+              "code": "0001555495227330fa163ec6ffffe8170001",
+              "verification_mode": "CHECK",
+              "name": "Does returning item have the BRAND BOX? ",
+              "image_capture_settings": "M",
+              "id": 94,
+              "instructions": "Does returning item have the Brand Box? Otherwise item should Not be picked up."
+            },
+            {
+              "code": "0001555495442777fa163ec6ffffe8170001",
+              "verification_mode": "CHECK",
+              "name": "Check if all the ACCESSORIES mentioned on the brand box are available ?",
+              "image_capture_settings": "M",
+              "id": 95,
+              "instructions": "Check if all the Accessories mentioned on the brand box are available?Otherwise item should Not be picked up."
+            },
+            {
+              "code": "0001555495685593fa163ec6ffffe8170001",
+              "verification_mode": "CHECK_IMAGE",
+              "name": "Does the return item match with IMAGE?",
+              "image_capture_settings": "M",
+              "id": 96,
+              "instructions": "Is the Image Matching? Otherwise item should Not be picked up."
+            },
+            {
+              "code": "0001555495409689fa163ec6ffffe8170002",
+              "verification_mode": "CHECK",
+              "name": "Check the product SIZE is [#COLOR#] ?",
+              "image_capture_settings": "M",
+              "id": 98,
+              "instructions": "Check & verify the Size of the product. Take a picture of the label as well."
+            },
+            {
+              "code": "0001557471614269fa163ec6ffffe8170001",
+              "verification_mode": "CHECK_IMAGE",
+              "name": "Is product matching with the image?",
+              "image_capture_settings": "M",
+              "id": 99,
+              "instructions": "Is the Image Matching? Otherwise item should Not be picked up."
+            },
+            {
+              "code": "0001557576413772fa163ec6ffffe8170002",
+              "verification_mode": "CHECK_IMAGE",
+              "name": "Is product not matching with the image?",
+              "image_capture_settings": "M",
+              "id": 100,
+              "instructions": "Check the item consignee received is not the same image."
+            },
+            {
+              "code": "CHECK_SCREEN_DAMAGE_IMAGE",
+              "verification_mode": "CHECK_IMAGE",
+              "name": "Is screen have any lines or spot like this image ? Do not pick if yes otherwise pick.",
+              "image_capture_settings": "M",
+              "id": 101,
+              "instructions": "Is screen have any lines or spot like this image ? Do not pick if yes otherwise pick."
+            }
+          ]
+        }
+      },
+      "global_configuration": [
+        {
+          "config_group": "APP_FOOTER",
+          "config_value": "All copyrights are reserved by <font color='#C02222'> Ecom</font><font color='#333E86'> Express</font> Pvt. Ltd. @2019"
+        },
+        {
+          "config_group": "CONSIGNEE_PROFILING",
+          "config_value": "W"
+        },
+        {
+          "config_group": "CONSIGNEE_PROFILING_ENABLE",
+          "config_value": "true"
+
+        },
+        {
+          "config_group": "DC_RANGE",
+          "config_value": "50"
+        },
+        {
+          "config_group": "DIRECT_CLOUD_IMAGE_UPLD",
+          "config_value": "0"
+        },
+        {
+          "config_group": "EDS",
+          "config_value": "true"
+        },
+        {
+          "config_group": "EDS_REAL_TIME_IMAGE_SYNC",
+          "config_value": "false"
+        },
+        {
+          "config_group": "EDS_UNATTEMPTED_CODE",
+          "config_value": "2407"
+        },
+        {
+          "config_group": "FORWARD",
+          "config_value": "true"
+        },
+        {
+          "config_group": "FWD_DELIVERED",
+          "config_value": ""
+        },
+        {
+          "config_group": "FWD_UNATTEMPTED_CODE",
+          "config_value": "22703"
+        },
+        {
+          "config_group": "FWD_UNDELIVERED",
+          "config_value": ""
+        },
+        {
+          "config_group": "IT_HELP_CALL_BRIDGE",
+          "config_value": "01140849087"
+        },
+        {
+          "config_group": "PERFORMANCE_URL",
+          "config_value": "https://test.ecomexpress.in:8020"
+        },
+        {
+          "config_group": "RELATION",
+          "config_value": "Self,Family,Friend,Security,Self-Collect at DC,Others"
+        },
+        {
+          "config_group": "RTS",
+          "config_value": "false"
+        },
+        {
+          "config_group": "RTS_UNATTEMPTED_CODE",
+          "config_value": "228"
+        },
+        {
+          "config_group": "RVP",
+          "config_value": "true"
+        },
+        {
+          "config_group": "RVP_REAL_TIME_IMAGE_SYNC",
+          "config_value": "false"
+        },
+        {
+          "config_group": "RVP_UNATTEMPTED_CODE",
+          "config_value": "408"
+        },
+        {
+          "config_group": "S3_CONFIG",
+          "config_value": "{“access-key”:”XXXX”,”secret-key”:”XXX”}"
+        },
+        {
+          "config_group": "SOS_NUMBERS",
+          "config_value": "8377009537,9899384289"
+        },
+        {
+          "config_group": "SOS_SMS_TEMPLATE",
+          "config_value": "@@EMPCODE has raised a SOS Alert from https://maps.google.com/?q=@@LATITUDE,@@LONGITUDE location."
+        },
+        {
+          "config_group": "STOP_TRIP_ALERT_KM",
+          "config_value": "80"
+        },
+        {
+          "config_group": "TRIP_GEOFENCING",
+          "config_value": "W"
+        },
+        {
+          "config_group": "IS_SCAN_AWB",
+          "config_value": "false"
+
+        }
+      ],
+      "callbridge_configuration": {
+        "cb_calling_type": "API",
+        "cb_calling_api": "KALEYRA_MAIN_API"
+      },
+      "banner_configuration": {
+        "dashboard_banner": [
+          {
+            "short_url": "https://www.ecomexpress.in/ecom-assets/uploads/2017/01/ecom-logo.png",
+            "long_url": "https://www.ecomexpress.in/",
+            "type":"image",
+            "title": "Ecom Express"
+          },
+          {
+            "short_url": "http://falm.ecomexpress.in/ecom_data/udaan/Banner.html",
+            "long_url": "http://falm.ecomexpress.in/ecom_data/udaan/Banner.html",
+            "type":"image",
+            "title": "Leave Management"
+
+          },
+          {
+            "short_url": "https://www.youtube.com/embed/_nVaY5GLLog",
+            "long_url": "https://www.youtube.com/embed/_nVaY5GLLog",
+            "type":"video",
+            "title": "video"
+          }
+        ]
+      }
+    }
+
+  }
+}

@@ -1,0 +1,40 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.dashboard.attendance.custom_dialog.CustomDialogItemViewModel" />
+
+    </data>
+
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="@dimen/_10DP"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="@drawable/pin_keyboard_background"
+                android:layout_margin="@dimen/_5DP">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="@dimen/_80DP"
+                    android:layout_height="@dimen/_80DP"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/jan"
+                    android:id="@+id/month_name"
+                    android:padding="@dimen/_10DP"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13SP"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

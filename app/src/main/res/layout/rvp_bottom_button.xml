@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_15DP"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/undeliveredShipmentButton"
+        android:layout_width="@dimen/_0DP"
+        android:layout_height="@dimen/_45DP"
+        android:textColor="@color/blue_8F"
+        android:textSize="@dimen/_16SP"
+        app:backgroundTint="@null"
+        android:layout_marginEnd="@dimen/_8DP"
+        android:fontFamily="@font/roboto_medium"
+        android:background="@drawable/blue_border_button"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/deliveredShipmentButton"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/deliveredShipmentButton"
+        android:layout_width="@dimen/_0DP"
+        android:layout_height="@dimen/_45DP"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_16SP"
+        app:backgroundTint="@null"
+        android:layout_marginStart="@dimen/_8DP"
+        android:fontFamily="@font/roboto_medium"
+        android:backgroundTint="@color/blue_8F"
+        android:background="@drawable/bg_curve_corner"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/undeliveredShipmentButton"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

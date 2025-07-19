@@ -1,0 +1,37 @@
+{
+  "emp_code": 47785,
+  "device_details": {
+    "name": "Oppo F3",
+    "model_no": "CPH1069",
+    "manufacturer": "Oppo",
+    "O.S Version": "6.0",
+    "kernal_version": "3.18.22",
+    "manufacturer_OS_Version": "V3.0.0i"
+  },
+  "errors": [
+    {
+      "timestamp": "0989152321123",
+      "error_body": "04-04 18:05:49.332 15023-15023/in.ecomexpress.sathi E/WindowManager: android.view.WindowLeaked: Activity in.ecomexpress.sathi.ui.dashboard.main.DashboardActivity has leaked window DecorView@45ad7bd[] that was originally added here at android.view.ViewRootImpl.<init>(ViewRootImpl.java:48) at android.view.WindowManagerGlobal.addView(WindowManagerGlobal.java:346) at android.view.WindowManagerImpl.addView(WindowManagerImpl.java:92)at android.app.Dialog.show(Dialog.java:330) at in.ecomexpress.sathi.ui.dashboard.main.DashboardViewModel.onDRSListApiCall(DashboardViewModel.ja=va:165) at in.ecomexpress.sathi.ui.dashboard.main.DashboardActivity.onSyncClick(DashboardActivity.java:342) at in.ecomexpress.sathi.ui.dashboard.main.DashboardViewModel.onSyncClick(DashboardViewModel.java:127) at in.ecomexpress.sathi.databinding.ActivityDashboardBinding._internalCallbackOnClick(ActivityDashboardBinding.java:359)at android.databinding.generated.callback.OnClickListener.onClick(OnClickListener.java:11) at android.view.View.performClick(View.java:6256)at android.view.View$PerformClick.run(View.java:24701) at android.os.Handler.handleCallback(Handler.java:789) at android.os.Handler.dispatchMessage(Handler.java:98) at android.os.Looper.loop(Looper.java:164) at android.app.ActivityThread.main(ActivityThread.java:6541)at java.lang.reflect.Method.invoke(Native Method) at com.android.internal.os.Zygote$MethodAndArgsCaller.run(Zygote.java:240)at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:767)",
+      "location": {
+        "lat": 28.98399,
+        "lng": 75.909099
+      }
+    },
+    {
+      "timestamp": "0989152321123",
+      "error_body": "04-04 18:05:49.332 15023-15023/in.ecomexpress.sathi E/WindowManager: android.view.WindowLeaked: Activity in.ecomexpress.sathi.ui.dashboard.main.DashboardActivity has leaked window DecorView@45ad7bd[] that was originally added here at android.view.ViewRootImpl.<init>(ViewRootImpl.java:48) at android.view.WindowManagerGlobal.addView(WindowManagerGlobal.java:346) at android.view.WindowManagerImpl.addView(WindowManagerImpl.java:92)at android.app.Dialog.show(Dialog.java:330) at in.ecomexpress.sathi.ui.dashboard.main.DashboardViewModel.onDRSListApiCall(DashboardViewModel.ja=va:165) at in.ecomexpress.sathi.ui.dashboard.main.DashboardActivity.onSyncClick(DashboardActivity.java:342) at in.ecomexpress.sathi.ui.dashboard.main.DashboardViewModel.onSyncClick(DashboardViewModel.java:127) at in.ecomexpress.sathi.databinding.ActivityDashboardBinding._internalCallbackOnClick(ActivityDashboardBinding.java:359)at android.databinding.generated.callback.OnClickListener.onClick(OnClickListener.java:11) at android.view.View.performClick(View.java:6256)at android.view.View$PerformClick.run(View.java:24701) at android.os.Handler.handleCallback(Handler.java:789) at android.os.Handler.dispatchMessage(Handler.java:98) at android.os.Looper.loop(Looper.java:164) at android.app.ActivityThread.main(ActivityThread.java:6541)at java.lang.reflect.Method.invoke(Native Method) at com.android.internal.os.Zygote$MethodAndArgsCaller.run(Zygote.java:240)at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:767)",
+      "location": {
+        "lat": 28.98399,
+        "lng": 75.909099
+      }
+    },
+    {
+      "timestamp": "0989152321123",
+      "error_body": "04-04 18:05:49.332 15023-15023/in.ecomexpress.sathi E/WindowManager: android.view.WindowLeaked: Activity in.ecomexpress.sathi.ui.dashboard.main.DashboardActivity has leaked window DecorView@45ad7bd[] that was originally added here at android.view.ViewRootImpl.<init>(ViewRootImpl.java:48) at android.view.WindowManagerGlobal.addView(WindowManagerGlobal.java:346) at android.view.WindowManagerImpl.addView(WindowManagerImpl.java:92)at android.app.Dialog.show(Dialog.java:330) at in.ecomexpress.sathi.ui.dashboard.main.DashboardViewModel.onDRSListApiCall(DashboardViewModel.ja=va:165) at in.ecomexpress.sathi.ui.dashboard.main.DashboardActivity.onSyncClick(DashboardActivity.java:342) at in.ecomexpress.sathi.ui.dashboard.main.DashboardViewModel.onSyncClick(DashboardViewModel.java:127) at in.ecomexpress.sathi.databinding.ActivityDashboardBinding._internalCallbackOnClick(ActivityDashboardBinding.java:359)at android.databinding.generated.callback.OnClickListener.onClick(OnClickListener.java:11) at android.view.View.performClick(View.java:6256)at android.view.View$PerformClick.run(View.java:24701) at android.os.Handler.handleCallback(Handler.java:789) at android.os.Handler.dispatchMessage(Handler.java:98) at android.os.Looper.loop(Looper.java:164) at android.app.ActivityThread.main(ActivityThread.java:6541)at java.lang.reflect.Method.invoke(Native Method) at com.android.internal.os.Zygote$MethodAndArgsCaller.run(Zygote.java:240)at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:767)",
+      "location": {
+        "lat": 28.98399,
+        "lng": 75.909099
+      }
+    }
+  ]
+}

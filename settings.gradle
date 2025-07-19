@@ -1,0 +1,1 @@
+include ':app', ':MswipeWSDKVer1.0.12v3.4.2',':encryptionmodule-release', ':logistic-30Jan2020'

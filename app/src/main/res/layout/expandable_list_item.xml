@@ -1,0 +1,41 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.ecomexpress.sathi.ui.todolist.ToDoListActivity">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.drs.todolist.ToDoListViewModel" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/childview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/ischeck"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:buttonTint="@color/colorPrimaryDark" />
+
+            <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                android:id="@+id/lblListItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:hint="@string/stop"
+                android:padding="@dimen/_10DP"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="13sp" />
+        </LinearLayout>
+    </FrameLayout>
+</layout>

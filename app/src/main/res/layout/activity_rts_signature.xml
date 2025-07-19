@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.ecomexpress.sathi.ui.drs.rts.rts_signature.RTSSignatureActivity">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.drs.rts.rts_signature.RTSSignatureViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/green_FF"
+            android:padding="@dimen/_5DP"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15DP"
+                android:layout_marginTop="@dimen/_20DP"
+                android:layout_marginBottom="@dimen/_20DP"
+                android:contentDescription="@string/rts_signature"
+                android:src="@drawable/ic_back_arrow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/titleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15DP"
+                android:text="@string/rts_signature"
+                android:textColor="@color/black_1A"
+                android:textSize="@dimen/_20SP"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/back"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/versionName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/v2_0_0"
+                android:textColor="@color/black_1A"
+                android:textSize="@dimen/_15SP"
+                android:textStyle="bold"
+                android:layout_marginEnd="@dimen/_10DP"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ScrollView
+            android:id="@+id/rtsSignatureScrollView"
+            android:layout_width="@dimen/_0DP"
+            android:layout_height="@dimen/_0DP"
+            android:fillViewport="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutHeader"
+            app:layout_constraintBottom_toTopOf="@id/submitButton">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/rtsMainLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_5DP">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/shipmentsDetailsLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_5DP"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/vendor_name_tv"
+                        android:layout_width="@dimen/_0DP"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_10DP"
+                        android:gravity="center"
+                        android:text="@{viewModel.vendor_name_tv}"
+                        android:textColor="@color/black_1A"
+                        android:textSize="@dimen/_17SP"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/scannedDelivered"
+                        android:layout_width="@dimen/_0DP"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@{viewModel.scannedDelivered}"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13SP"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/vendor_name_tv"
+                        app:layout_constraintWidth_percent="0.5" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/undeliveredShipments"
+                        android:layout_width="@dimen/_0DP"
+                        android:layout_height="wrap_content"
+                        android:text="@={viewModel.undeliveredShipments}"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13SP"
+                        app:layout_constraintStart_toEndOf="@id/scannedDelivered"
+                        app:layout_constraintTop_toBottomOf="@id/vendor_name_tv"
+                        app:layout_constraintWidth_percent="0.5" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/manuallyDelivered"
+                        android:layout_width="@dimen/_0DP"
+                        android:layout_height="wrap_content"
+                        android:text="@={viewModel.manuallyDelivered}"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13SP"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/scannedDelivered"
+                        app:layout_constraintWidth_percent="0.5" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/totalShipmentsCount"
+                        android:layout_width="@dimen/_0DP"
+                        android:layout_height="wrap_content"
+                        android:text="@={viewModel.totalShipmentsCount}"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13SP"
+                        app:layout_constraintStart_toEndOf="@id/manuallyDelivered"
+                        app:layout_constraintTop_toBottomOf="@id/undeliveredShipments"
+                        app:layout_constraintWidth_percent="0.5" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/disputedDelivered"
+                        android:layout_width="@dimen/_0DP"
+                        android:layout_height="wrap_content"
+                        android:text="@={viewModel.disputedDelivered}"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13SP"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/manuallyDelivered"
+                        app:layout_constraintWidth_percent="0.5" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/assignedDate"
+                        android:layout_width="@dimen/_0DP"
+                        android:layout_height="wrap_content"
+                        android:text="@={viewModel.assignedDate}"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13SP"
+                        app:layout_constraintStart_toEndOf="@id/disputedDelivered"
+                        app:layout_constraintTop_toBottomOf="@id/totalShipmentsCount"
+                        app:layout_constraintWidth_percent="0.5" />
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_usr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10DP"
+                        android:background="@drawable/border"
+                        android:cursorVisible="true"
+                        android:textColor="@color/black"
+                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-' 1234567890"
+                        android:hint="@string/receiver_name"
+                        android:textColorHint="@color/black"
+                        android:inputType="textCapWords"
+                        android:maxLength="25"
+                        android:padding="@dimen/_5DP"
+                        android:text="@={viewModel.et_usr}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/disputedDelivered" />
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5DP"
+                        android:background="@drawable/border"
+                        android:cursorVisible="true"
+                        android:textColor="@color/black"
+                        android:hint="@string/rts_phone"
+                        android:textColorHint="@color/black"
+                        android:inputType="number"
+                        android:maxLength="10"
+                        android:padding="@dimen/_5DP"
+                        android:text="@={viewModel.et_phone}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/et_usr" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/captureImageMandatory"
+                        android:layout_width="@dimen/_0DP"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_15DP"
+                        android:gravity="start"
+                        android:text="@string/capture_image_rts"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_15SP"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@id/increasePodImageCount"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/et_phone"
+                        app:layout_constraintWidth_percent="0.9" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/increasePodImageCount"
+                        android:layout_width="@dimen/_0DP"
+                        android:layout_height="@dimen/_40DP"
+                        android:layout_marginTop="@dimen/_5DP"
+                        android:backgroundTint="@color/black_1A"
+                        android:visibility="invisible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/captureImageMandatory"
+                        app:layout_constraintTop_toBottomOf="@id/et_phone"
+                        app:layout_constraintWidth_percent="0.1"
+                        app:srcCompat="@drawable/add_camera_icon" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/podImageRecyclerview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_5DP"
+                        tools:listitem="@layout/multiple_image_pod"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/increasePodImageCount" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/ll_ud_otp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5DP"
+                    android:background="@drawable/rounded_background"
+                    android:elevation="@dimen/_10DP"
+                    android:padding="@dimen/_10DP"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/shipmentsDetailsLayout">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_number_statement"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/otpLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_number_statement">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_ud_otp"
+                            android:layout_width="@dimen/_0DP"
+                            android:layout_height="wrap_content"
+                            android:enabled="false"
+                            android:gravity="center"
+                            android:hint="@string/rts_enter_otp"
+                            android:textColorHint="@color/black"
+                            android:textColor="@color/black"
+                            android:inputType="number"
+                            android:maxLength="6"
+                            android:maxLines="1"
+                            android:textSize="@dimen/_13SP"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/resend_otp_tv"
+                            app:layout_constraintHorizontal_weight="0.035"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/resend_otp_tv"
+                            android:layout_width="@dimen/_0DP"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_5DP"
+                            android:layout_marginEnd="@dimen/_5DP"
+                            android:background="@drawable/rts_button"
+                            app:backgroundTint="@null"
+                            android:gravity="center"
+                            android:padding="@dimen/_5DP"
+                            android:text="@string/resend"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_13SP"
+                            android:textStyle="bold"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/generate_otp_tv"
+                            app:layout_constraintHorizontal_weight="0.03"
+                            app:layout_constraintStart_toEndOf="@id/edt_ud_otp"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/generate_otp_tv"
+                            android:layout_width="@dimen/_0DP"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_10DP"
+                            android:background="@drawable/rts_button"
+                            app:backgroundTint="@null"
+                            android:gravity="center"
+                            android:padding="@dimen/_5DP"
+                            android:text="@string/generate_Otp"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_13SP"
+                            android:textStyle="bold"
+                            android:visibility="visible"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/verify_tv"
+                            app:layout_constraintHorizontal_weight="0.03"
+                            app:layout_constraintStart_toEndOf="@id/resend_otp_tv"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/verify_tv"
+                            android:layout_width="@dimen/_0DP"
+                            android:layout_height="wrap_content"
+                            app:backgroundTint="@null"
+                            android:background="@drawable/rts_button"
+                            android:gravity="center"
+                            android:padding="@dimen/_5DP"
+                            android:text="@string/verify"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_13SP"
+                            android:textStyle="bold"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_weight="0.03"
+                            app:layout_constraintStart_toEndOf="@id/generate_otp_tv"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/ch_skip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:text="@string/skip"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/otpLayout" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/img_verified_tick"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/scan_tick"
+                        android:visibility="@{viewModel.ud_otp_verified_status ? View.VISIBLE : View.GONE}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ch_skip" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/rtsSignatureView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_5DP"
+                    android:layout_marginTop="@dimen/_5DP"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ll_ud_otp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/rts_signature_star"
+                        android:layout_width="@dimen/_0DP"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5DP"
+                        android:text="@string/rts_signature_star"
+                        android:textColor="@color/black_1A"
+                        android:textSize="@dimen/_15SP"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@+id/clearSignaturePad"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/clearSignaturePad"
+                        android:layout_width="@dimen/_0DP"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_5DP"
+                        android:gravity="end"
+                        android:text="@string/rts_clear"
+                        android:textColor="@color/black_1A"
+                        android:textSize="@dimen/_15SP"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/rts_signature_star"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <in.ecomexpress.sathi.utils.signature_pad.views.SignaturePad
+                        android:id="@+id/signature"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5DP"
+                        android:background="@drawable/rounded_background"
+                        android:elevation="@dimen/_10DP"
+                        android:gravity="center"
+                        android:minHeight="@dimen/_250DP"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/rts_signature_star" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/submitButton"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_45DP"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/_10DP"
+            android:background="@drawable/rts_button"
+            android:gravity="center"
+            app:backgroundTint="@null"
+            android:onClick="@{() -> viewModel.onSubmitClick()}"
+            android:text="@string/submit_"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_15SP"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_curve_corner"
+        android:padding="@dimen/_25DP">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txt_call"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sms_to"
+            android:textSize="@dimen/_21SP"
+            android:textColor="@color/black_1A"
+            android:fontFamily="@font/roboto_bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/primaryCallCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10DP"
+            android:layout_marginTop="@dimen/_20DP"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@drawable/rvp_qc_sms_to_layer"
+            app:layout_constraintTop_toBottomOf="@+id/txt_call">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/OtpSmsIcon1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/rvp_sms_icon"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/primaryText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/primary"
+                android:textSize="@dimen/_14SP"
+                android:textColor="@color/black_1A"
+                android:fontFamily="@font/roboto_medium"
+                android:layout_marginStart="@dimen/_15DP"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/OtpSmsIcon1"
+                app:layout_constraintTop_toBottomOf="@id/primaryContactNumber"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/primaryContactNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_18SP"
+                android:textColor="@color/black"
+                android:fontFamily="@font/roboto_bold"
+                android:layout_marginStart="@dimen/_15DP"
+                app:layout_constraintStart_toEndOf="@id/OtpSmsIcon1"
+                app:layout_constraintTop_toBottomOf="@id/primaryText"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/alternateCallCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10DP"
+            android:layout_marginTop="@dimen/_10DP"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@drawable/rvp_qc_sms_to_layer"
+            app:layout_constraintTop_toBottomOf="@+id/primaryCallCard">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/OtpSmsIcon2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/rvp_sms_icon"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/alternateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/alternate"
+                android:textSize="@dimen/_14SP"
+                android:textColor="@color/black_1A"
+                android:fontFamily="@font/roboto_medium"
+                android:layout_marginStart="@dimen/_15DP"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/OtpSmsIcon2"
+                app:layout_constraintTop_toBottomOf="@id/alternateContactNumber"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/alternateContactNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_18SP"
+                android:textColor="@color/black"
+                android:fontFamily="@font/roboto_bold"
+                android:layout_marginStart="@dimen/_15DP"
+                app:layout_constraintStart_toEndOf="@id/OtpSmsIcon2"
+                app:layout_constraintTop_toBottomOf="@id/alternateText"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

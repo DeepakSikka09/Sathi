@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/tv_client_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/_20DP"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_20DP"
+        android:textStyle="bold" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/blue_ecom" />
+
+
+    <ExpandableListView
+        android:id="@+id/drawer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/_5DP"
+        android:layout_weight="1"
+        android:backgroundTint="@color/edstool"
+        android:divider="@color/edstool"
+        android:dividerHeight="0dp"
+        android:padding="@dimen/_5DP" />
+
+
+    <Button
+        android:id="@+id/bt_eds_call"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue_ecom"
+        android:text="CALL"
+        android:textColor="@color/white" />
+
+
+</LinearLayout>

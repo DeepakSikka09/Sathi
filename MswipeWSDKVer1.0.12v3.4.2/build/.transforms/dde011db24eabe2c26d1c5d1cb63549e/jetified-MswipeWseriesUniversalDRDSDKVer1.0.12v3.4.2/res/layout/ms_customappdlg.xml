@@ -1,0 +1,107 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin_large"
+    android:layout_marginLeft="@dimen/margin_normal"
+    android:layout_marginRight="@dimen/margin_normal"
+    android:layout_marginTop="@dimen/margin_large"
+    android:background="@drawable/ms_round_rect_gray_fill_dlg"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/top_bar_REL_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ms_semi_round_rect_top_white"
+        android:gravity="center_vertical"
+        android:minHeight="@dimen/dlg_alert_height"
+        android:orientation="vertical">
+
+        <com.mswipetech.wisepad.sdk.customviews.CustomTextViewBold
+            android:id="@+id/ms_customapplicationdlg_TXT_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/margin_normal"
+            android:background="@android:color/transparent"
+            android:text=""
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/label_topbar_heading" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/customdlg_LIN_details"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/ms_customdlg_RLT_yes"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true">
+
+            <Button
+                android:id="@+id/ms_customdlg_BTN_yes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:background="@android:color/transparent"
+                android:clickable="false"
+                android:focusable="false"
+                android:gravity="center"
+                android:text="refresh"
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/label_font_large" />
+        </RelativeLayout>
+
+
+        <View
+            android:id="@+id/customdlg_view"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/light_grey" />
+
+        <RelativeLayout
+            android:id="@+id/ms_customdlg_RLT_no"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true">
+
+            <Button
+                android:id="@+id/ms_customdlg_BTN_no"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:background="@android:color/transparent"
+                android:clickable="false"
+                android:focusable="false"
+                android:gravity="center"
+                android:text="@string/cancel"
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/label_font_large" />
+        </RelativeLayout>
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light_grey"
+        android:layout_above="@+id/customdlg_LIN_details"/>
+
+    <ListView
+        android:id="@+id/ms_creditsale_LST_applications"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/top_bar_REL_content"
+        android:layout_above="@+id/customdlg_LIN_details"
+        android:layout_alignParentLeft="true" />
+
+</RelativeLayout>
+
+

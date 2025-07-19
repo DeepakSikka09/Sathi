@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    tools:context="in.ecomexpress.sathi.ui.dummy.eds.eds_activity_detail.EDSDetailActivity">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.dummy.eds.eds_document_verification.DocumentVerificationViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/card_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                card_view:cardBackgroundColor="@color/white"
+                card_view:cardCornerRadius="5dp"
+                card_view:cardElevation="6dp"
+                card_view:cardMaxElevation="15dp">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:padding="@dimen/_10DP">
+
+                        <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                            android:id="@+id/txt_activity_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="@={viewModel.activityName}"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp"
+                        android:background="@color/red_ecom" />
+
+                    <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                        android:id="@+id/txt_activity_ques"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/search_hint"
+                        android:text="@={viewModel.activityQuestion}"
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_5DP">
+
+
+                        <EditText
+                            android:id="@+id/etxt_entered_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/border_2dp_grey"
+                            android:gravity="center"
+                            android:hint="*****"
+                            android:inputType="text"
+                            android:maxLength="5"
+                            android:maxLines="1"
+                            android:textSize="13sp" />
+
+                        <Button
+                            android:id="@+id/btn_verify"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="@dimen/_5DP"
+                            android:background="@drawable/eds_button"
+                            android:onClick="@{() -> viewModel.onVerifyClick()}"
+                            android:text="@string/verify"
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_verfiction_result"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:padding="5dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/txt_verification_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="@string/notverified"
+                            android:textColor="@color/blue_ecom" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/remarks"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <EditText
+                            android:maxLength="50"
+                            android:id="@+id/et_remarks"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_5DP"
+                            android:background="@drawable/border_2dp_grey"
+                            android:gravity="center_vertical"
+                            android:hint="Enter remarks"
+                            android:inputType="text"
+                            android:padding="@dimen/_10DP" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/imagelayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5DP">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_5DP"
+                            android:padding="@dimen/_5DP" />
+
+                        <include
+                            android:id="@+id/hdfc_masking"
+                            android:visibility="gone"
+                            bind:viewModel="@{viewModel}"
+                            layout="@layout/fragment_hdfc_masking_verification"/>
+
+                    </FrameLayout>
+
+                        <!--   <in.ecomexpress.sathi.utils.Fonts.CustomTextRegular
+                               android:id="@+id/txt_image_head"
+                               android:layout_width="0dp"
+                               android:layout_height="match_parent"
+                               android:layout_weight="0.9"
+                               android:text="@={viewModel.imageCaptureSetting}"
+                               android:textSize="13sp" />
+
+
+                           <RelativeLayout
+                               android:layout_width="0dp"
+                               android:layout_height="30dp"
+                               android:layout_weight="0.1">
+
+                               <ImageView
+                                   android:id="@+id/img_activity"
+                                   android:layout_width="30dp"
+                                   android:layout_height="30dp"
+                                   android:layout_centerInParent="true"
+                                   android:onClick="@{() -> viewModel.onCaptureImageClick()}"
+                                   app:srcCompat="@drawable/cam" />
+                           </RelativeLayout>-->
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                            android:id="@+id/cust_remark"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:text="@string/inst"
+                            android:textSize="15sp"
+                            android:visibility="gone" />
+
+                        <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/_5DP"
+                            android:text="Instructions:-"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/blue" />
+
+                        <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                            android:id="@+id/txt_activity_instruction"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/_5DP"
+
+                            android:textColor="@color/black"
+                            android:textSize="13sp" />
+                        <in.ecomexpress.sathi.utils.fonts.CustomTextRegular
+                            android:id="@+id/txt_activity_remark"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/_5DP"
+
+                            android:textColor="@color/black"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+</layout>

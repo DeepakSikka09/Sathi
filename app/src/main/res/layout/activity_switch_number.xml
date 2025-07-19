@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.ecomexpress.sathi.ui.dashboard.landing.DashboardActivity">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.dashboard.switchnumber.SwitchNumberViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/popup_element"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10DP"
+            app:cardBackgroundColor="@color/offwhite"
+            app:cardCornerRadius="@dimen/_7DP"
+            style="@style/Theme.AppCompat.Light.DarkActionBar"
+            app:cardElevation="@dimen/_25DP"
+            android:id="@+id/card_view"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/cons1"
+                android:background="@color/dashboardtool"
+                android:padding="@dimen/_8DP">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.1"
+                    android:gravity="center"
+                    android:padding="@dimen/_10DP"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="@string/switch_callbridge_number"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/_15SP"
+                    android:textStyle="bold"/>
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/cross"
+                    android:layout_width="@dimen/_50DP"
+                    android:layout_height="@dimen/_50DP"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="end|right"
+                    android:layout_weight="0.02"
+                    android:onClick="@{() -> viewModel.onCancelClick()}"
+                    android:padding="@dimen/_10DP"
+                    app:tint="@color/colorPrimaryDark"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_cross" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/current"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_weight="0.1"
+            android:gravity="center"
+            android:text="@string/current_number"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/_13SP"
+            android:textStyle="normal"
+            app:layout_constraintTop_toBottomOf="@id/card_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/fuel_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10DP"
+            android:elevation="@dimen/_20DP"
+            android:padding="@dimen/_5DP"
+            app:layout_constraintTop_toBottomOf="@id/current"
+            app:layout_constraintStart_toStartOf="@id/card_view"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/fuel_recycler_view"
+            android:onClick="@{() -> viewModel.onSubmitNumber()}"
+
+            android:padding="@dimen/_10DP">
+
+            <Button
+                android:id="@+id/tv_start"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/fwd_button"
+                android:gravity="center"
+                android:onClick="@{() -> viewModel.onSubmitNumber()}"
+                android:text="@string/submit_"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_15SP"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

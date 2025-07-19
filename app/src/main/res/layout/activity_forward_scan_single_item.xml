@@ -1,0 +1,52 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.drs.forward.mps.ScannerItemAdapterViewModel" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10DP"
+        android:background="@drawable/border_2dp_grey">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintWidth_percent="0.2"
+            android:id="@+id/imgVwStatusIndicator2"
+            android:layout_width="@dimen/_50DP"
+            android:layout_height="@dimen/_50DP" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:text="@string/enter_otp_txt"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imgVwStatusIndicator2"
+            app:layout_constraintEnd_toStartOf="@+id/imgScanBfPkg"
+            app:layout_constraintWidth_percent="0.6"
+            android:fontFamily="@font/roboto_regular"
+            android:id="@+id/textViewBarcode1"
+            android:layout_width="@dimen/_0DP"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:textSize="@dimen/_12SP" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.2"
+            android:id="@+id/imgScanBfPkg"
+            android:layout_width="@dimen/_0DP"
+            android:layout_height="@dimen/_50DP"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/ic_scan_barcode" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

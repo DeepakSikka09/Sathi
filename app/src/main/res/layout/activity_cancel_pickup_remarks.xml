@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <include
+            android:id="@+id/header"
+            layout="@layout/common_header"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <include
+            android:id="@+id/rqc_awb_header"
+            layout="@layout/rvp_with_awb_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/header" />
+
+        <View
+            android:id="@+id/viw1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_8DP"
+            android:background="@color/green_FF"
+            app:layout_constraintTop_toBottomOf="@id/rqc_awb_header" />
+
+        <ScrollView
+            android:id="@+id/scroll1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/_15DP"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toTopOf="@id/conBottom"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/viw1">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/const2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/con_call"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_15DP"
+                    android:background="@color/green_FF"
+                    android:padding="@dimen/_15DP"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/ivAlert"
+                        android:layout_width="@dimen/_40DP"
+                        android:layout_height="@dimen/_40DP"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/alert_image" />
+
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_15DP"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="@string/call_is_mandatory_for_updating_this_status_code"
+                        android:textSize="@dimen/_16SP"
+                        android:textColor="@color/black_new"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/ivAlert"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/first_const"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_20DP"
+                    android:layout_marginVertical="@dimen/_15DP"
+                    app:layout_constraintTop_toBottomOf="@+id/con_call">
+
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/undeliveredMessage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="@string/why_are_you_marking_undelivered"
+                        android:textSize="@dimen/_16SP"
+                        android:textColor="@color/black_new"
+                        app:layout_constraintBottom_toTopOf="@id/parentReasonCode"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/parentReasonCode"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/textPrimaryColor"
+                        android:textSize="@dimen/_16SP"
+                        app:layout_constraintEnd_toStartOf="@+id/arrow"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/undeliveredMessage" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/rvp_reason_code_arrow" />
+
+                    <View
+                        android:id="@+id/viw2"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_2DP"
+                        android:layout_marginTop="@dimen/_5DP"
+                        android:background="@color/grey_E5"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/parentReasonCode" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/second_const1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_20DP"
+                    android:layout_marginVertical="@dimen/_15DP"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/first_const">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/Please_tell_more_rc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="@string/please_tell_us_more"
+                        android:textSize="@dimen/_16SP"
+                        android:textColor="@color/black_new"
+                        app:layout_constraintBottom_toTopOf="@id/shipment_damage"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/shipment_damage"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/textPrimaryColor"
+                        android:textSize="@dimen/_16SP"
+                        app:layout_constraintEnd_toStartOf="@+id/arrow1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/Please_tell_more_rc" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/arrow1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/rvp_reason_code_arrow" />
+
+                    <View
+                        android:id="@+id/viw3"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_2DP"
+                        android:layout_marginTop="@dimen/_5DP"
+                        android:background="@color/grey_E5"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/shipment_damage" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:id="@+id/viw4"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_8DP"
+                    android:layout_marginTop="@dimen/_15DP"
+                    android:background="@color/green_FF"
+                    app:layout_constraintTop_toBottomOf="@id/second_const1" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/imageCaptureCard"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_60DP"
+                    android:layout_margin="@dimen/_20DP"
+                    android:layout_marginTop="@dimen/_15DP"
+                    android:background="@color/light_blue_new"
+                    android:elevation="@dimen/margin_6dp"
+                    android:visibility="visible"
+                    app:cardCornerRadius="@dimen/_8DP"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/viw4">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/conMeter"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#DBE7FE"
+                        android:padding="@dimen/_8DP">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/imageViewStart"
+                            android:layout_width="@dimen/_40DP"
+                            android:layout_height="@dimen/_40DP"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/cam_new" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/textViewLabel"
+                            android:layout_width="@dimen/_0DP"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_4DP"
+                            android:layout_marginEnd="@dimen/_8DP"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="@string/capture_image"
+                            android:textAlignment="center"
+                            android:textSize="@dimen/_16SP"
+                            android:textColor="@color/black_new"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/start_img"
+                            app:layout_constraintStart_toEndOf="@+id/imageViewStart"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/start_img"
+                            android:layout_width="@dimen/_40DP"
+                            android:layout_height="@dimen/_40DP"
+                            android:layout_marginEnd="@dimen/_15DP"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/imageDelete"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/cam_new" />
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/imageDelete"
+                            android:layout_width="@dimen/_40DP"
+                            android:layout_height="@dimen/_40DP"
+                            android:layout_marginEnd="@dimen/_15DP"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_delete" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+
+                <include
+                    android:id="@+id/calender"
+                    layout="@layout/undelivered_shipment_calender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10DP"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@id/imageCaptureCard" />
+
+                <include
+                    android:id="@+id/pickup_remark"
+                    layout="@layout/pickup_remarks_include"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10DP"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@id/calender" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/conBottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tv_submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_20DP"
+                android:background="@drawable/bg_curve_corner"
+                android:backgroundTint="@color/colorAccent"
+                android:fontFamily="@font/muli_bold"
+                android:text="@string/submitButton"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_16SP"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCallConsignee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_20DP"
+                android:background="@drawable/bg_curve_corner"
+                android:backgroundTint="@color/colorAccent"
+                android:fontFamily="@font/muli_bold"
+                android:text="@string/call_consignee"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_20SP"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

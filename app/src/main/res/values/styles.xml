@@ -1,0 +1,204 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/gray</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:windowBackground">@color/bg_color</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:typeface">sans</item>
+        <item name="drawerArrowStyle">@style/MaterialDrawer.DrawerArrowStyle</item>
+        <item name="android:textAppearance">@style/TextAppearance.Text.Regular</item>
+    </style>
+
+    <style name="RoundedCornersDialog" parent="@style/Theme.MaterialComponents.Dialog">
+        <item name="dialogCornerRadius">16dp</item>
+    </style>
+
+    <style name="MatchSpinnerTheme" parent="AppTheme">
+        <item name="android:colorBackground">@color/white</item>
+        <item name="android:itemBackground">@color/white</item>
+        <item name="android:dropDownListViewStyle">@style/MatchSpinnerStyle</item>
+    </style>
+
+    <style name="MatchSpinnerThemeEds" parent="AppTheme">
+        <item name="android:colorBackground">@color/edslight</item>
+        <item name="android:itemBackground">@color/edslight</item>
+        <item name="android:textColor">@color/edstool</item>
+        <item name="android:dropDownListViewStyle">@style/MatchSpinnerStyleeds</item>
+    </style>
+
+    <style name="MatchSpinnerStyleeds" parent="android:style/Widget.ListView.DropDown">
+        <item name="android:divider">@color/edstool</item>
+        <item name="android:textColor">@color/edstool</item>
+        <item name="android:colorBackground">@color/edslight</item>
+        <item name="android:itemBackground">@color/edslight</item>
+        <item name="android:background">@color/edslight</item>
+        <item name="android:dividerHeight">1dp</item>
+    </style>
+
+    <style name="MatchSpinnerStyle" parent="android:style/Widget.ListView.DropDown">
+        <item name="android:divider">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="android:itemBackground">@color/colorBackground</item>
+        <item name="android:background">@color/colorBackground</item>
+        <item name="android:dividerHeight">1dp</item>
+    </style>
+
+    <style name="MaterialDrawer.DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">false</item>
+        <item name="color">@color/white</item>
+    </style>
+
+    <style name="TextAppearance.Text.Regular" parent="android:TextAppearance" />
+
+    <style name="TextAppearance.Text.Light" parent="android:TextAppearance" />
+
+    <style name="TextStyle">
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginBottom">2dp</item>
+        <item name="android:layout_marginLeft">2dp</item>
+        <item name="android:layout_marginRight">2dp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TextStyle.Title.Blue" parent="TextStyle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textAppearance">@style/TextAppearance.Text.Regular</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="TextStyle.Title.Sub" parent="TextStyle.Title.Blue">
+        <item name="android:textAppearance">@style/TextAppearance.Text.Light</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorHint">@color/gray</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="searchIcon">@drawable/search</item>
+        <item name="queryBackground">@android:color/white</item>
+        <item name="searchHintIcon">@color/colorPrimaryDark</item>
+        <item name="iconifiedByDefault">false</item>
+        <item name="android:cursorVisible">true</item>
+        <item name="colorControlActivated">@color/colorPrimaryDark</item>
+        <item name="colorControlNormal">@color/colorPrimaryDark</item>
+        <item name="colorControlHighlight">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textColorHint">@android:color/darker_gray</item>
+        <item name="queryHint">@string/search_hint</item>
+    </style>
+
+    <style name="SearchViewRTSStyle" parent="Widget.AppCompat.SearchView">
+        <item name="searchIcon">@drawable/search</item>
+        <item name="queryBackground">@android:color/white</item>
+        <item name="searchHintIcon">@color/colorPrimaryDark</item>
+        <item name="iconifiedByDefault">false</item>
+        <item name="android:cursorVisible">true</item>
+        <item name="colorControlActivated">@color/colorPrimaryDark</item>
+        <item name="colorControlNormal">@color/colorPrimaryDark</item>
+        <item name="colorControlHighlight">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textColorHint">@android:color/darker_gray</item>
+        <item name="queryHint">@string/search_awb</item>
+    </style>
+
+    <style name="Button" parent="Widget.AppCompat.Button">
+        <item name="android:textColor">@color/black_effective</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:background">@drawable/button_bg</item>
+        <item name="android:foreground">?selectableItemBackground</item>
+    </style>
+
+    <style name="Button.Primary" parent="Button">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:background">@drawable/start_trip_button</item>
+    </style>
+
+    <string name="search_hint">Search DRS List</string>
+    <string name="search_awb">Search AWB</string>
+
+
+    <!-- Light popup menu -->
+
+    <style name="Widget.Button.Toggle" parent="android:Widget">
+        <item name="android:background">@drawable/ic_viewby</item>
+        <item name="android:disabledAlpha">?android:attr/disabledAlpha</item>
+    </style>
+
+    <style name="toggleButton" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:buttonStyleToggle">@style/Widget.Button.Toggle</item>
+        <item name="android:textOn"></item>
+        <item name="android:textOff"></item>
+    </style>
+
+
+    <style name="Theme.Transparent" parent="android:Theme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowMinWidthMajor">100%</item>
+        <item name="android:windowMinWidthMinor">100%</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="SwipeLayout">
+        <item name="android:paddingBottom">1px</item>
+        <item name="android:background">#e5e5e5</item>
+    </style>
+
+    <style name="otpCornerStyle" parent="@style/Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/allsidecorner</item>
+    </style>
+
+    <style name="otpsheetDialogTheme" parent="@style/Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/otpCornerStyle</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
+    <style name="RoundedCorners">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/_5DP</item>
+    </style>
+
+    <style name="ThemeOverlay.AppTheme.TextInputEditText.Outlined" parent="">
+        <item name="colorControlActivated">@color/black</item>
+    </style>
+
+    <style name="BottomSheetAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
+    </style>
+
+    <style name="ShapeAppearance_MaterialComponents_CircularImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="Theme.AppCompat.Translucent">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+    </style>
+
+
+</resources>

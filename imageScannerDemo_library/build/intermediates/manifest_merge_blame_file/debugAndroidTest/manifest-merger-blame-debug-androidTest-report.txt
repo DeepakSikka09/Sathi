@@ -1,0 +1,63 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.intsig.imageprocessdemo.test" >
+4
+5    <uses-sdk
+5-->/Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest9715357059713616914.xml:5:5-73
+6        android:minSdkVersion="8"
+6-->/Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest9715357059713616914.xml:5:15-40
+7        android:targetSdkVersion="21" />
+7-->/Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest9715357059713616914.xml:5:41-70
+8
+9    <instrumentation
+9-->/Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest9715357059713616914.xml:11:5-15:82
+10        android:name="android.test.InstrumentationTestRunner"
+10-->/Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest9715357059713616914.xml:11:22-75
+11        android:functionalTest="false"
+11-->/Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest9715357059713616914.xml:14:22-52
+12        android:handleProfiling="false"
+12-->/Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest9715357059713616914.xml:13:22-53
+13        android:label="Tests for com.intsig.imageprocessdemo.test"
+13-->/Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest9715357059713616914.xml:15:22-80
+14        android:targetPackage="com.intsig.imageprocessdemo.test" />
+14-->/Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest9715357059713616914.xml:12:22-78
+15
+16    <uses-permission android:name="android.permission.CAMERA" />
+16-->[:imageScannerDemo_library] /Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/merged_manifest/debug/AndroidManifest.xml:11:5-65
+16-->[:imageScannerDemo_library] /Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/merged_manifest/debug/AndroidManifest.xml:11:22-62
+17
+18    <uses-feature android:name="android.hardware.camera" />
+18-->[:imageScannerDemo_library] /Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/merged_manifest/debug/AndroidManifest.xml:13:5-60
+18-->[:imageScannerDemo_library] /Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/merged_manifest/debug/AndroidManifest.xml:13:19-57
+19    <uses-feature android:name="android.hardware.camera.autofocus" />
+19-->[:imageScannerDemo_library] /Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/merged_manifest/debug/AndroidManifest.xml:14:5-70
+19-->[:imageScannerDemo_library] /Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/merged_manifest/debug/AndroidManifest.xml:14:19-67
+20
+21    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+21-->[:imageScannerDemo_library] /Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/merged_manifest/debug/AndroidManifest.xml:16:5-81
+21-->[:imageScannerDemo_library] /Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/merged_manifest/debug/AndroidManifest.xml:16:22-78
+22    <uses-permission android:name="android.permission.INTERNET" />
+22-->[:imageScannerDemo_library] /Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/merged_manifest/debug/AndroidManifest.xml:17:5-67
+22-->[:imageScannerDemo_library] /Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/merged_manifest/debug/AndroidManifest.xml:17:22-64
+23    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+23-->[:imageScannerDemo_library] /Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/merged_manifest/debug/AndroidManifest.xml:18:5-75
+23-->[:imageScannerDemo_library] /Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/merged_manifest/debug/AndroidManifest.xml:18:22-72
+24
+25    <application android:debuggable="true" >
+25-->/Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest9715357059713616914.xml:7:5-9:19
+26        <uses-library android:name="android.test.runner" />
+26-->/Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest9715357059713616914.xml:8:9-60
+26-->/Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest9715357059713616914.xml:8:23-57
+27
+28        <activity
+28-->[:imageScannerDemo_library] /Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/merged_manifest/debug/AndroidManifest.xml:21:9-25:20
+29            android:name="com.intsig.imageprocessdemo.ImageScannerActivity"
+29-->[:imageScannerDemo_library] /Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/merged_manifest/debug/AndroidManifest.xml:22:13-76
+30            android:label="@string/app_name"
+30-->[:imageScannerDemo_library] /Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/merged_manifest/debug/AndroidManifest.xml:23:13-45
+31            android:screenOrientation="portrait" >
+31-->[:imageScannerDemo_library] /Users/63619/AndroidStudioProjects/Ecom Projects/sathi/imageScannerDemo_library/build/intermediates/merged_manifest/debug/AndroidManifest.xml:24:13-49
+32        </activity>
+33    </application>
+34
+35</manifest>

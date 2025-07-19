@@ -1,0 +1,15 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="highlight_point_diameter">30dip</dimen>
+    <dimen name="enhance_menu_height">60dp</dimen>
+    <dimen name="enhance_menu_height_7tablet_portrait">100dp</dimen>
+    <dimen name="pad_image_scan_gridview_item_width">100dp</dimen>
+    <dimen name="pad_image_scan_gridview_item_height">100dp</dimen>
+    <dimen name="enhance_menu_margin">1dp</dimen>
+    <dimen name="magnifier_radius">40dp</dimen>
+    <dimen name="dock_bar_height">60dp</dimen>
+
+</resources>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="@dimen/margin_small"
+    android:layout_marginLeft="@dimen/margin_small"
+    android:background="@drawable/ms_round_rect_gray_dlg"
+    android:minHeight="@dimen/dlg_progress_height">
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/topbar_height"
+        android:background="@color/topbar_background"
+        android:visibility="gone">
+
+        <com.mswipetech.wisepad.sdk.customviews.CustomSDKBoldTextView
+            android:id="@+id/progess_dlg_TXT_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:text="@string/loginactivity_login"
+            android:textColor="@color/white"
+            android:textSize="@dimen/label_topbar_heading"
+            android:visibility="visible" />
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextViewRegular
+            android:id="@+id/progess_dlg_LBL_processing"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:singleLine="false"
+            android:text="@string/processing"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/label_font_large" />
+
+        <com.mswipetech.wisepad.sdk.customviews.CustomSDKProgressAnimView
+            android:id="@+id/progess_dlg_CPA_processing"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:keepScreenOn="true" />
+    </LinearLayout>
+</RelativeLayout>

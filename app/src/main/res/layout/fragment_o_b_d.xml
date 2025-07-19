@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:fontFamily="@font/roboto_bold"
+            android:id="@+id/textViewQuestion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/is_the_box_seal_intact"
+            android:textSize="@dimen/_24SP"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupOptions"
+            android:layout_width="@dimen/_0DP"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10DP"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewQuestion">
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/radioOBDPass"
+                android:layout_width="@dimen/_0DP"
+                android:layout_height="@dimen/padding_48dp"
+                android:layout_marginStart="@dimen/_15DP"
+                android:layout_marginEnd="@dimen/_20DP"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:background="@drawable/bg_curve_corner"
+                android:buttonTint="@color/black"
+                android:text="@string/pass" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/radioOBDFail"
+                android:layout_width="@dimen/_0DP"
+                android:layout_height="@dimen/padding_48dp"
+                android:layout_marginStart="@dimen/_20DP"
+                android:layout_marginEnd="@dimen/_15DP"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:background="@drawable/bg_curve_corner"
+                android:buttonTint="@color/black"
+                android:text="@string/fail" />
+        </RadioGroup>
+
+        <View
+            android:id="@+id/view_1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_5DP"
+            android:layout_marginTop="@dimen/_10DP"
+            android:background="@color/green_FF"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/radioGroupOptions" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/imageCaptureCard"
+            android:layout_width="@dimen/_0DP"
+            android:layout_height="@dimen/_80DP"
+            android:layout_marginTop="@dimen/_15DP"
+            android:background="@color/green_FE"
+            android:elevation="@dimen/margin_6dp"
+            android:visibility="gone"
+            app:cardCornerRadius="@dimen/_8DP"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_1">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/green_FE"
+                android:padding="@dimen/_8DP">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imageViewStart"
+                    android:layout_width="@dimen/_40DP"
+                    android:layout_height="@dimen/_40DP"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/cam_new" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/textViewLabel"
+                    android:layout_width="@dimen/_0DP"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8DP"
+                    android:layout_marginEnd="@dimen/_8DP"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="@string/capture_product_image"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/_18SP"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/imageCamera"
+                    app:layout_constraintStart_toEndOf="@+id/imageViewStart"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imageCamera"
+                    android:layout_width="@dimen/_40DP"
+                    android:layout_height="@dimen/_40DP"
+                    android:layout_marginEnd="@dimen/_15DP"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/cam_new" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imageDelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_15DP"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_delete" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

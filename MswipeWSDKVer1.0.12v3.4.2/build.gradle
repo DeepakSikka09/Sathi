@@ -1,0 +1,2 @@
+configurations.maybeCreate("default")
+artifacts.add("default", file('MswipeWseriesUniversalDRDSDKVer1.0.12v3.4.2.aar'))

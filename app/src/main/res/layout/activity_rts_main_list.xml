@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.ecomexpress.sathi.ui.drs.rts.rts_main_list.RTSListActivity">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.drs.rts.rts_main_list.RTSListActivityViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/green_FF"
+            android:padding="@dimen/_5DP"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/backButton"
+                android:layout_width="@dimen/_30DP"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15DP"
+                android:layout_marginTop="@dimen/_20DP"
+                android:layout_marginBottom="@dimen/_20DP"
+                android:contentDescription="@string/rts_shipments_list"
+                android:src="@drawable/ic_back_arrow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/titleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15DP"
+                android:text="@string/rts_shipments_list"
+                android:textColor="@color/black_1A"
+                android:textSize="@dimen/_20SP"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/backButton"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/startScanningWork"
+                android:layout_width="@dimen/_50DP"
+                android:layout_height="@dimen/_50DP"
+                android:layout_marginStart="@dimen/_10DP"
+                android:contentDescription="@string/rts_shipments_list"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/reassignShipments"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/scan"
+                app:tint="@color/black_1A" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/reassignShipments"
+                android:layout_width="@dimen/_30DP"
+                android:layout_height="@dimen/_30DP"
+                android:layout_marginStart="@dimen/_10DP"
+                android:layout_marginEnd="@dimen/_10DP"
+                android:contentDescription="@string/rts_shipments_list"
+                android:src="@drawable/undo_all"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/add_comment_iv"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/black_1A" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/add_comment_iv"
+                android:layout_width="@dimen/_30DP"
+                android:layout_height="@dimen/_30DP"
+                android:layout_marginStart="@dimen/_10DP"
+                android:layout_marginEnd="@dimen/_10DP"
+                android:contentDescription="@string/rts_shipments_list"
+                android:onClick="@{()-> viewModel.showPopupWindow()}"
+                android:src="@drawable/undelivered_rts"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/next"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/next"
+                style="@style/TextStyle.Title.Sub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_10DP"
+                android:contentDescription="@string/rts_shipments_list"
+                android:onClick="@{() -> viewModel.onNextClick()}"
+                android:src="@drawable/ic_action_next"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20DP"
+            android:layout_marginTop="@dimen/_5DP"
+            android:layout_marginEnd="@dimen/_20DP"
+            android:layout_marginBottom="@dimen/_5DP"
+            android:background="@drawable/rounded_background"
+            android:elevation="@dimen/_20DP"
+            app:layout_constraintTop_toBottomOf="@+id/header">
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/et_search_box"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:theme="@style/SearchViewRTSStyle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </androidx.appcompat.widget.SearchView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/borderView1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_8DP"
+            android:layout_marginTop="@dimen/_5DP"
+            android:background="@color/green_FF"
+            app:layout_constraintTop_toBottomOf="@id/search" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/deliver"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_background"
+            android:paddingStart="@dimen/_5DP"
+            android:paddingTop="@dimen/_5DP"
+            android:paddingEnd="@dimen/_5DP"
+            app:layout_constraintTop_toBottomOf="@+id/borderView1">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/consignee_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10DP"
+                android:gravity="center"
+                android:text="@{viewModel.assigned}"
+                android:textColor="@color/black_1A"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/rg_delivery_place"
+                app:layout_constraintEnd_toStartOf="@+id/delivered"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.33" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/delivered"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10DP"
+                android:gravity="center"
+                android:text="@{viewModel.delivered}"
+                android:textColor="@color/black_1A"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/rg_delivery_place"
+                app:layout_constraintEnd_toStartOf="@+id/pending"
+                app:layout_constraintStart_toEndOf="@id/consignee_name"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.33" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/pending"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10DP"
+                android:gravity="center"
+                android:text="@{viewModel.pending}"
+                android:textColor="@color/black_1A"
+                android:textSize="@dimen/_13SP"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/rg_delivery_place"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/delivered"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.33" />
+
+            <RadioGroup
+                android:id="@+id/rg_delivery_place"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/_5DP"
+                app:layout_constraintBottom_toTopOf="@+id/checkedShipmentLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/consignee_name">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/rb_rts_delivery_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_20DP"
+                    android:layout_weight="0.5"
+                    android:buttonTint="@color/black_1A"
+                    android:textColor="@color/black_1A"
+                    android:checked="true"
+                    android:text="@string/delivery_mode"
+                    android:textSize="@dimen/_13SP" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/rb_rts_re_assign_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_20DP"
+                    android:layout_weight="0.5"
+                    android:textColor="@color/black_1A"
+                    android:buttonTint="@color/black_1A"
+                    android:text="@string/re_assign_mode"
+                    android:textSize="@dimen/_13SP" />
+            </RadioGroup>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/checkedShipmentLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rg_delivery_place">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/select_all_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10DP"
+                    android:text="@string/select_all"
+                    android:textSize="@dimen/_13SP"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/cb_rvp_packets"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/black_1A"
+                    android:onClick="@{()-> viewModel.checkAllRVPShipment()}"
+                    android:text="@string/rvp"
+                    android:textSize="@dimen/_13SP"
+                    android:textColor="@color/black_1A"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/cb_fwd_packets"
+                    app:layout_constraintStart_toEndOf="@id/select_all_text"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/cb_fwd_packets"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/black_1A"
+                    android:onClick="@{()-> viewModel.checkAllForwardShipment()}"
+                    android:text="@string/rto"
+                    android:textSize="@dimen/_13SP"
+                    android:textColor="@color/black_1A"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/markManuallyShipments"
+                    app:layout_constraintStart_toEndOf="@id/cb_rvp_packets"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/markManuallyShipments"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_rts_pending"
+                    android:gravity="center"
+                    android:padding="@dimen/_5DP"
+                    android:text="@string/mark_manually"
+                    android:textColor="@color/black_1A"
+                    android:textSize="@dimen/_13SP"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/cb_fwd_packets"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.4" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/borderView2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_8DP"
+            android:layout_marginTop="@dimen/_5DP"
+            android:background="@color/green_FF"
+            app:layout_constraintTop_toBottomOf="@id/deliver" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="@dimen/_10DP"
+            android:layout_marginTop="@dimen/_5DP"
+            app:layout_constraintTop_toBottomOf="@id/borderView2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:listitem="@layout/activity_rts_shipment_list_item" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

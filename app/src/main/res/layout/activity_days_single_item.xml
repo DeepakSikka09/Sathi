@@ -1,0 +1,43 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.dashboard.attendance.activity.CalendarDaysViewModel" />
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card"
+        android:layout_width="@dimen/_40DP"
+        android:layout_height="@dimen/_40DP"
+        android:layout_margin="@dimen/_5DP"
+        app:cardBackgroundColor="@color/blue_ecom"
+        app:cardCornerRadius="@dimen/_10DP"
+        app:cardElevation="@dimen/_10DP">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/day_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:hint="@string/_1"
+                android:layout_centerInParent="true"
+                android:text="@{ viewModel.Day}"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12SP" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+
+</layout>

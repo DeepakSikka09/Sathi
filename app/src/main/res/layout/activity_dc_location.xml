@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.ecomexpress.sathi.ui.side_drawer.dc_location_updation.DCLocationActivity">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.side_drawer.dc_location_updation.DCLocationViewModel" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/header_text"
+            layout="@layout/header_obd_fwd"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/dc_latlong"
+            android:layout_width="@dimen/_0DP"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/header_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/_10DP"
+            android:layout_marginEnd="@dimen/_10DP"
+            android:layout_marginTop="@dimen/_10DP">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="@dimen/_0DP"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="@dimen/_7DP"
+                app:cardElevation="@dimen/_25DP"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:theme="@style/Theme.MaterialComponents.Light">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5DP"
+                    android:background="@color/white">
+
+                    <!-- Latitude Row -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/const_latitude"
+                        android:layout_width="@dimen/_0DP"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:padding="@dimen/_10DP"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="@string/sc_latitude"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_13SP"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/dc_lat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_10DP"
+                            android:gravity="end"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_13SP"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!-- Longitude Row -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/const_longitude"
+                        android:layout_width="@dimen/_0DP"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:padding="@dimen/_10DP"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/const_latitude">
+
+                        <in.ecomexpress.sathi.utils.fonts.CustomTextBold
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="@string/sc_longitude"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_13SP"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/dc_long"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_10DP"
+                            android:gravity="end"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_13SP"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/const_card"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_0DP"
+            android:layout_margin="@dimen/_10DP"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dc_latlong"
+            app:layout_constraintBottom_toTopOf="@+id/lltFooter1">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:padding="@dimen/_5DP"
+                app:cardCornerRadius="@dimen/_7DP"
+                app:cardElevation="@dimen/_25DP"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:theme="@style/Theme.MaterialComponents.Light">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/_5DP"
+                    android:background="@drawable/card_view_border"
+                    android:padding="@dimen/_20DP">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/dc_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5DP"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12SP"
+                        android:textStyle="bold|italic"
+                        android:paddingTop="@dimen/_30DP"
+                        android:paddingBottom="@dimen/_30DP"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Footer with buttons -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/lltFooter1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <!-- Define a vertical guideline at 50% of the width -->
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/_205DP" />
+
+            <!-- First button aligned to the left of the guideline -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_proceed"
+                android:layout_width="@dimen/_0DP"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_my_location_black_24dp"
+                android:text="@string/get_current_location"
+                android:textColor="@color/white"
+                android:tint="@color/white"
+                android:textSize="@dimen/_12SP"
+                android:textStyle="bold"
+                android:onClick="@{() -> viewModel.onLocationClick()}"
+                android:background="@drawable/button"
+                android:layout_margin="@dimen/_10DP"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/guideline"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <!-- Second button aligned to the right of the guideline -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_upload"
+                android:layout_width="@dimen/_0DP"
+                android:layout_height="wrap_content"
+                android:text="@string/upload_"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12SP"
+                android:textStyle="bold"
+                android:onClick="@{() -> viewModel.onUploadClick()}"
+                android:background="@drawable/button"
+                android:layout_margin="@dimen/_10DP"
+                app:layout_constraintStart_toEndOf="@id/guideline"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/address_looking_up"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</layout>

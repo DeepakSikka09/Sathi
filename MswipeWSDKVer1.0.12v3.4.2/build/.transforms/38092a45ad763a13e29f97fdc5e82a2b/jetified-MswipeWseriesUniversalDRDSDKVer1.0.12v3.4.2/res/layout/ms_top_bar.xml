@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/top_bar_REL_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical">
+
+    <RelativeLayout
+        android:id="@+id/top_bar_REL_content"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/topbar_height"
+        android:background="@color/topbar_background">
+
+        <RelativeLayout
+            android:id="@+id/topbar_REL_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/topbar_height"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:layout_marginRight="@dimen/margin_small"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:id="@+id/topbar_LNR_topbar_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:paddingLeft="@dimen/margin_small"
+                android:paddingRight="@dimen/margin_very_small"
+                android:visibility="gone">
+
+
+                <ImageView
+                    android:id="@+id/topbar_IMG_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ms_topbar_img_menu"
+                    android:visibility="visible" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/topbar_LNR_topbar_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:paddingLeft="@dimen/margin_small"
+                android:paddingRight="@dimen/margin_very_small"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/topbar_IMG_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ms_topbar_img_cancel" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+        <com.mswipetech.wisepad.sdk.customviews.CustomTextViewMedium
+            android:id="@+id/topbar_LBL_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:layout_marginRight="@dimen/margin_small"
+            android:text="@string/loginactivity_login"
+            android:textColor="@color/white"
+            android:textSize="@dimen/label_topbar_heading"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/topbar_IMG_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:layout_marginRight="@dimen/margin_small"
+            android:src="@drawable/ms_mswipe_home"
+            android:visibility="gone" />
+
+
+        <ImageView
+            android:id="@+id/topbar_IMG_position1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:layout_marginRight="@dimen/margin_very_small"
+            android:layout_toLeftOf="@+id/topbar_IMG_position2"
+            android:src="@drawable/ms_topbar_img_bluetooth_inactive"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/topbar_IMG_position2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_normal"
+            android:src="@drawable/ms_topbar_img_host_inactive"
+            android:visibility="gone" />
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

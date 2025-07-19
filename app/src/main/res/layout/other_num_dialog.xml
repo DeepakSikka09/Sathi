@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.ecomexpress.sathi.ui.drs.forward.otherNumber.OtherNumberDialog">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.drs.forward.otherNumber.OtherNumberDialogViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/popup_element"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.card.MaterialCardView
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_10DP"
+                app:cardBackgroundColor="@color/offwhite"
+                app:cardCornerRadius="@dimen/_7DP"
+                app:cardElevation="@dimen/_25DP">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_10DP"
+                    android:background="@color/offwhite">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cc_header_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/dashboardtool">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:fontFamily="@font/roboto_bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/cross"
+                            app:layout_constraintBottom_toBottomOf="@+id/cross"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/_10DP"
+                            android:text="@string/txt_heading"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="@dimen/_15SP" />
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:contentDescription="@string/static_content"
+                            android:id="@+id/cross"
+                            android:layout_width="@dimen/_50DP"
+                            android:layout_height="@dimen/_50DP"
+                            android:onClick="@{() -> viewModel.onCancelClick()}"
+                            android:padding="@dimen/_10DP"
+                            app:srcCompat="@drawable/ic_cross"
+                            app:tint="@color/colorPrimaryDark" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+                    <com.google.android.material.textview.MaterialTextView
+                        app:layout_constraintTop_toBottomOf="@+id/cc_header_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:id="@+id/txt_other"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_10DP"
+                        android:gravity="center"
+                        android:text="@string/enter_number_to_send_payment_link"
+                        android:textSize="@dimen/_15SP"
+                        android:visibility="visible" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        app:layout_constraintTop_toBottomOf="@+id/txt_other"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:id="@+id/ll_choose_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10DP"
+                        android:visibility="visible">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_10DP"
+                            android:gravity="center"
+                            android:text="@string/choose_number_to_send_payment_link"
+                            android:textSize="@dimen/_15SP"
+                            android:visibility="visible"
+                            android:id="@+id/mtv_link_text"/>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            app:layout_constraintTop_toBottomOf="@+id/mtv_link_text"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_width="match_parent"
+                            app:backgroundTint="@null"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_10DP">
+
+                            <com.google.android.material.button.MaterialButton
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/btn_other_num"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:id="@+id/btnRegisteredNum"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/_10DP"
+                                android:background="@drawable/fwd_button"
+                                android:onClick="@{() -> viewModel.onRegisterNumClick()}"
+                                android:text="@string/registered_number"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_15SP"
+                                android:textStyle="bold" />
+
+                            <com.google.android.material.button.MaterialButton
+                                app:layout_constraintStart_toEndOf="@id/btnRegisteredNum"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:id="@+id/btn_other_num"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/_10DP"
+                                android:background="@drawable/fwd_button"
+                                android:onClick="@{() -> viewModel.onClickOtherNum()}"
+                                android:text="@string/other_number"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_15SP"
+                                android:textStyle="bold"
+                                android:visibility="visible"/>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <AutoCompleteTextView
+                        app:layout_constraintTop_toBottomOf="@+id/ll_choose_btn"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:id="@+id/edt_num"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_20DP"
+                        android:hint="@string/enter_mobile_number"
+                        android:inputType="number"
+                        android:maxLength="10"
+                        android:visibility="visible" />
+
+                    <com.google.android.material.button.MaterialButton
+                        app:layout_constraintTop_toBottomOf="@+id/edt_num"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:id="@+id/btn_submit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_20DP"
+                        android:background="@drawable/fwd_button"
+                        android:onClick="@{() -> viewModel.onSubmitClick()}"
+                        android:text="@string/submitButton"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_15SP"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/address_looking_up"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

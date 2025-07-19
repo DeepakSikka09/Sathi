@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".ui.drs.rvp.activity.CancelSubReasonCodeListActivity">
+
+        <include
+            android:id="@+id/header"
+            layout="@layout/common_header"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/first_const"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/header">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/marking_undelivered"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_20DP"
+                android:layout_marginTop="@dimen/_15DP"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Why are you marking undelivered?"
+                android:textSize="@dimen/_16SP"
+                android:textColor="@color/black_new"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/accept_refuge"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5DP"
+                android:layout_marginBottom="@dimen/_10DP"
+                android:maxLines="2"
+                android:text="Refused to accept"
+                android:textColor="@color/black_new"
+                android:textSize="@dimen/_16SP"
+                android:fontFamily="@font/roboto_regular"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/arrow"
+                app:layout_constraintStart_toStartOf="@id/marking_undelivered"
+                app:layout_constraintTop_toBottomOf="@id/marking_undelivered" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15DP"
+                android:layout_marginEnd="@dimen/_40DP"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/arrow2" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/viw1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_8DP"
+            android:background="@color/green_FF"
+            app:layout_constraintTop_toBottomOf="@id/first_const" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/second_const"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/viw1">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/please_tell_us_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_20DP"
+                android:layout_marginTop="@dimen/_15DP"
+                android:layout_marginBottom="@dimen/_10DP"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Please tell us more"
+                android:textSize="@dimen/_16SP"
+                android:textColor="@color/black_new"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/viw2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_8DP"
+            android:background="@color/green_FF"
+            app:layout_constraintTop_toBottomOf="@id/second_const" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            android:paddingHorizontal="@dimen/_15DP"
+            android:layout_marginBottom="@dimen/_15DP"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/viw2"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

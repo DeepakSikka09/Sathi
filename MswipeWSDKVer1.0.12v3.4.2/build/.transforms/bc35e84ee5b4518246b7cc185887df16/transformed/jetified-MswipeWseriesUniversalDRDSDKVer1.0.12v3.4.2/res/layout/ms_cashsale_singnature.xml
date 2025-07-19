@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:msreceipt="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/login_REL_content"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_small"
+    android:background="@color/white">
+
+    <include
+        android:id="@+id/topbar"
+        layout="@layout/ms_top_bar" />
+
+    <LinearLayout
+        android:layout_width="450dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/topbar"
+        android:layout_centerHorizontal="true"
+        android:keepScreenOn="true">
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_normal"
+                        android:layout_marginTop="@dimen/margin_normal"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/creditsale_IMG_approved"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="@dimen/margin_very_small"
+                            android:background="@drawable/ms_approved"
+                            android:clickable="false" />
+
+                        <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextViewRegular
+                            android:id="@+id/creditsale_TXT_approved"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="@string/cashsale_singnature_transaction_approved"
+                            android:textColor="@color/green"
+                            android:textSize="@dimen/label_font_very_large"
+                            android:typeface="sans" />
+                    </LinearLayout>
+
+                    <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextView
+                        android:id="@+id/creditsale_TXT_removecard"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="@dimen/margin_small"
+                        android:text="@string/cashsale_singnature_card_swiped_successfully"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="@dimen/label_font_medium" />
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/divider_height_normal"
+                    android:layout_below="@id/creditsale_TXT_removecard"
+                    android:background="@color/light_grey" />
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/creditsale_LNR_redceiptdetails"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_normal"
+                        android:layout_marginLeft="@dimen/margin_normal"
+                        android:orientation="vertical">
+
+                        <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextView
+                            android:id="@+id/creditsale_TXT_redceiptdetails"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/grey"
+                            android:textSize="15dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/creditsale_LNR_signaturecontent"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_below="@+id/creditsale_LNR_redceiptdetails">
+
+                        <com.mswipetech.wisepad.sdk.component.CashSaleReceiptView
+                            android:id="@+id/cashsalereceiptview_CSRV_receipt"
+                            android:layout_width="fill_parent"
+                            android:layout_height="@dimen/cash_sign_content_view_height"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentTop="true"
+                            msreceipt:actionbuttons_background="@color/dark_grey"
+                            msreceipt:actionbuttons_foreground_color="@color/white"
+                            msreceipt:actionbuttons_view_background="@color/white"
+                            msreceipt:component_background="@color/white"
+                            msreceipt:receipt_background_color="@color/white"
+                            msreceipt:receipt_foreground_color="@color/dark_grey"
+                            msreceipt:receipt_visibility="false"
+                            msreceipt:signature_background_color="@color/white"
+                            msreceipt:signature_border_color="@color/white"
+                            msreceipt:signature_foreground_color="@color/dark_grey" />
+
+
+                        <RelativeLayout
+                            android:id="@+id/creditsale_RLT_declinederror"
+                            android:layout_width="fill_parent"
+                            android:layout_height="@dimen/cash_sign_content_view_height"
+                            android:layout_below="@+id/creditsale_LNR_redceiptdetails"
+                            android:layout_marginBottom="3dp"
+                            android:background="@color/white"
+                            android:visibility="gone">
+
+                            <EditText
+                                android:id="@+id/creditsale_LBL_declinederror"
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:background="@android:color/transparent"
+                                android:enabled="false"
+                                android:focusable="false"
+                                android:gravity="center"
+                                android:textColor="@color/grey"
+                                android:textSize="@dimen/label_font_large" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="130dp"
+                        android:layout_below="@+id/creditsale_LNR_redceiptdetails"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginTop="2dp">
+
+                        <ImageButton
+                            android:id="@+id/creditsale_BTN_clear"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerInParent="true"
+                            android:layout_marginRight="@dimen/margin_normal"
+                            android:background="@drawable/ms_clear"
+                            android:gravity="center"
+                            android:scaleType="fitXY" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/creditsale_LNR_signaturecontent"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/margin_normal"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                       <!-- <Button
+                            android:id="@+id/creditsale_BTN_clear"
+                            android:layout_width="fill_parent"
+                            android:layout_height="42dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/cashsale_singnature_clear"
+                            android:textSize="20dp"
+                            android:typeface="sans"
+                            android:visibility="gone" />-->
+
+                        <ImageButton
+                            android:id="@+id/creditsale_BTN_submitsignature"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/ms_button_next_active"
+                            android:enabled="false" />
+
+                        <RelativeLayout
+                            android:id="@+id/creditsale_RLT_print"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:clickable="true"
+                            android:visibility="gone">
+
+
+                            <RelativeLayout
+                                android:id="@+id/creditsale_REL_print_action"
+                                android:layout_width="fill_parent"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="@dimen/margin_small"
+                                android:orientation="horizontal">
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/divider_height_normal"
+                                    android:background="@color/grey" />
+
+                                <ImageView
+                                    android:id="@+id/creditsale_IMG_print"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginLeft="@dimen/margin_normal"
+                                    android:layout_marginRight="@dimen/margin_small"
+                                    android:clickable="false"
+                                    android:src="@drawable/ms_print_receipt" />
+
+                                <com.mswipetech.wisepad.sdk.customviews.CustomSDKTextView
+                                    android:id="@+id/creditsale_LBL_print"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_toRightOf="@+id/creditsale_IMG_print"
+                                    android:clickable="false"
+                                    android:paddingLeft="@dimen/padding_small"
+                                    android:text="@string/cashsale_singnature_print"
+                                    android:textColor="@color/grey"
+                                    android:textSize="@dimen/label_font" />
+                            </RelativeLayout>
+                        </RelativeLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</RelativeLayout>

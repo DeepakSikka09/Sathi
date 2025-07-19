@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/border_2dp_black"
+    android:padding="@dimen/_30DP">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/crssdialog"
+        android:layout_width="@dimen/_40DP"
+        android:layout_height="@dimen/_40DP"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/ic_baseline_close_24"
+        />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/option_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/select_one_of_the_below_option"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/crssdialog"
+        android:textSize="@dimen/_14SP"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/bt_call"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10DP"
+        android:layout_marginTop="@dimen/_20DP"
+        android:background="@drawable/fwd_button"
+        android:backgroundTint="@color/red_ecom"
+        android:drawableEnd="@drawable/ic_action_callbridge"
+        android:padding="@dimen/_10DP"
+        app:layout_constraintTop_toBottomOf="@id/option_tv"
+        android:text="@string/call_primary_number"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_15SP"
+        android:textStyle="bold" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/bt_sms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_10DP"
+        android:layout_marginTop="@dimen/_20DP"
+        android:layout_marginRight="@dimen/_10DP"
+        android:background="@drawable/fwd_button"
+        android:backgroundTint="@color/red_ecom"
+        android:drawableEnd="@drawable/ic_action_callbridge"
+        android:padding="@dimen/_10DP"
+        app:layout_constraintTop_toBottomOf="@id/bt_call"
+        android:text="@string/call_alternate_number"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_15SP"
+        android:textStyle="bold" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/bt_sms_alternate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10DP"
+        android:layout_marginTop="@dimen/_20DP"
+        android:background="@drawable/fwd_button"
+        android:drawableEnd="@drawable/ic_baseline_email_24"
+        android:padding="@dimen/_10DP"
+        app:layout_constraintTop_toBottomOf="@id/bt_sms"
+        android:text="@string/sms_on_alternate_number"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_15SP"
+        android:textStyle="bold"
+        android:visibility="gone" />
+</androidx.constraintlayout.widget.ConstraintLayout>

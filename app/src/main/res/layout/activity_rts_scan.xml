@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.journeyapps.barcodescanner.DecoratedBarcodeView
+            android:id="@+id/zxing_barcode_scanner"
+            android:layout_width="@dimen/_0DP"
+            android:layout_height="@dimen/_230DP"
+            android:background="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:zxing_scanner_layout="@layout/custom_scanner_view">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/iv_flash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_margin="@dimen/_8DP"
+                android:src="@drawable/flashoff" />
+        </com.journeyapps.barcodescanner.DecoratedBarcodeView>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/titleScreen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_6dp"
+            android:layout_marginBottom="@dimen/margin_6dp"
+            android:gravity="center"
+            android:text="@string/select_checkbox_message"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/_18SP"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/zxing_barcode_scanner" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerDRS"
+            android:layout_width="@dimen/_0DP"
+            android:layout_height="@dimen/_0DP"
+            android:layout_marginStart="@dimen/_5DP"
+            android:layout_marginTop="@dimen/_5DP"
+            android:layout_marginEnd="@dimen/_5DP"
+            app:layout_constraintBottom_toTopOf="@id/save_action"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/titleScreen"
+            tools:listitem="@layout/activity_rts_shipment_list_item" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/save_action"
+            android:layout_width="@dimen/_0DP"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10DP"
+            android:layout_marginEnd="@dimen/_10DP"
+            android:layout_marginBottom="@dimen/_5DP"
+            android:background="@drawable/rts_button"
+            android:gravity="center"
+            app:backgroundTint="@null"
+            android:text="@string/next_rts_scan"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_15SP"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

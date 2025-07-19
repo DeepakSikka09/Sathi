@@ -1,0 +1,818 @@
+<resources>
+    <string name="v2_0_0">v2.3.44</string>
+    <string name="app_name">Ecom SATHi</string>
+    <string name="ok">OK</string>
+    <string name="msg_link">MESSAGE LINK</string>
+    <string name="link_payment">Payment Link</string>
+    <string name="rsnd_link">SEND LINK</string>
+    <string name="submittxt">Submit</string>
+    <string name="txt_heading">Send Payment Link</string>
+    <string name="monthly_working_hours">Monthly working hours</string>
+    <string name="google_maps_key">AIzaSyD-2RwUpbboPmUM-cwV0TEvN86uf1px8QY</string>
+    <string name="copyright_txt"><![CDATA[All copyrights are reserved by <font color=\'#C02222\'> Ecom</font><font color=\'#333E86\'> Express</font> Ltd. @2023 ]]></string>
+    <!-- Strings related to login -->
+    <string name="enter_mobile_no">Enter Mobile No Manually</string>
+    <string name="no_verify">Verifying your number</string>
+    <string name="sent_otp_to">We have sent an SMS with an activation code to your registered mobile no. </string>
+    <string name="change_no_stmt">We will sent an SMS with an activation code on your given mobile no. </string>
+    <string name="notverified">Not Verified </string>
+    <string name="cash_recive_from_consignee">How much have you received from consignee?</string>
+    <string name="collected_amount_hint">Enter Collected Amount</string>
+    <string name="return_amount_str">"The amount that you need to return is: \u20B9"</string>
+    <string name="min_amount_str">"The Min amount need to collect is: \u20B9"</string>
+    <string name="resheduled_amount">"The Rescheduled amount to be collected is: \u20B9"</string>
+    <string name="error_min_amount">"The amount that you had entered is less than minimum amount."</string>
+    <string name="round_off_amount_str">"The Round off amount is:  "</string>
+    <string name="error_collected_amount">"The amount that you had entered is less than collectable amount."</string>
+    <string name="inst">*Instructions</string>
+    <string name="Y">Yes</string>
+    <string name="N">No</string>
+    <string name="alert_title">Alert.</string>
+    <string name="reassign_alert">Do you want to revert all changes.</string>
+    <string name="hint_employee_code">Employee Code</string>
+    <string name="hint_password">Password*</string>
+    <string name="forget_password">Forgot Password ?</string>
+    <string name="change_password">Change Password</string>
+    <string name="text_login">LOGIN</string>
+
+    <string name="invalid_confirm_password">Confirm And New Password Not Match</string>
+    <!--Forgot Password-->
+    <string name="change_pass">CHANGE PASSWORD</string>
+    <string name="unattempted_shipment_title">Unattempted Shipments</string>
+    <string name="unattempted_shipment_msg">You have unattempted shipments, do you want to attempt these shipments in future? </string>
+    <string name="confirm_password">Confirm New Password*</string>
+    <string name="hint_old_password">Old Password*</string>
+    <string name="rvp">RVP</string>
+    <string name="shipment_undelivered">Shipment Undelivered</string>
+
+    <array name="drs_items">
+        <item name="FWD">Forward Shipment</item>
+        <item name="RTS">Return To Shipper</item>
+        <item name="RVP">Reverse Pickup</item>
+        <item name="EDS">Ecom Digital Service</item>
+    </array>
+
+    <array name="drs_status">
+        <item name="ASSIGNED">Pending</item>
+        <item name="DELIVERED">Successful</item>
+        <item name="UNDELIVERED">Unsuccessful</item>
+    </array>
+
+    <array name="drs_sortby">
+        <item name="NAME">Outscan ID</item>
+    </array>
+
+    <array name="drs_remarksby">
+        <item name="NOTANSWERING">Consignee Not Picking Call</item>
+        <item name="LATER">Consignee Requested To Call Later</item>
+        <item name="RESCHEDULE">Same Day Reschedule</item>
+        <item name="CONSIGNEE_CALLED">Consignee Called</item>
+        <item name="NO_REMARK">No Remark</item>
+    </array>
+
+    <string name="Successful">Successful</string>
+    <string name="fuel_reimbursement">Fuel Reimbursement</string>
+    <string name="yes">Yes</string>
+    <string name="proceed_now">Proceed</string>
+    <string name="no">No</string>
+    <string name="hint_new_password">New Password*</string>
+    <string name="hint_confirm_password">Confirm Password*</string>
+    <string name="hint_otp">Enter OTP*</string>
+    <string name="hint_emp_code">Enter Employee Code</string>
+    <string name="send_button">SEND</string>
+    <!--Drawer-->
+    <string name="open_drawer">Drawer Open</string>
+    <string name="close_drawer">Drawer Close</string>
+
+    <string name="home">HOME</string>
+    <string name="profile">Profile</string>
+    <string name="logout">Logout</string>
+    <string name="reset">Reset</string>
+
+    <string name="check_internet">Check your internet connection</string>
+    <string name="submit">SUBMIT</string>
+    <string name="enter_new_password">New Password*</string>
+    <string name="attendance">Attendance</string>
+    <string name="consignee_name">Consignee Name</string>
+    <string name="awb">AWB:</string>
+    <string name="item">Item:</string>
+    <string name="capture_image_bf_pkg">Capture Image Of The Product Before Packaging</string>
+    <string name="capture_first_image_bf_pkg">Capture First Image Of The Product Before Packaging</string>
+    <string name="capture_second_image_bf_pkg">Capture Second Image Of The Product Before Packaging</string>
+    <string name="capture_image_af_pkg">Capture Image Of Completely Sealed Flyer With Product Clearly Visible Inside</string>
+    <string name="scan_awb_bf_pkg">Scan RVP AWB On Packaging Slip</string>
+    <string name="scan_awb_af_pkg">Scan The Barcode On The Packaging</string>
+    <string name="eds_scan_awb_bf_pkg">Scan EDS AWB On Packaging Slip</string>
+    <string name="eds_scan_awb_af_pkg">Scan Packaging Envelope Barcode</string>
+
+    <string name="amount">Amount:</string>
+    <string name="address">Address:</string>
+    <string name="office">Office</string>
+    <string name="residence">Residence</string>
+    <string name="cod">COD</string>
+    <string name="other">Other</string>
+    <string name="enter_the_collected_amount">Collected Amount</string>
+    <string name="returning_amount">Returning Amount:</string>
+    <string name="round_off">Round off Amount:</string>
+    <string name="next">NEXT</string>
+    <string name="cancel">CANCEL</string>
+    <string name="pay_by_card">Digital Payment</string>
+    <string name="check_ecod_status">eCOD STATUS</string>
+    <string name="raise_dispute">RAISE DISPUTE</string>
+    <string name="enter_the_otp">Enter OTP</string>
+    <string name="_dlight_enter_the_otp">Enter 4 Digit OTP</string>
+    <string name="verify">VERIFY</string>
+    <string name="resend">RESEND</string>
+    <string name="change_mobile_no">Change Mobile No.</string>
+    <string name="resend_otp">Resend</string>
+    <string name="sent_otp_to_other">Other Number</string>
+    <string name="eds_activity_list">Task List</string>
+    <string name="start_trip_reading_should_be_less_than_999999">Start Trip Reading Should Be Less Than 999999</string>
+    <string name="enter_otp">Enter OTP</string>
+    <string name="enter_valid_otp">Enter valid Otp</string>
+
+    <string name="start_trip">Start Trip</string>
+    <string name="pathshaala">E-Pathshaala</string>
+    <string name="odh">ODH</string>
+
+    <string name="all_fields_are_mandatory">All Fields Are Mandatory</string>
+    <string name="please_enter_user_id">Enter Employee Code</string>
+
+    <!--Start/Stop Trip-->
+    <string name="vehicle_type">Vehicle Type</string>
+    <string name="stop_trip">Stop Trip</string>
+    <string name="pay_by_cash">Cash</string>
+    <string name="capture_image">Capture image</string>
+    <string name="capture_image_two">Capture Image*</string>
+    <string name="capture_image_rts">Capture Image*</string>
+    <string name="scan_bar_code"> Scan Barcode</string>
+
+    <string name="masking_front">Capture Front Image</string>
+    <string name="masking_rear">Capture Rear Image</string>
+
+    <string name="signature">Signature</string>
+    <string name="signature_mandatory">Signature*</string>
+    <string name="choose_reason">Choose Reason*</string>
+    <string name="choose_group">Choose Group*</string>
+    <string name="reschedule">Reschedule Date</string>
+    <string name="enter_remarks">Enter Remarks</string>
+
+
+    <string name="please_enter_new_password_and_confirm_password"> Enter New Password and Confirm Password</string>
+    <string name="please_enter_the_amount_given_by_consignee"> Enter The Amount</string>
+
+    <string name="otp_blank">Enter OTP</string>
+    <string name="Invalid_otp_entered">Enter Valid OTP </string>
+    <string name="Invalid_pin_entered">Enter Valid PIN </string>
+    <string name="Invalid_urn_entered">Enter Valid URN</string>
+    <string name="Invalid_adhaar_entered"> Check Aadhaar no. Should be 12 digit…</string>
+    <string name="otp_resend_successfully">OTP Resend Successfully!</string>
+    <string name="ref_resend_successfully">Ref. No. Resend Successfully!</string>
+    <string name="payment_option"> Select Payment Mode</string>
+    <string name="delivered_to">Delivered To*</string>
+    <string name="picked_from">Pick From</string>
+    <string name="pick_up_address">Pick up Address</string>
+    <string name="DelieveryAddress">Delivery Address*</string>
+    <string name="less_amount_entered">Entered amount cannot be less than collectable amount</string>
+    <string name="more_amount_entered">Cannot enter amount more than 2,00,000</string>
+    <string name="enter_input">Input Amount</string>
+    <string name="verify_otp">Verify OTP</string>
+    <string name="ppd">PPD</string>
+    <string name="data">data</string>
+    <string name="alert">Don\'t click photograph of consignee it is an offence.</string>
+    <string name="shipment_status_done">Shipment Already Attempted</string>
+    <string name="undelivered_shipment_msg">Call Duration below specified limit, Would you like to Dial Again?</string>
+    <string name="permission_required">Provide All Permissions</string>
+    <string name="please_read_and_sign_confirming_to_the_receipt_declaration_as_under"> Read and sign confirming to the receipt declaration as under</string>
+    <string name="please_select_deliverd_to">Select Delivered To</string>
+    <string name="start_your_trip">Start Your Trip</string>
+    <string name="login_error">Employee Code or Password cannot be empty!</string>
+    <string name="please_fill_undelivered_details_below">Fill Undelivered Details Below</string>
+    <string name="please_fill_failed_details_below"> Fill Failed Details Below</string>
+    <string name="pick_dates">Pick Date</string>
+    <string name="select_reason_code">Select Reason</string>
+    <string name="reschedule_statment">Select Reschedule Date And Slot</string>
+    <string name="please_fill_all_details">Fill All The Details</string>
+    <string name="please_capture_image">Capture Image</string>
+    <string name="cannot_go_back">Cannot go back!! Go forward to commit packet</string>
+    <string name="cannot_go_back_Rvp">Cannot go back!!</string>
+    <string name="cancel_alert">Do you want to cancel?</string>
+
+    <string name="commit_restriction_msg">Your Device Date-Time Is Incorrect, Press OK For Update.</string>
+
+    <string-array name="veh_type">
+        <item>Self</item>
+        <item>Ecom Express</item>
+    </string-array>
+
+    <string-array name="time">
+        <item>Now</item>
+        <item>15 min</item>
+        <item>30 min</item>
+        <item>1 hour</item>
+        <item>2 hour</item>
+        <item>3 hour</item>
+        <item>4 hour</item>
+    </string-array>
+    <string-array name="remarks">
+        <item>Entrance</item>
+        <item>MailRoom</item>
+        <item>Reception</item>
+        <item>Security Room</item>
+        <item>Courier Point</item>
+        <item>Parking Area</item>
+    </string-array>
+
+    <string-array name="type_of_veh">
+        <item>2 Wheeler</item>
+        <item>3 Wheeler</item>
+        <item>4 Wheeler</item>
+        <!--        <item>Counter</item>-->
+        <item>Others</item>
+
+    </string-array>
+
+
+    <string-array name="type_of_veh1">
+        <item>3 Wheeler</item>
+        <item>4 Wheeler</item>
+    </string-array>
+
+    <string-array name="counter_veh_type">
+        <item>2 Wheeler</item>
+        <item>3 Wheeler</item>
+        <item>4 Wheeler</item>
+        <item>Counter</item>
+        <item>Others</item>
+    </string-array>
+
+    <!--Signature Screen-->
+    <string-array name="relation">
+        <item>Select</item>
+        <item>Self</item>
+        <item>Family</item>
+        <item>Friend</item>
+        <item>Security</item>
+        <item>Others</item>
+    </string-array>
+
+    <string-array name="Select">
+        <item>Select</item>
+        <item>Self</item>
+        <item>Family</item>
+        <item>Friend</item>
+        <item>Security</item>
+        <item>Others</item>
+    </string-array>
+
+    <!--Undelivered Screen-->
+    <string name="Success">Success</string>
+    <string name="now_you_can_recieve_this_shipment_from_customer">Now you can receive this shipment from customer.</string>
+    <string name="static_content">Static Content</string>
+    <string name="enter_last_4_digits">Enter last 4 digits</string>
+    <string name="enter_quantity">Enter value</string>
+    <string name="remarks">Remarks</string>
+    <string name="device_rooted">You Can Not Use This Application On Rooted Device.</string>
+    <string name="commitdialog">Are you sure you want to commit?</string>
+    <string name="commitdialog_meter_away">You are not attempting the shipment at Consignee’s location.\nAre you sure you want to commit?</string>
+    <string name="commitdialog_meter_away_mandatory">You are not allowed to commit this shipment as you are not attempting at consignee location.</string>
+    <string name="select_picked_from"> Select Picked From</string>
+    <string name="pickupfrom"> Select pick up address</string>
+    <string name="imp">First Image Before Packaging</string>
+    <string name="iap">Image After Packaging</string>
+    <string name="tryagain"> try again</string>
+    <string name="scanmismatch">AWB Number doesnot match. Try Again</string>
+    <string name="now_you_can_handover_this_shipment_from_customer">Now you can handover this shipment to customer.</string>
+    <string name="mark_manually_alert">Do you want to mark selected shipment manually delivered?</string>
+    <string name="unable">Unable To Mark Manually. Some Error Occurred </string>
+    <string name="havent_mark">You haven\'t mark any shipment.</string>
+    <string name="drsfilter">Filter By</string>
+    <string name="Apply">APPLY</string>
+    <string name="sync">Sync</string>
+    <string name="qc_header">QC List</string>
+    <string name="capture_image_before_packaging">Capture image of Collected Documents before packing</string>
+    <string name="scan_print_label_barcode">Now scan AWB on printed label after packing</string>
+    <string name="final_scan">Finally scan packing envelope barcode</string>
+    <string name="sign_agreement">By signing, you are confirming that scheduled activity has been done successfully by Ecom Express Executive. Collected documents (if any)</string>
+    <string name="vehicle_owner">Vehicle Owner</string>
+    <string name="verification_code">Enter Verification Code</string>
+    <string name="switch_callbridge_number">Switch Call-bridge Number</string>
+    <string name="current_number">Current Number</string>
+    <string name="hint_enter_veh">Vehicle Number*</string>
+    <string name="drs_lis">DRS List</string>
+    <string name="shipment_status">Shipment Status</string>
+    <string name="monday">Monday</string>
+    <string name="tuesdayl">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
+    <string name="month_validation_msg">You Can\'t Select This month</string>
+    <string name="P">P</string>
+    <string name="A">A</string>
+    <string name="toast_to_select_month">Select The Month</string>
+    <string name="patn_awb">\@@AWB@@</string>
+    <string name="pstn_pin">\@@PIN@@</string>
+    <string name="cb_config_api">api</string>
+    <string name="cb_config_pstn">pstn</string>
+    <string name="fwd">FWD</string>
+    <string name="rts">RTS</string>
+    <string name="eds">EDS</string>
+    <string name="CANCEL">CANCEL</string>
+    <string name="less">less</string>
+    <string name="error_same_time_reschedule">Select Future Time</string>
+    <string name="no_network_error">No Network Connectivity</string>
+    <string name="title_pass_expired">Password Expired</string>
+    <string name="update">Update</string>
+    <string name="message_pass_expired">Your Password Is Expired, Please Reset</string>
+    <string name="vehicle_number_validation">Enter Valid Vehicle Number</string>
+    <string name="no_activity_assigned">No Activity Assigned</string>
+    <string name="session_expire">Your Session Has Expired. Login Again</string>
+    <string name="done">DONE</string>
+    <string name="proceed">PROCEED</string>
+    <string name="cash_receipt">CASH RECEIPT</string>
+    <string name="submit_">SUBMIT</string>
+    <string name="get_status">GET STATUS</string>
+    <string name="stop">STOP</string>
+    <string name="okay">OKAY</string>
+    <string name="undelivered_">UNDELIVERED</string>
+    <string name="undelivered__">Un-Delivered</string>
+    <string name="delivered_">Delivered</string>
+    <string name="get_current_location">GET LOCATION</string>
+    <string name="upload_">UPLOAD</string>
+    <string name="remark_disable_for_RTS">"Remark is not available for RTS shipment"</string>
+    <string name="null_key_api">Null API Key From Master. Contact Server Admin</string>
+    <string name="server_down_msg">Failed To Connect, Check Your Connectivity Or Contact Admin</string>
+    <string name="http_500_msg">Internal Server Error! Contact System Admin</string>
+    <string name="scan">SCAN</string>
+    <string name="Continue">Continue</string>
+    <string name="wrong_awb">Wrong awb scanned.</string>
+    <string name="eds_refno">Enter Ref. No.</string>
+    <string name="generate_otp">Get OTP</string>
+    <string name="please_generate_otp">Generate OTP</string>
+    <string name="start_alert_msg">Last stop trip and start trip difference cannot be greater than</string>
+    <string name="aadhar_back_image"> Upload Aadhar card Back image</string>
+    <string name="aadhar_front_image"> Upload Aadhar card Front image</string>
+    <string name="aadhar_status_error"> Upload Aadhar Images first</string>
+    <string name="call_is_mandatory_for_updating_this_status_code">Call is mandatory for updating this status code</string>
+    <string name="more">more</string>
+    <string name="Name">Name</string>
+    <string name="generate_Otp">Generate OTP</string>
+
+    <string name="enter_number_to_send_payment_link">Enter mobile number to send Payment link.</string>
+    <string name="choose_number_to_send_payment_link">Choose one to send Payment link.</string>
+    <string name="choose_number_dispute">Choose one to send OTP for terms and condition.</string>
+    <string name="dipute_dialog_query">Do you want to capture payment image?</string>
+    <string name="capture_dispute_image">Payment Image</string>
+
+
+    <string name="message_csat"><u>Message</u></string>
+    <string name="confirm_your_availability">Confirm Your Availability</string>
+    <string name="pending_history_detail">Pending History Detail</string>
+    <string name="GPSONOFF">Your GPS is OFF. Enable GPS.</string>
+    <string name="multi_space">You have clone app installed in your phone. Uninstall clone app.</string>
+    <string name="fakelocationmsg"> You are using fake location so you cannot proceed further.</string>
+    <string name="developer_mode_enable">Turn Off The Developer Mode In Settings to Access This Application</string>
+    <string name="skip">Skip OTP Verification</string>
+
+    <string name="call_not_allowed">Call is not allowed for this AWB as the consignee mobile number shared by shipper is invalid.</string>
+    <string name="sms">SMS</string>
+    <string name="call">CALL</string>
+    <string name="select_one_to_send_otp">Select one of the below option to resend OTP</string>
+    <string name="free_of_cost">Free Of Cost</string>
+    <string name="location_map">Location From Where Pickup Started</string>
+    <string name="tried_reaching">To apply this reason, send <b>Tried Reaching You</b> message by pressing OK</string>
+    <string name="scan_flyer_code">Scan Flyer Code</string>
+    <string name="provide_flyer_code_here">Provide Flyer Code</string>
+    <string name="provide_bpid_code_here">Provide Branded Packaging Code</string>
+    <string name="enter_flyer_code">Enter Flyer code</string>
+    <string name="scan_bp_id">Scan Branded Packaging ID</string>
+    <string name="please_select_shipments">Please select shipments</string>
+    <string name="please_select_one_shipment_only_at_a_time">Please select one shipment only at a time.</string>
+    <string name="not_available">Not Available</string>
+    <string name="scan_a_barcode_or_qr_code">Scan a barcode or QR Code</string>
+    <string name="this_remark_is_not_available_for_rts_shipment">This remark is not available for RTS shipment</string>
+    <string name="please_scan_valid_bar_code_of_this_manifest">Please scan valid bar code of this manifest.</string>
+    <string name="already_verified">Already Verified</string>
+    <string name="please_resend_otp_atleast_once">Please resend OTP atleast once.</string>
+    <string name="awb_number_is_missing">Awb number is missing.</string>
+    <string name="you_have_reached_your_max_attempt_of_reschedule">You have reached your max attempt of reschedule.</string>
+    <string name="cannot_select_today_date_for_re_schedule">Cannot Select Today Date for Re-schedule</string>
+    <string name="three_or_more_consecutive_shipments_cannot_be_marked_as_ud_without_a_call_please_call_consignee">Three or more consecutive shipments cannot be marked as UD without a call. Please call consignee.</string>
+    <string name="shipment_cannot_be_marked_undelivered_within_the_dc">Shipment cannot be marked undelivered within the DC</string>
+    <string name="are_you_sure_to_reset_the_drs_sequence_to_default">Are you sure to reset the DRS sequence to default ?</string>
+    <string name="camera">camera</string>
+    <string name="qcfailed">qcfailed</string>
+    <string name="open_shipment_awb_is">"Open shipment AWB is "</string>
+    <string name="scanned_flyer_barcode_is">"Scanned Flyer Barcode Is "</string>
+    <string name="invalid_flyer_code_scan_again_or_another">Invalid Flyer Code Scan Again Or Another</string>
+    <string name="only_the_original_thread">Only the original thread</string>
+    <string name="can_touch_its_views">can touch its views.</string>
+    <string name="awb_doesn_t_match">AWB doesn\'t match</string>
+    <string name="no_need_to_take_signature_at_this_activity">No need to take signature at this activity.</string>
+    <string name="we_have_send_otp_on_registered_mobile_number">"We have send OTP on registered mobile number: "</string>
+    <string name="pickup_failed">Pickup Failed</string>
+    <string name="shipment_picked">Shipment Picked</string>
+    <string name="mdt">MDT</string>
+    <string name="select_date">Select Date</string>
+    <string name="item_name">Item Name</string>
+    <string name="awb_no">awb no</string>
+    <string name="do_not_forget_to_ask_the_customer_to_provide_feedback_on_the_shared_csat_message_and_email_link">Do not forget to ask the \ncustomer to provide \nfeedback on the shared CSAT \nmessage and email link</string>
+    <string name="please_wait_for">Please wait for...</string>
+    <string name="resendtxt">RESEND</string>
+    <string name="_00_30">00 : 30</string>
+    <string name="fwd_detail">FWD Detail</string>
+    <string name="amounttxt">Amount : ₹</string>
+    <string name="_0_0">0.0</string>
+    <string name="_0_00">0.00</string>
+    <string name="registered_number">Registered Number</string>
+    <string name="submitButton">Submit</string>
+    <string name="other_number">Other Number</string>
+    <string name="enter_mobile_number">Enter Mobile Number</string>
+    <string name="enter_otp_txt">Enter OTP</string>
+    <string name="verifytxt">Verify</string>
+    <string name="please_provide_awb_no">Please Provide AWB No</string>
+    <string name="enter_awb_number">Enter AWB Number</string>
+    <string name="please_provide_branded_packing_id">Please Provide Branded Packing ID</string>
+    <string name="enter_branded_packing_id">Enter Branded Packing ID</string>
+    <string name="you_have_earned_minimum">You have earned minimum</string>
+    <string name="fortxt">For</string>
+    <string name="awb_number">AWB NUMBER</string>
+    <string name="fwd_signature">FWD Signature</string>
+    <string name="clear">Clear</string>
+    <string name="did_you_received_your_change">Did you received your change?</string>
+    <string name="i_hereby_declare_shipment_receipt_in_packed_sealed_condition_from_ecom_express">I, hereby declare shipment receipt in packed sealed condition from Ecom Express</string>
+    <string name="generate_otp_txt">GENERATE OTP</string>
+    <string name="fwd_undelivered">FWD Undelivered</string>
+    <string name="skip_otp_verification">Skip OTP Verification</string>
+    <string name="name_txt">name</string>
+    <string name="shipment_status_txt">Shipment Status</string>
+    <string name="_00_10">00:10</string>
+    <string name="delivery_mode">Delivery Mode</string>
+    <string name="re_assign_mode">Re-Assign Mode</string>
+    <string name="select_all">Select All</string>
+    <string name="rto">RTO</string>
+    <string name="mark_manually">Mark Manually</string>
+    <string name="select_checkbox_message">Select Checkbox If Flyer Code Or Branded Packaging Code Are Not Readable</string>
+    <string name="next_rts_scan">Next</string>
+    <string name="rts_signature">RTS Signature</string>
+    <string name="rts_phone">Phone*</string>
+    <string name="rts_enter_otp">Enter OTP*</string>
+    <string name="rts_signature_star">Signature*</string>
+    <string name="rts_clear">Clear</string>
+    <string name="note_if_consignee_wants_the_shipment_select_delivered_else_un_delivered">Note : If consignee wants the shipment select Delivered else Un-Delivered</string>
+    <string name="call_bride">call bride</string>
+    <string name="click_here_to_scan">Click here to scan</string>
+    <string name="scan_barcode">Scan Barcode</string>
+    <string name="please_enter_pin">Please enter pin</string>
+    <string name="secure_activity">Secure Activity</string>
+    <string name="cross_dialog">cross dialog</string>
+    <string name="capture_image_2">Capture Image 2*</string>
+    <string name="capture_image_1">Capture Image 1*</string>
+    <string name="rts_done">Confirm</string>
+    <string name="undeliver">Undeliver</string>
+    <string name="deliver">Deliver</string>
+    <string name="scan_shipment_awb">Scan Shipment AWB</string>
+    <string name="scan_shipments">Scan Shipments</string>
+    <string name="fwd_obd">FWD OBD</string>
+    <string name="product_details">Product Details</string>
+    <string name="deliver_to">Deliver to</string>
+    <string name="verified_address">Verified address</string>
+    <string name="mark_shipment">Mark Shipment</string>
+    <string name="please_complete_qc_before_delivering_the_shipment">Please Complete QC before delivering the Shipment</string>
+    <string name="otp_code_verification">OTP Code verification</string>
+    <string name="please_ask_the_consignee_to_share_the_otp_code_sent_on_mobile_number_789xxxx999">Please ask the consignee to share the OTP code sent on mobile number </string>
+    <string name="customer_not_sharing_the_otp_ncode">Customer not sharing the OTP code</string>
+    <string name="verify_code">Verify Code</string>
+    <string name="mark_undeliver">Mark Undeliver</string>
+    <string name="send_code_to_CT">Send Code to Central Team</string>
+    <string name="please_do_not_open_the_box">Please do not open the box</string>
+    <string name="enter_awb_manually">Enter AWB Manually</string>
+    <string name="please_enter_the_shipment_awb_number">Please enter the shipment AWB number</string>
+    <string name="awb_number_manually">1234567890</string>
+    <string name="_1158978052">Enter AWB</string>
+    <string name="didn_t_receive_a_code_resend_code">Didn’t receive a code <u><font color="#158BF8">Resend Code</font></u></string>
+    <string name="rvp_qc_resend_otp">Didn’t receive a code <u><b><font color="#158BF8">Resend Code</font></b></u></string>
+    <string name="primary">Primary</string>
+    <string name="resend_code_in_seconds">Didn’t receive a code (0:%1$d)</string>
+    <string name="alternate">Alternate</string>
+    <string name="xxxxxx0999">XXXXXXXXX</string>
+    <string name="go_to_next_shipment">Go to Next Shipment</string>
+    <string name="order_delivered_suucessfully_n_thankyou">Order Delivered Sucessfully\n Thankyou</string>
+    <string name="retake">Retake</string>
+    <string name="upload">Upload</string>
+    <string name="capture_product_image">Capture Product Image</string>
+    <string name="take_image_product">Take image of the product.</string>
+    <string name="captured_product_image">Captured Product Image</string>
+    <string name="capture_product_front_image">Capture product front Image</string>
+    <string name="captured_product_front_image">Captured product front Image</string>
+    <string name="capture_product_back_image">Capture product back Image</string>
+    <string name="captured_product_back_image">Captured product back Image</string>
+    <string name="captured_flyer_image">Captured Flyer Image</string>
+    <string name="flyer_link">Flyer Link</string>
+    <string name="successfully_linked_flyer_nbarcode_with_shipment">Successfully Linked Flyer \n Barcode with Shipment</string>
+    <string name="capture_flyer_image">Capture Flyer Image</string>
+    <string name="order_completed_returned_the_shipment_back_to_dc">Order Completed\nReturned the Shipment back\nto DC</string>
+    <string name="link_the_shipment_with_the_flyer">Link the Shipment with the flyer</string>
+    <string name="otp_code_has_been_sent_to_the_central_team">OTP code has been sent to \n the Central Team</string>
+    <string name="fail">Fail</string>
+    <string name="pass">Pass</string>
+    <string name="is_the_box_seal_intact">Is the Box Seal Intact?</string>
+    <string name="please_link_the_shipment_with_the_flyer">Please Link the Shipment with the flyer</string>
+    <string name="mark_unbeliver">Mark Undeliver</string>
+    <string name="cancel_pickup">Cancel Pickup</string>
+    <string name="sms_to">SMS to</string>
+    <string name="captured_image_">Captured Image</string>
+    <string name="please_do_not_deliver_the_n_shipment_to_the_consignee">Please Do not Deliver the \n shipment to the Consignee</string>
+    <string name="qc_failed">QC Failed</string>
+    <string name="obd_shipment">OBD Shipment</string>
+    <string name="performance">Performance</string>
+    <string name="fuel">Fuel</string>
+    <string name="my_task">My Task</string>
+    <string name="rvp_success">RVP Success</string>
+    <string name="fwd_failed">FWD Failed</string>
+    <string name="rts_failed">RTS Failed</string>
+    <string name="is_your_selfie_image_clear">Is your selfie image clear?</string>
+    <string name="please_make_sure_the_image_is_clear_and_your_face_is_visible">Please make sure the image is clear and your face is visible</string>
+
+    <string name="capture_vehicle_meter_image">Capture Vehicle Meter Image</string>
+    <string name="selfiewithhelmet">Capture Selfie With Helmet</string>
+    <string name="refer_a_friend">Refer a friend</string>
+    <string name="unattempted_okay">Okay</string>
+    <string name="campaign">Campaign</string>
+    <string name="scan_shipment_soundbox_barcode">Scan Shipment/SoundBox Barcode</string>
+    <string name="click_here_for_sample_image">Click here for Sample Image</string>
+    <string name="please_click_image_within_border">Please click image within border</string>
+    <string name="pending_awb_number">AWB Number :</string>
+    <string name="shipment_type">Shipment Type :</string>
+    <string name="commit_shipment">Commit Shipment</string>
+    <string name="nothing_to_sync_the_shipment">No shipment to sync</string>
+    <string name="these_shipment_can_only_be_deliver_by_scanning">These shipment can only be delivered by scanning</string>
+    <string name="all_pending_shipments_should_be_marked_to_move_further">All pending shipments should be marked to move further</string>
+    <string name="upload_image_against">"Upload image against "</string>
+    <string name="waybill_to_move_further">" waybill to move further"</string>
+    <string name="this_shipment_is_already_assigned">This shipment is already assigned</string>
+    <string name="select_awb_first">Select Awb first</string>
+    <string name="api_response_null">API response null</string>
+    <string name="image_upload_api_response_false">Image Upload API Response False</string>
+    <string name="image_uploading">Image uploading…</string>
+    <string name="no_shipment_selected">No shipment selected</string>
+    <string name="shipment_is_not_in_assigned_mode">Shipment is not in assigned mode</string>
+    <string name="capture_both_images_to_proceed_further">Capture both images to proceed further</string>
+    <string name="awb_already_exist">Awb Already Exist</string>
+    <string name="it_s_not_flyer_code_scan_flyer_code">It\'s not flyer code, scan flyer  ode</string>
+    <string name="shipment_can_t_be_deliver_due_to_bp_id_mismatch">Shipment can\'t be deliver due to BP ID mismatch</string>
+    <string name="awb_does_not_exist">Awb does not exist</string>
+    <string name="invalid_flyer_code_try_again">Invalid flyer code, try again</string>
+    <string name="it_s_not_flyer_code_try_again">It\'s not flyer code, Try again</string>
+    <string name="scan_branded_packaging_barcode">Scan branded packaging barcode</string>
+    <string name="scan_shipment_barcode">Scan shipment barcode</string>
+    <string name="scan_rvp_flyer_barcode">Scan RVP flyer barcode</string>
+    <string name="enter_branded_packaging_code">Enter Branded Packaging Code</string>
+    <string name="capture_image_of_flyer_barcode">Capture Image Of Flyer Barcode</string>
+    <string name="capture_image_of_branded_barcode">Capture Image Of Branded Barcode</string>
+    <string name="enter_flyer_barcode_value">Enter Flyer Barcode Value</string>
+    <string name="enter_branded_packaging_barcode_value">Enter Branded Packaging Barcode Value</string>
+    <string name="rts_shipments_list">RTS List</string>
+    <string name="rts_success">RTS Shipment Complete</string>
+    <string name="side_drawer_menu">Menu</string>
+    <string name="pending_for_sync">Pending for sync</string>
+    <string name="dp_availability">DP availability</string>
+    <string name="sync_configurations">Sync configurations</string>
+    <string name="syncing_master_data">Syncing Master Data…</string>
+    <string name="api_response_is_null">API response is null</string>
+    <string name="api_response_is_false">API response is false</string>
+    <string name="master_data_synced_successfully">Master data synced successfully!</string>
+    <string name="invalid_authentication_token">Invalid Authentication Token.</string>
+    <string name="emp_id">EMP ID:</string>
+    <string name="pstn_format_value_is_null">Pstn format value is null</string>
+    <string name="are_you_sure_you_want_to_logout">Are you sure you want to logout?</string>
+    <string name="your_trip_is_active_stop_trip_and_logout_from_app">Your trip is active. Stop trip and logout from app</string>
+    <string name="ud_rts_image">UD_RTS_IMAGE</string>
+    <string name="generating_otp">Generating OTP…</string>
+    <string name="resending_otp">Resending OTP…</string>
+    <string name="sending_otp">Sending OTP…</string>
+    <string name="verifying_otp">Verifying OTP…</string>
+    <string name="generate_otp_status_false_try_again">Generate OTP Status False, Try Again</string>
+    <string name="enter_valid_mobile_number">Enter valid mobile number</string>
+    <string name="otp_has_been_sent_to_the_registered_mobile_number">"OTP has been sent to the registered mobile number "</string>
+    <string name="otp_already_verified">OTP already verified</string>
+    <string name="resend_otp_at_least_once">Resend OTP at-least once</string>
+    <string name="image_can_not_be_added">Image can not be added</string>
+    <string name="upload_this_image">Upload this image</string>
+    <string name="maximum_limit_reached">Maximum limit reached</string>
+    <string name="the_field_is_empty">The field is empty</string>
+    <string name="capture_at_least_1_image_as_its_mandatory_when_otp_is_skipped">Capture at-Least 1 image as its mandatory when OTP is skipped</string>
+    <string name="verify_otp_first">Verify OTP first</string>
+    <string name="otp_already_generated">Otp already generated</string>
+    <string name="please_enter_otp">Please enter OTP</string>
+    <string name="please_place_signature">Please place signature.</string>
+    <string name="backbutton_is_disabled_until_the_timer_is_off">BackButton is disabled until the timer is off.</string>
+    <string name="can_t_move_back">You can not move back</string>
+    <string name="_gurgram">Gurgram</string>
+    <string name="delivered">Delivered</string>
+    <string name="undelivered">Undelivered</string>
+    <string name="pending_">Pending</string>
+    <string name="amount_">Amount:</string>
+    <string name="status_">Status:</string>
+    <string name="_status">Status:</string>
+    <string name="shipment">Shipment</string>
+    <string name="_2">2</string>
+    <string name="_3">3</string>
+    <string name="_2_">2</string>
+    <string name="address_">Address</string>
+    <string name="saturday_">Saturday</string>
+    <string name="_28_apr_21">28-APR-21</string>
+    <string name="reporting_time">Reporting Time:</string>
+    <string name="_saturday_">Saturday</string>
+    <string name="_28_apr_21_">28-APR-21</string>
+    <string name="reporting_time_">Reporting Time:</string>
+    <string name="_saturday">Saturday</string>
+    <string name="_28_apr_21__">28-APR-21</string>
+    <string name="reporting_time__">Reporting Time:</string>
+    <string name="__saturday">Saturday</string>
+    <string name="__28_apr_21_">28-APR-21</string>
+    <string name="reporting_time_1">Reporting Time:</string>
+    <string name="saturday_1">Saturday</string>
+    <string name="_28_apr_21_2">28-APR-21</string>
+    <string name="reporting_time_2">Reporting Time:</string>
+    <string name="saturday_3">Saturday</string>
+    <string name="_28_apr_21___">28-APR-21</string>
+    <string name="reporting_time_4">Reporting Time:</string>
+    <string name="reporting_time__5">Reporting Time:</string>
+    <string name="_28_apr_21__5">28-APR-21</string>
+    <string name="saturday__4">Saturday</string>
+    <string name="_12_2018">12/2018</string>
+    <string name="in_time_">In Time</string>
+    <string name="out_time_">Out Time</string>
+    <string name="working_hours_">Working Hours</string>
+    <string name="status__">Status</string>
+    <string name="sc_latitude">SC Latitude :</string>
+    <string name="sc_longitude">SC Longitude :</string>
+    <string name="delivered__">Delivered</string>
+    <string name="undelivered___">Undelivered</string>
+    <string name="no_data_found___">No data found.</string>
+    <string name="_1">1</string>
+    <string name="jan">Jan</string>
+    <string name="switch_call_bridge_number">Switch Call Bridge Number</string>
+    <string name="update_sc_location">Update Sc Location</string>
+    <string name="receiver_name">Enter Receiver\'s Name*</string>
+    <string name="start_trip_details">Start Trip Details</string>
+    <string name="_2_wheeler">2 Wheeler</string>
+    <string name="hr_26_ab_1556">HR 26 AB 1556</string>
+    <string name="start_meter_reading_km">Start Meter Reading (KM)</string>
+    <string name="_36599">36599</string>
+    <string name="vehicle_number">Vehicle Number</string>
+    <string name="stop_meter_reading_km">Stop Meter Reading (KM)</string>
+    <string name="other_expense">Other Expense</string>
+    <string name="self">Self</string>
+    <string name="enable_disable">Enable/Disable</string>
+    <string name="capture_selfie_with_helmet">Capture Selfie with Helmet</string>
+    <string name="please_select_destination">Please Select Destination</string>
+    <string name="awb_no_1">AWB No</string>
+    <string name="input_value">Input Value</string>
+    <string name="captureflyerbpidimageinmanualdialogrts">CaptureFlyerBPIDImageInManualDialogRTS</string>
+    <string name="manualinputflyerbpidrts">ManualInputFlyerBPIDRTS</string>
+    <string name="onmarkmanuallybutton">OnMarkManuallyButton</string>
+    <string name="reassignallshipments">ReassignAllShipments</string>
+    <string name="handlesaveactionclick">HandleSaveActionClick</string>
+    <string name="onquerytextsubmit">OnQueryTextSubmit</string>
+    <string name="generateotpclickrts">GenerateOTPClickRTS</string>
+    <string name="onverifyclickotprts">OnVerifyClickOtpRTS</string>
+    <string name="switchflashlightrts">SwitchFlashlightRTS</string>
+    <string name="skipotprts">SkipOtpRTS</string>
+    <string name="onclearsignaturepadrts">OnClearSignaturePadRTS</string>
+    <string name="resendotpclickrts">ResendOtpClickRTS</string>
+    <string name="changing_password">Changing Password…</string>
+    <string name="changepasswordrequest">ChangePasswordRequest</string>
+    <string name="verifying">Verifying…</string>
+    <string name="change_password_api_response_false">Change password API response false</string>
+    <string name="api_response_false">API response false</string>
+    <string name="forgetpasswordbutton">ForgetPasswordButton</string>
+    <string name="otpverifywithpassword">OtpVerifyWithPassword</string>
+    <string name="your_session_has_expired_please_log_in">Your session has expired. Please log in</string>
+    <string name="loginbuttonclick">LoginButtonClick</string>
+    <string name="employee_code">"Employee Code "</string>
+    <string name="callmasterdataapi">ManuallyCalledMasterDataApi</string>
+    <string name="manuallyresetapplication">ManuallyResetApplication</string>
+    <string name="manuallylogoutfromapplication">ManuallyLogoutFromApplication</string>
+    <string name="pendingshipmentcommitclick">PendingShipmentCommitClick</string>
+    <string name="failed_to_decrypt_file">Failed to decrypt file</string>
+    <string name="uploading_commit_data">Uploading Commit Data...</string>
+    <string name="shipment_already_committed">Shipment already committed</string>
+    <string name="fwd_commit_api_response_null">FWD commit Api response null</string>
+    <string name="manuallydrssyncclick">ManuallyDrsSyncCLick</string>
+    <string name="synchronizing_wait">Synchronizing Wait...</string>
+    <string name="drs_list_processing_api_response_null">DRS list processing Api response null</string>
+    <string name="na">N/A</string>
+    <string name="no_shipment_found_">No Shipment Found.</string>
+    <string name="verifying_number">Verifying Number</string>
+    <string name="n_otp">N-OTP</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="rvp_capture_and_scan">RVP Capture and Scan</string>
+    <string name="do_not_forget_to_ask_the_ncustomer_to_provide_nfeedback_on_the_shared_csat_nmessage_and_email_link">Do not forget to ask the \ncustomer to provide \nfeedback on the shared CSAT \nmessage and email link</string>
+    <string name="rvp_fail">RVP Fail</string>
+    <string name="close">Close</string>
+    <string name="preview_image_to_be_match_with_the_item">Preview Image ( To be Match with the item )*</string>
+    <string name="qc_instruction">Instruction</string>
+    <string name="rvp_detail">RVP Detail</string>
+    <string name="rvp_signature">RVP Signature</string>
+    <string name="sender_s_name">Sender\'s Name</string>
+    <string name="select_one_of_the_below_option">Select one of the below option</string>
+    <string name="select_one_of_the_callbridge_option">Please Select Call Bridge Number</string>
+    <string name="call_primary_number">Call Primary Number</string>
+    <string name="call_alternate_number">Call Alternate Number</string>
+    <string name="sms_on_alternate_number">SMS on Alternate Number</string>
+    <string name="rvp_failed">RVP Failed</string>
+    <string name="did_not_received_code">Didn’t receive a code</string>
+    <string name="format">format</string>
+    <string name="additional">Additional</string>
+    <string name="islocal">isLocal</string>
+    <string name="onnextamountclick">OnNextAmountClickFwdCod</string>
+    <string name="oncardpaymentselectedfwd">OnCardPaymentSelectedFwd</string>
+    <string name="onmsglinkselectedfwd">OnMsgLinkSelectedFwd</string>
+    <string name="why_are_you_making_it_undelivered">Why are you making it undelivered?</string>
+    <string name="please_tell_us_more">Please tell us more</string>
+    <string name="refused_to_accept">Refused to accept</string>
+    <string name="pickup_cancel">Pickup Cancel</string>
+    <string name="pickup">Pickup</string>
+    <string name="qc_details">QC Details</string>
+    <string name="start_packaging">Start Packaging</string>
+    <string name="capture_product_inside_flyer">Capture product inside Flyer</string>
+    <string name="captured_product_inside_flyer">Captured product inside Flyer</string>
+    <string name="capture_sealed_flyer">Capture Sealed Flyer</string>
+    <string name="captured_sealed_flyer">Captured Sealed Flyer</string>
+    <string name="flyer_barcode_scan">Flyer Barcode Scan</string>
+    <string name="flyer_barcode">Flyer Barcode</string>
+    <string name="scan_shipment">Scan Shipment</string>
+    <string name="no_item_description_found">No item description found.</string>
+    <string name="rvp_cancel">Cancel</string>
+    <string name="start_qc">Start QC</string>
+    <string name="shipment_to_be_re_attempted_n_on_23rd_jun">Shipment to be Re-Attempted \n on 23rd Jun</string>
+    <string name="schedule_reattempt_shipment">Schedule Reattempt Shipment</string>
+    <string name="description">Description</string>
+    <string name="description_2">Check if the tag or ribbon is in place and not damaged - Description </string>
+    <string name="otp_send_successfully">Otp Send Successfully</string>
+    <string name="upload_image">Uploading Image…</string>
+    <string name="place_holder_label">Place Holder Label</string>
+    <string name="mark_picked_up">Mark picked up</string>
+    <string name="awb_scanned_successfully">Flyer: %1$s\nScanned Successfully</string>
+    <string name="please_ask_the_consignee_to_share_the_otp_code_sent_on_mobile_number">Please ask the consignee to share the OTP code sent on mobile number %1$s</string>
+    <string name="try_again_with_another_flyer">Try again with another flyer</string>
+    <string name="this_is_not_an_flyer_code">This is not an flyer code</string>
+    <string name="unable_to_read_data_from_local">Unable to read data from local</string>
+    <string name="saving_image_response">Saving image response…</string>
+    <string name="image_not_uploaded_recapture_again">Image not uploaded, recapture again</string>
+    <string name="captured_image_data_is_empty">Captured image data is empty, Recapture it.</string>
+    <string name="please_ensure_the_product_is_clearly_visible_inside_the_flyer_for_proper_verification">Please ensure the product is clearly visible inside the flyer for proper verification</string>
+    <string name="is_product_image_clear">Is product image clear?</string>
+    <string name="verified">VERIFIED</string>
+    <string name="none">NONE</string>
+    <string name="take_signature">Take Signature</string>
+    <string name="mark_complete">Mark Complete</string>
+    <string name="shipment_cannot_be_mark_delivered_within_dc">Shipment cannot be mark delivered within DC</string>
+    <string name="attention">"Attention : "</string>
+    <string name="select">Select</string>
+    <string name="enter_valid_receiver_s_name">Enter valid receiver\'s name</string>
+    <string name="enter_receiver_s_name">Enter receiver\'s name</string>
+    <string name="select_pick_from_options">Select pick from options</string>
+    <string name="select_pickup_location">Select pickup location</string>
+    <string name="signature_can_not_be_blank">Signature can not be blank.</string>
+    <string name="qc_passed_pick_the_product">QC Passed\nPick the product</string>
+    <string name="make_sure_the_product_image_is_clear_so_we_can_verify_it_easily">Make sure the product image is clear so we can verify it easily</string>
+    <string name="make_sure_the_flyer_image_is_clear_so_we_can_verify_it_easily">Make sure the flyer image is clear so we can verify it easily</string>
+    <string name="is_your_product_image_clear">Is your product image clear?</string>
+    <string name="is_your_flyer_image_clear">Is your flyer image clear?</string>
+    <string name="is_captured_image_clear">Is captured image clear</string>
+    <string name="make_sure_the_captured_image_is_clear_so_we_can_verify_it_easily">Make sure the captured image is clear so we can verify it easily</string>
+    <string name="mark_qc_failed">Mark QC Failed</string>
+    <string name="call_consignee">Call Consignee</string>
+    <string name="call_to">Call To</string>
+    <string name="why_are_you_marking_undelivered">Why are you marking undelivered?</string>
+    <string name="image_api_response_false">Image Api response false</string>
+    <string name="shipment_commit_failed">Shipment Commit Failed</string>
+    <string name="getting_your_current_location">Getting your current location…</string>
+    <string name="unable_to_get_location_get_location_first">Unable to get location, Get location first</string>
+    <string name="unable_to_connect_google_api_client_try_again">Unable to connect Google API Client, Try Again</string>
+    <string name="dc_location_updated_successfully">DC location updated successfully!</string>
+    <string name="updating_dc_location">Updating Dc location…</string>
+    <string name="dc_location_api_response_false">Dc location Api response false</string>
+    <string name="dc_location_api_response_null">Dc location Api response null</string>
+    <string name="unable_to_fetch_accurate_location">Unable to fetch accurate location</string>
+    <string name="getting_dc_location">Getting Dc location</string>
+    <string name="loading">Loading…</string>
+    <string name="please_complete_the_order_and_handover_the_shipment_to_dc">Please complete the order\nand handover the shipment\nto DC</string>
+    <string name="this_feature_is_under_development">This Feature Is Under Development</string>
+    <string name="allow_camera_permission_from_app_settings">Allow camera permission from app settings</string>
+    <string name="e_pathshaala_requires_camera_access_to_use_e_pathshaala_please_grant_camera_permission_you_can_do_this_through_the_app_s_settings_select_app_permissions_camera_permission_allow"><![CDATA[E-Pathshaala requires camera access.\n\nTo use E-Pathshaala, please grant camera permission. You can do this through the app\'s settings.\n\nSelect App Permissions -> Camera Permission -> Allow.]]></string>
+    <string name="settings">Settings</string>
+    <string name="is_the_tag_or_ribbon_in_place_and_undamaged">Is the tag or ribbon in place and undamaged?</string>
+    <string name="awb_npickup_cancelled">AWB: %1$s\nPickup Cancelled</string>
+    <string name="the_shipment_will_be_marked_as_cancelled">The shipment will be marked as pickup cancelled.</string>
+    <string name="clicked_image_is_not_clear_click_it_again">Clicked image is not clear. Click it again</string>
+    <string name="unify_api_failed">Unify API Failed</string>
+    <string name="url_is_not_valid">Url is not valid</string>
+    <string name="total_mps_qc_count">%1$d Products for RQC</string>
+
+</resources>

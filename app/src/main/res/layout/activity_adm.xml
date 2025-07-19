@@ -1,0 +1,951 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.ecomexpress.sathi.ui.side_drawer.adm.ADMActivity">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.side_drawer.adm.ADMViewModel" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/_10DP">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/const_list_card"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/_5DP">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtconfirmavailability"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:padding="@dimen/_10DP"
+                android:text="@string/confirm_your_availability"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_25sp"
+                android:textStyle="normal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ScrollView
+                android:id="@+id/scroll"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_0DP"
+                android:scrollbars="none"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtconfirmavailability"
+                app:layout_constraintBottom_toTopOf="@+id/txtupdate">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/const_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/borderblack"
+                    android:padding="@dimen/_10DP">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_one"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:elevation="@dimen/_40DP"
+                        app:cardCornerRadius="@dimen/_10DP"
+                        app:cardUseCompatPadding="true"
+                        android:theme="@style/Theme.MaterialComponents.Light">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/day_of_week1"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:paddingTop="@dimen/_10DP"
+                                android:text="@string/saturday_"
+                                android:textStyle="normal"
+                                app:layout_constraintEnd_toStartOf="@id/view1"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <View
+                                android:id="@+id/view1"
+                                android:layout_width="@dimen/_2DP"
+                                android:layout_height="@dimen/_0DP"
+                                android:background="@drawable/borderblack"
+                                app:layout_constraintBottom_toBottomOf="@id/day_of_week1"
+                                app:layout_constraintEnd_toStartOf="@id/spinner_availability1"
+                                app:layout_constraintStart_toEndOf="@id/day_of_week1"
+                                app:layout_constraintTop_toTopOf="@id/day_of_week1" />
+
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/spinner_availability1"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="@dimen/_70DP"
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:divider="@color/colorPrimaryDark"
+                                android:onItemSelected="@{(parent,view,pos,id)->viewModel.onChooseReasonSpinner1(parent,view,pos,id)}"
+                                android:padding="@dimen/_10DP"
+                                android:showDividers="middle"
+                                android:singleLine="false"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/view1"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <View
+                                android:id="@+id/vHorizontal1"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_2DP"
+                                android:background="@drawable/borderblack"
+                                app:layout_constraintBottom_toBottomOf="@id/day_of_week1" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/date1"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:paddingTop="@dimen/_10DP"
+                                android:paddingBottom="@dimen/_10DP"
+                                android:text="@string/_28_apr_21"
+                                android:textStyle="normal"
+                                app:layout_constraintEnd_toStartOf="@id/view1"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/vHorizontal1" />
+
+                            <View
+                                android:id="@+id/view2"
+                                android:layout_width="@dimen/_2DP"
+                                android:layout_height="@dimen/_0DP"
+                                android:background="@drawable/borderblack"
+                                app:layout_constraintBottom_toBottomOf="@id/date1"
+                                app:layout_constraintEnd_toStartOf="@id/Time1"
+                                app:layout_constraintStart_toEndOf="@id/date1"
+                                app:layout_constraintTop_toTopOf="@id/date1" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/Time1"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/reporting_time"
+                                android:textSize="@dimen/_15SP"
+                                android:textStyle="normal"
+                                app:layout_constraintBottom_toBottomOf="@id/date1"
+                                app:layout_constraintEnd_toStartOf="@id/etChooseTime1"
+                                app:layout_constraintStart_toEndOf="@id/view1"
+                                app:layout_constraintTop_toTopOf="@id/date1" />
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etChooseTime1"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:focusable="false"
+                                android:focusableInTouchMode="true"
+                                android:gravity="center"
+                                android:onClick="@{()-> viewModel.onClickTimer1()}"
+                                android:padding="@dimen/_5DP"
+                                android:singleLine="false"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15SP"
+                                app:layout_constraintBottom_toBottomOf="@id/date1"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/Time1"
+                                app:layout_constraintTop_toTopOf="@id/date1" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_two"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:elevation="@dimen/_40DP"
+                        android:layout_marginTop="@dimen/_10DP"
+                        app:cardCornerRadius="@dimen/_10DP"
+                        app:cardUseCompatPadding="true"
+                        app:layout_constraintTop_toBottomOf="@id/card_one"
+                        android:theme="@style/Theme.MaterialComponents.Light">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/day_of_week2"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:paddingTop="@dimen/_10DP"
+                                android:text="@string/_saturday_"
+                                android:textStyle="normal"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintWidth_percent="0.5" />
+
+
+                            <View
+                                android:id="@+id/view_divider_two"
+                                android:layout_width="2dp"
+                                android:layout_height="0dp"
+                                android:background="@drawable/borderblack"
+                                app:layout_constraintStart_toEndOf="@+id/day_of_week2"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="@+id/day_of_week2" />
+
+
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/spinner_availability2"
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_70DP"
+                                android:layout_gravity="center"
+                                android:divider="@color/colorPrimaryDark"
+                                android:onItemSelected="@{(parent, view, pos, id) -> viewModel.onChooseReasonSpinner2(parent, view, pos, id)}"
+                                android:padding="@dimen/_10DP"
+                                android:showDividers="middle"
+                                android:singleLine="false"
+                                app:layout_constraintStart_toEndOf="@+id/view_divider_two"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintWidth_percent="0.5" />
+
+
+                            <View
+                                android:id="@+id/horizontal_divider_two"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_2DP"
+                                android:background="@drawable/borderblack"
+                                app:layout_constraintTop_toBottomOf="@+id/day_of_week2"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/date2"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:paddingTop="@dimen/_10DP"
+                                android:paddingBottom="@dimen/_10DP"
+                                android:text="@string/_28_apr_21_"
+                                android:textStyle="normal"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/horizontal_divider_two"
+                                app:layout_constraintEnd_toStartOf="@+id/view_divider2"
+                                app:layout_constraintWidth_percent="0.5" />
+
+                            <View
+                                android:id="@+id/view_divider2"
+                                android:layout_width="@dimen/_2DP"
+                                android:layout_height="@dimen/_0DP"
+                                android:background="@drawable/borderblack"
+                                app:layout_constraintStart_toEndOf="@+id/date2"
+                                app:layout_constraintTop_toTopOf="@+id/date2"
+                                app:layout_constraintBottom_toBottomOf="@+id/date2" />
+
+                            <!-- Time and EditText for choosing time -->
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/Time2"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="@string/reporting_time_"
+                                android:textSize="@dimen/_15SP"
+                                android:textStyle="normal"
+                                app:layout_constraintBottom_toBottomOf="@id/date2"
+                                app:layout_constraintEnd_toStartOf="@id/etChooseTime2"
+                                app:layout_constraintStart_toEndOf="@id/view_divider_two"
+                                app:layout_constraintTop_toTopOf="@id/date2" />
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etChooseTime2"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="@dimen/_70DP"
+                                android:layout_gravity="center"
+                                android:background="@null"
+                                android:focusable="false"
+                                android:focusableInTouchMode="true"
+                                android:gravity="center"
+                                android:onClick="@{() -> viewModel.onClickTimer2()}"
+                                android:padding="@dimen/_5DP"
+                                android:singleLine="false"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15SP"
+                                app:layout_constraintBottom_toBottomOf="@id/date2"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/Time2"
+                                app:layout_constraintTop_toTopOf="@id/date2" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_three"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:elevation="@dimen/_40DP"
+                        android:layout_marginTop="@dimen/_10DP"
+                        app:cardCornerRadius="@dimen/_10DP"
+                        app:cardUseCompatPadding="true"
+                        app:layout_constraintTop_toBottomOf="@id/card_two"
+                        android:theme="@style/Theme.MaterialComponents.Light">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/day_of_week3"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:paddingTop="@dimen/_10DP"
+                                android:text="@string/_saturday"
+                                android:textStyle="normal"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/view_divider1"
+                                app:layout_constraintWidth_percent="0.5" />
+
+                            <View
+                                android:id="@+id/view_divider1"
+                                android:layout_width="@dimen/_2DP"
+                                android:layout_height="@dimen/_0DP"
+                                android:background="@drawable/borderblack"
+                                app:layout_constraintStart_toEndOf="@+id/day_of_week3"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="@+id/day_of_week3" />
+
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/spinner_availability3"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="@dimen/_70DP"
+                                android:layout_gravity="center"
+                                android:divider="@color/colorPrimaryDark"
+                                android:onItemSelected="@{(parent, view, pos, id) -> viewModel.onChooseReasonSpinner3(parent, view, pos, id)}"
+                                android:padding="@dimen/_10DP"
+                                android:showDividers="middle"
+                                android:singleLine="false"
+                                app:layout_constraintStart_toEndOf="@+id/view_divider1"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintWidth_percent="0.5" />
+
+                            <View
+                                android:id="@+id/horizontal_divider_three"
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:background="@drawable/borderblack"
+                                app:layout_constraintTop_toBottomOf="@+id/day_of_week3"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/date3"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:paddingTop="@dimen/_10DP"
+                                android:paddingBottom="@dimen/_10DP"
+                                android:text="@string/_28_apr_21__"
+                                android:textStyle="normal"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/horizontal_divider_three"
+                                app:layout_constraintEnd_toStartOf="@+id/view_divider3"
+                                app:layout_constraintWidth_percent="0.5" />
+
+                            <View
+                                android:id="@+id/view_divider3"
+                                android:layout_width="@dimen/_2DP"
+                                android:layout_height="@dimen/_0DP"
+                                android:background="@drawable/borderblack"
+                                app:layout_constraintStart_toEndOf="@+id/date3"
+                                app:layout_constraintTop_toTopOf="@+id/date3"
+                                app:layout_constraintBottom_toBottomOf="@+id/date3" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/Time3"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="@string/reporting_time__"
+                                android:textSize="@dimen/_15SP"
+                                android:textStyle="normal"
+                                app:layout_constraintBottom_toBottomOf="@id/date3"
+                                app:layout_constraintEnd_toStartOf="@id/etChooseTime3"
+                                app:layout_constraintStart_toEndOf="@id/view_divider1"
+                                app:layout_constraintTop_toTopOf="@id/date3"/>
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etChooseTime3"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@null"
+                                android:focusable="false"
+                                android:focusableInTouchMode="true"
+                                android:gravity="center"
+                                android:onClick="@{() -> viewModel.onClickTimer3()}"
+                                android:padding="@dimen/_5DP"
+                                android:singleLine="false"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15SP"
+                                app:layout_constraintBottom_toBottomOf="@id/date3"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/Time3"
+                                app:layout_constraintTop_toTopOf="@id/date3" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_four"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:elevation="@dimen/_40DP"
+                        android:layout_marginTop="@dimen/_10DP"
+                        app:cardCornerRadius="@dimen/_10DP"
+                        app:cardUseCompatPadding="true"
+                        app:layout_constraintTop_toBottomOf="@id/card_three"
+                        android:theme="@style/Theme.MaterialComponents.Light">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/day_of_week4"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:paddingTop="@dimen/_10DP"
+                                android:text="@string/__saturday"
+                                android:textStyle="normal"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/divider_view_1"
+                                app:layout_constraintWidth_percent="0.5" />
+
+
+                            <View
+                                android:id="@+id/divider_view_1"
+                                android:layout_width="@dimen/_2DP"
+                                android:layout_height="@dimen/_0DP"
+                                android:background="@drawable/borderblack"
+                                app:layout_constraintStart_toEndOf="@+id/day_of_week4"
+                                app:layout_constraintTop_toTopOf="@+id/day_of_week4"
+                                app:layout_constraintBottom_toBottomOf="@+id/day_of_week4" />
+
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/spinner_availability4"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="@dimen/_70DP"
+                                android:layout_gravity="center"
+                                android:divider="@color/colorPrimaryDark"
+                                android:onItemSelected="@{(parent,view,pos,id) -> viewModel.onChooseReasonSpinner4(parent,view,pos,id)}"
+                                android:padding="@dimen/_10DP"
+                                android:showDividers="middle"
+                                android:singleLine="false"
+                                app:layout_constraintStart_toEndOf="@+id/divider_view_1"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintWidth_percent="0.5" />
+
+
+                            <View
+                                android:id="@+id/horizontal_divider"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_2DP"
+                                android:background="@drawable/borderblack"
+                                app:layout_constraintTop_toBottomOf="@+id/day_of_week4"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/date4"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:paddingTop="@dimen/_10DP"
+                                android:paddingBottom="@dimen/_10DP"
+                                android:text="@string/__28_apr_21_"
+                                android:textStyle="normal"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/horizontal_divider"
+                                app:layout_constraintEnd_toStartOf="@id/divider_view_2"
+                                app:layout_constraintWidth_percent="0.5" />
+
+
+                            <View
+                                android:id="@+id/divider_view_2"
+                                android:layout_width="@dimen/_2DP"
+                                android:layout_height="@dimen/_0DP"
+                                android:background="@drawable/borderblack"
+                                app:layout_constraintStart_toEndOf="@+id/date4"
+                                app:layout_constraintTop_toTopOf="@+id/date4"
+                                app:layout_constraintBottom_toBottomOf="@+id/date4" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/Time4"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="@string/reporting_time_1"
+                                android:textSize="@dimen/_15SP"
+                                android:textStyle="normal"
+                                app:layout_constraintBottom_toBottomOf="@id/date4"
+                                app:layout_constraintEnd_toStartOf="@id/etChooseTime4"
+                                app:layout_constraintStart_toEndOf="@id/divider_view_1"
+                                app:layout_constraintTop_toTopOf="@id/date4" />
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etChooseTime4"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:focusable="false"
+                                android:focusableInTouchMode="true"
+                                android:gravity="center"
+                                android:onClick="@{() -> viewModel.onClickTimer4()}"
+                                android:padding="@dimen/_5DP"
+                                android:singleLine="false"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15SP"
+                                app:layout_constraintBottom_toBottomOf="@id/date4"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/Time4"
+                                app:layout_constraintTop_toTopOf="@id/date4"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_five"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:elevation="@dimen/_40DP"
+                        android:layout_marginTop="@dimen/_10DP"
+                        app:cardCornerRadius="@dimen/_10DP"
+                        app:cardUseCompatPadding="true"
+                        app:layout_constraintTop_toBottomOf="@id/card_four"
+                        android:theme="@style/Theme.MaterialComponents.Light">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/day_of_week5"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:paddingTop="@dimen/_10DP"
+                                android:text="@string/saturday_1"
+                                android:textStyle="normal"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/divider_view_5"
+                                app:layout_constraintWidth_percent="0.5" />
+
+                            <View
+                                android:id="@+id/divider_view_5"
+                                android:layout_width="2dp"
+                                android:layout_height="0dp"
+                                android:background="@drawable/borderblack"
+                                app:layout_constraintStart_toEndOf="@+id/day_of_week5"
+                                app:layout_constraintTop_toTopOf="@+id/day_of_week5"
+                                app:layout_constraintBottom_toBottomOf="@+id/day_of_week5" />
+
+
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/spinner_availability5"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="@dimen/_70DP"
+                                android:layout_gravity="center"
+                                android:divider="@color/colorPrimaryDark"
+                                android:onItemSelected="@{(parent,view,pos,id) -> viewModel.onChooseReasonSpinner5(parent,view,pos,id)}"
+                                android:padding="@dimen/_10DP"
+                                android:showDividers="middle"
+                                android:singleLine="false"
+                                app:layout_constraintStart_toEndOf="@+id/divider_view_5"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintWidth_percent="0.5" />
+
+                            <View
+                                android:id="@+id/horizontal_divider_5"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_2DP"
+                                android:background="@drawable/borderblack"
+                                app:layout_constraintTop_toBottomOf="@+id/day_of_week5"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/date5"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:paddingTop="@dimen/_10DP"
+                                android:paddingBottom="@dimen/_10DP"
+                                android:text="@string/_28_apr_21_2"
+                                android:textStyle="normal"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/horizontal_divider_5"
+                                app:layout_constraintEnd_toStartOf="@id/divider_view_5"/>
+
+                            <View
+                                android:id="@+id/divider_view_6"
+                                android:layout_width="@dimen/_2DP"
+                                android:layout_height="@dimen/_0DP"
+                                android:background="@drawable/borderblack"
+                                app:layout_constraintStart_toEndOf="@+id/date5"
+                                app:layout_constraintTop_toTopOf="@+id/date5"
+                                app:layout_constraintBottom_toBottomOf="@+id/date5" />
+
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/Time5"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="@string/reporting_time_2"
+                                android:textSize="15sp"
+                                android:textStyle="normal"
+                                app:layout_constraintBottom_toBottomOf="@id/date5"
+                                app:layout_constraintEnd_toStartOf="@id/etChooseTime5"
+                                app:layout_constraintStart_toEndOf="@id/divider_view_5"
+                                app:layout_constraintTop_toTopOf="@id/date5" />
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etChooseTime5"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:focusable="false"
+                                android:focusableInTouchMode="true"
+                                android:gravity="center"
+                                android:onClick="@{() -> viewModel.onClickTimer5()}"
+                                android:padding="@dimen/_5DP"
+                                android:singleLine="false"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15SP"
+                                app:layout_constraintBottom_toBottomOf="@id/date5"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/Time5"
+                                app:layout_constraintTop_toTopOf="@id/date5" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_six"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:elevation="@dimen/_40DP"
+                        android:layout_marginTop="@dimen/_10DP"
+                        app:cardCornerRadius="@dimen/_10DP"
+                        app:cardUseCompatPadding="true"
+                        app:layout_constraintTop_toBottomOf="@id/card_five"
+                        android:theme="@style/Theme.MaterialComponents.Light">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/day_of_week6"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:paddingTop="@dimen/_10DP"
+                                android:text="@string/saturday_3"
+                                android:textStyle="normal"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintWidth_percent="0.5" />
+
+                            <View
+                                android:id="@+id/divider_view_7"
+                                android:layout_width="@dimen/_2DP"
+                                android:layout_height="@dimen/_0DP"
+                                android:background="@drawable/borderblack"
+                                app:layout_constraintStart_toEndOf="@+id/day_of_week6"
+                                app:layout_constraintTop_toTopOf="@+id/day_of_week6"
+                                app:layout_constraintBottom_toBottomOf="@+id/day_of_week6" />
+
+
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/spinner_availability6"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="@dimen/_70DP"
+                                android:layout_gravity="center"
+                                android:divider="@color/colorPrimaryDark"
+                                android:onItemSelected="@{(parent,view,pos,id) -> viewModel.onChooseReasonSpinner6(parent,view,pos,id)}"
+                                android:padding="@dimen/_10DP"
+                                android:showDividers="middle"
+                                android:singleLine="false"
+                                app:layout_constraintStart_toEndOf="@+id/divider_view_7"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintWidth_percent="0.5" />
+
+
+                            <View
+                                android:id="@+id/horizontal_divider_6"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_2DP"
+                                android:background="@drawable/borderblack"
+                                app:layout_constraintTop_toBottomOf="@+id/day_of_week6"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/date6"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:paddingTop="@dimen/_10DP"
+                                android:paddingBottom="@dimen/_10DP"
+                                android:text="@string/_28_apr_21___"
+                                android:textStyle="normal"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/horizontal_divider_6"
+                                app:layout_constraintEnd_toStartOf="@id/divider_view_7"
+                                app:layout_constraintWidth_percent="0.5" />
+
+
+                            <View
+                                android:id="@+id/divider_view_9"
+                                android:layout_width="@dimen/_2DP"
+                                android:layout_height="@dimen/_0DP"
+                                android:background="@drawable/borderblack"
+                                app:layout_constraintStart_toEndOf="@+id/date6"
+                                app:layout_constraintTop_toTopOf="@+id/date6"
+                                app:layout_constraintBottom_toBottomOf="@+id/date6" />
+
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/Time6"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="@string/reporting_time_4"
+                                android:textSize="@dimen/_15SP"
+                                android:textStyle="normal"
+                                app:layout_constraintBottom_toBottomOf="@id/date6"
+                                app:layout_constraintEnd_toStartOf="@id/etChooseTime6"
+                                app:layout_constraintStart_toEndOf="@id/divider_view_7"
+                                app:layout_constraintTop_toTopOf="@id/date6" />
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etChooseTime6"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:focusable="false"
+                                android:focusableInTouchMode="true"
+                                android:gravity="center"
+                                android:onClick="@{() -> viewModel.onClickTimer6()}"
+                                android:padding="@dimen/_5DP"
+                                android:singleLine="false"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15SP"
+                                app:layout_constraintBottom_toBottomOf="@id/date6"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/Time6"
+                                app:layout_constraintTop_toTopOf="@id/date6" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_seven"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:elevation="@dimen/_40DP"
+                        android:layout_marginTop="@dimen/_10DP"
+                        app:cardCornerRadius="@dimen/_10DP"
+                        app:cardUseCompatPadding="true"
+                        app:layout_constraintTop_toBottomOf="@id/card_six"
+                        android:theme="@style/Theme.MaterialComponents.Light">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/day_of_week7"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:paddingTop="@dimen/_10DP"
+                                android:text="@string/saturday__4"
+                                android:textStyle="normal"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintWidth_percent="0.5" />
+
+
+                            <View
+                                android:id="@+id/divider_view_10"
+                                android:layout_width="@dimen/_2DP"
+                                android:layout_height="@dimen/_0DP"
+                                android:background="@drawable/borderblack"
+                                app:layout_constraintStart_toEndOf="@+id/day_of_week7"
+                                app:layout_constraintTop_toTopOf="@+id/day_of_week7"
+                                app:layout_constraintBottom_toBottomOf="@+id/day_of_week7" />
+
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/spinner_availability7"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="@dimen/_70DP"
+                                android:layout_gravity="center"
+                                android:divider="@color/colorPrimaryDark"
+                                android:onItemSelected="@{(parent,view,pos,id) -> viewModel.onChooseReasonSpinner7(parent,view,pos,id)}"
+                                android:padding="@dimen/_10DP"
+                                android:showDividers="middle"
+                                android:singleLine="false"
+                                app:layout_constraintStart_toEndOf="@+id/divider_view_10"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintWidth_percent="0.5" />
+
+
+                            <View
+                                android:id="@+id/horizontal_divider_7"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_0DP"
+                                android:background="@drawable/borderblack"
+                                app:layout_constraintTop_toBottomOf="@+id/day_of_week7"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/date7"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:paddingTop="@dimen/_10DP"
+                                android:paddingBottom="@dimen/_10DP"
+                                android:text="@string/_28_apr_21__5"
+                                android:textStyle="normal"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/horizontal_divider_7"
+                                app:layout_constraintEnd_toStartOf="@id/divider_view_10"
+                                app:layout_constraintWidth_percent="0.5" />
+
+                            <View
+                                android:id="@+id/divider_view_8"
+                                android:layout_width="@dimen/_2DP"
+                                android:layout_height="@dimen/_0DP"
+                                android:background="@drawable/borderblack"
+                                app:layout_constraintStart_toEndOf="@+id/date7"
+                                app:layout_constraintTop_toTopOf="@+id/date7"
+                                app:layout_constraintBottom_toBottomOf="@+id/date7" />
+
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/Time7"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="@string/reporting_time__5"
+                                android:textSize="@dimen/_15SP"
+                                android:textStyle="normal"
+                                app:layout_constraintBottom_toBottomOf="@id/date7"
+                                app:layout_constraintEnd_toStartOf="@id/etChooseTime7"
+                                app:layout_constraintStart_toEndOf="@id/divider_view_10"
+                                app:layout_constraintTop_toTopOf="@id/date7" />
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etChooseTime7"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:focusable="false"
+                                android:focusableInTouchMode="true"
+                                android:gravity="center"
+                                android:onClick="@{() -> viewModel.onClickTimer7()}"
+                                android:padding="@dimen/_5DP"
+                                android:singleLine="false"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15SP"
+                                app:layout_constraintBottom_toBottomOf="@id/date7"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/Time7"
+                                app:layout_constraintTop_toTopOf="@id/date7" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </ScrollView>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtupdate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_10DP"
+                android:background="@drawable/fwd_button"
+                android:onClick="@{()->viewModel.onUpdateClick()}"
+                android:padding="@dimen/_10DP"
+                android:text="@string/update"
+                android:gravity="center"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_25sp"
+                android:textStyle="normal"
+                app:layout_constraintTop_toBottomOf="@id/scroll"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/address_looking_up"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

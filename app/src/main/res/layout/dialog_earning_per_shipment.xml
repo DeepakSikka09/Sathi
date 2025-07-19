@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.drs.forward.shipmentearndialog.ShipmentEarnDialogViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/popup_element"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.card.MaterialCardView
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10DP"
+            app:cardBackgroundColor="@color/offwhite"
+            app:cardCornerRadius="@dimen/_7DP"
+            app:cardElevation="@dimen/_25DP">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:padding="@dimen/_10DP"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_4DP"
+                android:background="@color/white">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:contentDescription="@string/static_content"
+                    android:id="@+id/img_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10DP" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txt_earn"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/img_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10DP"
+                    android:gravity="center"
+                    android:text="@string/you_have_earned_minimum"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/_16SP" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cc_parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_earn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_20DP">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:id="@+id/one_shp_earn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10DP"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/ecomBlue"
+                        android:textSize="@dimen/_15SP"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/txt_for"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/one_shp_earn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_20DP"
+                        android:gravity="center"
+                        android:text="@string/fortxt"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/_15SP"
+                        android:textStyle="bold" />
+
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/mtv_txt_awb"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txt_for"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10DP"
+                        android:gravity="center"
+                        android:text="@string/awb_number"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/_15SP" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/mtv_txt_awb"
+                        android:id="@+id/awb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5DP"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/_15SP"
+                        android:textStyle="bold" />
+
+
+                    <com.google.android.material.textview.MaterialTextView
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/awb"
+                        android:id="@+id/today_earning"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5DP"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/_15SP"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cc_parent"
+                    android:id="@+id/btn_dispute"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_10DP"
+                    android:background="@drawable/fwd_button"
+                    android:onClick="@{() -> viewModel.onOkClick()}"
+                    android:text="@string/ok"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15SP"
+                    android:textStyle="bold" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

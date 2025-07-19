@@ -1,0 +1,15 @@
+*.iml
+.gradle
+/local.properties
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.idea
+.MswipeSDKVer1.0.12v3.4.2
+.encryptionmodule-release.aar
+.MswipeWseriesUniversalDRDSDKVer1.0.12v3.4.2
+.barcode_handler_v1.0.0

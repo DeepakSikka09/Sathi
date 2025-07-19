@@ -1,0 +1,2 @@
+configurations.maybeCreate("default")
+artifacts.add("default", file('logistic-30Jan2020.aar'))

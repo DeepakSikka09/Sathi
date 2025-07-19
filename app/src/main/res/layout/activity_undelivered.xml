@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.ecomexpress.sathi.ui.drs.forward.undelivered_fwd.UndeliveredActivity">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.drs.forward.undelivered_fwd.UndeliveredViewModel" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/offwhite">
+        <ScrollView
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/lltFooter"
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/offwhite">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/linearLayout2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/offwhite">
+                    <!--Toolbar-->
+                    <include
+                        android:id="@+id/header"
+                        layout="@layout/header_obd_fwd"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ccawb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@+id/header"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:fontFamily="@font/roboto_bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/awb"
+                            app:layout_constraintTop_toTopOf="parent"
+                            style="@style/TextStyle.Title.Sub"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/txtAWB"
+                            android:text="@string/awb"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_15SP"
+                            android:textStyle="bold" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:fontFamily="@font/roboto_bold"
+                            app:layout_constraintStart_toEndOf="@id/txtAWB"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:id="@+id/awb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{viewModel.awbNo}"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_15SP"
+                            android:textStyle="bold" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <FrameLayout
+                        app:layout_constraintTop_toBottomOf="@+id/ccawb"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:id="@+id/scanner_frame"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_200DP"
+                        android:visibility="gone">
+
+                        <com.budiyev.android.codescanner.CodeScannerView
+                            android:id="@+id/scanner_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_200DP"
+                            app:autoFocusButtonColor="@android:color/white"
+                            app:autoFocusButtonVisible="true"
+                            app:flashButtonColor="@android:color/white"
+                            app:flashButtonVisible="true"
+                            app:frameAspectRatioHeight="1"
+                            app:frameAspectRatioWidth="1"
+                            app:frameColor="@android:color/white"
+                            app:frameCornersRadius="@dimen/_0DP"
+                            app:frameCornersSize="@dimen/_50DP"
+                            app:frameSize="0.75"
+                            app:frameThickness="@dimen/_2DP"
+                            app:maskColor="#77000000" />
+                    </FrameLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cc_main_layout"
+                        app:layout_constraintTop_toBottomOf="@+id/scanner_frame"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_5DP"
+                        android:background="@color/offwhite">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:id="@+id/mtv_fill_below"
+                            android:fontFamily="@font/roboto_regular"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_5DP"
+                            android:gravity="center"
+                            android:padding="@dimen/_5DP"
+                            android:text="@string/please_fill_undelivered_details_below"
+                            android:textColor="@color/red_ecom"
+                            android:textSize="@dimen/_15SP" />
+
+
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                app:layout_constraintTop_toBottomOf="@+id/mtv_fill_below"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:id="@+id/layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/_5DP"
+                                android:visibility="gone">
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:id="@+id/mtv_choose_rsn"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:fontFamily="@font/roboto_bold"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/choose_reason"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_15SP" />
+
+
+                                <androidx.appcompat.widget.AppCompatSpinner
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/mtv_choose_rsn"
+                                    android:id="@+id/spinner_vehicle_type"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_10DP"
+                                    android:layout_marginBottom="@dimen/_5DP"
+                                    android:background="@color/gray_ecom"
+                                    android:divider="@color/colorPrimaryDark"
+                                    android:onItemSelected="@{(parent,view,pos,id)->viewModel.onChooseReasonSpinner(parent,view,pos,id)}"
+                                    android:padding="@dimen/_10DP"
+                                    android:showDividers="middle"
+                                    android:textSize="@dimen/_13SP"
+                                    android:theme="@style/MatchSpinnerTheme" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                app:layout_constraintTop_toBottomOf="@+id/layout"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:id="@+id/group_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/offwhite"
+                                android:padding="@dimen/_5DP"
+                                android:visibility="gone">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    android:id="@+id/parent_group_layout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/offwhite">
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:id="@id/mtv_choose_grp"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        android:fontFamily="@font/roboto_bold"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/choose_group"
+                                        android:textColor="@color/black"
+                                        android:textSize="@dimen/_15SP" />
+
+                                    <androidx.appcompat.widget.AppCompatSpinner
+                                        app:layout_constraintTop_toBottomOf="@+id/mtv_choose_grp"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        android:id="@+id/spinner_group_type"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="@dimen/_10DP"
+                                        android:layout_marginBottom="@dimen/_5DP"
+                                        android:background="@color/gray_ecom"
+                                        android:divider="@color/colorPrimaryDark"
+                                        android:onItemSelected="@{(parent,view,pos,id)->viewModel.onChooseGroupSpinner(parent,view,pos,id)}"
+                                        android:padding="@dimen/_10DP"
+                                        android:showDividers="middle"
+                                        android:textSize="@dimen/_13SP"
+                                        android:theme="@style/MatchSpinnerTheme" />
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_marginTop="@dimen/_10DP"
+                                    app:layout_constraintTop_toBottomOf="@+id/parent_group_layout"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    android:id="@+id/child_group_layout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/offwhite">
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:fontFamily="@font/roboto_bold"
+                                        android:id="@+id/mtv_choose_reason"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/choose_reason"
+                                        android:textColor="@color/black"
+                                        android:textSize="@dimen/_15SP" />
+
+                                    <androidx.appcompat.widget.AppCompatSpinner
+                                        app:layout_constraintTop_toBottomOf="@+id/mtv_choose_reason"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        android:id="@+id/spinner_child_type"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="@dimen/_10DP"
+                                        android:layout_marginBottom="@dimen/_5DP"
+                                        android:background="@color/gray_ecom"
+                                        android:onItemSelected="@{(parent,view,pos,id)->viewModel.onChooseChildSpinner(parent,view,pos,id)}"
+                                        android:padding="@dimen/_10DP"
+                                        android:singleLine="false"
+                                        android:theme="@style/MatchSpinnerTheme" />
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            app:layout_constraintTop_toBottomOf="@+id/group_layout"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:id="@+id/ll_ud_otp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_4DP"
+                            android:background="@drawable/border_1dp_light_grey"
+                            android:padding="@dimen/_4DP"
+                            android:visibility="gone">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:id="@+id/tv_number_statement"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:textSize="@dimen/_6SP" />
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/cl_otp_generate"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/tv_number_statement"
+                                android:layout_marginTop="@dimen/_10DP"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:id="@+id/til_ud_otp"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintWidth_percent="0.3"
+                                    android:layout_width="@dimen/_0DP"
+                                    android:layout_height="wrap_content"
+                                    app:hintEnabled="false">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/edt_ud_otp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:paddingTop="@dimen/_8DP"
+                                    android:paddingBottom="@dimen/_8DP"
+                                    android:textColorHint="@color/dark_gray"
+                                    android:cursorVisible="true"
+                                    android:hint="@string/enter_otp_txt"
+                                    android:inputType="number"
+                                    android:background="@drawable/border_2dp_grey"
+                                    android:maxLength="6"
+                                    android:maxLines="1"
+                                    android:textAlignment="center"
+                                    android:textSize="@dimen/_13SP" />
+
+                                </com.google.android.material.textfield.TextInputLayout>
+                                <com.google.android.material.textview.MaterialTextView
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/til_ud_otp"
+                                    app:layout_constraintWidth_percent="0.4"
+                                    android:fontFamily="@font/roboto_bold"
+                                    android:id="@+id/generate_otp_tv"
+                                    style="@style/TextStyle.Title.Sub"
+                                    android:layout_width="@dimen/_0DP"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/_10DP"
+                                    android:background="@drawable/fwd_button"
+                                    android:gravity="center"
+                                    android:onClick="@{() -> viewModel.onGenerateOTPClick()}"
+                                    android:padding="@dimen/_5DP"
+                                    android:text="@string/generate_Otp"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/_13SP"
+                                    android:textStyle="bold"
+                                    android:visibility="visible" />
+
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:fontFamily="@font/roboto_bold"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/generate_otp_tv"
+                                    app:layout_constraintWidth_percent="0.3"
+                                    android:id="@+id/resend_otp_tv"
+                                    style="@style/TextStyle.Title.Sub"
+                                    android:layout_width="@dimen/_0DP"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/_10DP"
+                                    android:background="@drawable/fwd_button"
+                                    android:gravity="center"
+                                    android:onClick="@{()->viewModel.onResendClick()}"
+                                    android:padding="@dimen/_5DP"
+                                    android:text="@string/resend"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/_13SP"
+                                    android:textStyle="bold"
+                                    android:visibility="gone" />
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:fontFamily="@font/roboto_bold"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/resend_otp_tv"
+                                    app:layout_constraintWidth_percent="0.3"
+                                    android:id="@+id/verify_tv"
+                                    style="@style/TextStyle.Title.Sub"
+                                    android:layout_width="@dimen/_0DP"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/_10DP"
+                                    android:background="@drawable/fwd_button"
+                                    android:gravity="center"
+                                    android:onClick="@{()->viewModel.onVerifyClick()}"
+                                    android:padding="@dimen/_5DP"
+                                    android:text="@string/verify"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/_13SP"
+                                    android:textStyle="bold"
+                                    android:visibility="gone" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/cl_otp_generate"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <com.google.android.material.checkbox.MaterialCheckBox
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintWidth_percent="0.9"
+                                    android:id="@+id/otp_skip"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:enabled="false"
+                                    android:textColor="@color/black_1A"
+                                    android:onClick="@{(view)->viewModel.onSkip(view)}"
+                                    android:text="@string/skip_otp_verification"
+                                    android:textSize="@dimen/_13SP" />
+
+                                <com.google.android.material.imageview.ShapeableImageView
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintWidth_percent="0.1"
+                                    android:contentDescription="@string/static_content"
+                                    android:id="@+id/img_verified_tick"
+                                    android:layout_width="@dimen/_0DP"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/scan_tick"
+                                    android:visibility="@{viewModel.ud_otp_verified_status? View.VISIBLE : View.GONE}" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/ll_ud_otp"
+                            android:id="@+id/flagIsCameraEnabled"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_20DP"
+                            android:padding="@dimen/_5DP">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/mtv_cap_img"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="@id/image"
+                                app:layout_constraintBottom_toBottomOf="@+id/image"
+                                app:layout_constraintWidth_percent="0.4"
+                                android:fontFamily="@font/roboto_bold"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="match_parent"
+                                android:text="@string/capture_image"
+                                android:textColor="@color/black"
+                                android:textSize="15sp" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                app:layout_constraintStart_toEndOf="@+id/mtv_cap_img"
+                                app:layout_constraintTop_toTopOf="@id/image"
+                                app:layout_constraintBottom_toBottomOf="@+id/image"
+                                app:layout_constraintWidth_percent="0.4"
+                                android:fontFamily="@font/roboto_bold"
+                                android:id="@+id/img_mandat_tv"
+                                android:layout_width="@dimen/_0DP"
+                                android:layout_height="match_parent"
+                                android:text=""
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15SP" />
+
+                            <com.google.android.material.imageview.ShapeableImageView
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintWidth_percent="0.2"
+                                android:contentDescription="@string/static_content"
+                                android:id="@+id/image"
+                                android:layout_width="@dimen/_40DP"
+                                android:layout_height="@dimen/_40DP"
+                                android:entries="@array/relation"
+                                android:onClick="@{() -> viewModel.onCaptureImageClick()}"
+                                android:padding="@dimen/_5DP"
+                                app:srcCompat="@drawable/cam" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/flagIsCameraEnabled"
+                            android:id="@+id/flagIsRescheduled"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/_5DP">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/date"
+                                app:layout_constraintBottom_toBottomOf="@+id/date"
+                                android:fontFamily="@font/roboto_bold"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/reschedule"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15SP" />
+
+
+                            <com.google.android.material.textview.MaterialTextView
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:fontFamily="@font/roboto_regular"
+                                android:id="@+id/date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/fwd_button"
+                                android:onClick="@{() -> viewModel.onDatePickerClick()}"
+                                android:padding="@dimen/_10DP"
+                                android:text="@string/pick_dates"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_12SP" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            app:layout_constraintTop_toBottomOf="@+id/flagIsRescheduled"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:id="@+id/spinner_dates"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10DP"
+                            android:layout_marginBottom="@dimen/_5DP"
+                            android:background="@color/gray_ecom"
+                            android:divider="@color/colorPrimaryDark"
+                            android:onItemSelected="@{(parent,view,pos,id)->viewModel.onChooseDateSpinner(parent,view,pos,id)}"
+                            android:padding="@dimen/_10DP"
+                            android:showDividers="middle"
+                            android:textSize="@dimen/_13SP"
+                            android:theme="@style/MatchSpinnerTheme"
+                            android:visibility="gone" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/spinner_dates"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:hintTextColor="@color/dark_gray"
+                                android:textColorHint="@color/dark_gray"
+                                app:boxStrokeColor="@color/black_1A"
+                                android:hint="@string/enter_remarks"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:theme="@style/ThemeOverlay.AppTheme.TextInputEditText.Outlined">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/remarks"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="@dimen/_8DP"
+                                android:paddingBottom="@dimen/_8DP"
+                                android:maxHeight="@dimen/_600DP"
+                                android:maxLength="50"
+                                android:maxLines="6"
+                                android:textSize="@dimen/_13SP" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_margin="@dimen/_10DP"
+            android:visibility="visible"
+            android:id="@+id/lltFooter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/offwhite">
+
+            <com.google.android.material.button.MaterialButton
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_10DP"
+                android:background="@drawable/fwd_button"
+                android:onClick="@{() -> viewModel.onSubmitClick()}"
+                android:text="@string/submit_"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_15SP"
+                android:textStyle="bold"
+                app:cardCornerRadius="@dimen/_7DP"
+                app:cardElevation="@dimen/_25DP" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/address_looking_up"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.dashboard.unattempted_shipments.UnattemptedShipmentViewmodel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.dashboard.moredashboard.more.MoreActivity">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/top_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/green_FF"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <include
+                android:id="@+id/header"
+                layout="@layout/common_header"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/content_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_0DP"
+            android:background="@color/offwhite"
+            android:padding="@dimen/_10DP"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/top_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textViewTotalUnAttemptedCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/_10DP"
+                android:paddingRight="@dimen/_10DP"
+                android:paddingTop="@dimen/_20DP"
+                android:paddingBottom="@dimen/_20DP"
+                android:text="@string/unattempted_shipment_msg"
+                android:textColor="@color/black_1A"
+                android:textSize="@dimen/_16SP"
+                android:textStyle="normal"
+                android:fontFamily="@font/roboto_bold"
+                app:layout_constraintTop_toBottomOf="@id/view"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:ignore="NotSibling" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mRecyclerView"
+                android:layout_width="@dimen/_0DP"
+                android:layout_height="@dimen/_0DP"
+                android:layout_marginBottom="@dimen/_10DP"
+                app:layout_constraintBottom_toTopOf="@id/button_okay"
+                android:background="@drawable/border_1dp_light_grey"
+                app:layout_constraintTop_toBottomOf="@id/textViewTotalUnAttemptedCount"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_okay"
+                android:layout_width="@dimen/_0DP"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10DP"
+
+                android:background="@drawable/fwd_button_red"
+                app:backgroundTint="@null"
+                android:text="@string/unattempted_okay"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_20SP"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/RTSTotalUnAttemptedCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/_10DP"
+                android:paddingBottom="@dimen/_10DP"
+                android:text="@{viewModel.itemRTS}"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/_15SP"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/button_okay"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

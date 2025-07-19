@@ -1,0 +1,141 @@
+{
+  "status": true,
+  "response": {
+    "otpRequired": true,
+    "status-code": 0,
+    "description": "SUCCESS",
+    "auth_token": "Y/AQBS/o+OnQU3yDh/nWE4V+Fln3sNWbWhTC/WTfu+cUMUDPQe/W+37oo41pNEIcc3NmHdX+WPLOz4fUNN95OVgelNBtJsSzLd+n+Y4twE0=",
+    "service_center": "IHQ",
+    "name": "Parikshit Tomar",
+    "designation": "IT16",
+    "mobile": "9910112332",
+    "location_type": 0,
+    "location_code": "IHQ",
+    "code": "47785",
+    "is_user_validated": true,
+    "photo_url": "",
+    "is_blocked_user": false,
+    "is_otp_required": false,
+    "is_password_reset_required": false,
+    "apk_update_response": {
+      "version_status": 0,
+      "apk_version": "2.0.7",
+      "apk_url": "https://ecxlmda.s3.amazonaws.com/SATHi_V2.0.7_STG.apk?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Expires=86400&X-Amz-Credential=AKIAI3UZCE3LHOHLFBRQ%2F20190216%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-SignedHeaders=host&X-Amz-Date=20190216T070703Z&X-Amz-Signature=1c5ddbdf5cdd1f6526d34b27e777b8f2fbf4a9ad9e06f42e8c4d793e050079f2",
+      "apk_version_message": "Your application version is out-dated. Please update to 2.0.7"
+    },
+    "dc_location_address": {
+      "line1": "DELHI-DL",
+      "line2": "Ambience Corporate Tower 2",
+      "line3": "Ambience Island",
+      "line4": "DLF Phase 3 Sector 24",
+      "pincode": "111111",
+      "city": "DELHI",
+      "state": "New Delhi",
+      "location_lat": 28.53398,
+      "location_long": 77.08999,
+      "dc_head":true
+    },
+    "start_trip": {
+      "vehicle_type": "fourWheeler",
+      "type_of_vehicle": "personal",
+      "trip_id": 208,
+      "route_name": "Dwarika",
+      "meter_reading": 1233
+    },
+    "api_urls": {
+      "base_url": "http://13.126.182.187:8446/services/last_mile",
+      "live_api_urls": {
+        "trip-reimbursement": "https://sathi2.ecomexpress.in/services/last_mile/v1/trip-reimbursement/",
+
+        "image-postMultipleImage": "https://sathi2.ecomexpress.in/services/last_mile/v1/image/postMultipleImage/",
+
+        "change-password": "https://sathi2.ecomexpress.in/services/last_mile/v1/change-password/",
+
+        "start-trip": "https://sathi2.ecomexpress.in/services/last_mile/v1/start-trip/",
+
+        "login": "https://sathi2.ecomexpress.in/services/last_mile/v1/login/",
+
+        "forgot-password": "https://sathi2.ecomexpress.in/services/last_mile/v1/forgot-password/",
+
+        "image-postImage": "https://sathi2.ecomexpress.in/services/last_mile/v1/image/postImage/",
+
+        "weblink_url": "https://feedback.ecomexpress.in:8010/",
+
+        "reverse_drs_commit": "https://sathi2.ecomexpress.in/services/last_mile/v1/reverse_drs_commit/",
+
+        "drs_list-otp-verify": "https://sathi2.ecomexpress.in/services/last_mile/v1/drs_list/otp/verify/",
+
+        "logout": "https://sathi2.ecomexpress.in/services/last_mile/v1/logout/",
+
+        "forgot-password-with-otp": "https://sathi2.ecomexpress.in/services/last_mile/v1/forgot-password-with-otp/",
+
+        "forward_drs_commit": "https://sathi2.ecomexpress.in/services/last_mile/v1/forward_drs_commit/",
+
+        "call-bridge": "https://sathi2.ecomexpress.in/services/last_mile/v1/call-bridge/",
+
+        "stop-trip": "https://sathi2.ecomexpress.in/services/last_mile/v1/stop-trip/",
+
+        "drs_list_processing": "https://sathi2.ecomexpress.in/services/last_mile/v1/drs_list_processing/",
+
+        "master_data_configuration": "https://sathi2.ecomexpress.in/services/last_mile/v1/master_data_configuration/",
+
+        "drs_list-otp-resend": "https://sathi2.ecomexpress.in/services/last_mile/v1/drs_list/otp/resend/",
+
+        "drs_list-otp-send": "https://sathi2.ecomexpress.in/services/last_mile/v1/drs_list/otp/send/",
+
+        "attendance": "https://sathi2.ecomexpress.in/services/last_mile/v1/attendance/",
+
+        "performance": "https://sathi2.ecomexpress.in/services/last_mile/v1/performance/",
+
+        "register_awb": "https://sathi2.ecomexpress.in/services/last_mile/v1/register_awb/",
+
+        "check_payment_status": "https://sathi2.ecomexpress.in/services/last_mile/v1/check_payment_status/",
+
+        "forward_drs_commit_mps": "https://sathi2.ecomexpress.in/services/last_mile/v1/forward_drs_commit_mps/",
+
+        "rts_drs_commit": "https://sathi2.ecomexpress.in/services/last_mile/v1/rts_drs_commit/",
+
+        "eds_drs_commit": "https://sathi2.ecomexpress.in/services/last_mile/v1/eds_drs_commit",
+
+        "routing_api_way_points": "https://sathi2.ecomexpress.in/services/last_mile/v1/routing_api_way_points/",
+
+        "loginVerifyOTP": "https://sathi2.ecomexpress.in/services/last_mile/v1/loginVerifyOTP/",
+
+        "loginResendOTP": "https://sathi2.ecomexpress.in/services/last_mile/v1/loginResendOTP/",
+
+        "drs_list_otp_resend_other_phone": "https://sathi2.ecomexpress.in/services/last_mile/v1/drs_list-otp-resend_other_phone/",
+
+        "sms_techpark_unabletoreach": "https://sathi2.ecomexpress.in/services/last_mile/v1/sms_techpark_unabletoreach/",
+
+        "sos": "https://sathi2.ecomexpress.in/services/last_mile/v1/sos/",
+
+        "prod_image_url ": "https://sathi2.ecomexpress.in/services/last_mile/image/v1/postImage/",
+
+        "prod_image_eds_url": "https://sathi2.ecomexpress.in/services/last_mile/images/v1/eds/postImage/",
+
+        "prod_start_stop_image_url": "https://sathi2.ecomexpress.in/services/last_mile/image/v1/postTripImage/",
+
+        "consignee_profile": "https://sathi2.ecomexpress.in/consigneeprofile/get-profile/",
+
+        "call_bridge": "https://sathi2.ecomexpress.in/services/last_mile/v1/call-bridge/",
+
+        "udaan_image_id": "https://sathi2.ecomexpress.in/udaan/uploadImage/",
+
+        "udaan_image_quality": "https://sathi2.ecomexpress.in/udaan/get-image-by-id/",
+
+        "log_file_upload": "https://sathi2.ecomexpress.in/services/last_mile/image/v1/logFileUpload/"
+
+
+      }
+    },
+    "start_trip": {
+      "vehicleTpye": "Self",
+      "vehicle_type": "Self",
+      "type_of_vehicle": "Two Wheeler",
+      "trip_id": 0,
+      "route_name": "UP15AQ4231",
+      "previous_trip_status":false,
+      "meter_reading": 12
+    }
+  }
+}

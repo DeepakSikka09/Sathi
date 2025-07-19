@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <RelativeLayout
+        android:id="@+id/mssignaturereceipt_REL_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="2dp" >
+
+        <RelativeLayout
+            android:id="@+id/mssignaturereceipt_REL_receiptdetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF" >
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/mssignaturereceipt_REL_signature"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/mssignaturereceipt_LIN_action_buttons"
+            android:layout_below="@+id/mssignaturereceipt_REL_receiptdetails"
+            android:layout_marginTop="2dp" >
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/mssignaturereceipt_LIN_action_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="2dp"
+            android:background="#FFFFFF"
+            android:gravity="center_horizontal"
+            android:padding="5dp" >
+
+            <Button
+                android:id="@+id/mssignaturereceipt_BTN_clear"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="5dp"
+                android:gravity="center"
+                android:text="clear"
+                android:textSize="21dp"
+                android:typeface="sans" />
+
+            <Button
+                android:id="@+id/mssignaturereceipt_BTN_submitsignature"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="submit"
+                android:textSize="21dp"
+                android:typeface="sans" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</merge>

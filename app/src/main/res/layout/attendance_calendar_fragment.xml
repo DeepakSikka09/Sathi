@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.ecomexpress.sathi.ui.attendance.activity.AttendanceActivity2">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.dashboard.attendance.attendance_calendar_fragment.AttendanceCalendarFragmentViewModel" />
+    </data>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/monthsRecyclerViewFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/_2DP"
+        android:background="@color/del2"
+        android:gravity="center"
+        android:horizontalSpacing="@dimen/_4DP"
+        android:paddingVertical="@dimen/_2DP" />
+
+</layout>

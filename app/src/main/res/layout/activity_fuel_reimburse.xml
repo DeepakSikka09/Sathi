@@ -1,0 +1,123 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.ecomexpress.sathi.ui.dashboard.fuel.FuelReimburseActivity">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="in.ecomexpress.sathi.ui.dashboard.fuel.FuelReimburseViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <include
+            android:id="@+id/toolbar_layout"
+            layout="@layout/header_obd_fwd"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+
+        <!-- Icons Section -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/icons"
+            android:layout_width="@dimen/_0DP"
+            android:layout_height="wrap_content"
+            android:background="@color/offwhite"
+            android:gravity="center"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/toolbar_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <!-- Delivered Section -->
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/delivered_icon"
+                android:layout_width="@dimen/_20DP"
+                android:layout_height="@dimen/_20DP"
+                android:layout_margin="@dimen/_5DP"
+                android:src="@drawable/deliver"
+                app:tint="@color/colorPrimaryDark"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/delivered_text" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/delivered_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5DP"
+                android:text="@string/delivered__"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12SP"
+                android:textStyle="normal"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/delivered_icon" />
+
+            <!-- Undelivered Section -->
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/undelivered_icon"
+                android:layout_width="@dimen/_20DP"
+                android:layout_height="@dimen/_20DP"
+                android:layout_marginStart="@dimen/_30DP"
+                android:layout_margin="@dimen/_5DP"
+                android:src="@drawable/undeliver"
+                app:tint="@color/red_ecom"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/delivered_text"
+                app:layout_constraintEnd_toStartOf="@id/undelivered_text" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/undelivered_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5DP"
+                android:text="@string/undelivered___"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12SP"
+                android:textStyle="normal"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/undelivered_icon" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <!-- RecyclerView Section -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/fuel_recycler_view"
+            android:layout_width="@dimen/_0DP"
+            android:layout_height="@dimen/_0DP"
+            android:background="@color/offwhite"
+            android:elevation="@dimen/_20DP"
+            android:padding="@dimen/_5DP"
+            app:layout_constraintTop_toBottomOf="@id/icons"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!-- No Data Text -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/textViewNoData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_data_found___"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

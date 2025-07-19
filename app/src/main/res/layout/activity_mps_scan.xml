@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.drs.mps.activity.MpsScanActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/header"
+            layout="@layout/common_header"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/flyerBarcodeHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/flyer_barcode"
+            android:textSize="@dimen/_21SP"
+            android:fontFamily="@font/roboto_bold"
+            android:gravity="center_vertical|start"
+            android:textColor="@color/textPrimaryColor"
+            android:paddingVertical="@dimen/_15DP"
+            android:paddingHorizontal="@dimen/_15DP"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:drawablePadding="@dimen/_15DP"
+            app:layout_constraintTop_toBottomOf="@id/header"
+            android:drawableStart="@drawable/rvp_qc_flyer_scan_header_icon"/>
+
+        <com.journeyapps.barcodescanner.DecoratedBarcodeView
+            android:id="@+id/scannerView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_180DP"
+            app:flashButtonVisible="true"
+            app:autoFocusButtonVisible="false"
+            app:layout_constraintTop_toBottomOf="@id/flyerBarcodeHeader"
+            app:zxing_scanner_layout="@layout/custom_scanner_view">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/scannerFlash"
+                android:layout_width="@dimen/_35DP"
+                android:layout_height="@dimen/_35DP"
+                android:padding="@dimen/_5DP"
+                android:layout_gravity="end"
+                android:layout_margin="@dimen/_8DP"
+                android:src="@drawable/flash_off_icon" />
+
+        </com.journeyapps.barcodescanner.DecoratedBarcodeView>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/scannedSuccessfullyMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_21SP"
+            android:fontFamily="@font/roboto_bold"
+            android:gravity="center"
+            android:visibility="gone"
+            android:textColor="@color/textPrimaryColor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:drawablePadding="@dimen/_20DP"
+            app:layout_constraintTop_toBottomOf="@id/scannerView"
+            android:drawableTop="@drawable/scanned_successfully_icon"
+            app:layout_constraintBottom_toTopOf="@id/bottomSubmitButton"/>
+
+        <include
+            android:id="@+id/bottomSubmitButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/rvp_bottom_button_single"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
